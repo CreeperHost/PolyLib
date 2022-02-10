@@ -5,7 +5,8 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
-public class ExampleExpectPlatformImpl {
+public class PolyLibPlatformImpl
+{
     /**
      * This is our actual method to {@link PolyLibPlatform#getConfigDirectory()}.
      */
