@@ -1,10 +1,24 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
+loom {
+    forge {
+        mixinConfig "polylib.mixins.json"
+    }
+}
 
 architectury {
     platformSetupLoomIde()
     forge()
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    forge {
+        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+    }
 }
 
 configurations {
@@ -34,6 +48,7 @@ processResources {
 
 shadowJar {
     exclude "fabric.mod.json"
+    exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
@@ -64,13 +79,21 @@ components.java {
 publishing {
     publications {
         mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifactId = rootProject.archivesBaseName + "-forge"
             from components.java
         }
     }
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
+        if (System.getenv("NEXUS_PASSWORD") != null) {
+            maven {
+                url = System.getenv("NEXUS_URL")
+                credentials {
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
+                }
+            }
+        }
     }
 }

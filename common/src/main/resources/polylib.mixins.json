@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.creeperhost.polylib.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
