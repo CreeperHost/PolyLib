@@ -28,16 +28,13 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
-    archivesBaseName = rootProject.archives_base_name
-    version = rootProject.mod_version
+    def ENV = System.getenv()
+    version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
     group = rootProject.maven_group
+    archivesBaseName = rootProject.archives_base_name
 
     repositories {
-        // Add repositories to retrieve artifacts from in here.
-        // You should only use this when depending on other mods because
-        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-        // for more information about repositories.
+        maven { url 'https://maven.creeperhost.net' }
     }
 
     tasks.withType(JavaCompile) {
