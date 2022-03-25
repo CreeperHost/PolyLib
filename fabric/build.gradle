@@ -69,7 +69,7 @@ components.java {
 
 publishing {
     publications {
-        mavenForge(MavenPublication) {
+        mavenFabric(MavenPublication) {
             artifactId = rootProject.archivesBaseName + "-fabric"
             from components.java
         }
@@ -77,12 +77,12 @@ publishing {
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        if (System.getenv("NEXUS_PASSWORD") != null) {
+        if (ENV.CREEPERHOST_MAVEN_TOKEN) {
             maven {
-                url = System.getenv("NEXUS_URL")
+                url "https://maven.creeperhost.net/release"
                 credentials {
-                    username = System.getenv("NEXUS_USERNAME")
-                    password = System.getenv("NEXUS_PASSWORD")
+                    username = "githubci"
+                    password = "${ENV.CREEPERHOST_MAVEN_TOKEN}"
                 }
             }
         }
