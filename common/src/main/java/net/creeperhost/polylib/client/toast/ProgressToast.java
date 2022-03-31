@@ -37,7 +37,7 @@ public class ProgressToast extends PolyToast
         }
         toastComponent.getMinecraft().font.draw(poseStack, this.title, 30.0f, 12.0f, -1);
         //Test code
-        if(progress < 1.0F) progress += 0.0001F;
+//        if(progress < 1.0F) progress += 0.0001F;
 
         GuiComponent.fill(poseStack, 3, 28, 157, 29, -1);
         float f = Mth.clampedLerp(this.lastProgress, this.progress, (float)(l - this.lastProgressTime) / 100.0f);
