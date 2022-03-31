@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.AbstractSelectionList;
 public class ScreenListEntry extends AbstractSelectionList.Entry
 {
     protected final Minecraft mc;
-    protected final ScreenList<?> list;
+    protected final ScreenList list;
 
     public ScreenListEntry(ScreenList<?> list)
     {
