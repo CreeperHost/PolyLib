@@ -6,6 +6,7 @@
     "MixinClientLevelData"
   ],
   "mixins": [
+    "MixinChunkMap",
     "MixinLevelSettings"
   ],
   "injectors": {

@@ -2,6 +2,8 @@ package net.creeperhost.polylib.forge;
 
 import dev.architectury.platform.forge.EventBuses;
 import net.creeperhost.polylib.PolyLib;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
