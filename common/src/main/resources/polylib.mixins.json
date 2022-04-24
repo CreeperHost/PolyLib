@@ -3,8 +3,11 @@
   "package": "net.creeperhost.polylib.mixins",
   "compatibilityLevel": "JAVA_16",
   "client": [
+    "MixinClientLevelData"
   ],
   "mixins": [
+    "MixinChunkMap",
+    "MixinLevelSettings"
   ],
   "injectors": {
     "defaultRequire": 1
