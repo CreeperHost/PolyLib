@@ -8,7 +8,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.List;
 
@@ -182,7 +181,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
     
     public void updateDisplayString()
     {
-        baseButtonText = new TranslatableComponent(I18n.get(selected.getTranslate(selected, false)), baseButtonText);
+        baseButtonText = Component.translatable(selected.getTranslate(selected, false), baseButtonText);
     }
     
     private E getClickedElement(double mouseX, double mouseY)

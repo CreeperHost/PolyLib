@@ -9,7 +9,6 @@ import net.minecraft.client.gui.components.ComponentRenderUtils;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,7 +21,7 @@ public class GuiButtonLarge extends Button
     
     public GuiButtonLarge(int x, int y, int widthIn, int heightIn, String buttonText, String description, ItemStack stack, OnPress onPress)
     {
-        super(x, y, widthIn, heightIn, new TranslatableComponent(buttonText), onPress);
+        super(x, y, widthIn, heightIn, Component.translatable(buttonText), onPress);
         this.width = 200;
         this.height = 20;
         this.visible = true;
@@ -31,7 +30,7 @@ public class GuiButtonLarge extends Button
         this.y = y;
         this.width = widthIn;
         this.height = heightIn;
-        this.setMessage(new TranslatableComponent(buttonText));
+        this.setMessage(Component.translatable(buttonText));
         this.description = description;
         this.stack = stack;
     }
@@ -50,7 +49,7 @@ public class GuiButtonLarge extends Button
             this.renderBg(matrixStack, mc, mouseX, mouseY);
             int color = 14737632;
             
-            List<FormattedCharSequence> newstring = ComponentRenderUtils.wrapComponents(new TranslatableComponent(description), width -12, mc.font);
+            List<FormattedCharSequence> newstring = ComponentRenderUtils.wrapComponents(Component.translatable(description), width -12, mc.font);
             int start = y + 40;
 
             for (FormattedCharSequence s : newstring)

@@ -2,7 +2,7 @@ package net.creeperhost.polylib.client.screen.widget;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,11 +12,11 @@ import java.util.regex.Pattern;
  */
 public class TextFieldValidate extends EditBox
 {
-    Pattern pattern;
+    protected final Pattern pattern;
 
-    public TextFieldValidate(Font p_i1032_1_, int p_i1032_2_, int p_i1032_3_, int p_i1032_4_, int p_i1032_5_, String regexStr, String s)
+    public TextFieldValidate(Font font, int x, int y, int width, int height, String regexStr, String s)
     {
-        super(p_i1032_1_, p_i1032_2_, p_i1032_3_, p_i1032_4_, p_i1032_5_, new TranslatableComponent(s));
+        super(font, x, y, width, height, Component.translatable(s));
         pattern = Pattern.compile(regexStr);
     }
     
