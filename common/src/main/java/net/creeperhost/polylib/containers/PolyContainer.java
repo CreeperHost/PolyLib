@@ -7,6 +7,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class PolyContainer extends AbstractContainerMenu
@@ -63,7 +64,7 @@ public abstract class PolyContainer extends AbstractContainerMenu
      * Logic to figure out where/if a shift-clicked slot can move its @link {@link ItemStack} to another @link {@link Slot}
      */
     @Override
-    public ItemStack quickMoveStack(Player player, int slotIndex)
+    public ItemStack quickMoveStack(@NotNull Player player, int slotIndex)
     {
         ItemStack originalStack = ItemStack.EMPTY;
         Slot slot = (Slot) slots.get(slotIndex);
