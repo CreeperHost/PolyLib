@@ -1,6 +1,7 @@
 package net.creeperhost.polylib;
 
 import dev.architectury.platform.Platform;
+import net.creeperhost.polylib.core.PlayerTickEventHandler;
 import net.creeperhost.polylib.mulitblock.multiblockevents.MultiblockClientTickHandler;
 import net.creeperhost.polylib.mulitblock.multiblockevents.MultiblockServerTickHandler;
 import net.fabricmc.api.EnvType;
@@ -19,5 +20,6 @@ public class PolyLib
             MultiblockClientTickHandler.onClientTick();
         }
         MultiblockServerTickHandler.onWorldTick();
+        PlayerTickEventHandler.init();
     }
 }
