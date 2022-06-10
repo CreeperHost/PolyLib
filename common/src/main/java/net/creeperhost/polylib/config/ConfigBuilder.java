@@ -5,6 +5,7 @@ import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.JsonObject;
 import dev.architectury.platform.Platform;
 
+import javax.annotation.Nonnull;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
@@ -18,7 +19,7 @@ public class ConfigBuilder
 
     Jankson JANKSON = Jankson.builder().build();
 
-    public ConfigBuilder(String configName, Class<?> clazz)
+    public ConfigBuilder(@Nonnull String configName,@Nonnull Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
         this.CONFIG_PATH = Platform.getConfigFolder().resolve(configName + ".json");
