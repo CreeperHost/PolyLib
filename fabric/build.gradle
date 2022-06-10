@@ -32,6 +32,8 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
     shadowCommon("io.sentry:sentry:5.7.2") { transitive false }
+    implementation "blue.endless:jankson:1.2.1"
+    shadowCommon "blue.endless:jankson:1.2.1"
 }
 
 processResources {
@@ -46,6 +48,7 @@ shadowJar {
     exclude "architectury.common.json"
 
     relocate 'io.sentry', 'net.creeperhost.polylib.io.sentry'
+    relocate 'blue.endless.jankson', 'net.creeperhost.polylib.blue.endless.jankson'
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
