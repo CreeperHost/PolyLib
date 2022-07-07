@@ -2,6 +2,8 @@ package net.creeperhost.polylib.helpers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 
 public class LevelHelper
@@ -27,5 +29,15 @@ public class LevelHelper
     public static Iterable<BlockPos> getPositionsFromBox(BlockPos corner1, BlockPos corner2)
     {
         return () -> BlockPos.betweenClosedStream(corner1, corner2).iterator();
+    }
+
+    public static boolean isAir(Level level, BlockPos blockPos)
+    {
+        if(level == null) return false;
+
+        if(level.getBlockState(blockPos).isAir()) return true;
+        if(level.getBlockState(blockPos).getBlock() == Blocks.AIR) return true;
+
+        return false;
     }
 }
