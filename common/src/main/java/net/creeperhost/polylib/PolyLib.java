@@ -15,10 +15,6 @@ public class PolyLib
 
     public static void init()
     {
-        if(Platform.isDevelopmentEnvironment())
-        {
-            ConfigTest.init();
-        }
         if(Platform.getEnv() == EnvType.CLIENT)
         {
             MultiblockClientTickHandler.onClientTick();
