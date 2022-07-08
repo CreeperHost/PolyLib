@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.concurrent.CompletableFuture;
 
+@Deprecated(forRemoval = true)
 @Mixin(ChunkMap.class)
 public class MixinChunkMap
 {
