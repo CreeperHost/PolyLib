@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(SpawnPlacements.class)
-public class InvokerSpawnPlacements
+public interface InvokerSpawnPlacements
 {
     @Invoker
-    public static <T extends Mob> void callRegister(EntityType<?> entityType, SpawnPlacements.Type type, Heightmap.Types types, SpawnPlacements.SpawnPredicate<?> spawnPredicate) {}
+    static <T extends Mob> void callRegister(EntityType<?> entityType, SpawnPlacements.Type type, Heightmap.Types types, SpawnPlacements.SpawnPredicate<?> spawnPredicate) {}
 }
