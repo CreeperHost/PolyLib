@@ -5,6 +5,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.stream.Stream;
 
 public class ItemTagHelper
 {
@@ -22,5 +25,10 @@ public class ItemTagHelper
     public static Iterable<Holder<Item>> getValues(TagKey<Item> tagKey)
     {
         return Registry.ITEM.getTagOrEmpty(tagKey);
+    }
+
+    public static Stream<TagKey<Item>> getAllTags(ItemStack itemStack)
+    {
+        return itemStack.getItem().builtInRegistryHolder().tags();
     }
 }
