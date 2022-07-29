@@ -1,6 +1,5 @@
 package net.creeperhost.polylib;
 
-import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.core.PlayerTickEventHandler;
@@ -19,7 +18,7 @@ public class PolyLib
     {
         if(Platform.getEnv() == EnvType.CLIENT)
         {
-            ClientTickEvent.CLIENT_PRE.register(instance -> MultiblockRegistry.tickStart(instance.level));
+            PolyLibClient.init();
         }
         PlayerTickEventHandler.init();
 
