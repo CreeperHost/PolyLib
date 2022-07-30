@@ -23,8 +23,7 @@ public class ContainerInventoryTestBlock extends PolyContainer
     {
         super(TestContainers.TEST_INVENTORY_CONTAINER.get(), id);
 
-        addSlot(new SlotInput(inventoryTestBlock.polyInventory, 0, 41, 61));
-        addSlot(new SlotOutput(inventoryTestBlock.polyInventory, 1, 121, 61));
+        inventoryTestBlock.getSlots().forEach(this::addSlot);
 
         drawPlayersInv(playerInv, 15, 132);
         drawPlayersHotBar(playerInv, 15, 132 + 58);
