@@ -1,7 +1,9 @@
 package net.creeperhost.testmod.blocks.inventorytestblock;
 
+import net.creeperhost.polylib.inventory.PolyInventory;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +16,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class InventoryTestBlockEntity extends BaseContainerBlockEntity
 {
+    PolyInventory polyInventory = new PolyInventory(2)
+    {
+        @Override
+        public void setChanged()
+        {
+            super.setChanged();
+            InventoryTestBlockEntity.this.setChanged();
+        }
+    };
+
     public InventoryTestBlockEntity(BlockPos blockPos, BlockState blockState)
     {
         super(TestBlocks.INVENTORY_TEST_TILE.get(), blockPos, blockState);
@@ -34,37 +46,37 @@ public class InventoryTestBlockEntity extends BaseContainerBlockEntity
     @Override
     public int getContainerSize()
     {
-        return 0;
+        return polyInventory.getContainerSize();
     }
 
     @Override
     public boolean isEmpty()
     {
-        return false;
+        return polyInventory.isEmpty();
     }
 
     @Override
     public ItemStack getItem(int i)
     {
-        return null;
+        return polyInventory.getItem(i);
     }
 
     @Override
     public ItemStack removeItem(int i, int j)
     {
-        return null;
+        return polyInventory.removeItem(i, j);
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int i)
     {
-        return null;
+        return polyInventory.removeItemNoUpdate(i);
     }
 
     @Override
     public void setItem(int i, @NotNull ItemStack itemStack)
     {
-
+        polyInventory.setItem(i, itemStack);
     }
 
     @Override
@@ -76,6 +88,20 @@ public class InventoryTestBlockEntity extends BaseContainerBlockEntity
     @Override
     public void clearContent()
     {
+        polyInventory.clearContent();
+    }
 
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag compoundTag)
+    {
+        super.saveAdditional(compoundTag);
+        compoundTag.merge(polyInventory.serializeNBT());
+    }
+
+    @Override
+    public void load(@NotNull CompoundTag compoundTag)
+    {
+        super.load(compoundTag);
+        polyInventory.deserializeNBT(compoundTag);
     }
 }

@@ -1,16 +1,16 @@
 package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import net.creeperhost.polylib.containers.PolyContainer;
+import net.creeperhost.polylib.containers.slots.SlotInput;
+import net.creeperhost.polylib.containers.slots.SlotOutput;
 import net.creeperhost.testmod.init.TestContainers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ContainerInventoryTestBlock extends PolyContainer
 {
@@ -19,9 +19,13 @@ public class ContainerInventoryTestBlock extends PolyContainer
         this(id, playerInv, (InventoryTestBlockEntity) Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
-    public ContainerInventoryTestBlock(int id, Inventory playerInv, InventoryTestBlockEntity blockEntityBreeder, ContainerData containerData)
+    public ContainerInventoryTestBlock(int id, Inventory playerInv, InventoryTestBlockEntity inventoryTestBlock, ContainerData containerData)
     {
         super(TestContainers.TEST_INVENTORY_CONTAINER.get(), id);
+
+        addSlot(new SlotInput(inventoryTestBlock.polyInventory, 0, 41, 61));
+        addSlot(new SlotOutput(inventoryTestBlock.polyInventory, 1, 121, 61));
+
         drawPlayersInv(playerInv, 15, 132);
         drawPlayersHotBar(playerInv, 15, 132 + 58);
     }
