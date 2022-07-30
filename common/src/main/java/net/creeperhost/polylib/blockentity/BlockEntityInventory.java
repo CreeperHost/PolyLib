@@ -1,8 +1,12 @@
 package net.creeperhost.polylib.blockentity;
 
+import net.creeperhost.polylib.containers.slots.SlotInput;
+import net.creeperhost.polylib.containers.slots.SlotOutput;
 import net.creeperhost.polylib.inventory.PolyInventory;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BlockEntityInventory extends BaseContainerBlockEntity
+public abstract class BlockEntityInventory extends BaseContainerBlockEntity implements WorldlyContainer
 {
     private Optional<PolyInventory> inventoryOptional = Optional.empty();
     private final List<Slot> slots = new ArrayList<>();
@@ -92,6 +96,26 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity
     public void clearContent()
     {
         getInventoryOptional().ifPresent(PolyInventory::clearContent);
+    }
+
+    @Override
+    public int[] getSlotsForFace(@NotNull Direction direction)
+    {
+        return new int[getContainerSize()];
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int i, @NotNull ItemStack itemStack, @org.jetbrains.annotations.Nullable Direction direction)
+    {
+        if(getSlots().size() >= i && getSlots().get(i) instanceof SlotOutput) return false;
+        return false;
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int i, @NotNull ItemStack itemStack, @NotNull Direction direction)
+    {
+        if(getSlots().size() >= i && getSlots().get(i) instanceof SlotInput) return false;
+        return false;
     }
 
     @Override

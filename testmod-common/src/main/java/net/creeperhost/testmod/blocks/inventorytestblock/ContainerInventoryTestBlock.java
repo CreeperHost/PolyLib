@@ -1,8 +1,6 @@
 package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import net.creeperhost.polylib.containers.PolyContainer;
-import net.creeperhost.polylib.containers.slots.SlotInput;
-import net.creeperhost.polylib.containers.slots.SlotOutput;
 import net.creeperhost.testmod.init.TestContainers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
