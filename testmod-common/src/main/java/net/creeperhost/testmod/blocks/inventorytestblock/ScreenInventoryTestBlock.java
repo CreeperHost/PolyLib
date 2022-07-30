@@ -43,19 +43,16 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
         }));
     }
 
-    int progress = 0;
-
     @Override
     protected void renderBg(@NotNull PoseStack poseStack, float f, int mouseX, int mouseY)
     {
+        int progress = getMenu().getContainerData().get(0);
         renderBackground(poseStack);
         screenBuilder.drawDefaultBackground(this, poseStack, leftPos, topPos, imageWidth, imageHeight, 256, 256);
         screenBuilder.drawPlayerSlots(this, poseStack, leftPos + imageWidth / 2, topPos + 131, true, 256, 256);
 
         screenBuilder.drawSlot(this, poseStack, leftPos + 40, topPos + 60, 256, 256);
         screenBuilder.drawSlot(this, poseStack, leftPos + 120, topPos + 60, 256, 256);
-        progress++;
-        if(progress >= 100) progress = 0;
 
         screenBuilder.drawProgressBar(this, poseStack, progress, 100, leftPos + 80, topPos + 60, mouseX, mouseY);
         FluidStack fluidStack = FluidStack.create(Fluids.WATER, progress * 10);

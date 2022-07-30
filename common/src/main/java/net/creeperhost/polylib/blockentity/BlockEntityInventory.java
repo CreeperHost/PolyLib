@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.blockentity;
 
+import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.containers.slots.SlotInput;
 import net.creeperhost.polylib.containers.slots.SlotOutput;
 import net.creeperhost.polylib.inventory.PolyInventory;
@@ -8,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -19,15 +21,62 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class BlockEntityInventory extends BaseContainerBlockEntity implements WorldlyContainer
 {
     private Optional<PolyInventory> inventoryOptional = Optional.empty();
     private final List<Slot> slots = new ArrayList<>();
+    private SimpleContainerData containerData = new SimpleContainerData(0);
 
     public BlockEntityInventory(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState)
     {
         super(blockEntityType, blockPos, blockState);
+    }
+
+    public void setContainerDataSize(int value)
+    {
+        this.containerData = new SimpleContainerData(value);
+    }
+
+    public SimpleContainerData getContainerData()
+    {
+        return containerData;
+    }
+
+    public void setContainerDataValue(int i, int value)
+    {
+        if(containerData == null)
+        {
+            PolyLib.LOGGER.error("failed to set container data due to containerData being null");
+            return;
+        }
+        if(i > containerData.getCount())
+        {
+            PolyLib.LOGGER.error("failed to set container data due to containerData size being lower then " + i);
+            return;
+        }
+
+        containerData.set(i, value);
+    }
+
+    public void setContainerDataValue(int i, Supplier<Integer> value)
+    {
+        if(containerData == null)
+        {
+            PolyLib.LOGGER.error("failed to set container data due to containerData being null");
+            return;
+        }
+        if(containerData.getCount() == 0 || i > containerData.getCount())
+        {
+            PolyLib.LOGGER.error("failed to set container data due to containerData size being lower then " + i);
+            setContainerDataSize(i + 1);
+        }
+
+        try
+        {
+            containerData.set(i, value.get());
+        } catch (Exception ignored){}
     }
 
     public void setInventory(@Nullable PolyInventory polyInventory)

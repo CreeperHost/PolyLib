@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ContainerInventoryTestBlock extends PolyContainer
 {
+    ContainerData containerData;
+
     public ContainerInventoryTestBlock(int id, Inventory playerInv, FriendlyByteBuf extraData)
     {
         this(id, playerInv, (InventoryTestBlockEntity) Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
@@ -25,11 +27,18 @@ public class ContainerInventoryTestBlock extends PolyContainer
 
         drawPlayersInv(playerInv, 15, 132);
         drawPlayersHotBar(playerInv, 15, 132 + 58);
+        this.containerData = containerData;
+        addDataSlots(containerData);
     }
 
     @Override
     public boolean stillValid(@NotNull Player player)
     {
         return true;
+    }
+
+    public ContainerData getContainerData()
+    {
+        return containerData;
     }
 }
