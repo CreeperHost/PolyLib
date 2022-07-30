@@ -3,7 +3,7 @@ package net.creeperhost.polylib.blockentity;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.containers.slots.SlotInput;
 import net.creeperhost.polylib.containers.slots.SlotOutput;
-import net.creeperhost.polylib.inventory.PolyInventory;
+import net.creeperhost.polylib.inventory.PolyItemInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 public abstract class BlockEntityInventory extends BaseContainerBlockEntity implements WorldlyContainer
 {
-    private Optional<PolyInventory> inventoryOptional = Optional.empty();
+    private Optional<PolyItemInventory> inventoryOptional = Optional.empty();
     private final List<Slot> slots = new ArrayList<>();
     private SimpleContainerData containerData = new SimpleContainerData(0);
 
@@ -79,12 +79,12 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
         } catch (Exception ignored){}
     }
 
-    public void setInventory(@Nullable PolyInventory polyInventory)
+    public void setInventory(@Nullable PolyItemInventory polyInventory)
     {
         inventoryOptional = Optional.ofNullable(polyInventory);
     }
 
-    public Optional<PolyInventory> getInventoryOptional()
+    public Optional<PolyItemInventory> getInventoryOptional()
     {
         return inventoryOptional;
     }
@@ -144,7 +144,7 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     @Override
     public void clearContent()
     {
-        getInventoryOptional().ifPresent(PolyInventory::clearContent);
+        getInventoryOptional().ifPresent(PolyItemInventory::clearContent);
     }
 
     @Override

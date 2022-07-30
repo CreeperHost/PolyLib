@@ -18,13 +18,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PolyInventory implements Container, StackedContentsCompatible
+public class PolyItemInventory implements Container, StackedContentsCompatible
 {
     private final int size;
     private final NonNullList<ItemStack> items;
     private List<ContainerListener> listeners;
 
-    public PolyInventory(int i)
+    public PolyItemInventory(int i)
     {
         this.size = i;
         this.items = NonNullList.withSize(i, ItemStack.EMPTY);
