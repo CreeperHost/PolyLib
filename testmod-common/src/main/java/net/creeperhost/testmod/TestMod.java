@@ -1,11 +1,13 @@
 package net.creeperhost.testmod;
 
-import dev.architectury.registry.CreativeTabRegistry;
+import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.platform.Platform;
+import net.creeperhost.testmod.init.TestBlocks;
+import net.creeperhost.testmod.init.TestContainers;
 import net.creeperhost.testmod.init.TestItems;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.creeperhost.testmod.init.TestScreens;
+import net.fabricmc.api.EnvType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +20,13 @@ public class TestMod
     public static void init()
     {
         LOGGER.info("Hi I'm " + MOD_ID);
+        TestBlocks.BLOCKS.register();
+        TestBlocks.TILES_ENTITIES.register();
         TestItems.ITEMS.register();
+        TestContainers.CONTAINERS.register();
+        ClientLifecycleEvent.CLIENT_SETUP.register(instance ->
+        {
+            TestScreens.init();
+        });
     }
 }

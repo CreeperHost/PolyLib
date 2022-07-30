@@ -1,0 +1,58 @@
+package net.creeperhost.testmod.blocks.inventorytestblock;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.client.screenbuilder.ScreenBuilder;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
+
+public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerInventoryTestBlock>
+{
+    ScreenBuilder screenBuilder = new ScreenBuilder();
+
+    public ScreenInventoryTestBlock(ContainerInventoryTestBlock abstractContainerMenu, Inventory inventory, Component component)
+    {
+        super(abstractContainerMenu, inventory, component);
+        this.imageWidth = 190;
+        this.imageHeight = 220;
+        this.inventoryLabelY = 118;
+    }
+
+    @Override
+    protected void init()
+    {
+        super.init();
+    }
+
+    int progress = 0;
+
+    @Override
+    protected void renderBg(@NotNull PoseStack poseStack, float f, int mouseX, int mouseY)
+    {
+        renderBackground(poseStack);
+        screenBuilder.drawDefaultBackground(this, poseStack, leftPos, topPos, imageWidth, imageHeight, 256, 256);
+        screenBuilder.drawPlayerSlots(this, poseStack, leftPos + imageWidth / 2, topPos + 131, true, 256, 256);
+
+        screenBuilder.drawSlot(this, poseStack, leftPos + 40, topPos + 60, 256, 256);
+        screenBuilder.drawSlot(this, poseStack, leftPos + 120, topPos + 60, 256, 256);
+        progress++;
+        if(progress >= 100) progress = 0;
+
+        screenBuilder.drawProgressBar(this, poseStack, progress, 100, leftPos + 80, topPos + 60, mouseX, mouseY);
+        FluidStack fluidStack = FluidStack.create(Fluids.WATER, progress * 10);
+        screenBuilder.drawTankWithOverlay(this, poseStack, fluidStack, 1000, leftPos + imageWidth - 30, topPos + 40, 49, mouseX, mouseY);
+        screenBuilder.drawBar(this, poseStack, leftPos + 10, topPos + 20, 80, progress, 100, mouseX, mouseY, Component.literal(progress + " FE"));
+    }
+
+    @Override
+    public void render(@NotNull PoseStack poseStack, int i, int j, float f)
+    {
+        super.render(poseStack, i, j, f);
+
+        renderTooltip(poseStack, i, j);
+    }
+}

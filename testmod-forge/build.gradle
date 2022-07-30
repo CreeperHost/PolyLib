@@ -4,7 +4,7 @@ plugins {
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+    accessWidenerPath = project(":testmod-common").loom.accessWidenerPath
 
     forge {
         mixinConfig "architectury.mixins.json"
