@@ -12,14 +12,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-/**
- * This class contains the base logic for "multiblock controllers".
- * Conceptually, they are meta-TileEntities. They govern the logic for an
- * associated group of TileEntities.
- * <p>
- * Subordinate TileEntities implement the IMultiblockPart class and, generally,
- * should not have an update() loop.
- */
 public abstract class MultiblockControllerBase
 {
     public static final short DIMENSION_UNBOUNDED = -1;
@@ -1152,8 +1144,7 @@ public abstract class MultiblockControllerBase
     public static void updateBlock(Level world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
-        //TODO
-        //		world.notifyBlockUpdate(pos, state, state, 3);
+        world.sendBlockUpdated(pos, state, state, 3);
     }
 
     /**
@@ -1179,10 +1170,7 @@ public abstract class MultiblockControllerBase
         {
             return;
         }
-
-        BlockEntity saveTe = worldObj.getBlockEntity(referenceCoord);
-        //TODO
-        //		worldObj.markChunkDirty(referenceCoord, saveTe);
+        worldObj.blockEntityChanged(referenceCoord);
     }
 
 }

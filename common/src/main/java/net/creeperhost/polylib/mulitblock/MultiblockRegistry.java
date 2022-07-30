@@ -7,12 +7,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import java.util.HashMap;
 import java.util.Set;
 
-/**
- * This is a very static singleton registry class which directs incoming events
- * to sub-objects, which actually manage each individual world's multiblocks.
- *
- * @author Erogenous Beef
- */
 public class MultiblockRegistry
 {
     // World > WorldRegistry map
@@ -105,7 +99,7 @@ public class MultiblockRegistry
         }
         else
         {
-            PolyLib.LOGGER.warn("Adding a dirty controller to a world that has no registered controllers! This is most likey not an issue with reborn core, please check the full log file for more infomation!");
+//            PolyLib.LOGGER.warn("Adding a dirty controller to a world that has no registered controllers! This is most likey not an issue with reborn core, please check the full log file for more infomation!");
         }
     }
 

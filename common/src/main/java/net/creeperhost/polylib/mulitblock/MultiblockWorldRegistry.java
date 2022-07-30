@@ -8,13 +8,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 
 import java.util.*;
 
-/**
- * This class manages all the multiblock controllers that exist in a given
- * world, either client- or server-side. You must create different registries
- * for server and client worlds.
- *
- * @author Erogenous Beef
- */
 public class MultiblockWorldRegistry
 {
 
@@ -340,6 +333,8 @@ public class MultiblockWorldRegistry
     public void onPartAdded(IMultiblockPart part)
     {
         BlockPos pos = part.getWorldLocation();
+
+        if(worldObj == null) return;
 
         if (!this.worldObj.isLoaded(pos))
         {

@@ -4,9 +4,11 @@ import net.creeperhost.polylib.PolyLib;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -86,7 +88,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     }
 
     @Override
-    public void load(CompoundTag compoundTag)
+    public void load(@NotNull CompoundTag compoundTag)
     {
         super.load(compoundTag);
         // We can't directly initialize a multiblock controller yet, so we cache
@@ -97,10 +99,11 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
         {
             this.cachedMultiblockData = compoundTag.getCompound("multiblockData");
         }
+
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag)
+    protected void saveAdditional(@NotNull CompoundTag compoundTag)
     {
         super.saveAdditional(compoundTag);
         if (isMultiblockSaveDelegate() && isConnected())
@@ -109,6 +112,13 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
             this.controller.writeToNBT(multiblockData);
             compoundTag.put("multiblockData", multiblockData);
         }
+    }
+
+    @Override
+    public void setRemoved()
+    {
+        super.setRemoved();
+        detachSelf(false);
     }
 
     //TODO
@@ -130,6 +140,14 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     //        super.onDataPacket(net, pkt);
     //        decodeDescriptionPacket(pkt.getTag());
     //    }
+
+
+    @Override
+    public void setLevel(Level level)
+    {
+        super.setLevel(level);
+        MultiblockRegistry.onPartAdded(this.getLevel(), this);
+    }
 
     /**
      * Override this to easily modify the description packet's data without
@@ -299,8 +317,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     @Override
     public void onOrphaned(MultiblockControllerBase controller, int oldSize, int newSize)
     {
-        //TODO
-        //        this.onLoad();
+
     }
 
     /*
