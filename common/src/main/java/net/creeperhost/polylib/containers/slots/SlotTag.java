@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SlotTag extends Slot
 {
-    TagKey<Item> tagKey;
+    private final TagKey<Item> tagKey;
 
     public SlotTag(Container container, int i, int j, int k, @NotNull TagKey<Item> tagKey)
     {
@@ -21,5 +21,10 @@ public class SlotTag extends Slot
     public boolean mayPlace(@NotNull ItemStack itemStack)
     {
         return itemStack.is(tagKey);
+    }
+
+    public TagKey<Item> getTagKey()
+    {
+        return tagKey;
     }
 }
