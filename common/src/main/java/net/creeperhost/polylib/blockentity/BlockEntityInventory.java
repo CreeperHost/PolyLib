@@ -163,14 +163,21 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     @Override
     public boolean canPlaceItemThroughFace(int i, @NotNull ItemStack itemStack, @org.jetbrains.annotations.Nullable Direction direction)
     {
-        if(getSlots().get(i) instanceof SlotOutput) return false;
-        return getSlots().get(i).mayPlace(itemStack);
+        if(!getSlots().isEmpty() && getSlots().size() >= i)
+        {
+            if (getSlots().get(i) instanceof SlotOutput) return false;
+            return getSlots().get(i).mayPlace(itemStack);
+        }
+        return true;
     }
 
     @Override
     public boolean canTakeItemThroughFace(int i, @NotNull ItemStack itemStack, @NotNull Direction direction)
     {
-        if(getSlots().get(i) instanceof SlotInput) return false;
+        if(!getSlots().isEmpty() && getSlots().size() >= i)
+        {
+            return !(getSlots().get(i) instanceof SlotInput);
+        }
         return true;
     }
 
