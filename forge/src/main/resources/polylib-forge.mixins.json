@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.creeperhost.polylib.forge.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "MixinBlockEntityInventory"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

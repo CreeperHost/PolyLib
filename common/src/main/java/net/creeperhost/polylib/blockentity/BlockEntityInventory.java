@@ -22,10 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 public abstract class BlockEntityInventory extends BaseContainerBlockEntity implements WorldlyContainer
 {
-    private Optional<PolyItemInventory> inventoryOptional = Optional.empty();
+    public Optional<PolyItemInventory> inventoryOptional = Optional.empty();
     private final List<Slot> slots = new ArrayList<>();
     private SimpleContainerData containerData = new SimpleContainerData(0);
 
@@ -148,23 +149,29 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     }
 
     @Override
+    public boolean canPlaceItem(int i, @NotNull ItemStack itemStack)
+    {
+        return getSlots().size() >= i && !(getSlots().get(i) instanceof SlotOutput);
+    }
+
+    @Override
     public int[] getSlotsForFace(@NotNull Direction direction)
     {
-        return new int[getContainerSize()];
+        return IntStream.range(0, getContainerSize()).toArray();
     }
 
     @Override
     public boolean canPlaceItemThroughFace(int i, @NotNull ItemStack itemStack, @org.jetbrains.annotations.Nullable Direction direction)
     {
-        if(getSlots().size() >= i && getSlots().get(i) instanceof SlotOutput) return false;
-        return false;
+        if(getSlots().get(i) instanceof SlotOutput) return false;
+        return true;
     }
 
     @Override
     public boolean canTakeItemThroughFace(int i, @NotNull ItemStack itemStack, @NotNull Direction direction)
     {
-        if(getSlots().size() >= i && getSlots().get(i) instanceof SlotInput) return false;
-        return false;
+        if(getSlots().get(i) instanceof SlotInput) return false;
+        return true;
     }
 
     @Override
@@ -180,5 +187,4 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
         super.load(compoundTag);
         getInventoryOptional().ifPresent(polyInventory -> polyInventory.deserializeNBT(compoundTag));
     }
-
 }

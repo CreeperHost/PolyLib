@@ -1,24 +1,28 @@
 package net.creeperhost.polylib.inventory;
 
 import com.google.common.collect.Lists;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ContainerListener;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class PolyItemInventory implements Container, StackedContentsCompatible
+public class PolyItemInventory implements WorldlyContainer, StackedContentsCompatible
 {
     private final int size;
     private final NonNullList<ItemStack> items;
@@ -283,5 +287,23 @@ public class PolyItemInventory implements Container, StackedContentsCompatible
     public NonNullList<ItemStack> getItems()
     {
         return items;
+    }
+
+    @Override
+    public int[] getSlotsForFace(@NotNull Direction direction)
+    {
+        return IntStream.range(0, getContainerSize()).toArray();
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int i, @NotNull ItemStack itemStack, @Nullable Direction direction)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int i, @NotNull ItemStack itemStack, @NotNull Direction direction)
+    {
+        return true;
     }
 }

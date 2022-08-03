@@ -8,6 +8,7 @@ loom {
 
     forge {
         mixinConfig "architectury.mixins.json"
+        mixinConfig "polylib-forge.mixins.json"
 
         localMods {
             forge {

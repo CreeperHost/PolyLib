@@ -9,8 +9,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class InventoryTestBlockEntity extends BlockEntityInventory
 {
@@ -36,6 +40,12 @@ public class InventoryTestBlockEntity extends BlockEntityInventory
             if(progress >= 100)
             {
                 progress = 0;
+                getInventoryOptional().ifPresent(polyItemInventory ->
+                {
+                    boolean empty = polyItemInventory.getItem(1).isEmpty();
+                    if(empty)
+                        polyItemInventory.setItem(1, new ItemStack(Items.DIAMOND));
+                });
             }
         }
 
