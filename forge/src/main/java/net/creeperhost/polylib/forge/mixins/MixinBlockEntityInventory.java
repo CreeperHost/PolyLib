@@ -28,8 +28,9 @@ public abstract class MixinBlockEntityInventory extends BaseContainerBlockEntity
     {
         if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            var caps = SidedInvWrapper.create(this, Direction.UP);
-            return caps[0].cast();
+            var caps = SidedInvWrapper.create(this, Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+            if(side == null) return caps[0].cast();
+            return caps[side.get3DDataValue()].cast();
         }
         return LazyOptional.empty();
     }
