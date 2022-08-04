@@ -148,6 +148,13 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
         getInventoryOptional().ifPresent(PolyItemInventory::clearContent);
     }
 
+
+    @Override
+    public int getMaxStackSize()
+    {
+        return inventoryOptional.isPresent() ? inventoryOptional.get().getMaxStackSize() : 64;
+    }
+
     @Override
     public boolean canPlaceItem(int i, @NotNull ItemStack itemStack)
     {

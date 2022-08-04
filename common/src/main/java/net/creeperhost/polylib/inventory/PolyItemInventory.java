@@ -111,7 +111,7 @@ public class PolyItemInventory implements WorldlyContainer, StackedContentsCompa
 
         for (ItemStack itemStack2 : this.items)
         {
-            if (itemStack2.isEmpty() || ItemStack.isSame(itemStack2, itemStack) && itemStack2.getCount() < itemStack2.getMaxStackSize())
+            if (itemStack2.isEmpty() || ItemStack.isSameItemSameTags(itemStack2, itemStack) && itemStack2.getCount() < itemStack2.getMaxStackSize())
             {
                 bl = true;
                 break;
