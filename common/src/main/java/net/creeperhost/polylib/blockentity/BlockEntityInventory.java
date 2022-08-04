@@ -177,6 +177,9 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
         if(!getSlots().isEmpty() && getSlots().size() > i)
         {
             if (getSlots().get(i) instanceof SlotOutput) return false;
+            ItemStack stackInSlot = getItem(i);
+            if (stackInSlot.getCount() >= Math.min(stackInSlot.getMaxStackSize(), getMaxStackSize())) return false;
+
             return getSlots().get(i).mayPlace(itemStack);
         }
         return true;
