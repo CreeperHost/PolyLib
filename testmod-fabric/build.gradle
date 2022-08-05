@@ -4,6 +4,21 @@ plugins {
 }
 
 loom {
+
+    runs {
+        datagenClient {
+            client()
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${project(":testmod-common").file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.strict-validation"
+
+            ideConfigGenerated = true
+            runDir "build/datagen"
+            source sourceSets.main
+        }
+    }
+
     accessWidenerPath = project(":testmod-common").loom.accessWidenerPath
 
     mixin { useLegacyMixinAp = true }

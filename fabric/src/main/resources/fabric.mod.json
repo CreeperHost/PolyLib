@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "net.creeperhost.polylib.fabric.PolyLibFabric"
+    ],
+    "fabric-datagen": [
+      "net.creeperhost.polylib.fabric.PolyLibDatagen"
     ]
   },
   "depends": {

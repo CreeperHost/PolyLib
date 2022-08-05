@@ -2,12 +2,10 @@ package net.creeperhost.polylib;
 
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
-import dev.architectury.registry.menu.MenuRegistry;
 import net.creeperhost.polylib.core.PlayerTickEventHandler;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
 import net.fabricmc.api.EnvType;
-import net.minecraft.client.gui.screens.MenuScreens;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
