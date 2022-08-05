@@ -30,6 +30,7 @@ public class PolyFluidInventory
     public void setFluidStack(FluidStack fluidStack)
     {
         this.fluidStack = fluidStack;
+        setChanged();
     }
 
     public int getCapacity()
@@ -40,6 +41,7 @@ public class PolyFluidInventory
     public void setCapacity(int capacity)
     {
         this.capacity = capacity;
+        setChanged();
     }
 
     public void setChanged()
