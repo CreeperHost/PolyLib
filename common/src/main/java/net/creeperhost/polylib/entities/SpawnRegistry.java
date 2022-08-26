@@ -30,7 +30,7 @@ public class SpawnRegistry
 
     public static void registerSpawnPlacement(Supplier<EntityType<?>> entityType, SpawnPlacements.Type type, Heightmap.Types types, SpawnPlacements.SpawnPredicate<?> spawnPredicate)
     {
-        InvokerSpawnPlacements.callRegister(entityType.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawnPredicate);
+        InvokerSpawnPlacements.callRegister(entityType.get(), type, types, spawnPredicate);
     }
 
     @Deprecated(forRemoval = true)
