@@ -34,7 +34,7 @@ public class LevelHelper
     public static boolean isAir(Level level, BlockPos blockPos)
     {
         if(level == null) return false;
-
+        if(level.getBlockState(blockPos) == null) return true;
         if(level.getBlockState(blockPos).isAir()) return true;
         if(level.getBlockState(blockPos).getBlock() == Blocks.AIR) return true;
 
