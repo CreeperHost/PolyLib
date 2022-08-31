@@ -121,27 +121,6 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
         detachSelf(false);
     }
 
-    //TODO
-    //    @Override
-    //    public void onChunkUnloaded() {
-    //        super.onChunkUnloaded();
-    //        detachSelf(true);
-    //    }
-    //
-    //    @Override
-    //    public void onLoad() {
-    //        super.onLoad();
-    //        MultiblockRegistry.onPartAdded(this.getLevel(), this);
-    //    }
-    //
-    //
-    //    @Override
-    //    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-    //        super.onDataPacket(net, pkt);
-    //        decodeDescriptionPacket(pkt.getTag());
-    //    }
-
-
     @Override
     public void setLevel(Level level)
     {
