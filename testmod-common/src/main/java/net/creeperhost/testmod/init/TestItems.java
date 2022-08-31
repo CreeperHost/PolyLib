@@ -1,8 +1,8 @@
 package net.creeperhost.testmod.init;
 
-import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.creeperhost.polylib.registry.CreativeTabRegistry;
 import net.creeperhost.testmod.TestMod;
 import net.creeperhost.testmod.items.DebugStick;
 import net.minecraft.core.Registry;
@@ -11,7 +11,7 @@ import net.minecraft.world.item.*;
 
 public class TestItems
 {
-    public static final CreativeModeTab CREATIVE_MODE_TAB = CreativeTabRegistry.create(new ResourceLocation(TestMod.MOD_ID, "_creativetab"), () -> new ItemStack(Items.DIAMOND));
+    public static final CreativeModeTab CREATIVE_MODE_TAB = CreativeTabRegistry.of(new ResourceLocation(TestMod.MOD_ID, "_creativetab"), () -> new ItemStack(Items.DIAMOND));
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(TestMod.MOD_ID, Registry.ITEM_REGISTRY);
 
     public static final RegistrySupplier<Item> DEBUG_STICK = ITEMS.register("debug_stick", () -> new DebugStick(new Item.Properties().tab(CREATIVE_MODE_TAB)));
