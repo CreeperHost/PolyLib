@@ -1,5 +1,6 @@
 package net.creeperhost.testmod.blocks.multiblock;
 
+import net.creeperhost.polylib.helpers.LevelHelper;
 import net.creeperhost.polylib.mulitblock.MultiblockControllerBase;
 import net.creeperhost.polylib.mulitblock.MultiblockValidationException;
 import net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockTileEntityBase;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

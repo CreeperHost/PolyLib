@@ -35,6 +35,7 @@ public class MultiBlockTest extends RectangularMultiblockControllerBase
     protected void onMachineAssembled()
     {
         TestMod.LOGGER.info("Multiblock created");
+        //We should send a packet to the client when this happens
     }
 
     @Override
@@ -52,7 +53,7 @@ public class MultiBlockTest extends RectangularMultiblockControllerBase
     @Override
     protected void onMachineDisassembled()
     {
-
+        //We should send a packet to the client when this happens
     }
 
     @Override

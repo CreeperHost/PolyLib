@@ -16,7 +16,6 @@ public class TestModelProvider extends PolyModelProvider
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator)
     {
         System.out.println("Hi from generateBlockStateModels()");
-
     }
 
     @Override

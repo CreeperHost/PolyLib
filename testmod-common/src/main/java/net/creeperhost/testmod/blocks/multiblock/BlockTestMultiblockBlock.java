@@ -37,16 +37,23 @@ public class BlockTestMultiblockBlock extends BaseEntityBlock
         if(testMultiBlockBlockEntity.getMultiblockController() != null)
         {
             boolean assembled = testMultiBlockBlockEntity.getMultiblockController().isAssembled();
-            if(level.isClientSide)
+            if(!level.isClientSide && !assembled)
             {
-                player.displayClientMessage(Component.literal( "Client: Assembled " + assembled), false);
-                return InteractionResult.SUCCESS;
+                testMultiBlockBlockEntity.getMultiblockController().checkIfMachineIsWhole();
+                var s = testMultiBlockBlockEntity.getMultiblockController().getLastValidationException().getMessage();
+                player.displayClientMessage(Component.literal(s), false);
+                return InteractionResult.FAIL;
             }
-            else
-            {
-                player.sendSystemMessage(Component.literal("Server: Assembled " + assembled));
-                return InteractionResult.SUCCESS;
-            }
+//            if(level.isClientSide)
+//            {
+//                player.displayClientMessage(Component.literal( "Client: Assembled " + assembled), false);
+//                return InteractionResult.SUCCESS;
+//            }
+//            else
+//            {
+//                player.sendSystemMessage(Component.literal("Server: Assembled " + assembled));
+//                return InteractionResult.SUCCESS;
+//            }
         }
         return InteractionResult.FAIL;
     }
