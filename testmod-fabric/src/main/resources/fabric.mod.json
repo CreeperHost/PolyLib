@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "net.creeperhost.testmod.fabric.TestModFabric"
+    ],
+    "fabric-datagen": [
+      "net.creeperhost.testmod.fabric.TestModDataGen"
     ]
   },
   "depends": {

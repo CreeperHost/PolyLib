@@ -4,6 +4,7 @@ plugins {
 }
 
 loom {
+
     accessWidenerPath = project(":testmod-common").loom.accessWidenerPath
 
     forge {
