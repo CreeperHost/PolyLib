@@ -20,6 +20,8 @@ public class PolyLib
         {
             PolyLibClient.init();
         }
+
+
         PlayerTickEventHandler.init();
 
         TickEvent.SERVER_LEVEL_PRE.register(MultiblockRegistry::tickStart);

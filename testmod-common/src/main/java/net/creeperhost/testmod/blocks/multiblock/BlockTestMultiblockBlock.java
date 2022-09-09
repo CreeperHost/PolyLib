@@ -37,23 +37,23 @@ public class BlockTestMultiblockBlock extends BaseEntityBlock
         if(testMultiBlockBlockEntity.getMultiblockController() != null)
         {
             boolean assembled = testMultiBlockBlockEntity.getMultiblockController().isAssembled();
-            if(!level.isClientSide && !assembled)
+//            if(!level.isClientSide && !assembled)
+//            {
+//                testMultiBlockBlockEntity.getMultiblockController().checkIfMachineIsWhole();
+//                var s = testMultiBlockBlockEntity.getMultiblockController().getLastValidationException().getMessage();
+//                player.displayClientMessage(Component.literal(s), false);
+//                return InteractionResult.FAIL;
+//            }
+            if(level.isClientSide)
             {
-                testMultiBlockBlockEntity.getMultiblockController().checkIfMachineIsWhole();
-                var s = testMultiBlockBlockEntity.getMultiblockController().getLastValidationException().getMessage();
-                player.displayClientMessage(Component.literal(s), false);
-                return InteractionResult.FAIL;
+                player.displayClientMessage(Component.literal( "Client: Assembled " + assembled), false);
+                return InteractionResult.SUCCESS;
             }
-//            if(level.isClientSide)
-//            {
-//                player.displayClientMessage(Component.literal( "Client: Assembled " + assembled), false);
-//                return InteractionResult.SUCCESS;
-//            }
-//            else
-//            {
-//                player.sendSystemMessage(Component.literal("Server: Assembled " + assembled));
-//                return InteractionResult.SUCCESS;
-//            }
+            else
+            {
+                player.sendSystemMessage(Component.literal("Server: Assembled " + assembled));
+                return InteractionResult.SUCCESS;
+            }
         }
         return InteractionResult.FAIL;
     }

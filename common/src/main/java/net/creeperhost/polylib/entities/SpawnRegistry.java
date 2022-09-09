@@ -17,23 +17,19 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+@Deprecated(forRemoval = true, since = "1.20")
 public class SpawnRegistry
 {
-    @Deprecated(forRemoval = true)
     public static void registerSpawn(Supplier<EntityType<?>> entityType, Predicate<BiomeModifications.BiomeContext> predicate, SpawnPlacements.SpawnPredicate<?> spawnPredicate, int minCluster, int maxCluster, int weight)
     {
-            BiomeModifications.addProperties(predicate, (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(MobCategory.MONSTER,
-                    new MobSpawnSettings.SpawnerData(entityType.get(), minCluster, maxCluster, weight)));
-
-            registerSpawnPlacement(entityType, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawnPredicate);
+        net.creeperhost.polylib.registry.SpawnRegistry.registerSpawn(entityType, predicate, spawnPredicate, minCluster, maxCluster, weight);
     }
 
     public static void registerSpawnPlacement(Supplier<EntityType<?>> entityType, SpawnPlacements.Type type, Heightmap.Types types, SpawnPlacements.SpawnPredicate<?> spawnPredicate)
     {
-        InvokerSpawnPlacements.callRegister(entityType.get(), type, types, spawnPredicate);
+        net.creeperhost.polylib.registry.SpawnRegistry.registerSpawnPlacement(entityType, type, types, spawnPredicate);
     }
 
-    @Deprecated(forRemoval = true)
     public static class Defaults
     {
         public static boolean checkAnimalSpawnRules(EntityType<?> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource random)
