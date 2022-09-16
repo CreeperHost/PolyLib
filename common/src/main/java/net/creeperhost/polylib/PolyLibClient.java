@@ -13,6 +13,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+
+import java.util.stream.Stream;
 
 public class PolyLibClient
 {
@@ -25,8 +29,12 @@ public class PolyLibClient
             {
                 if(flag.isAdvanced())
                 {
-                    lines.add(Component.literal(ChatFormatting.DARK_PURPLE + "Tags: "));
-                    ItemTagHelper.getAllTags(stack).forEach(itemTagKey -> lines.add(Component.literal(ChatFormatting.GRAY + itemTagKey.location().toString())));
+                    Stream<TagKey<Item>> tags = ItemTagHelper.getAllTags(stack);
+                    if(tags != null && !tags.toList().isEmpty())
+                    {
+                        lines.add(Component.literal(" "));
+                        ItemTagHelper.getAllTags(stack).forEach(itemTagKey -> lines.add(Component.literal(ChatFormatting.GRAY + itemTagKey.location().toString())));
+                    }
                 }
             });
 
