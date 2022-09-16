@@ -10,7 +10,6 @@ import java.util.*;
 
 public class MultiblockWorldRegistry
 {
-
     private Level worldObj;
 
     // Active controllers
