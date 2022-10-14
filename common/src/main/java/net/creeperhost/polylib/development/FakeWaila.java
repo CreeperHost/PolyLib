@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.development;
 
 import dev.architectury.event.events.client.ClientGuiEvent;
+import net.creeperhost.polylib.client.render.RenderUtils;
 import net.creeperhost.polylib.helpers.LevelHelper;
 import net.creeperhost.polylib.helpers.VectorHelper;
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,9 +32,13 @@ public class FakeWaila
                 BlockState blockState = level.getBlockState(blockHitResult.getBlockPos());
                 if(blockState != null && !LevelHelper.isAir(level, blockHitResult.getBlockPos()))
                 {
+                    matrices.pushPose();
                     boolean sneaking = player.isShiftKeyDown();
                     int startX = 10;
                     int startY = 10;
+                    //TODO get max width and height before drawing
+                    RenderUtils.renderTooltipBox(matrices, startX, startY, 130, 50);
+
                     ItemStack stack = new ItemStack(blockState.getBlock());
                     ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                     itemRenderer.renderGuiItem(stack, startX, startY);
@@ -55,6 +59,7 @@ public class FakeWaila
                             tagY.addAndGet(12);
                         });
                     }
+                    matrices.popPose();
                 }
             }
         });
