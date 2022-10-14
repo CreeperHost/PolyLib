@@ -6,9 +6,12 @@ import net.creeperhost.polylib.helpers.LevelHelper;
 import net.creeperhost.polylib.helpers.VectorHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -23,6 +26,7 @@ public class FakeWaila
         {
             Player player = Minecraft.getInstance().player;
             if(player == null) return;
+            if(!player.getMainHandItem().is(Items.STICK)) return;
 
             Level level = player.level;
             BlockHitResult blockHitResult = VectorHelper.getLookingAt(player, 5);
@@ -37,7 +41,12 @@ public class FakeWaila
                     int startX = 10;
                     int startY = 10;
                     //TODO get max width and height before drawing
-                    RenderUtils.renderTooltipBox(matrices, startX, startY, 130, 50);
+                    FormattedCharSequence title = blockState.getBlock().getName().getVisualOrderText();
+                    ClientTooltipComponent s = ClientTooltipComponent.create(title);
+                    int width = sneaking ? s.getWidth(font) + 180 : s.getWidth(font) + 80;
+                    int height = sneaking ? 280 : 50;
+
+                    RenderUtils.renderTooltipBox(matrices, startX, startY, width, height);
 
                     ItemStack stack = new ItemStack(blockState.getBlock());
                     ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
