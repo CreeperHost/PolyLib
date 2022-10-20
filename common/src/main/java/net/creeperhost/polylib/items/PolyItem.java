@@ -5,10 +5,12 @@ import net.creeperhost.polylib.holders.PlayerHolder;
 import net.creeperhost.polylib.helpers.RegistryNameHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +33,18 @@ public class PolyItem extends Item
     public InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand)
     {
         return useItem(new LevelHolder(level), new PlayerHolder(player), interactionHand);
+    }
+
+    public InteractionResult useItemOn(UseOnContext useOnContext)
+    {
+        return InteractionResult.PASS;
+    }
+
+    @Deprecated
+    @Override
+    public InteractionResult useOn(@NotNull UseOnContext useOnContext)
+    {
+        return useItemOn(useOnContext);
     }
 
     public Optional<ResourceLocation> getRegistryName()
