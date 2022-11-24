@@ -19,6 +19,21 @@ public class ConfigBuilder
 
     Jankson JANKSON = Jankson.builder().build();
 
+    public ConfigBuilder(@Nonnull String configName, @Nonnull Path configPath, @Nonnull Class<?> clazz)
+    {
+        this.CONFIG_NAME = configName;
+        this.CONFIG_PATH = configPath;
+        this.CONFIG_DATA_CLASS = clazz;
+        if(CONFIG_PATH.toFile().exists())
+        {
+            load();
+        }
+        else
+        {
+            save();
+        }
+    }
+
     public ConfigBuilder(@Nonnull String configName,@Nonnull Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
