@@ -79,4 +79,9 @@ public class ConfigBuilder
     {
         return CONFIG_PATH;
     }
+
+    public ConfigData getConfigData()
+    {
+        return CONFIG_DATA.get();
+    }
 }
