@@ -34,6 +34,21 @@ public class ConfigBuilder
         }
     }
 
+    public ConfigBuilder(@Nonnull String configName, @Nonnull Path configPath, ConfigData data)
+    {
+        this.CONFIG_NAME = configName;
+        this.CONFIG_PATH = configPath;
+        this.CONFIG_DATA_CLASS = data.getClass();
+        if(CONFIG_PATH.toFile().exists())
+        {
+            load(data);
+        }
+        else
+        {
+            save(data);
+        }
+    }
+
     public ConfigBuilder(@Nonnull String configName,@Nonnull Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
@@ -62,6 +77,20 @@ public class ConfigBuilder
         }
     }
 
+    public void load(ConfigData data)
+    {
+        try
+        {
+            JsonObject jObject = JANKSON.load(CONFIG_PATH.toFile());
+            ConfigData newData = (ConfigData) JANKSON.fromJson(jObject, CONFIG_DATA_CLASS);
+            data = newData;
+            CONFIG_DATA.set(newData);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void save()
     {
         try
@@ -77,6 +106,23 @@ public class ConfigBuilder
             e.printStackTrace();
         }
     }
+
+    public void save(ConfigData data)
+    {
+        try
+        {
+//            ConfigData data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
+            CONFIG_DATA.set(data);
+
+            FileWriter fileWriter = new FileWriter(CONFIG_PATH.toFile());
+            fileWriter.write(saveConfig());
+            fileWriter.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     public String saveConfig()
     {
