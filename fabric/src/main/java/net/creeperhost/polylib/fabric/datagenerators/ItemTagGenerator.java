@@ -7,6 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+@Deprecated(forRemoval = true)
 public class ItemTagGenerator extends FabricTagProvider<Item>
 {
     public ItemTagGenerator(FabricDataGenerator dataGenerator)

@@ -14,6 +14,7 @@ public class PolyLibPlatformImpl
         return FabricLoader.getInstance().getConfigDir();
     }
 
+    @Deprecated(forRemoval = true)
     public static void registerDefaultGenerators(DataGenerator dataGenerator)
     {
         if(dataGenerator instanceof FabricDataGenerator fabricDataGenerator)

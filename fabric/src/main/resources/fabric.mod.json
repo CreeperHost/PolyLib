@@ -8,8 +8,8 @@
     "CreeperHost"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/CreeperHost/PolyLib/issues",
+    "sources": "https://github.com/CreeperHost/PolyLib/issues"
   },
   "license": "Insert License Here",
   "icon": "assets/examplemod/icon.png",
@@ -21,8 +21,8 @@
   },
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.18",
-    "architectury": ">=3.6.15"
+    "minecraft": ">=1.19.2",
+    "architectury": ">=6.4.62"
   },
   "suggests": {
     "flamingo": "*"

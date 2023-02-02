@@ -1,1 +1,17 @@
 accessWidener   v2  named
+accessible field net/minecraft/data/DataGenerator outputFolder Ljava/nio/file/Path;
+mutable field net/minecraft/data/DataGenerator outputFolder Ljava/nio/file/Path;
+accessible field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+mutable field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+
+accessible field	net/minecraft/data/recipes/RecipeProvider	recipePathProvider	Lnet/minecraft/data/DataGenerator$PathProvider;
+mutable	field	net/minecraft/data/recipes/RecipeProvider	recipePathProvider	Lnet/minecraft/data/DataGenerator$PathProvider;
+
+accessible field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+mutable field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+
+accessible field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+mutable field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+
+accessible field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+mutable field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;

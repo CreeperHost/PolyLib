@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 
+@Deprecated(forRemoval = true)
 public class BlockTagGenerator extends FabricTagProvider<Block>
 {
     public BlockTagGenerator(FabricDataGenerator dataGenerator)
