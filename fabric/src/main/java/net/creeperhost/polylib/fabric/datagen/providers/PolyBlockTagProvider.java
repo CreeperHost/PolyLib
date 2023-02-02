@@ -21,7 +21,7 @@ public class PolyBlockTagProvider extends FabricTagProvider.BlockTagProvider
     public PolyBlockTagProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
     {
         super(dataGenerator);
-        basePath = Path.of("").toAbsolutePath().getParent().getParent().getParent();
+        basePath = Path.of("").toAbsolutePath().getParent().getParent();
         this.moduleType = moduleType;
     }
 

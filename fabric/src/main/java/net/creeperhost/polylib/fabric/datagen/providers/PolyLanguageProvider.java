@@ -23,7 +23,7 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     {
         super(dataGenerator, "en_us");
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent().getParent();
+        basePath = Path.of("").toAbsolutePath().getParent().getParent();
 
         PolyLib.LOGGER.info("PolyLanguageProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }

@@ -23,7 +23,7 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     {
         super(dataGenerator);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent().getParent();
+        basePath = Path.of("").toAbsolutePath().getParent().getParent();
     }
 
     @Override

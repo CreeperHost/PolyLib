@@ -22,7 +22,7 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
     {
         super(dataGenerator, blockTagProvider);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent().getParent();
+        basePath = Path.of("").toAbsolutePath().getParent().getParent();
     }
 
     @Override

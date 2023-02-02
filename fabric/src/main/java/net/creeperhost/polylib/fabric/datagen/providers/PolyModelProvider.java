@@ -33,7 +33,7 @@ public class PolyModelProvider extends FabricModelProvider
     {
         super(dataGenerator);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent().getParent();
+        basePath = Path.of("").toAbsolutePath().getParent().getParent();
         updatePaths();
     }
 
