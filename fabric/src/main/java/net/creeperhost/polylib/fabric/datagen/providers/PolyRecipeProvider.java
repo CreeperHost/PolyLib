@@ -8,15 +8,15 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class PolyRecipeProvider extends FabricRecipeProvider
 {
     private final ModuleType moduleType;
     private final Path basePath;
-    private final Map<RecipeBuilder, Consumer<FinishedRecipe>> values = new HashMap<>();
+    private final List<RecipeBuilder> values = new ArrayList<>();
 
 
     public PolyRecipeProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
@@ -29,13 +29,13 @@ public class PolyRecipeProvider extends FabricRecipeProvider
     @Override
     protected void generateRecipes(Consumer<FinishedRecipe> exporter)
     {
-        values.forEach((recipeBuilder, consumer) -> recipeBuilder.save(exporter));
+        values.forEach((recipeBuilder) -> recipeBuilder.save(exporter));
     }
 
-    public void add(RecipeBuilder recipeBuilder, Consumer<FinishedRecipe> consumer, ModuleType moduleType)
+    public void add(RecipeBuilder recipeBuilder, ModuleType moduleType)
     {
         if(this.moduleType == moduleType)
-            values.put(recipeBuilder, consumer);
+            values.add(recipeBuilder);
     }
 
     @Override
@@ -49,6 +49,6 @@ public class PolyRecipeProvider extends FabricRecipeProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources");
+        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources/data");
     }
 }
