@@ -1,7 +1,5 @@
 package net.creeperhost.polylib.generators;
 
-import net.creeperhost.polylib.PolyLibPlatform;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -22,10 +20,5 @@ public class PolyLibDataGenerator
     public static void registerItemTag(TagKey<Item> tagKey, Item item)
     {
         ITEM_TAGS.put(tagKey, item);
-    }
-
-    public static void registerDefaultGenerators(DataGenerator dataGenerator)
-    {
-        PolyLibPlatform.registerDefaultGenerators(dataGenerator);
     }
 }
