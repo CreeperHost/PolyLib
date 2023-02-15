@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+@Deprecated(forRemoval = true)
 public class PolyItem extends Item
 {
     public PolyItem(Properties properties)

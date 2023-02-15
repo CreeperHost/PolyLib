@@ -7,7 +7,6 @@
     "MixinClientLevelData"
   ],
   "mixins": [
-    "MixinChunkMap",
     "MixinLevelSettings",
     "InvokerSpawnPlacements"
   ],

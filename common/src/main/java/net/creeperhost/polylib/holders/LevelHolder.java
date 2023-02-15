@@ -2,6 +2,7 @@ package net.creeperhost.polylib.holders;
 
 import net.minecraft.world.level.Level;
 
+@Deprecated(forRemoval = true)
 public class LevelHolder
 {
     private final Level level;

@@ -2,6 +2,7 @@ package net.creeperhost.polylib.holders;
 
 import net.minecraft.world.entity.player.Player;
 
+@Deprecated(forRemoval = true)
 public class PlayerHolder
 {
     private final Player player;
