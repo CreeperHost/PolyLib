@@ -4,8 +4,12 @@ import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.fabricmc.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.data.CachedOutput;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -40,6 +44,21 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     public void add(Item item, String translation, ModuleType moduleType)
     {
         add(item.getDescriptionId(), translation, moduleType);
+    }
+
+    public void add(Block block, String translation, ModuleType moduleType)
+    {
+        add(block.getDescriptionId(), translation, moduleType);
+    }
+
+    public void add(CreativeModeTab creativeModeTab, String translation, ModuleType moduleType)
+    {
+        add(creativeModeTab.getDisplayName().getString(), translation, moduleType);
+    }
+
+    public void add(KeyMapping keyMapping, String translation, ModuleType moduleType)
+    {
+        add(keyMapping.getName(), translation, moduleType);
     }
 
     @Override
