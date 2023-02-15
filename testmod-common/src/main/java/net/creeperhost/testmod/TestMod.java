@@ -16,7 +16,6 @@ public class TestMod
 
     public static void init()
     {
-        LOGGER.info("Hi I'm " + MOD_ID);
         TestBlocks.BLOCKS.register();
         TestBlocks.TILES_ENTITIES.register();
         TestItems.ITEMS.register();

@@ -11,8 +11,6 @@ public class TestModDataGen implements DataGeneratorEntrypoint
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator)
     {
-        PolyLibDataGenerator.registerBlockTag(BlockTags.MINEABLE_WITH_PICKAXE, TestBlocks.INVENTORY_TEST_BLOCK.get());
 
-        PolyLibDataGenerator.registerDefaultGenerators(fabricDataGenerator);
     }
 }
