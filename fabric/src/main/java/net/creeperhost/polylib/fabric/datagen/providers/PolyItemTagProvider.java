@@ -3,6 +3,7 @@ package net.creeperhost.polylib.fabric.datagen.providers;
 import com.google.common.collect.Maps;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
+import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.data.CachedOutput;
@@ -16,14 +17,12 @@ import java.util.Map;
 public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
 {
     private final ModuleType moduleType;
-    private final Path basePath;
     private final Map<Item, TagKey<Item>> values = Maps.newLinkedHashMap();
 
     public PolyItemTagProvider(FabricDataGenerator dataGenerator, @Nullable BlockTagProvider blockTagProvider, ModuleType moduleType)
     {
         super(dataGenerator, blockTagProvider);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent();
 
         PolyLib.LOGGER.info("PolyItemTagProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
@@ -31,7 +30,11 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
     @Override
     protected void generateTags()
     {
-        values.forEach((item, tagKey) -> tag(tagKey).add(item));
+        values.forEach((item, tagKey) ->
+        {
+            PolyLib.LOGGER.info("Running data gen for item tag " + item.getDescriptionId() + " " + getFabricDataGenerator().getOutputFolder());
+            tag(tagKey).add(item);
+        });
     }
 
     public void add(TagKey<Item> tagKey, Item block, ModuleType moduleType)
@@ -53,6 +56,6 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources/data");
+        return PolyDataGen.getPathFromModuleType(moduleType);
     }
 }

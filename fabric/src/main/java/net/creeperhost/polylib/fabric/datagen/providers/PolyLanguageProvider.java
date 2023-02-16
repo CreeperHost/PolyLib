@@ -2,6 +2,7 @@ package net.creeperhost.polylib.fabric.datagen.providers;
 
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
+import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.client.KeyMapping;
@@ -17,8 +18,6 @@ import java.util.Map;
 
 public class PolyLanguageProvider extends FabricLanguageProvider
 {
-    private final Path basePath;
-
     ModuleType moduleType;
     Map<String, String> values = new HashMap<>();
 
@@ -26,7 +25,6 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     {
         super(dataGenerator, "en_us");
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent();
 
         PolyLib.LOGGER.info("PolyLanguageProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
@@ -72,7 +70,7 @@ public class PolyLanguageProvider extends FabricLanguageProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources");
+        return PolyDataGen.getPathFromModuleType(moduleType);
     }
 
     @Override

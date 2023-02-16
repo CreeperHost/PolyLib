@@ -2,6 +2,7 @@ package net.creeperhost.polylib.fabric.datagen.providers;
 
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
+import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
@@ -16,14 +17,12 @@ import java.util.function.Consumer;
 public class PolyAdvancementProvider extends FabricAdvancementProvider
 {
     private final ModuleType moduleType;
-    private final Path basePath;
     private List<Advancement> values = new ArrayList<>();
 
     public PolyAdvancementProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
     {
         super(dataGenerator);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent();
 
         PolyLib.LOGGER.info("PolyAdvancementProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
@@ -31,7 +30,11 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     @Override
     public void generateAdvancement(Consumer<Advancement> consumer)
     {
-        values.forEach(consumer::accept);
+        values.forEach(advancement ->
+        {
+            PolyLib.LOGGER.info("Running data gen for advancement " + advancement.getId() + " " + dataGenerator.getOutputFolder());
+            consumer.accept(advancement);
+        });
     }
 
     public void add(Advancement advancement, ModuleType moduleType)
@@ -49,6 +52,6 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources");
+        return PolyDataGen.getPathFromModuleType(moduleType);
     }
 }

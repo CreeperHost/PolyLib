@@ -2,6 +2,7 @@ package net.creeperhost.polylib.fabric.datagen.providers;
 
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
+import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.CachedOutput;
@@ -24,7 +25,6 @@ import static net.minecraft.data.models.BlockModelGenerators.createSimpleBlock;
 public class PolyModelProvider extends FabricModelProvider
 {
     private final ModuleType moduleType;
-    private final Path basePath;
     private Map<Item, ModelTemplate> itemValues = new HashMap<>();
     private Map<Block, MultiVariantGenerator> blockValues = new HashMap<>();
 
@@ -33,7 +33,6 @@ public class PolyModelProvider extends FabricModelProvider
     {
         super(dataGenerator);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent();
         updatePaths();
 
         PolyLib.LOGGER.info("PolyModelProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
@@ -73,8 +72,7 @@ public class PolyModelProvider extends FabricModelProvider
     {
         if (this.moduleType == moduleType)
         {
-            PolyLib.LOGGER.info(
-                    "Adding item model for " + item.getDescriptionId() + " " + dataGenerator.getOutputFolder());
+            PolyLib.LOGGER.info("Adding item model for " + item.getDescriptionId() + " " + dataGenerator.getOutputFolder());
             itemValues.put(item, modelTemplate);
         }
     }
@@ -105,6 +103,6 @@ public class PolyModelProvider extends FabricModelProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources/assets");
+        return PolyDataGen.getPathFromModuleType(moduleType);
     }
 }

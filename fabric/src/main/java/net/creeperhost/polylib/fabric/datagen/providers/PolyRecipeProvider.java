@@ -2,6 +2,7 @@ package net.creeperhost.polylib.fabric.datagen.providers;
 
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
+import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.CachedOutput;
@@ -16,15 +17,12 @@ import java.util.function.Consumer;
 public class PolyRecipeProvider extends FabricRecipeProvider
 {
     private final ModuleType moduleType;
-    private final Path basePath;
     private final List<RecipeBuilder> values = new ArrayList<>();
-
 
     public PolyRecipeProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
     {
         super(dataGenerator);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent();
 
         PolyLib.LOGGER.info("PolyRecipeProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
@@ -51,6 +49,6 @@ public class PolyRecipeProvider extends FabricRecipeProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources/data");
+        return PolyDataGen.getPathFromModuleType(moduleType);
     }
 }

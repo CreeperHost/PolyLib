@@ -3,6 +3,7 @@ package net.creeperhost.polylib.fabric.datagen.providers;
 import com.google.common.collect.Maps;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
+import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.data.CachedOutput;
@@ -17,14 +18,12 @@ import java.util.Map;
 public class PolyBlockLootProvider extends FabricBlockLootTableProvider
 {
     private final ModuleType moduleType;
-    private final Path basePath;
     private final Map<Block, LootTable.Builder> values = Maps.newHashMap();
 
     public PolyBlockLootProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
     {
         super(dataGenerator);
         this.moduleType = moduleType;
-        basePath = Path.of("").toAbsolutePath().getParent().getParent();
 
         PolyLib.LOGGER.info("PolyBlockLootProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
@@ -32,7 +31,11 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     @Override
     protected void generateBlockLootTables()
     {
-        values.forEach(this::add);
+        values.forEach((block, builder) ->
+        {
+            PolyLib.LOGGER.info("Running data gen for block loot table " + block.getDescriptionId() + " " + dataGenerator.getOutputFolder());
+            add(block, builder);
+        });
     }
 
     public void addDropOther(Block block, ItemLike itemLike, ModuleType moduleType)
@@ -56,6 +59,6 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return basePath.resolve(moduleType.name().toLowerCase() + "/src/generated/resources");
+        return PolyDataGen.getPathFromModuleType(moduleType);
     }
 }

@@ -9,7 +9,13 @@ loom {
             client()
             name "Data Generation"
             vmArg "-Dfabric-api.datagen"
+            //This will be ignored but is needed for now to load Fabrics datagen
             vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+
+            vmArg "-Dpolylib.datagen.output-dir-common=${project(":testmod-common").file("src/generated/resources")}"
+            vmArg "-Dpolylib.datagen.output-dir-forge=${project(":testmod-forge").file("src/generated/resources")}"
+            vmArg "-Dpolylib.datagen.output-dir-fabric=${project(":testmod-fabric").file("src/generated/resources")}"
+
 //            vmArg "-Dfabric-api.datagen.strict-validation=false"
 
             ideConfigGenerated = true
