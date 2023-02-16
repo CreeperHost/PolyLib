@@ -21,6 +21,7 @@ classes/
 .vscode
 .settings
 *.launch
-testmod-common/src/generated/resources/assets/.cache/
 
+testmod-common/src/generated/resources/assets/.cache/
 testmod-fabric/src/generated/resources/.cache/
+testmod-forge/src/generated/resources/.cache/
