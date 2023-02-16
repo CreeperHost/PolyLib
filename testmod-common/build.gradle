@@ -3,6 +3,14 @@ loom {
     accessWidenerPath = project(':testmod-common').file("src/main/resources/architectury.accessWidener")
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir "src/generated/resources"
+        }
+    }
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations
     // Do NOT use other classes from fabric loader

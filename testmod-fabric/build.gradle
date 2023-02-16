@@ -9,12 +9,11 @@ loom {
             client()
             name "Data Generation"
             vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${project(":testmod-common").file("src/main/generated")}"
-            vmArg "-Dfabric-api.datagen.strict-validation"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+//            vmArg "-Dfabric-api.datagen.strict-validation=false"
 
             ideConfigGenerated = true
             runDir "build/datagen"
-            source sourceSets.main
         }
     }
 

@@ -352,3 +352,22 @@ transitive-accessible class net/minecraft/client/renderer/RenderStateShard$Outpu
 transitive-accessible class net/minecraft/client/renderer/RenderStateShard$LineStateShard
 transitive-accessible class net/minecraft/client/renderer/RenderStateShard$OffsetTexturingStateShard
 transitive-accessible class net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard
+
+
+#PolyLib
+accessible field net/minecraft/data/DataGenerator outputFolder Ljava/nio/file/Path;
+mutable field net/minecraft/data/DataGenerator outputFolder Ljava/nio/file/Path;
+accessible field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+mutable field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+
+accessible field	net/minecraft/data/recipes/RecipeProvider	recipePathProvider	Lnet/minecraft/data/DataGenerator$PathProvider;
+mutable	field	net/minecraft/data/recipes/RecipeProvider	recipePathProvider	Lnet/minecraft/data/DataGenerator$PathProvider;
+
+accessible field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+mutable field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+
+accessible field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+mutable field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
+
+
+
