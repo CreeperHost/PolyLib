@@ -17,8 +17,6 @@ import java.util.Map;
 
 public class GhostBlockRenderer
 {
-    public static MultiBufferSource.BufferSource buffer = null;
-
     public static void renderBlock(BlockState state, BlockPos pos, PoseStack ms, MultiBufferSource buffers)
     {
         if(state == null) return;
