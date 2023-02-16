@@ -4,11 +4,12 @@
   "compatibilityLevel": "JAVA_16",
   "minVersion": "0.7.11",
   "client": [
+    "AccessorMultiBufferSource",
     "MixinClientLevelData"
   ],
   "mixins": [
-    "MixinLevelSettings",
-    "InvokerSpawnPlacements"
+    "InvokerSpawnPlacements",
+    "MixinLevelSettings"
   ],
   "injectors": {
     "defaultRequire": 1

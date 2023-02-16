@@ -1,11 +1,8 @@
 package net.creeperhost.polylib.client.render.rendertypes;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.creeperhost.polylib.PolyLib;
-import net.minecraft.client.renderer.RenderStateShard;
+import net.creeperhost.polylib.client.render.PolyRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.inventory.InventoryMenu;
 
 public class FluidTankRenderType extends RenderType
 {
@@ -14,13 +11,6 @@ public class FluidTankRenderType extends RenderType
         super(nameIn, formatIn, drawModeIn, bufferSizeIn, useDelegateIn, needsSortingIn, setupTaskIn, clearTaskIn);
     }
 
-    public static final RenderType RESIZABLE = create(PolyLib.MOD_ID + ":resizable_cuboid", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS,
-            256, true, false, RenderType.CompositeState.builder()
-                    .setShaderState(RENDERTYPE_CUTOUT_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(InventoryMenu.BLOCK_ATLAS, false, false))
-                    .setCullState(CULL)
-                    .setLightmapState(LIGHTMAP)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .setLightmapState(LIGHTMAP)
-                    .createCompositeState(true));
+    @Deprecated
+    public static final RenderType RESIZABLE = PolyRenderTypes.RESIZABLE;
 }
