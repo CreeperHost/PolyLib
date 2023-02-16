@@ -11,7 +11,6 @@
 
 
 # Maven
-Firstly, add my Maven repository (If you already have the architectury maven, you don't need to do this, they are the same repo)
 ```gradle
 repositories {
     maven { url "https://maven.creeperhost.net" }
