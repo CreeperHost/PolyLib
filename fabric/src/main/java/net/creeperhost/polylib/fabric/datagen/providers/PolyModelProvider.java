@@ -103,6 +103,6 @@ public class PolyModelProvider extends FabricModelProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return PolyDataGen.getPathFromModuleType(moduleType);
+        return PolyDataGen.getPathFromModuleType(moduleType).resolve("assets");
     }
 }

@@ -56,6 +56,6 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
 
     public Path appendPath(ModuleType moduleType)
     {
-        return PolyDataGen.getPathFromModuleType(moduleType);
+        return PolyDataGen.getPathFromModuleType(moduleType).resolve("data");
     }
 }
