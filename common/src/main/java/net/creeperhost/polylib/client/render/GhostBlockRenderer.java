@@ -24,15 +24,7 @@ public class GhostBlockRenderer
         {
             ms.pushPose();
             ms.translate(pos.getX(), pos.getY(), pos.getZ());
-            if (state.getBlock() == Blocks.AIR)
-            {
-                float scale = 0.5F;
-                float off = (1F - scale) / 2;
-                ms.translate(off, off, -off);
-                ms.scale(scale, scale, scale);
 
-                state = Blocks.RED_CONCRETE.defaultBlockState();
-            }
             Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, ms, buffers, 0xF000F0, OverlayTexture.NO_OVERLAY);
             ms.popPose();
         }
