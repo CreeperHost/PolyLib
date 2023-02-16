@@ -49,3 +49,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
 }
+
+publishing {
+
+}
