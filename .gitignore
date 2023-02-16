@@ -11,7 +11,11 @@ libs/
 
 .classpath
 .project
-.idea/
+.idea/modules
+.idea/runConfigurations
+.idea/.name
+.idea/.gitignore
+.idea/*.xml
 classes/
 .metadata
 .vscode
