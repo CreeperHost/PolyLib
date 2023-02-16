@@ -19,7 +19,7 @@ public class PolyLibFabric implements ModInitializer
         ServerChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> ChunkEvents.CHUNK_UNLOAD_EVENT.invoker().onChunkUnload(world, chunk));
         if(Platform.getEnv() == EnvType.CLIENT)
         {
-            WorldRenderEvents.LAST.register(context -> ClientRenderEvents.LAST.invoker().onDifficultyChanged(context.matrixStack()));
+            WorldRenderEvents.LAST.register(context -> ClientRenderEvents.LAST.invoker().onRenderLastEvent(context.matrixStack()));
         }
     }
 }

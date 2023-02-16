@@ -11,6 +11,6 @@ public interface ClientRenderEvents
 
     interface LAST
     {
-        void onDifficultyChanged(PoseStack poseStack);
+        void onRenderLastEvent(PoseStack poseStack);
     }
 }

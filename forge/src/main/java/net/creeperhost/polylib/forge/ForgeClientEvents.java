@@ -14,6 +14,6 @@ public class ForgeClientEvents
     @SubscribeEvent
     static void renderWorldLastEvent(RenderLevelLastEvent event)
     {
-        ClientRenderEvents.LAST.invoker().onDifficultyChanged(event.getPoseStack());
+        ClientRenderEvents.LAST.invoker().onRenderLastEvent(event.getPoseStack());
     }
 }
