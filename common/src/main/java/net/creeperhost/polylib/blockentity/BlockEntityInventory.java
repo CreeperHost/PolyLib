@@ -7,6 +7,7 @@ import net.creeperhost.polylib.inventory.PolyItemInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -116,19 +117,19 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     }
 
     @Override
-    public ItemStack getItem(int i)
+    public @NotNull ItemStack getItem(int i)
     {
         return getInventoryOptional().isPresent() ? getInventoryOptional().get().getItem(i) : ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack removeItem(int i, int j)
+    public @NotNull ItemStack removeItem(int i, int j)
     {
         return getInventoryOptional().isPresent() ? getInventoryOptional().get().removeItem(i, j) : ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(int i)
+    public @NotNull ItemStack removeItemNoUpdate(int i)
     {
         return getInventoryOptional().isPresent() ? getInventoryOptional().get().removeItemNoUpdate(
                 i) : ItemStack.EMPTY;
@@ -156,7 +157,7 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     @Override
     public int getMaxStackSize()
     {
-        return inventoryOptional.isPresent() ? inventoryOptional.get().getMaxStackSize() : 64;
+        return inventoryOptional.map(Container::getMaxStackSize).orElse(64);
     }
 
     @Override
@@ -170,7 +171,7 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     }
 
     @Override
-    public int[] getSlotsForFace(@NotNull Direction direction)
+    public int @NotNull [] getSlotsForFace(@NotNull Direction direction)
     {
         return IntStream.range(0, getContainerSize()).toArray();
     }

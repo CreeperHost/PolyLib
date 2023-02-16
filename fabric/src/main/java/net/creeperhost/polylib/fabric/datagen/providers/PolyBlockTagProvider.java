@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.fabric.datagen.providers;
 
 import com.google.common.collect.Maps;
+import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -23,6 +24,8 @@ public class PolyBlockTagProvider extends FabricTagProvider.BlockTagProvider
         super(dataGenerator);
         basePath = Path.of("").toAbsolutePath().getParent().getParent();
         this.moduleType = moduleType;
+
+        PolyLib.LOGGER.info("PolyBlockTagProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
 
     @Override

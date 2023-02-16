@@ -35,6 +35,8 @@ public class PolyModelProvider extends FabricModelProvider
         this.moduleType = moduleType;
         basePath = Path.of("").toAbsolutePath().getParent().getParent();
         updatePaths();
+
+        PolyLib.LOGGER.info("PolyModelProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
 
     @Override

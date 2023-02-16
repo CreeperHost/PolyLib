@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BlockFacing extends BaseEntityBlock
 {
@@ -36,7 +37,7 @@ public abstract class BlockFacing extends BaseEntityBlock
      * Set the {@link RenderShape} to allow the block to bind a model and not render as an invisible texture
      */
     @Override
-    public RenderShape getRenderShape(BlockState blockState)
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState)
     {
         return RenderShape.MODEL;
     }

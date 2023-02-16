@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.fabric.datagen.providers;
 
+import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
@@ -24,6 +25,8 @@ public class PolyRecipeProvider extends FabricRecipeProvider
         super(dataGenerator);
         this.moduleType = moduleType;
         basePath = Path.of("").toAbsolutePath().getParent().getParent();
+
+        PolyLib.LOGGER.info("PolyRecipeProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
 
     @Override
