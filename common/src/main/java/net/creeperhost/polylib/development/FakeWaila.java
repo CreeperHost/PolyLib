@@ -25,16 +25,16 @@ public class FakeWaila
         ClientGuiEvent.RENDER_HUD.register((matrices, tickDelta) ->
         {
             Player player = Minecraft.getInstance().player;
-            if(player == null) return;
-            if(!player.getMainHandItem().is(Items.STICK)) return;
+            if (player == null) return;
+            if (!player.getMainHandItem().is(Items.STICK)) return;
 
             Level level = player.level;
             BlockHitResult blockHitResult = VectorHelper.getLookingAt(player, 5);
             Font font = Minecraft.getInstance().font;
-            if(blockHitResult != null)
+            if (blockHitResult != null)
             {
                 BlockState blockState = level.getBlockState(blockHitResult.getBlockPos());
-                if(blockState != null && !LevelHelper.isAir(level, blockHitResult.getBlockPos()))
+                if (blockState != null && !LevelHelper.isAir(level, blockHitResult.getBlockPos()))
                 {
                     matrices.pushPose();
                     boolean sneaking = player.isShiftKeyDown();
@@ -52,13 +52,13 @@ public class FakeWaila
                     ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                     itemRenderer.renderGuiItem(stack, startX, startY);
                     font.draw(matrices, blockState.getBlock().getName(), startX + 20, startY + 4, -1);
-                    if(!sneaking)
+                    if (!sneaking)
                     {
-                        font.draw(matrices, "Has BlockEntity: " + blockState.hasBlockEntity(), startX + 20, startY + 16, -1);
+                        font.draw(matrices, "Has BlockEntity: " + blockState.hasBlockEntity(), startX + 20, startY + 16,
+                                -1);
                         int light = blockState.getLightEmission();
                         font.draw(matrices, "Light: " + light, startX + 20, startY + 28, -1);
-                    }
-                    else
+                    } else
                     {
                         AtomicInteger tagY = new AtomicInteger(startY + 16);
 

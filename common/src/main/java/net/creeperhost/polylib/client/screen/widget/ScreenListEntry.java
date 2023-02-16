@@ -17,7 +17,9 @@ public class ScreenListEntry extends AbstractSelectionList.Entry
 
     //Do nothing, We don't want the default render
     @Override
-    public void render(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, boolean bl, float f) {}
+    public void render(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, boolean bl, float f)
+    {
+    }
 
     @Override
     public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_)

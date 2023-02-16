@@ -69,7 +69,8 @@ public class LoadingSpinner
             Lighting.setupForFlatItems();
         }
 
-        itemRenderer.render(stack, ItemTransforms.TransformType.GUI, false, new PoseStack(), bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY, bakedModel);
+        itemRenderer.render(stack, ItemTransforms.TransformType.GUI, false, new PoseStack(), bufferSource, 0xF000F0,
+                OverlayTexture.NO_OVERLAY, bakedModel);
         bufferSource.endBatch();
         RenderSystem.enableDepthTest();
 
@@ -110,7 +111,8 @@ public class LoadingSpinner
                 RenderSystem.enableDepthTest();
             }
 
-            float cooldown = mc.player == null ? 0F : mc.player.getCooldowns().getCooldownPercent(stack.getItem(), mc.getFrameTime());
+            float cooldown = mc.player == null ? 0F : mc.player.getCooldowns().getCooldownPercent(stack.getItem(),
+                    mc.getFrameTime());
 
             if (cooldown > 0F)
             {
@@ -118,7 +120,8 @@ public class LoadingSpinner
                 RenderSystem.disableTexture();
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
-                draw(poseStack, t, -8, Mth.floor(16F * (1F - cooldown)) - 8, 16, Mth.ceil(16F * cooldown), 255, 255, 255, 127);
+                draw(poseStack, t, -8, Mth.floor(16F * (1F - cooldown)) - 8, 16, Mth.ceil(16F * cooldown), 255, 255,
+                        255, 127);
                 RenderSystem.enableTexture();
                 RenderSystem.enableDepthTest();
             }

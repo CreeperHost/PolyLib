@@ -2,8 +2,6 @@ package net.creeperhost.polylib.forge;
 
 import dev.architectury.platform.forge.EventBuses;
 import net.creeperhost.polylib.PolyLib;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 

@@ -38,12 +38,12 @@ public class ImageRenderer
 
     public static Image fromURL(URL url) throws IOException
     {
-//        if(ImageUtils.isImageUrl(url))
-//        {
-            byte[] bytes = IOUtils.toByteArray(url);
-            return Image.fromMemory(bytes);
-//        }
-//        return null;
+        //        if(ImageUtils.isImageUrl(url))
+        //        {
+        byte[] bytes = IOUtils.toByteArray(url);
+        return Image.fromMemory(bytes);
+        //        }
+        //        return null;
     }
 
     public static class Image
@@ -75,7 +75,7 @@ public class ImageRenderer
                     ByteBuffer image = STBImage.stbi_load_from_memory(gif, x, y, channels, 4);
                     try
                     {
-                        if(image == null) return null;
+                        if (image == null) return null;
 
                         width = x.get();
                         height = y.get();

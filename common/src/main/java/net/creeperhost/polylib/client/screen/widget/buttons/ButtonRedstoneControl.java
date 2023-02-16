@@ -29,7 +29,7 @@ public class ButtonRedstoneControl extends Button
         super.render(poseStack, i, j, f);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         itemRenderer.renderGuiItem(state.getRenderStack(), x + 2, y + 1);
-        if(isHovered) screen.renderTooltip(poseStack, Component.literal(state.getName()), i, j);
+        if (isHovered) screen.renderTooltip(poseStack, Component.literal(state.getName()), i, j);
     }
 
     @Override

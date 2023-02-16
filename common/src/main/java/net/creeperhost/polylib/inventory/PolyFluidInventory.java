@@ -12,8 +12,7 @@ public class PolyFluidInventory
     public PolyFluidInventory(int capacity)
     {
         this.capacity = capacity;
-        if(!fluidStack.isEmpty())
-            this.fluidStack.setAmount(0);
+        if (!fluidStack.isEmpty()) this.fluidStack.setAmount(0);
     }
 
     public PolyFluidInventory(FluidStack fluidStack, int capacity)

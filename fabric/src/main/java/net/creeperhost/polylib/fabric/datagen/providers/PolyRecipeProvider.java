@@ -34,15 +34,14 @@ public class PolyRecipeProvider extends FabricRecipeProvider
 
     public void add(RecipeBuilder recipeBuilder, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
-            values.add(recipeBuilder);
+        if (this.moduleType == moduleType) values.add(recipeBuilder);
     }
 
     @Override
     public void run(CachedOutput writer)
     {
         //If values is empty don't generate an empty array json file
-        if(values.isEmpty()) return;
+        if (values.isEmpty()) return;
         recipePathProvider.root = appendPath(moduleType);
         super.run(writer);
     }

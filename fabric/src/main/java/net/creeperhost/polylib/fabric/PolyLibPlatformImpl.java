@@ -6,7 +6,8 @@ import java.nio.file.Path;
 
 public class PolyLibPlatformImpl
 {
-    public static Path getConfigDirectory() {
+    public static Path getConfigDirectory()
+    {
         return FabricLoader.getInstance().getConfigDir();
     }
 }

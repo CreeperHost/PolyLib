@@ -25,8 +25,7 @@ public class FluidRenderMap<V> extends Object2ObjectOpenCustomHashMap<FluidStack
         if (type == FluidType.STILL)
         {
             return FluidStackHooks.getStillTexture(fluid);
-        }
-        else
+        } else
         {
             return FluidStackHooks.getFlowingTexture(fluid);
         }

@@ -13,11 +13,11 @@ public class ButtonHelper
     @Nullable
     public static Button findButton(String buttonString, Screen screen)
     {
-        if(screen.children() != null && !screen.children().isEmpty())
+        if (screen.children() != null && !screen.children().isEmpty())
         {
             for (GuiEventListener listener : screen.children())
             {
-                if(!(listener instanceof Button button)) continue;
+                if (!(listener instanceof Button button)) continue;
 
                 if (button.getMessage().getString().equalsIgnoreCase(I18n.get(buttonString)))
                 {
@@ -32,7 +32,7 @@ public class ButtonHelper
     public static AbstractWidget removeButton(String buttonString, Screen screen)
     {
         AbstractWidget widget = findButton(buttonString, screen);
-        if(widget != null)
+        if (widget != null)
         {
             //We can't "remove" the button, so we just disable and hide it
             widget.visible = false;

@@ -12,7 +12,8 @@ public class ItemToggle extends Item
 
     public boolean isActive(ItemStack itemStack)
     {
-        return itemStack.hasTag() && itemStack.getTag().get("active") != null && itemStack.getTag().getBoolean("active");
+        return itemStack.hasTag() && itemStack.getTag().get("active") != null && itemStack.getTag().getBoolean(
+                "active");
     }
 
     public void setActive(ItemStack itemStack)
@@ -30,11 +31,10 @@ public class ItemToggle extends Item
     public void toggleActive(ItemStack itemStack)
     {
         boolean active = isActive(itemStack);
-        if(active)
+        if (active)
         {
             setDeactivate(itemStack);
-        }
-        else
+        } else
         {
             setActive(itemStack);
         }

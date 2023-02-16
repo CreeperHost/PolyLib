@@ -47,12 +47,12 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
 
     public void setContainerDataValue(int i, int value)
     {
-        if(containerData == null)
+        if (containerData == null)
         {
             PolyLib.LOGGER.error("failed to set container data due to containerData being null");
             return;
         }
-        if(i > containerData.getCount())
+        if (i > containerData.getCount())
         {
             PolyLib.LOGGER.error("failed to set container data due to containerData size being lower then " + i);
             return;
@@ -63,12 +63,12 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
 
     public void setContainerDataValue(int i, Supplier<Integer> value)
     {
-        if(containerData == null)
+        if (containerData == null)
         {
             PolyLib.LOGGER.error("failed to set container data due to containerData being null");
             return;
         }
-        if(containerData.getCount() == 0 || i > containerData.getCount())
+        if (containerData.getCount() == 0 || i > containerData.getCount())
         {
             PolyLib.LOGGER.error("failed to set container data due to containerData size being lower then " + i);
             setContainerDataSize(i + 1);
@@ -77,7 +77,10 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
         try
         {
             containerData.set(i, value.get());
-        } catch (Exception ignored){}
+        }
+        catch (Exception ignored)
+        {
+        }
     }
 
     public void setInventory(@Nullable PolyItemInventory polyInventory)
@@ -127,7 +130,8 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     @Override
     public ItemStack removeItemNoUpdate(int i)
     {
-        return getInventoryOptional().isPresent() ? getInventoryOptional().get().removeItemNoUpdate(i) : ItemStack.EMPTY;
+        return getInventoryOptional().isPresent() ? getInventoryOptional().get().removeItemNoUpdate(
+                i) : ItemStack.EMPTY;
     }
 
     @Override
@@ -158,7 +162,7 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     @Override
     public boolean canPlaceItem(int i, @NotNull ItemStack itemStack)
     {
-        if(!getSlots().isEmpty() && getSlots().size() > i)
+        if (!getSlots().isEmpty() && getSlots().size() > i)
         {
             return !(getSlots().get(i) instanceof SlotOutput);
         }
@@ -174,7 +178,7 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     @Override
     public boolean canPlaceItemThroughFace(int i, @NotNull ItemStack itemStack, @org.jetbrains.annotations.Nullable Direction direction)
     {
-        if(!getSlots().isEmpty() && getSlots().size() > i)
+        if (!getSlots().isEmpty() && getSlots().size() > i)
         {
             if (getSlots().get(i) instanceof SlotOutput) return false;
             ItemStack stackInSlot = getItem(i);
@@ -188,7 +192,7 @@ public abstract class BlockEntityInventory extends BaseContainerBlockEntity impl
     @Override
     public boolean canTakeItemThroughFace(int i, @NotNull ItemStack itemStack, @NotNull Direction direction)
     {
-        if(!getSlots().isEmpty() && getSlots().size() > i)
+        if (!getSlots().isEmpty() && getSlots().size() > i)
         {
             return !(getSlots().get(i) instanceof SlotInput);
         }

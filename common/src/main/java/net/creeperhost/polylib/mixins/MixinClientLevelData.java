@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientLevel.ClientLevelData.class)
 public abstract class MixinClientLevelData
 {
-    @Shadow public abstract Difficulty getDifficulty();
+    @Shadow
+    public abstract Difficulty getDifficulty();
 
     @Inject(method = "setDifficulty", at = @At("HEAD"))
     public void setDifficulty(Difficulty newDifficulty, CallbackInfo ci)

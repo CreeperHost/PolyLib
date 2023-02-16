@@ -34,8 +34,7 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
 
     public void addDropOther(Block block, ItemLike itemLike, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
-            this.values.put(block, createSingleItemTable(itemLike));
+        if (this.moduleType == moduleType) this.values.put(block, createSingleItemTable(itemLike));
     }
 
     public void addSelfDrop(Block block, ModuleType moduleType)
@@ -47,7 +46,7 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     public void run(CachedOutput writer) throws IOException
     {
         //If values is empty don't generate an empty array json file
-        if(values.isEmpty()) return;
+        if (values.isEmpty()) return;
         dataGenerator.outputFolder = appendPath(moduleType);
         super.run(writer);
     }

@@ -33,7 +33,7 @@ public class PolyBlockTagProvider extends FabricTagProvider.BlockTagProvider
 
     public void add(TagKey<Block> tagKey, Block block, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
+        if (this.moduleType == moduleType)
         {
             values.put(block, tagKey);
         }
@@ -43,7 +43,7 @@ public class PolyBlockTagProvider extends FabricTagProvider.BlockTagProvider
     public void run(CachedOutput cachedOutput)
     {
         //If values is empty don't generate an empty array json file
-        if(values.isEmpty()) return;
+        if (values.isEmpty()) return;
         pathProvider.root = appendPath(moduleType);
         super.run(cachedOutput);
     }

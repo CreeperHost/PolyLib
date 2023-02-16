@@ -76,22 +76,19 @@ public abstract class PolyContainer extends AbstractContainerMenu
             if (slotIndex >= numSlots - 9 * 4 && tryShiftItem(stackInSlot, numSlots))
             {
                 // NOOP
-            }
-            else if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9)
+            } else if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9)
             {
                 if (!shiftItemStack(stackInSlot, numSlots - 9, numSlots))
                 {
                     return ItemStack.EMPTY;
                 }
-            }
-            else if (slotIndex >= numSlots - 9 && slotIndex < numSlots)
+            } else if (slotIndex >= numSlots - 9 && slotIndex < numSlots)
             {
                 if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9))
                 {
                     return ItemStack.EMPTY;
                 }
-            }
-            else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots))
+            } else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots))
             {
                 return ItemStack.EMPTY;
             }
@@ -99,8 +96,7 @@ public abstract class PolyContainer extends AbstractContainerMenu
             if (stackInSlot.getCount() <= 0)
             {
                 slot.set(ItemStack.EMPTY);
-            }
-            else
+            } else
             {
                 slot.setChanged();
             }
@@ -132,8 +128,7 @@ public abstract class PolyContainer extends AbstractContainerMenu
                         stackInSlot.setCount(resultingStackSize);
                         slot.setChanged();
                         changed = true;
-                    }
-                    else if (stackInSlot.getCount() < max)
+                    } else if (stackInSlot.getCount() < max)
                     {
                         stackToShift.setCount(stackToShift.getCount() - (max - stackInSlot.getCount()));
                         stackInSlot.setCount(max);

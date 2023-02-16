@@ -19,7 +19,7 @@ public class TextFieldValidate extends EditBox
         super(font, x, y, width, height, Component.translatable(s));
         pattern = Pattern.compile(regexStr);
     }
-    
+
     @SuppressWarnings("Duplicates")
     @Override
     public void insertText(String textWrite)
@@ -35,7 +35,7 @@ public class TextFieldValidate extends EditBox
             this.setCursorPosition(prevPos);
         }
     }
-    
+
     @Override
     public void setValue(String string)
     {

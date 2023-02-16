@@ -125,7 +125,9 @@ public abstract class MultiblockControllerBase
 
         if (!connectedParts.add(part))
         {
-            PolyLib.LOGGER.warn(String.format("[%s] Controller %s is double-adding part %d @ %s. This is unusual. If you encounter odd behavior, please tear down the machine and rebuild it.", (worldObj.isClientSide ? "CLIENT" : "SERVER"), hashCode(), part.hashCode(), coord));
+            PolyLib.LOGGER.warn(String.format(
+                    "[%s] Controller %s is double-adding part %d @ %s. This is unusual. If you encounter odd behavior, please tear down the machine and rebuild it.",
+                    (worldObj.isClientSide ? "CLIENT" : "SERVER"), hashCode(), part.hashCode(), coord));
         }
 
         part.onAttached(this);
@@ -142,16 +144,14 @@ public abstract class MultiblockControllerBase
         {
             referenceCoord = coord;
             part.becomeMultiblockSaveDelegate();
-        }
-        else if (coord.compareTo(referenceCoord) < 0)
+        } else if (coord.compareTo(referenceCoord) < 0)
         {
             BlockEntity te = this.worldObj.getBlockEntity(referenceCoord);
             ((IMultiblockPart) te).forfeitMultiblockSaveDelegate();
 
             referenceCoord = coord;
             part.becomeMultiblockSaveDelegate();
-        }
-        else
+        } else
         {
             part.forfeitMultiblockSaveDelegate();
         }
@@ -285,7 +285,10 @@ public abstract class MultiblockControllerBase
         onDetachBlock(part);
         if (!connectedParts.remove(part))
         {
-            PolyLib.LOGGER.warn(String.format("[%s] Double-removing part (%d) @ %d, %d, %d, this is unexpected and may cause problems. If you encounter anomalies, please tear down the reactor and rebuild it.", worldObj.isClientSide ? "CLIENT" : "SERVER", part.hashCode(), part.getBlockPos().getX(), part.getBlockPos().getY(), part.getBlockPos().getZ()));
+            PolyLib.LOGGER.warn(String.format(
+                    "[%s] Double-removing part (%d) @ %d, %d, %d, this is unexpected and may cause problems. If you encounter anomalies, please tear down the reactor and rebuild it.",
+                    worldObj.isClientSide ? "CLIENT" : "SERVER", part.hashCode(), part.getBlockPos().getX(),
+                    part.getBlockPos().getY(), part.getBlockPos().getZ()));
         }
 
         if (connectedParts.isEmpty())
@@ -405,7 +408,8 @@ public abstract class MultiblockControllerBase
         {
             isMachineWhole();
             isWhole = true;
-        } catch (MultiblockValidationException e)
+        }
+        catch (MultiblockValidationException e)
         {
             lastValidationException = e;
             isWhole = false;
@@ -415,8 +419,7 @@ public abstract class MultiblockControllerBase
         {
             // This will alter assembly state
             assembleMachine(oldState);
-        }
-        else if (oldState == AssemblyState.Assembled)
+        } else if (oldState == AssemblyState.Assembled)
         {
             // This will alter assembly state
             disassembleMachine();
@@ -440,8 +443,7 @@ public abstract class MultiblockControllerBase
         if (oldState == AssemblyState.Paused)
         {
             onMachineRestored();
-        }
-        else
+        } else
         {
             onMachineAssembled();
         }
@@ -474,7 +476,8 @@ public abstract class MultiblockControllerBase
         BlockPos otherReferenceCoord = other.getReferenceCoord();
         if (otherReferenceCoord != null && getReferenceCoord().compareTo(otherReferenceCoord) >= 0)
         {
-            throw new IllegalArgumentException("The controller with the lowest minimum-coord value must consume the one with the higher coords");
+            throw new IllegalArgumentException(
+                    "The controller with the lowest minimum-coord value must consume the one with the higher coords");
         }
 
         Set<IMultiblockPart> partsToAcquire = new HashSet<IMultiblockPart>(other.connectedParts);
@@ -561,8 +564,7 @@ public abstract class MultiblockControllerBase
         if (worldObj.isClientSide)
         {
             updateClient();
-        }
-        else if (updateServer())
+        } else if (updateServer())
         {
             // If this returns true, the server has changed its internal data.
             // If our chunks are loaded (they should be), we must mark our
@@ -620,7 +622,8 @@ public abstract class MultiblockControllerBase
      */
     protected void isBlockGoodForFrame(Level world, int x, int y, int z) throws MultiblockValidationException
     {
-        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+        throw new MultiblockValidationException(
+                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -635,7 +638,8 @@ public abstract class MultiblockControllerBase
      */
     protected void isBlockGoodForTop(Level world, int x, int y, int z) throws MultiblockValidationException
     {
-        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+        throw new MultiblockValidationException(
+                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -651,7 +655,8 @@ public abstract class MultiblockControllerBase
      */
     protected void isBlockGoodForBottom(Level world, int x, int y, int z) throws MultiblockValidationException
     {
-        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+        throw new MultiblockValidationException(
+                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -667,7 +672,8 @@ public abstract class MultiblockControllerBase
      */
     protected void isBlockGoodForSides(Level world, int x, int y, int z) throws MultiblockValidationException
     {
-        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+        throw new MultiblockValidationException(
+                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -682,7 +688,8 @@ public abstract class MultiblockControllerBase
      */
     protected void isBlockGoodForInterior(Level world, int x, int y, int z) throws MultiblockValidationException
     {
-        throw new MultiblockValidationException(String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
+        throw new MultiblockValidationException(
+                String.format("%d, %d, %d - Block is not valid for use in the machine's interior", x, y, z));
     }
 
     /**
@@ -816,7 +823,8 @@ public abstract class MultiblockControllerBase
     {
         if (!otherController.getClass().equals(getClass()))
         {
-            throw new IllegalArgumentException("Attempting to merge two multiblocks with different master classes - this should never happen!");
+            throw new IllegalArgumentException(
+                    "Attempting to merge two multiblocks with different master classes - this should never happen!");
         }
 
         if (otherController == this)
@@ -828,15 +836,15 @@ public abstract class MultiblockControllerBase
         if (res < 0)
         {
             return true;
-        }
-        else if (res > 0)
+        } else if (res > 0)
         {
             return false;
-        }
-        else
+        } else
         {
             // Strip dead parts from both and retry
-            PolyLib.LOGGER.warn(String.format("[%s] Encountered two controllers with the same reference coordinate. Auditing connected parts and retrying.", worldObj.isClientSide ? "CLIENT" : "SERVER"));
+            PolyLib.LOGGER.warn(String.format(
+                    "[%s] Encountered two controllers with the same reference coordinate. Auditing connected parts and retrying.",
+                    worldObj.isClientSide ? "CLIENT" : "SERVER"));
             auditParts();
             otherController.auditParts();
 
@@ -844,16 +852,19 @@ public abstract class MultiblockControllerBase
             if (res < 0)
             {
                 return true;
-            }
-            else if (res > 0)
+            } else if (res > 0)
             {
                 return false;
-            }
-            else
+            } else
             {
-                PolyLib.LOGGER.warn(String.format("My Controller (%d): size (%d), parts: %s", hashCode(), connectedParts.size(), getPartsListString()));
-                PolyLib.LOGGER.warn(String.format("Other Controller (%d): size (%d), coords: %s", otherController.hashCode(), otherController.connectedParts.size(), otherController.getPartsListString()));
-                throw new IllegalArgumentException("[" + (worldObj.isClientSide ? "CLIENT" : "SERVER") + "] Two controllers with the same reference coord that somehow both have valid parts - this should never happen!");
+                PolyLib.LOGGER.warn(
+                        String.format("My Controller (%d): size (%d), parts: %s", hashCode(), connectedParts.size(),
+                                getPartsListString()));
+                PolyLib.LOGGER.warn(
+                        String.format("Other Controller (%d): size (%d), coords: %s", otherController.hashCode(),
+                                otherController.connectedParts.size(), otherController.getPartsListString()));
+                throw new IllegalArgumentException(
+                        "[" + (worldObj.isClientSide ? "CLIENT" : "SERVER") + "] Two controllers with the same reference coord that somehow both have valid parts - this should never happen!");
             }
 
         }
@@ -869,8 +880,7 @@ public abstract class MultiblockControllerBase
         if (theirCoord == null)
         {
             return -1;
-        }
-        else
+        } else
         {
             return myCoord.compareTo(theirCoord);
         }
@@ -886,7 +896,8 @@ public abstract class MultiblockControllerBase
             {
                 sb.append(", ");
             }
-            sb.append(String.format("(%d: %d, %d, %d)", part.hashCode(), part.getBlockPos().getX(), part.getBlockPos().getY(), part.getBlockPos().getZ()));
+            sb.append(String.format("(%d: %d, %d, %d)", part.hashCode(), part.getBlockPos().getX(),
+                    part.getBlockPos().getY(), part.getBlockPos().getZ()));
             first = false;
         }
 
@@ -910,7 +921,9 @@ public abstract class MultiblockControllerBase
         }
 
         connectedParts.removeAll(deadParts);
-        PolyLib.LOGGER.warn(String.format("[%s] Controller found %d dead parts during an audit, %d parts remain attached", worldObj.isClientSide ? "CLIENT" : "SERVER", deadParts.size(), connectedParts.size()));
+        PolyLib.LOGGER.warn(
+                String.format("[%s] Controller found %d dead parts during an audit, %d parts remain attached",
+                        worldObj.isClientSide ? "CLIENT" : "SERVER", deadParts.size(), connectedParts.size()));
     }
 
     /**
@@ -966,8 +979,7 @@ public abstract class MultiblockControllerBase
             {
                 referenceCoord = pos;
                 referencePart = part;
-            }
-            else if (pos.compareTo(referenceCoord) < 0)
+            } else if (pos.compareTo(referenceCoord) < 0)
             {
                 referenceCoord = pos;
                 referencePart = part;
@@ -984,8 +996,7 @@ public abstract class MultiblockControllerBase
             shouldCheckForDisconnections = false;
             MultiblockRegistry.addDeadController(worldObj, this);
             return null;
-        }
-        else
+        } else
         {
             referencePart.becomeMultiblockSaveDelegate();
         }

@@ -10,7 +10,8 @@ public class PolyLibPlatformImpl
     /**
      * This is our actual method to {@link PolyLibPlatform#getConfigDirectory()}.
      */
-    public static Path getConfigDirectory() {
+    public static Path getConfigDirectory()
+    {
         return FMLPaths.CONFIGDIR.get();
     }
 }

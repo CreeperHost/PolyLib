@@ -33,14 +33,13 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
 
     public void add(Advancement advancement, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
-            values.add(advancement);
+        if (this.moduleType == moduleType) values.add(advancement);
     }
 
     @Override
     public void run(CachedOutput writer) throws IOException
     {
-        if(values.isEmpty()) return;
+        if (values.isEmpty()) return;
         dataGenerator.outputFolder = appendPath(moduleType);
         super.run(writer);
     }

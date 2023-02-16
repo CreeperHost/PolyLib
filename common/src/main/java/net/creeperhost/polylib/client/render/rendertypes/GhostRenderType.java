@@ -17,19 +17,22 @@ public class GhostRenderType extends RenderType
 
     private GhostRenderType(RenderType original)
     {
-        super(String.format("%s_%s_ghost", original.toString(), PolyLib.MOD_ID), original.format(), original.mode(), original.bufferSize(), original.affectsCrumbling(), true, () -> {
-            original.setupRenderState();
+        super(String.format("%s_%s_ghost", original.toString(), PolyLib.MOD_ID), original.format(), original.mode(),
+                original.bufferSize(), original.affectsCrumbling(), true, () ->
+                {
+                    original.setupRenderState();
 
-            RenderSystem.disableDepthTest();
-            RenderSystem.enableBlend();
-            RenderSystem.setShaderColor(1, 1, 1, 0.4F);
-        }, () -> {
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-            RenderSystem.disableBlend();
-            RenderSystem.enableDepthTest();
+                    RenderSystem.disableDepthTest();
+                    RenderSystem.enableBlend();
+                    RenderSystem.setShaderColor(1, 1, 1, 0.4F);
+                }, () ->
+                {
+                    RenderSystem.setShaderColor(1, 1, 1, 1);
+                    RenderSystem.disableBlend();
+                    RenderSystem.enableDepthTest();
 
-            original.clearRenderState();
-        });
+                    original.clearRenderState();
+                });
     }
 
     public static RenderType remap(RenderType in)

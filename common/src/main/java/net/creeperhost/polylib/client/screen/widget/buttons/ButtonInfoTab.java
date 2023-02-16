@@ -30,10 +30,10 @@ public class ButtonInfoTab extends Button
     public void render(@NotNull PoseStack poseStack, int i, int j, float f)
     {
         int start = (x + 19) - progress;
-        if(isOpening)
+        if (isOpening)
         {
-            if(progress < 110) progress++;
-            if(progress >= 110)
+            if (progress < 110) progress++;
+            if (progress >= 110)
             {
                 progress = 110;
                 isClosing = false;
@@ -41,10 +41,10 @@ public class ButtonInfoTab extends Button
                 isOpen = true;
             }
         }
-        if(isClosing)
+        if (isClosing)
         {
-            if(progress > 0) progress--;
-            if(progress <= 0)
+            if (progress > 0) progress--;
+            if (progress <= 0)
             {
                 progress = 0;
                 isClosing = false;
@@ -53,22 +53,28 @@ public class ButtonInfoTab extends Button
             }
         }
 
-        if(isOpening || isClosing || isOpen)
+        if (isOpening || isClosing || isOpen)
         {
             screenBuilder.drawDefaultBackground(screen, poseStack, start, y, progress, progress * 2, 256, 256);
         }
-        if(!isOpening && !isClosing && !isOpen || progress < 20)
+        if (!isOpening && !isClosing && !isOpen || progress < 20)
         {
             screenBuilder.drawDefaultBackground(screen, poseStack, x - 1, y, 20, 20, 256, 256);
         }
-        drawCenteredString(poseStack, Minecraft.getInstance().font, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, -1);
-        if(isOpen && !isOpening && !isClosing)
+        drawCenteredString(poseStack, Minecraft.getInstance().font, this.getMessage(), this.x + this.width / 2,
+                this.y + (this.height - 8) / 2, -1);
+        if (isOpen && !isOpening && !isClosing)
         {
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84, this.y + 20, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84, this.y + 40, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84, this.y + 60, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84, this.y + 80, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84, this.y + 100, -1);
+            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84,
+                    this.y + 20, -1);
+            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84,
+                    this.y + 40, -1);
+            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84,
+                    this.y + 60, -1);
+            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84,
+                    this.y + 80, -1);
+            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.x - 84,
+                    this.y + 100, -1);
 
         }
     }
@@ -77,12 +83,11 @@ public class ButtonInfoTab extends Button
     public void onPress()
     {
         super.onPress();
-        if(isOpen)
+        if (isOpen)
         {
             isOpening = false;
             isClosing = true;
-        }
-        else
+        } else
         {
             isOpening = true;
             isClosing = false;

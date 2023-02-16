@@ -46,8 +46,12 @@ public class ScreenCreator extends Screen
 
         }));
 
-        addDragWidget(width - 50, 40, 20, 20, new Button(width - 50, 40, 20, 20, Component.empty(), button -> {}));
-        addDragWidget(width - 50, 80, 20, 20, new ProgressWidget(width - 50, 80, 20, 20, Component.empty(), button -> {}));
+        addDragWidget(width - 50, 40, 20, 20, new Button(width - 50, 40, 20, 20, Component.empty(), button ->
+        {
+        }));
+        addDragWidget(width - 50, 80, 20, 20, new ProgressWidget(width - 50, 80, 20, 20, Component.empty(), button ->
+        {
+        }));
 
     }
 
@@ -80,7 +84,7 @@ public class ScreenCreator extends Screen
     {
         for (DraggaleWidget draggaleWidget : draggaleWidgetList)
         {
-            if(draggaleWidget.isMouseOver(d, e))
+            if (draggaleWidget.isMouseOver(d, e))
             {
                 if (draggaleWidget.mouseDragged(d, e, i, f, g))
                 {

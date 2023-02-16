@@ -12,7 +12,9 @@ public class DraggaleWidget extends Button
 
     public DraggaleWidget(int x, int y, int width, int height, Button widget)
     {
-        super(x, y, width, height, Component.empty(), button -> {});
+        super(x, y, width, height, Component.empty(), button ->
+        {
+        });
         this.widget = widget;
     }
 

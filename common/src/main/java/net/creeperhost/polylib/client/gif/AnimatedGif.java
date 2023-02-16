@@ -25,9 +25,12 @@ public class AnimatedGif
 {
     private static final int GIF_TICKS_PER_SECOND = 1000;
     private static final int MC_TICKS_PER_SECOND = 20;
-    private static final int MIN_GIF_TICKS = Mth.ceil(0.01f * GIF_TICKS_PER_SECOND); // Most browsers have approximately 0.1s minimum interval between frames. Let's respect that!
-    private static final int MIN_MC_TICKS = Mth.ceil(MIN_GIF_TICKS * (float)MC_TICKS_PER_SECOND / GIF_TICKS_PER_SECOND);
-    public static Executor GIF_EXECUTOR = Executors.newFixedThreadPool(1, new ThreadFactoryBuilder().setNameFormat("minetogether-friend-%d").build());
+    private static final int MIN_GIF_TICKS = Mth.ceil(
+            0.01f * GIF_TICKS_PER_SECOND); // Most browsers have approximately 0.1s minimum interval between frames. Let's respect that!
+    private static final int MIN_MC_TICKS = Mth.ceil(
+            MIN_GIF_TICKS * (float) MC_TICKS_PER_SECOND / GIF_TICKS_PER_SECOND);
+    public static Executor GIF_EXECUTOR = Executors.newFixedThreadPool(1,
+            new ThreadFactoryBuilder().setNameFormat("minetogether-friend-%d").build());
 
     private final int width;
     private final int height;
@@ -47,10 +50,10 @@ public class AnimatedGif
 
     public static AnimatedGif fromURL(URL url) throws IOException
     {
-        if(ImageUtils.isImageUrl(url))
+        if (ImageUtils.isImageUrl(url))
         {
             byte[] bytes = IOUtils.toByteArray(url);
-            if(ImageUtils.getContentType(url).equals("image/gif")) return fromMemory(bytes);
+            if (ImageUtils.getContentType(url).equals("image/gif")) return fromMemory(bytes);
         }
         return null;
     }
@@ -75,7 +78,7 @@ public class AnimatedGif
                 {
                     if (image == null)
                     {
-//                        return new AnimatedGif(0, 0, 0, null, null, true, getBase64EncodedImage(fileData));
+                        //                        return new AnimatedGif(0, 0, 0, null, null, true, getBase64EncodedImage(fileData));
                         return null;
                     }
 
@@ -141,7 +144,8 @@ public class AnimatedGif
 
     public int convertToMcTick(int delay)
     {
-        return Mth.ceil(delay * (float)MC_TICKS_PER_SECOND / GIF_TICKS_PER_SECOND); // gif delays at in 1/100s increments, mc ticks are 1/20
+        return Mth.ceil(
+                delay * (float) MC_TICKS_PER_SECOND / GIF_TICKS_PER_SECOND); // gif delays at in 1/100s increments, mc ticks are 1/20
     }
 
 
@@ -215,7 +219,7 @@ public class AnimatedGif
 
             if (playing)
             {
-                float frameTime = ((animationProgress + partialTicks - partialStart) * (float)GIF_TICKS_PER_SECOND) / MC_TICKS_PER_SECOND;
+                float frameTime = ((animationProgress + partialTicks - partialStart) * (float) GIF_TICKS_PER_SECOND) / MC_TICKS_PER_SECOND;
                 int frameNumber = Mth.floor(frameTime) % totalFrameTicks;
                 int frameIndex = -1;
                 for (int i = 0; i < delays.length; i++)
@@ -233,8 +237,7 @@ public class AnimatedGif
                     if (looping)
                     {
                         frameIndex = 0;
-                    }
-                    else
+                    } else
                     {
                         playing = false;
                         return;

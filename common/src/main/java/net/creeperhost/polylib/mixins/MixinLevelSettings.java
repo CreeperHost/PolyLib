@@ -13,7 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LevelSettings.class)
 public class MixinLevelSettings
 {
-    @Shadow @Final private Difficulty difficulty;
+    @Shadow
+    @Final
+    private Difficulty difficulty;
 
     @Inject(method = "withDifficulty", at = @At("HEAD"))
     public void setDifficulty(Difficulty newDifficulty, CallbackInfoReturnable<LevelSettings> cir)

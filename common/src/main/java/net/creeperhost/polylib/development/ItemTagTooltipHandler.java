@@ -15,13 +15,14 @@ public class ItemTagTooltipHandler
     {
         ClientTooltipEvent.ITEM.register((stack, lines, flag) ->
         {
-            if(flag.isAdvanced())
+            if (flag.isAdvanced())
             {
                 Stream<TagKey<Item>> tags = ItemTagHelper.getAllTags(stack);
-                if(tags != null && !tags.toList().isEmpty())
+                if (tags != null && !tags.toList().isEmpty())
                 {
                     lines.add(Component.literal(" "));
-                    ItemTagHelper.getAllTags(stack).forEach(itemTagKey -> lines.add(Component.literal(ChatFormatting.GRAY + itemTagKey.location().toString())));
+                    ItemTagHelper.getAllTags(stack).forEach(itemTagKey -> lines.add(
+                            Component.literal(ChatFormatting.GRAY + itemTagKey.location().toString())));
                 }
             }
         });

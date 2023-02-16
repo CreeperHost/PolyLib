@@ -18,7 +18,8 @@ import java.util.Optional;
 
 public class ScreenBuilder
 {
-    public static final ResourceLocation DEFAULT_RESOURCE_LOCATION = new ResourceLocation(PolyLib.MOD_ID, "textures/gui_sheet.png");
+    public static final ResourceLocation DEFAULT_RESOURCE_LOCATION = new ResourceLocation(PolyLib.MOD_ID,
+            "textures/gui_sheet.png");
     public final ResourceLocation resourceLocation;
 
     public ScreenBuilder()
@@ -36,9 +37,12 @@ public class ScreenBuilder
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, resourceLocation);
         GuiComponent.blit(poseStack, x, y, 0, 0, width / 2, height / 2, textureXSize, textureYSize);
-        GuiComponent.blit(poseStack, x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2, textureXSize, textureYSize );
-        GuiComponent.blit(poseStack, x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2, textureXSize, textureYSize);
-        GuiComponent.blit(poseStack, x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2, textureXSize, textureYSize);
+        GuiComponent.blit(poseStack, x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2, textureXSize,
+                textureYSize);
+        GuiComponent.blit(poseStack, x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2, textureXSize,
+                textureYSize);
+        GuiComponent.blit(poseStack, x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2,
+                height / 2, textureXSize, textureYSize);
     }
 
     public void drawPlayerSlots(Screen screen, PoseStack poseStack, int posX, int posY, boolean center, int textureXSize, int textureYSize)
@@ -100,7 +104,8 @@ public class ScreenBuilder
             List<Component> list = new ArrayList<>();
             if (fluidStack.getFluid() != null)
             {
-                list.add(Component.literal(fluidStack.getAmount() + " / " + capacity + " " + fluidStack.getName().getString()));
+                list.add(Component.literal(
+                        fluidStack.getAmount() + " / " + capacity + " " + fluidStack.getName().getString()));
             } else
             {
                 list.add(Component.literal("empty"));

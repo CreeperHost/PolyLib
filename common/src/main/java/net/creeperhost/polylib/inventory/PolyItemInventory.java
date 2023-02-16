@@ -53,7 +53,8 @@ public class PolyItemInventory implements WorldlyContainer, StackedContentsCompa
 
     public List<ItemStack> removeAllItems()
     {
-        List<ItemStack> list = this.items.stream().filter((itemStack) -> !itemStack.isEmpty()).collect(Collectors.toList());
+        List<ItemStack> list = this.items.stream().filter((itemStack) -> !itemStack.isEmpty()).collect(
+                Collectors.toList());
         this.clearContent();
         return list;
     }
@@ -97,8 +98,7 @@ public class PolyItemInventory implements WorldlyContainer, StackedContentsCompa
         if (itemStack2.isEmpty())
         {
             return ItemStack.EMPTY;
-        }
-        else
+        } else
         {
             this.moveItemToEmptySlots(itemStack2);
             return itemStack2.isEmpty() ? ItemStack.EMPTY : itemStack2;
@@ -111,7 +111,8 @@ public class PolyItemInventory implements WorldlyContainer, StackedContentsCompa
 
         for (ItemStack itemStack2 : this.items)
         {
-            if (itemStack2.isEmpty() || ItemStack.isSameItemSameTags(itemStack2, itemStack) && itemStack2.getCount() < itemStack2.getMaxStackSize())
+            if (itemStack2.isEmpty() || ItemStack.isSameItemSameTags(itemStack2,
+                    itemStack) && itemStack2.getCount() < itemStack2.getMaxStackSize())
             {
                 bl = true;
                 break;
@@ -127,8 +128,7 @@ public class PolyItemInventory implements WorldlyContainer, StackedContentsCompa
         if (itemStack.isEmpty())
         {
             return ItemStack.EMPTY;
-        }
-        else
+        } else
         {
             this.items.set(i, ItemStack.EMPTY);
             return itemStack;

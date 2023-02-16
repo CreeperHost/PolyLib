@@ -29,16 +29,15 @@ public class RenderResizableCuboid
         if (axis == Direction.Axis.X)
         {
             return new Vector3f(value, vector.y(), vector.z());
-        }
-        else if (axis == Direction.Axis.Y)
+        } else if (axis == Direction.Axis.Y)
         {
             return new Vector3f(vector.x(), value, vector.z());
-        }
-        else if (axis == Direction.Axis.Z)
+        } else if (axis == Direction.Axis.Z)
         {
             return new Vector3f(vector.x(), vector.y(), value);
         }
-        throw new RuntimeException("Was given a null axis! That was probably not intentional, consider this a bug! (Vector = " + vector + ")");
+        throw new RuntimeException(
+                "Was given a null axis! That was probably not intentional, consider this a bug! (Vector = " + vector + ")");
     }
 
     public static double getValue(Vector3d vector, Direction.Axis axis)
@@ -46,16 +45,15 @@ public class RenderResizableCuboid
         if (axis == Direction.Axis.X)
         {
             return vector.x;
-        }
-        else if (axis == Direction.Axis.Y)
+        } else if (axis == Direction.Axis.Y)
         {
             return vector.y;
-        }
-        else if (axis == Direction.Axis.Z)
+        } else if (axis == Direction.Axis.Z)
         {
             return vector.z;
         }
-        throw new RuntimeException("Was given a null axis! That was probably not intentional, consider this a bug! (Vector = " + vector + ")");
+        throw new RuntimeException(
+                "Was given a null axis! That was probably not intentional, consider this a bug! (Vector = " + vector + ")");
     }
 
     /**
@@ -81,7 +79,8 @@ public class RenderResizableCuboid
                 {
                     Direction.Axis u = face.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
                     Direction.Axis v = face.getAxis() == Direction.Axis.Y ? Direction.Axis.Z : Direction.Axis.Y;
-                    float other = face.getAxisDirection() == Direction.AxisDirection.POSITIVE ? (float) getValue(size, face.getAxis()) : 0;
+                    float other = face.getAxisDirection() == Direction.AxisDirection.POSITIVE ? (float) getValue(size,
+                            face.getAxis()) : 0;
                     //Swap the face if this is positive: the renderer returns indexes that ALWAYS are for the negative face, so light it properly this way
                     face = face.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? face : face.getOpposite();
                     Direction opposite = face.getOpposite();
@@ -114,14 +113,22 @@ public class RenderResizableCuboid
                                 uv[V_MAX] = uv[V_MIN] + (uv[V_MAX] - uv[V_MIN]) * (float) addV;
                             }
                             float[] xyz = new float[]{uIndex, (float) (uIndex + addU), vIndex, (float) (vIndex + addV)};
-                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, true, false, red, green, blue, alpha, light);
-                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, true, true, red, green, blue, alpha, light);
-                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, false, true, red, green, blue, alpha, light);
-                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, false, false, red, green, blue, alpha, light);
-                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, false, false, red, green, blue, alpha, light);
-                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, false, true, red, green, blue, alpha, light);
-                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, true, true, red, green, blue, alpha, light);
-                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, true, false, red, green, blue, alpha, light);
+                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, true, false, red, green, blue,
+                                    alpha, light);
+                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, true, true, red, green, blue,
+                                    alpha, light);
+                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, false, true, red, green, blue,
+                                    alpha, light);
+                            renderPoint(matrix4f, buffer, face, u, v, other, uv, xyz, false, false, red, green, blue,
+                                    alpha, light);
+                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, false, false, red, green,
+                                    blue, alpha, light);
+                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, false, true, red, green, blue,
+                                    alpha, light);
+                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, true, true, red, green, blue,
+                                    alpha, light);
+                            renderPoint(matrix4f, buffer, opposite, u, v, other, uv, xyz, true, false, red, green, blue,
+                                    alpha, light);
                         }
                     }
                 }
@@ -137,6 +144,7 @@ public class RenderResizableCuboid
         Vector3f vertex = withValue(VEC_ZERO, u, xyz[uFinal]);
         vertex = withValue(vertex, v, xyz[vFinal]);
         vertex = withValue(vertex, face.getAxis(), other);
-        buffer.vertex(matrix4f, vertex.x(), vertex.y(), vertex.z()).color(red, green, blue, alpha).uv(uv[uFinal], uv[vFinal]).uv2(light).endVertex();
+        buffer.vertex(matrix4f, vertex.x(), vertex.y(), vertex.z()).color(red, green, blue, alpha).uv(uv[uFinal],
+                uv[vFinal]).uv2(light).endVertex();
     }
 }

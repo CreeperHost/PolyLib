@@ -18,7 +18,7 @@ public class GuiButtonLarge extends Button
 {
     private final String description;
     private final ItemStack stack;
-    
+
     public GuiButtonLarge(int x, int y, int widthIn, int heightIn, String buttonText, String description, ItemStack stack, OnPress onPress)
     {
         super(x, y, widthIn, heightIn, Component.translatable(buttonText), onPress);
@@ -34,7 +34,7 @@ public class GuiButtonLarge extends Button
         this.description = description;
         this.stack = stack;
     }
-    
+
     @Override
     public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partial)
     {
@@ -45,11 +45,13 @@ public class GuiButtonLarge extends Button
             int k = this.getYImage(this.isHovered);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-            ScreenHelper.drawContinuousTexturedBox(matrixStack, this.x, this.y, 0, 46 + k * 20, this.width, this.height, 200, 20, 2, 3, 2, 2, this.getBlitOffset());
+            ScreenHelper.drawContinuousTexturedBox(matrixStack, this.x, this.y, 0, 46 + k * 20, this.width, this.height,
+                    200, 20, 2, 3, 2, 2, this.getBlitOffset());
             this.renderBg(matrixStack, mc, mouseX, mouseY);
             int color = 14737632;
-            
-            List<FormattedCharSequence> newstring = ComponentRenderUtils.wrapComponents(Component.translatable(description), width -12, mc.font);
+
+            List<FormattedCharSequence> newstring = ComponentRenderUtils.wrapComponents(
+                    Component.translatable(description), width - 12, mc.font);
             int start = y + 40;
 
             for (FormattedCharSequence s : newstring)
@@ -57,9 +59,9 @@ public class GuiButtonLarge extends Button
                 int left = ((this.x + 4));
                 mc.font.drawShadow(matrixStack, s, left, start += 10, -1);
             }
-            
+
             Component buttonText = this.getMessage();
-            
+
             drawCenteredString(matrixStack, mc.font, buttonText, this.x + this.width / 2, this.y + 10, color);
             ItemRenderer renderItem = Minecraft.getInstance().getItemRenderer();
             matrixStack.pushPose();

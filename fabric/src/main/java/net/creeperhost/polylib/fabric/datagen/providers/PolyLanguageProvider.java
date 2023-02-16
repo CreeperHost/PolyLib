@@ -4,7 +4,6 @@ import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.fabricmc.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.world.item.CreativeModeTab;
@@ -34,7 +33,7 @@ public class PolyLanguageProvider extends FabricLanguageProvider
 
     public void add(String key, String translation, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
+        if (this.moduleType == moduleType)
         {
             PolyLib.LOGGER.info("Adding " + key + " for " + moduleType.name());
             this.values.put(key, translation);
@@ -80,7 +79,7 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     public void run(CachedOutput writer) throws IOException
     {
         //If values is empty don't generate an empty array json file
-        if(values.isEmpty()) return;
+        if (values.isEmpty()) return;
         dataGenerator.outputFolder = appendPath(moduleType);
         super.run(writer);
     }

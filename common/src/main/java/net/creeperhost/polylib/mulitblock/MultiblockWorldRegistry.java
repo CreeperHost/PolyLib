@@ -72,8 +72,7 @@ public class MultiblockWorldRegistry
                         // last block. It's fine.
                         // Mark 'er dead and move on.
                         deadControllers.add(controller);
-                    }
-                    else
+                    } else
                     {
                         // Run the game logic for this world
                         controller.updateMultiblockEntity();
@@ -151,8 +150,7 @@ public class MultiblockWorldRegistry
                         MultiblockControllerBase newController = orphan.createNewMultiblock();
                         newController.attachBlock(orphan);
                         this.controllers.add(newController);
-                    }
-                    else if (compatibleControllers.size() > 1)
+                    } else if (compatibleControllers.size() > 1)
                     {
                         if (mergePools == null)
                         {
@@ -179,13 +177,11 @@ public class MultiblockWorldRegistry
                         {
                             // No pools nearby, create a new merge pool
                             mergePools.add(compatibleControllers);
-                        }
-                        else if (candidatePools.size() == 1)
+                        } else if (candidatePools.size() == 1)
                         {
                             // Only one pool nearby, simply add to that one
                             candidatePools.get(0).addAll(compatibleControllers);
-                        }
-                        else
+                        } else
                         {
                             // Multiple pools- merge into one, then add the
                             // compatible controllers
@@ -227,9 +223,10 @@ public class MultiblockWorldRegistry
 
                 if (newMaster == null)
                 {
-                    PolyLib.LOGGER.warn(String.format("Multiblock system checked a merge pool of size %d, found no master candidates. This should never happen.", mergePool.size()));
-                }
-                else
+                    PolyLib.LOGGER.warn(String.format(
+                            "Multiblock system checked a merge pool of size %d, found no master candidates. This should never happen.",
+                            mergePool.size()));
+                } else
                 {
                     // Merge all the other machines into the master machine,
                     // then unregister them
@@ -268,8 +265,7 @@ public class MultiblockWorldRegistry
                 {
                     controller.recalculateMinMaxCoords();
                     controller.checkIfMachineIsWhole();
-                }
-                else
+                } else
                 {
                     addDeadController(controller);
                 }
@@ -295,7 +291,8 @@ public class MultiblockWorldRegistry
                 // Validate that they are empty/dead, then unregister them.
                 if (!controller.isEmpty())
                 {
-                    PolyLib.LOGGER.warn("Found a non-empty controller. Forcing it to shed its blocks and die. This should never happen!");
+                    PolyLib.LOGGER.warn(
+                            "Found a non-empty controller. Forcing it to shed its blocks and die. This should never happen!");
                     detachedParts.addAll(controller.detachAllBlocks());
                 }
 
@@ -333,7 +330,7 @@ public class MultiblockWorldRegistry
     {
         BlockPos pos = part.getWorldLocation();
 
-        if(worldObj == null) return;
+        if (worldObj == null) return;
 
         if (!this.worldObj.isLoaded(pos))
         {
@@ -347,16 +344,14 @@ public class MultiblockWorldRegistry
                 {
                     partSet = new HashSet<IMultiblockPart>();
                     partsAwaitingChunkLoad.put(chunkHash, partSet);
-                }
-                else
+                } else
                 {
                     partSet = partsAwaitingChunkLoad.get(chunkHash);
                 }
 
                 partSet.add(part);
             }
-        }
-        else
+        } else
         {
             // Part goes into the orphan queue, to be checked this tick
             addOrphanedPartThreadsafe(part);

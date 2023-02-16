@@ -18,13 +18,13 @@ public class PolyLibClient
     public static void init()
     {
         ClientTickEvent.CLIENT_PRE.register(instance -> MultiblockRegistry.tickStart(instance.level));
-        if(Platform.isDevelopmentEnvironment())
+        if (Platform.isDevelopmentEnvironment())
         {
             DevelopmentTools.initClient();
 
             ClientGuiEvent.INIT_POST.register((screen, access) ->
             {
-                if(screen instanceof PauseScreen)
+                if (screen instanceof PauseScreen)
                 {
                     ScreenHooks.addRenderableWidget(screen, new Button(10, 10, 20, 20, Component.literal("P"),
                             button -> Minecraft.getInstance().setScreen(new ScreenCreationSetup())));

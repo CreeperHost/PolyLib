@@ -22,7 +22,8 @@ public class SpawnRegistry
 {
     public static void registerSpawn(Supplier<EntityType<?>> entityType, Predicate<BiomeModifications.BiomeContext> predicate, SpawnPlacements.SpawnPredicate<?> spawnPredicate, int minCluster, int maxCluster, int weight)
     {
-        net.creeperhost.polylib.registry.SpawnRegistry.registerSpawn(entityType, predicate, spawnPredicate, minCluster, maxCluster, weight);
+        net.creeperhost.polylib.registry.SpawnRegistry.registerSpawn(entityType, predicate, spawnPredicate, minCluster,
+                maxCluster, weight);
     }
 
     public static void registerSpawnPlacement(Supplier<EntityType<?>> entityType, SpawnPlacements.Type type, Heightmap.Types types, SpawnPlacements.SpawnPredicate<?> spawnPredicate)

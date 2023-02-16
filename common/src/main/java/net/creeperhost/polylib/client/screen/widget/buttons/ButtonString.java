@@ -15,8 +15,7 @@ public class ButtonString extends Button
 
     public enum RenderPlace
     {
-        EXACT,
-        CENTRED
+        EXACT, CENTRED
     }
 
     public ButtonString(int xPos, int yPos, int width, int height, Supplier<Component> displayGetter, RenderPlace renderPlace, OnPress onPress)
@@ -34,7 +33,7 @@ public class ButtonString extends Button
     @Override
     public boolean mouseClicked(double d, double e, int i)
     {
-        if(hasText())
+        if (hasText())
         {
             return super.mouseClicked(d, e, i);
         }
@@ -51,9 +50,12 @@ public class ButtonString extends Button
 
             Component buttonText = displayGetter.get();
 
-            if(renderPlace == RenderPlace.CENTRED) {
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, buttonText, this.x + this.width / 2, this.y + (this.height - 8) / 2, 0xFFFFFF);
-            } else {
+            if (renderPlace == RenderPlace.CENTRED)
+            {
+                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, buttonText,
+                        this.x + this.width / 2, this.y + (this.height - 8) / 2, 0xFFFFFF);
+            } else
+            {
                 GuiComponent.drawString(poseStack, Minecraft.getInstance().font, buttonText, x, y, 0xFFFFFF);
             }
         }

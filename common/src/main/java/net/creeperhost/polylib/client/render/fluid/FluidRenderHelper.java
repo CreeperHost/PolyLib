@@ -44,23 +44,23 @@ public class FluidRenderHelper
     }
 
     //TODO once we add some sort of fluid tank to PolyLib
-//    public static float getScale(FluidTank tank)
-//    {
-//        return getScale(tank.getFluidAmount(), tank.getCapacity(), tank.isEmpty());
-//    }
+    //    public static float getScale(FluidTank tank)
+    //    {
+    //        return getScale(tank.getFluidAmount(), tank.getCapacity(), tank.isEmpty());
+    //    }
 
     public static float getScale(int stored, int capacity, boolean empty)
     {
         return (float) stored / capacity;
     }
 
-//    public static IFluidHandler getTank(Level world, BlockPos pos, Direction side)
-//    {
-//        BlockEntity tile = world.getBlockEntity(pos);
-//        if (tile == null)
-//        {
-//            return null;
-//        }
-//        return tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null);
-//    }
+    //    public static IFluidHandler getTank(Level world, BlockPos pos, Direction side)
+    //    {
+    //        BlockEntity tile = world.getBlockEntity(pos);
+    //        if (tile == null)
+    //        {
+    //            return null;
+    //        }
+    //        return tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null);
+    //    }
 }

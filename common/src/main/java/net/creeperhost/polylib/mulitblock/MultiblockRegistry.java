@@ -96,10 +96,9 @@ public class MultiblockRegistry
         if (registries.containsKey(world))
         {
             registries.get(world).addDirtyController(controller);
-        }
-        else
+        } else
         {
-//            PolyLib.LOGGER.warn("Adding a dirty controller to a world that has no registered controllers! This is most likey not an issue with reborn core, please check the full log file for more infomation!");
+            //            PolyLib.LOGGER.warn("Adding a dirty controller to a world that has no registered controllers! This is most likey not an issue with reborn core, please check the full log file for more infomation!");
         }
     }
 
@@ -115,10 +114,11 @@ public class MultiblockRegistry
         if (registries.containsKey(world))
         {
             registries.get(world).addDeadController(controller);
-        }
-        else
+        } else
         {
-            PolyLib.LOGGER.warn(String.format("Controller %d in world %s marked as dead, but that world is not tracked! Controller is being ignored.", controller.hashCode(), world));
+            PolyLib.LOGGER.warn(String.format(
+                    "Controller %d in world %s marked as dead, but that world is not tracked! Controller is being ignored.",
+                    controller.hashCode(), world));
         }
     }
 
@@ -143,8 +143,7 @@ public class MultiblockRegistry
         if (registries.containsKey(world))
         {
             return registries.get(world);
-        }
-        else
+        } else
         {
             MultiblockWorldRegistry newRegistry = new MultiblockWorldRegistry(world);
             registries.put(world, newRegistry);

@@ -24,11 +24,10 @@ public class ConfigBuilder
         this.CONFIG_NAME = configName;
         this.CONFIG_PATH = configPath;
         this.CONFIG_DATA_CLASS = clazz;
-        if(CONFIG_PATH.toFile().exists())
+        if (CONFIG_PATH.toFile().exists())
         {
             load();
-        }
-        else
+        } else
         {
             save();
         }
@@ -39,26 +38,24 @@ public class ConfigBuilder
         this.CONFIG_NAME = configName;
         this.CONFIG_PATH = configPath;
         this.CONFIG_DATA_CLASS = data.getClass();
-        if(CONFIG_PATH.toFile().exists())
+        if (CONFIG_PATH.toFile().exists())
         {
             load(data);
-        }
-        else
+        } else
         {
             save(data);
         }
     }
 
-    public ConfigBuilder(@Nonnull String configName,@Nonnull Class<?> clazz)
+    public ConfigBuilder(@Nonnull String configName, @Nonnull Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
         this.CONFIG_PATH = Platform.getConfigFolder().resolve(configName + ".json");
         this.CONFIG_DATA_CLASS = clazz;
-        if(CONFIG_PATH.toFile().exists())
+        if (CONFIG_PATH.toFile().exists())
         {
             load();
-        }
-        else
+        } else
         {
             save();
         }
@@ -71,7 +68,8 @@ public class ConfigBuilder
             JsonObject jObject = JANKSON.load(CONFIG_PATH.toFile());
             ConfigData newData = (ConfigData) JANKSON.fromJson(jObject, CONFIG_DATA_CLASS);
             CONFIG_DATA.set(newData);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -85,7 +83,8 @@ public class ConfigBuilder
             ConfigData newData = (ConfigData) JANKSON.fromJson(jObject, CONFIG_DATA_CLASS);
             data = newData;
             CONFIG_DATA.set(newData);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -101,7 +100,8 @@ public class ConfigBuilder
             FileWriter fileWriter = new FileWriter(CONFIG_PATH.toFile());
             fileWriter.write(saveConfig());
             fileWriter.close();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -111,13 +111,14 @@ public class ConfigBuilder
     {
         try
         {
-//            ConfigData data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
+            //            ConfigData data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
             CONFIG_DATA.set(data);
 
             FileWriter fileWriter = new FileWriter(CONFIG_PATH.toFile());
             fileWriter.write(saveConfig());
             fileWriter.close();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }

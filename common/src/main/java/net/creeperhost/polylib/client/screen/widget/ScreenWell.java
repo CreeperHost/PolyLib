@@ -33,25 +33,27 @@ public class ScreenWell
         this.left = left;
         this.right = width;
     }
-    
+
     @SuppressWarnings("Duplicates")
     public void render(PoseStack poseStack)
     {
         Font fontRenderer = Minecraft.getInstance().font;
-        
+
         int titleWidth = fontRenderer.width(title);
         Screen.fill(poseStack, left, top, right, bottom, 0x66000000);
 
-        fontRenderer.drawShadow(poseStack, title, this.left + ((this.right - this.left) / 2) - (titleWidth / 2), this.top + 2, 0xFFFFFF);
+        fontRenderer.drawShadow(poseStack, title, this.left + ((this.right - this.left) / 2) - (titleWidth / 2),
+                this.top + 2, 0xFFFFFF);
 
         int topStart = this.top + 15;
-        
+
         for (String line : lines)
         {
             if (centeredF)
             {
                 int stringWidth = fontRenderer.width(line);
-                fontRenderer.drawShadow(poseStack, I18n.get(line), this.left + ((this.right - this.left) / 2) - (stringWidth / 2), topStart, 0xFFFFFF);
+                fontRenderer.drawShadow(poseStack, I18n.get(line),
+                        this.left + ((this.right - this.left) / 2) - (stringWidth / 2), topStart, 0xFFFFFF);
             } else
             {
                 fontRenderer.drawShadow(poseStack, I18n.get(line), this.left, topStart, 0xFFFFFF);

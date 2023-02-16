@@ -3,10 +3,12 @@ package net.creeperhost.polylib.forge;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+;
 
 @Mod.EventBusSubscriber(modid = PolyLib.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeEvents

@@ -33,7 +33,7 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
 
     public void add(TagKey<Item> tagKey, Item block, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
+        if (this.moduleType == moduleType)
         {
             values.put(block, tagKey);
         }
@@ -43,7 +43,7 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
     public void run(CachedOutput cachedOutput)
     {
         //If values is empty don't generate an empty array json file
-        if(values.isEmpty()) return;
+        if (values.isEmpty()) return;
         pathProvider.root = appendPath(moduleType);
         super.run(cachedOutput);
     }

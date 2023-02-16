@@ -14,7 +14,7 @@ public class ScreenHelper
 {
     public void renderHead(PoseStack poseStack, int x, int y)
     {
-        RenderSystem.setShaderTexture(0,new ResourceLocation("textures/entity/steve.png"));
+        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/entity/steve.png"));
 
         GuiComponent.blit(poseStack, x, y - 2, 9, 9, 8.0F, 8.0F, 8, 8, 64, 64);
         RenderSystem.enableBlend();
@@ -30,19 +30,19 @@ public class ScreenHelper
         int rotateTicks = ticks % rotateTickMax;
         int throbTicks = ticks % throbTickMax;
         poseStack.pushPose();
-//        RenderSystem.pushMatrix();
+        //        RenderSystem.pushMatrix();
         poseStack.translate(x, y, 0);
-//        RenderSystem.translated(x, y, 0);
+        //        RenderSystem.translated(x, y, 0);
         float scale = 1F + ((throbTicks >= (throbTickMax / 2) ? (throbTickMax - (throbTicks + partialTicks)) : (throbTicks + partialTicks)) * (2F / throbTickMax));
         poseStack.scale(scale, scale, scale);
-//        RenderSystem.scalef(scale, scale, scale);
-//        RenderSystem.rotatef((rotateTicks + partialTicks) * (360F / rotateTickMax), 0, 0, 1);
+        //        RenderSystem.scalef(scale, scale, scale);
+        //        RenderSystem.rotatef((rotateTicks + partialTicks) * (360F / rotateTickMax), 0, 0, 1);
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         itemRenderer.renderGuiItem(stack, -8, -8);
 
         poseStack.popPose();
-//        RenderSystem.popMatrix();
+        //        RenderSystem.popMatrix();
     }
 
     public static void drawModalRectWithCustomSizedTextureFloat(Matrix4f matrix, float x, float y, float u, float v, int width, int height, float textureWidth, float textureHeight)
@@ -53,10 +53,13 @@ public class ScreenHelper
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        bufferbuilder.vertex(matrix, (float)x, (float)(y + height), 0.0F).uv((float) (u * f), (float)((v + (float)height) * f1)).endVertex();
-        bufferbuilder.vertex(matrix, (float)(x + width), (float)(y + height), 0.0F).uv((float)((u + (float)width) * f), (float)((v + (float)height) * f1)).endVertex();
-        bufferbuilder.vertex(matrix, (float)(x + width), (float)y, 0.0F).uv((float)((u + (float)width) * f), (float)(v * f1)).endVertex();
-        bufferbuilder.vertex(matrix, (float)x, (float)y, 0.0F).uv((float)(u * f), (float)(v * f1)).endVertex();
+        bufferbuilder.vertex(matrix, (float) x, (float) (y + height), 0.0F).uv((float) (u * f),
+                (float) ((v + (float) height) * f1)).endVertex();
+        bufferbuilder.vertex(matrix, (float) (x + width), (float) (y + height), 0.0F).uv(
+                (float) ((u + (float) width) * f), (float) ((v + (float) height) * f1)).endVertex();
+        bufferbuilder.vertex(matrix, (float) (x + width), (float) y, 0.0F).uv((float) ((u + (float) width) * f),
+                (float) (v * f1)).endVertex();
+        bufferbuilder.vertex(matrix, (float) x, (float) y, 0.0F).uv((float) (u * f), (float) (v * f1)).endVertex();
         bufferbuilder.end();
         BufferUploader.drawWithShader(bufferbuilder.end());
     }
@@ -80,31 +83,43 @@ public class ScreenHelper
         // Top Left
         drawTexturedModalRect(matrixStack, x, y, u, v, leftBorder, topBorder, zLevel);
         // Top Right
-        drawTexturedModalRect(matrixStack, x + leftBorder + canvasWidth, y, u + leftBorder + fillerWidth, v, rightBorder, topBorder, zLevel);
+        drawTexturedModalRect(matrixStack, x + leftBorder + canvasWidth, y, u + leftBorder + fillerWidth, v,
+                rightBorder, topBorder, zLevel);
         // Bottom Left
-        drawTexturedModalRect(matrixStack, x, y + topBorder + canvasHeight, u, v + topBorder + fillerHeight, leftBorder, bottomBorder, zLevel);
+        drawTexturedModalRect(matrixStack, x, y + topBorder + canvasHeight, u, v + topBorder + fillerHeight, leftBorder,
+                bottomBorder, zLevel);
         // Bottom Right
-        drawTexturedModalRect(matrixStack, x + leftBorder + canvasWidth, y + topBorder + canvasHeight, u + leftBorder + fillerWidth, v + topBorder + fillerHeight, rightBorder, bottomBorder, zLevel);
+        drawTexturedModalRect(matrixStack, x + leftBorder + canvasWidth, y + topBorder + canvasHeight,
+                u + leftBorder + fillerWidth, v + topBorder + fillerHeight, rightBorder, bottomBorder, zLevel);
 
         for (int i = 0; i < xPasses + (remainderWidth > 0 ? 1 : 0); i++)
         {
             // Top Border
-            drawTexturedModalRect(matrixStack, x + leftBorder + (i * fillerWidth), y, u + leftBorder, v, (i == xPasses ? remainderWidth : fillerWidth), topBorder, zLevel);
+            drawTexturedModalRect(matrixStack, x + leftBorder + (i * fillerWidth), y, u + leftBorder, v,
+                    (i == xPasses ? remainderWidth : fillerWidth), topBorder, zLevel);
             // Bottom Border
-            drawTexturedModalRect(matrixStack, x + leftBorder + (i * fillerWidth), y + topBorder + canvasHeight, u + leftBorder, v + topBorder + fillerHeight, (i == xPasses ? remainderWidth : fillerWidth), bottomBorder, zLevel);
+            drawTexturedModalRect(matrixStack, x + leftBorder + (i * fillerWidth), y + topBorder + canvasHeight,
+                    u + leftBorder, v + topBorder + fillerHeight, (i == xPasses ? remainderWidth : fillerWidth),
+                    bottomBorder, zLevel);
 
             // Throw in some filler for good measure
             for (int j = 0; j < yPasses + (remainderHeight > 0 ? 1 : 0); j++)
-                drawTexturedModalRect(matrixStack, x + leftBorder + (i * fillerWidth), y + topBorder + (j * fillerHeight), u + leftBorder, v + topBorder, (i == xPasses ? remainderWidth : fillerWidth), (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+                drawTexturedModalRect(matrixStack, x + leftBorder + (i * fillerWidth),
+                        y + topBorder + (j * fillerHeight), u + leftBorder, v + topBorder,
+                        (i == xPasses ? remainderWidth : fillerWidth), (j == yPasses ? remainderHeight : fillerHeight),
+                        zLevel);
         }
 
         // Side Borders
         for (int j = 0; j < yPasses + (remainderHeight > 0 ? 1 : 0); j++)
         {
             // Left Border
-            drawTexturedModalRect(matrixStack, x, y + topBorder + (j * fillerHeight), u, v + topBorder, leftBorder, (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+            drawTexturedModalRect(matrixStack, x, y + topBorder + (j * fillerHeight), u, v + topBorder, leftBorder,
+                    (j == yPasses ? remainderHeight : fillerHeight), zLevel);
             // Right Border
-            drawTexturedModalRect(matrixStack, x + leftBorder + canvasWidth, y + topBorder + (j * fillerHeight), u + leftBorder + fillerWidth, v + topBorder, rightBorder, (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+            drawTexturedModalRect(matrixStack, x + leftBorder + canvasWidth, y + topBorder + (j * fillerHeight),
+                    u + leftBorder + fillerWidth, v + topBorder, rightBorder,
+                    (j == yPasses ? remainderHeight : fillerHeight), zLevel);
         }
     }
 
@@ -117,10 +132,10 @@ public class ScreenHelper
         BufferBuilder wr = tessellator.getBuilder();
         wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         Matrix4f matrix = matrixStack.last().pose();
-        wr.vertex(matrix, x, y + height, zLevel).uv( u * uScale, ((v + height) * vScale)).endVertex();
-        wr.vertex(matrix,x + width,y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
-        wr.vertex(matrix,x + width, y, zLevel).uv((u + width) * uScale, (v * vScale)).endVertex();
-        wr.vertex(matrix, x, y, zLevel).uv( u * uScale, (v * vScale)).endVertex();
+        wr.vertex(matrix, x, y + height, zLevel).uv(u * uScale, ((v + height) * vScale)).endVertex();
+        wr.vertex(matrix, x + width, y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
+        wr.vertex(matrix, x + width, y, zLevel).uv((u + width) * uScale, (v * vScale)).endVertex();
+        wr.vertex(matrix, x, y, zLevel).uv(u * uScale, (v * vScale)).endVertex();
         tessellator.end();
     }
 
@@ -131,9 +146,12 @@ public class ScreenHelper
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex((double) x, (double) (y + height), 0.0D).uv((u * f), ((v + (float) vHeight) * f1)).endVertex();
-        bufferbuilder.vertex((double) (x + width), (double) (y + height), 0.0D).uv(((u + (float) uWidth) * f), ((v + (float) vHeight) * f1)).endVertex();
-        bufferbuilder.vertex((double) (x + width), (double) y, 0.0D).uv(((u + (float) uWidth) * f), (v * f1)).endVertex();
+        bufferbuilder.vertex((double) x, (double) (y + height), 0.0D).uv((u * f),
+                ((v + (float) vHeight) * f1)).endVertex();
+        bufferbuilder.vertex((double) (x + width), (double) (y + height), 0.0D).uv(((u + (float) uWidth) * f),
+                ((v + (float) vHeight) * f1)).endVertex();
+        bufferbuilder.vertex((double) (x + width), (double) y, 0.0D).uv(((u + (float) uWidth) * f),
+                (v * f1)).endVertex();
         bufferbuilder.vertex((double) x, (double) y, 0.0D).uv((u * f), (v * f1)).endVertex();
         tessellator.end();
     }

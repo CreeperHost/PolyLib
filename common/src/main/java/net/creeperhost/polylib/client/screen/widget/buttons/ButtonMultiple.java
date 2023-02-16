@@ -30,7 +30,7 @@ public class ButtonMultiple extends Button
 
     public int getY()
     {
-        if(!active) return 40;
+        if (!active) return 40;
         return isHovered ? this.height : 0;
     }
 

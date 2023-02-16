@@ -35,21 +35,27 @@ public class ScreenCreationSetup extends Screen
         leftPos = (this.width - imageWidth) / 2;
         topPos = (this.height - imageHeight) / 2;
 
-        addRenderableWidget(imageWidthBox = new EditBox(font, leftPos + 60, topPos + 10, 80, 16, Component.literal("imageWidthBox")));
-        addRenderableWidget(imageHeightBox = new EditBox(font, leftPos + 60, topPos + 30, 80, 16, Component.literal("imageHeightBox")));
+        addRenderableWidget(imageWidthBox = new EditBox(font, leftPos + 60, topPos + 10, 80, 16,
+                Component.literal("imageWidthBox")));
+        addRenderableWidget(imageHeightBox = new EditBox(font, leftPos + 60, topPos + 30, 80, 16,
+                Component.literal("imageHeightBox")));
         imageWidthBox.setValue(String.valueOf(imageWidth));
         imageHeightBox.setValue(String.valueOf(imageHeight));
 
-        addRenderableWidget(new Button(leftPos + 60, topPos + imageWidth - 10, 60, 20, Component.literal("NEW"), button ->
-        {
-            Minecraft.getInstance().setScreen(new ScreenCreator(Component.literal("TEST"), Integer.parseInt(imageWidthBox.getValue()), Integer.parseInt(imageHeightBox.getValue())));
-            renderNewScreen = true;
-        }));
+        addRenderableWidget(
+                new Button(leftPos + 60, topPos + imageWidth - 10, 60, 20, Component.literal("NEW"), button ->
+                {
+                    Minecraft.getInstance().setScreen(
+                            new ScreenCreator(Component.literal("TEST"), Integer.parseInt(imageWidthBox.getValue()),
+                                    Integer.parseInt(imageHeightBox.getValue())));
+                    renderNewScreen = true;
+                }));
 
-        addRenderableWidget(new Button(leftPos + 60, topPos + imageWidth - 30, 60, 20, Component.literal("LOAD"), button ->
-        {
+        addRenderableWidget(
+                new Button(leftPos + 60, topPos + imageWidth - 30, 60, 20, Component.literal("LOAD"), button ->
+                {
 
-        }));
+                }));
     }
 
     @Override

@@ -14,7 +14,7 @@ public class PlayerHelper
         for (int i = 0; i < 4; i++)
         {
             ItemStack stack = player.getInventory().getArmor(i);
-            if(stack.getItem() == item)
+            if (stack.getItem() == item)
             {
                 return true;
             }
@@ -29,17 +29,18 @@ public class PlayerHelper
 
     public static void giveItemStackToPlayer(Player player, ItemStack itemStack)
     {
-        if(player == null) return;
-        if(itemStack.isEmpty()) return;
-        if(player.level == null) return;
+        if (player == null) return;
+        if (itemStack.isEmpty()) return;
+        if (player.level == null) return;
 
         //Try and add the itemStack to the player
         boolean added = player.addItem(itemStack);
         //If it fails due to the players inventory being full add an itementity of the stack below the player
-        if(!added)
+        if (!added)
         {
             Level level = player.getLevel();
-            ItemEntity itemEntity = new ItemEntity(level, player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ(), itemStack);
+            ItemEntity itemEntity = new ItemEntity(level, player.blockPosition().getX(), player.blockPosition().getY(),
+                    player.blockPosition().getZ(), itemStack);
             level.addFreshEntity(itemEntity);
         }
     }

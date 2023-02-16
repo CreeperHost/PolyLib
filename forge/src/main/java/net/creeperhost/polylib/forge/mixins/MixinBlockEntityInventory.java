@@ -26,10 +26,11 @@ public abstract class MixinBlockEntityInventory extends BaseContainerBlockEntity
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if(cap == ForgeCapabilities.ITEM_HANDLER)
+        if (cap == ForgeCapabilities.ITEM_HANDLER)
         {
-            var caps = SidedInvWrapper.create(this, Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
-            if(side == null) return caps[0].cast();
+            var caps = SidedInvWrapper.create(this, Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH,
+                    Direction.WEST, Direction.EAST);
+            if (side == null) return caps[0].cast();
             return caps[side.get3DDataValue()].cast();
         }
         return LazyOptional.empty();
@@ -38,7 +39,7 @@ public abstract class MixinBlockEntityInventory extends BaseContainerBlockEntity
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap)
     {
-        if(cap == ForgeCapabilities.ITEM_HANDLER)
+        if (cap == ForgeCapabilities.ITEM_HANDLER)
         {
             var caps = SidedInvWrapper.create(this, Direction.UP);
             return caps[0].cast();

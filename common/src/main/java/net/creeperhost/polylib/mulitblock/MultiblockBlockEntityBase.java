@@ -56,8 +56,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
                 {
                     controllers = new HashSet<MultiblockControllerBase>();
                     bestController = candidate;
-                }
-                else if (!controllers.contains(candidate) && candidate.shouldConsume(bestController))
+                } else if (!controllers.contains(candidate) && candidate.shouldConsume(bestController))
                 {
                     bestController = candidate;
                 }
@@ -82,7 +81,9 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     {
         if (this.controller != null)
         {
-            PolyLib.LOGGER.info(String.format("[assert] Part @ (%d, %d, %d) should be detached already, but detected that it was not. This is not a fatal error, and will be repaired, but is unusual.", getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ()));
+            PolyLib.LOGGER.info(String.format(
+                    "[assert] Part @ (%d, %d, %d) should be detached already, but detected that it was not. This is not a fatal error, and will be repaired, but is unusual.",
+                    getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ()));
             this.controller = null;
         }
     }
@@ -160,8 +161,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
             if (isConnected())
             {
                 getMultiblockController().decodeDescriptionPacket(tag);
-            }
-            else
+            } else
             {
                 // This part hasn't been added to a machine yet, so cache the data.
                 this.cachedMultiblockData = tag;

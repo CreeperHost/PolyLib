@@ -16,7 +16,7 @@ public class PolyLib
 
     public static void init()
     {
-        if(Platform.getEnv() == EnvType.CLIENT)
+        if (Platform.getEnv() == EnvType.CLIENT)
         {
             PolyLibClient.init();
         }

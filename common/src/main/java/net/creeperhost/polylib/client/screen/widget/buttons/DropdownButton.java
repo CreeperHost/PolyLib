@@ -11,7 +11,8 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Button {
+public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Button
+{
     public boolean dropdownOpen;
     private E selected;
     private List<E> possibleVals;
@@ -22,8 +23,11 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
     private OnPress ourOnPress;
     Minecraft minecraft = Minecraft.getInstance();
 
-    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, OnPress onPress, boolean drawHeader) {
-        super(x, y, widthIn, heightIn, buttonText, (e) -> {});
+    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, OnPress onPress, boolean drawHeader)
+    {
+        super(x, y, widthIn, heightIn, buttonText, (e) ->
+        {
+        });
         this.ourOnPress = onPress;
         this.selected = def;
         possibleVals = (List<E>) def.getPossibleVals();
@@ -36,12 +40,12 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
     {
         this(x, y, widthIn, heightIn, buttonText, def, dynamic, onPress, true);
     }
-    
+
     public DropdownButton(int x, int y, Component buttonText, E def, boolean dynamic, OnPress onPress)
     {
         this(x, y, 200, 20, buttonText, def, dynamic, onPress);
     }
-    
+
     public boolean flipped = false;
 
     @SuppressWarnings("Duplicates")
@@ -57,23 +61,30 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
             this.isHovered = mouseX >= this.x && mouseY >= drawY && mouseX < this.x + this.width && mouseY < drawY + this.height;
             int i = this.getHoverState(this.isHovered);
             RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            if (drawHeader) {
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
+                    GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
+                    GlStateManager.DestFactor.ZERO);
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
+                    GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            if (drawHeader)
+            {
                 this.blit(matrixStack, this.x, drawY, 0, 46 + i * 20, this.width / 2, this.height);
-                this.blit(matrixStack, this.x + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+                this.blit(matrixStack, this.x + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20,
+                        this.width / 2, this.height);
                 int j = 14737632;
 
-                if (!this.active) {
+                if (!this.active)
+                {
                     j = 10526880;
-                }
-                else if (this.isHovered) {
+                } else if (this.isHovered)
+                {
                     j = 16777120;
                 }
 
-                drawCenteredString(matrixStack, fontrenderer, this.baseButtonText, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
+                drawCenteredString(matrixStack, fontrenderer, this.baseButtonText, this.x + this.width / 2,
+                        this.y + (this.height - 8) / 2, j);
             }
-            
+
             if (dropdownOpen)
             {
                 drawY += 1;
@@ -83,7 +94,8 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
                     yOffset = -yOffset;
                     drawY -= 1;
                 }
-                for (int j = 0, possibleValsSize = possibleVals.size(); j < possibleValsSize; j++) {
+                for (int j = 0, possibleValsSize = possibleVals.size(); j < possibleValsSize; j++)
+                {
                     E e = possibleVals.get(j);
                     drawY += yOffset;
                     boolean ourHovered = mouseX >= this.x && mouseY >= drawY && mouseX < this.x + this.width && mouseY < drawY + this.height - 2;
@@ -94,30 +106,34 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                     // TODO: Fix rendering being dodgy, but it is "good enough" to avoid spending too much time on right now
                     this.blit(matrixStack, this.x, drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
-                    this.blit(matrixStack, this.x + this.width / 2, drawY, 200 - this.width / 2, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
+                    this.blit(matrixStack, this.x + this.width / 2, drawY, 200 - this.width / 2,
+                            46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
 
                     String name = I18n.get(e.getTranslate(selected, true));
                     int textColour = 14737632;
 
-                    drawCenteredString(matrixStack, fontrenderer, name, this.x + this.width / 2, drawY + (this.height - 10) / 2, textColour);
+                    drawCenteredString(matrixStack, fontrenderer, name, this.x + this.width / 2,
+                            drawY + (this.height - 10) / 2, textColour);
                 }
             }
         }
     }
-    
+
     protected int getHoverState(boolean mouseOver)
     {
         return mouseOver ? 2 : active ? dropdownOpen ? 2 : 1 : 0;
     }
-    
+
     @Override
     public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_)
     {
         boolean pressed = super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
         if (dropdownOpen)
         {
-            if (drawHeader) {
-                if (pressed) {
+            if (drawHeader)
+            {
+                if (pressed)
+                {
                     close();
                     return false; // selection not changed, so no need to return true which will trigger actionPerformed.
                 }
@@ -126,9 +142,13 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
             if (clickedElement != null)
             {
                 setSelected(clickedElement);
-                try {
+                try
+                {
                     ourOnPress();
-                } catch (Exception ignored){}
+                }
+                catch (Exception ignored)
+                {
+                }
                 close();
                 return true;
             }
@@ -136,9 +156,11 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
             return false;
         } else if (pressed)
         {
-            if(drawHeader) {
+            if (drawHeader)
+            {
                 dropdownOpen = true;
-                if (dynamic) {
+                if (dynamic)
+                {
                     selected.updateDynamic();
                     possibleVals = (List<E>) selected.getPossibleVals();
                 }
@@ -147,48 +169,51 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
         return false; // at this stage we've handled all the "true" options, so it ain't been pressed
     }
 
-    public void ourOnPress() {
+    public void ourOnPress()
+    {
         this.ourOnPress.onPress(this);
     }
 
     @Override
-    public void onPress() {
-//        this.ourOnPress.onPress(this);
+    public void onPress()
+    {
+        //        this.ourOnPress.onPress(this);
     }
-    
+
     public void close()
     {
         dropdownOpen = false;
         wasJustClosed = true;
     }
-    
+
     public E getSelected()
     {
         return selected;
     }
-    
+
     public void setSelected(E selected)
     {
         try
         {
             this.selected = selected;
             updateDisplayString();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
     }
-    
+
     public void updateDisplayString()
     {
         baseButtonText = Component.translatable(selected.getTranslate(selected, false), baseButtonText);
     }
-    
+
     private E getClickedElement(double mouseX, double mouseY)
     {
         E clickedElement = null;
         int y = this.y + 1;
-        
+
         int yOffset = height - 2;
         if (flipped)
         {
@@ -207,16 +232,19 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
         return clickedElement;
     }
 
-    public List<E> getPossibleVals() {
+    public List<E> getPossibleVals()
+    {
         return possibleVals;
     }
 
     public interface IDropdownOption
     {
         List<IDropdownOption> getPossibleVals();
-        
+
         String getTranslate(IDropdownOption currentDO, boolean dropdownOpen);
-        
-        default void updateDynamic() {}
+
+        default void updateDynamic()
+        {
+        }
     }
 }

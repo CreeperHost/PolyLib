@@ -2,8 +2,5 @@ package net.creeperhost.polylib.data;
 
 public enum EnumArrowButton
 {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT;
+    UP, DOWN, LEFT, RIGHT;
 }

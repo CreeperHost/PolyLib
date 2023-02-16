@@ -49,8 +49,7 @@ public class PolyModelProvider extends FabricModelProvider
 
     public void addBlockModel(Block block, MultiVariantGenerator blockStateGenerator, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
-            blockValues.put(block, blockStateGenerator);
+        if (this.moduleType == moduleType) blockValues.put(block, blockStateGenerator);
     }
 
     public void addSimpleBlockModel(Block block, ResourceLocation textureLocation, ModuleType moduleType)
@@ -70,9 +69,10 @@ public class PolyModelProvider extends FabricModelProvider
 
     public void addItemModel(Item item, ModelTemplate modelTemplate, ModuleType moduleType)
     {
-        if(this.moduleType == moduleType)
+        if (this.moduleType == moduleType)
         {
-            PolyLib.LOGGER.info("Adding item model for " + item.getDescriptionId() + " " + dataGenerator.getOutputFolder());
+            PolyLib.LOGGER.info(
+                    "Adding item model for " + item.getDescriptionId() + " " + dataGenerator.getOutputFolder());
             itemValues.put(item, modelTemplate);
         }
     }

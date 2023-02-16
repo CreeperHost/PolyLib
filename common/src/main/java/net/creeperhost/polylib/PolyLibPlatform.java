@@ -9,7 +9,8 @@ import java.nio.file.Path;
 public class PolyLibPlatform
 {
     @ExpectPlatform
-    public static Path getConfigDirectory() {
+    public static Path getConfigDirectory()
+    {
         // Just throw an error, the content should get replaced at runtime.
         throw new AssertionError();
     }
