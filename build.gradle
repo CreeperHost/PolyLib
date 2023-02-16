@@ -24,30 +24,26 @@ subprojects {
 }
 
 allprojects {
-    //Added to ignore the testmod
-    if(project == project(":common") || project == project(":forge") || project == project(":fabric"))
-    {
-        apply plugin: "java"
-        apply plugin: "architectury-plugin"
-        apply plugin: "maven-publish"
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
-        def ENV = System.getenv()
-        version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
-        group = rootProject.maven_group
-        archivesBaseName = rootProject.archives_base_name
+    def ENV = System.getenv()
+    version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
+    group = rootProject.maven_group
+    archivesBaseName = rootProject.archives_base_name
 
 
-        repositories {
-            maven { url 'https://maven.creeperhost.net' }
-        }
+    repositories {
+        maven { url 'https://maven.creeperhost.net' }
+    }
 
-        tasks.withType(JavaCompile) {
-            options.encoding = "UTF-8"
-            options.release = 17
-        }
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
+    }
 
-        java {
-            withSourcesJar()
-        }
+    java {
+        withSourcesJar()
     }
 }
