@@ -1,35 +1,33 @@
 package net.creeperhost.testmod.blocks.inventorytestblock;
 
-import net.creeperhost.polylib.blockentity.BlockEntityInventory;
-import net.creeperhost.polylib.containers.slots.SlotInput;
-import net.creeperhost.polylib.containers.slots.SlotOutput;
-import net.creeperhost.polylib.inventory.PolyItemInventory;
+import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.inventory.item.SerializableContainer;
+import net.creeperhost.polylib.inventory.item.SimpleItemInventory;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
-public class InventoryTestBlockEntity extends BlockEntityInventory
+public class InventoryTestBlockEntity extends BlockEntity implements ItemInventoryBlock, MenuProvider
 {
     int progress = 0;
+    private SimpleContainerData containerData = new SimpleContainerData(1);
+    private SimpleItemInventory simpleItemInventory;
+
 
     public InventoryTestBlockEntity(BlockPos blockPos, BlockState blockState)
     {
         super(TestBlocks.INVENTORY_TEST_TILE.get(), blockPos, blockState);
-        setInventory(new PolyItemInventory(2));
-        getInventoryOptional().ifPresent(polyInventory ->
-        {
-            addSlot(new SlotInput(polyInventory, 0, 41, 61));
-            addSlot(new SlotOutput(polyInventory, 1, 121, 61));
-        });
-//        setContainerDataSize(1);
     }
 
     public void tick()
@@ -40,27 +38,28 @@ public class InventoryTestBlockEntity extends BlockEntityInventory
             if(progress >= 100)
             {
                 progress = 0;
-                getInventoryOptional().ifPresent(polyItemInventory ->
-                {
-                    boolean empty = polyItemInventory.getItem(1).isEmpty();
-                    if(empty)
-                        polyItemInventory.setItem(1, new ItemStack(Items.DIAMOND));
-                });
+                simpleItemInventory.setItem(1, new ItemStack(Items.DIAMOND));
             }
         }
-
-        setContainerDataValue(0, () -> progress);
+        containerData.set(0, progress);
     }
 
     @Override
-    protected Component getDefaultName()
+    public SerializableContainer getContainer()
+    {
+        return simpleItemInventory == null ? this.simpleItemInventory = new SimpleItemInventory(this, 2) : this.simpleItemInventory;
+    }
+
+    @Override
+    public @NotNull Component getDisplayName()
     {
         return Component.literal("Inventory Test");
     }
 
+    @Nullable
     @Override
-    protected AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory)
+    public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player)
     {
-        return new ContainerInventoryTestBlock(i, inventory, this, getContainerData());
+        return new ContainerInventoryTestBlock(id, inventory, this, containerData);
     }
 }

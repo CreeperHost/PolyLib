@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
-
+@Deprecated(forRemoval = true)
 public abstract class BlockEntityInventory extends BaseContainerBlockEntity implements WorldlyContainer
 {
     public Optional<PolyItemInventory> inventoryOptional = Optional.empty();

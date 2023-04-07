@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Deprecated(forRemoval = true)
 public class PolyItemInventory implements WorldlyContainer, StackedContentsCompatible
 {
     private final int size;

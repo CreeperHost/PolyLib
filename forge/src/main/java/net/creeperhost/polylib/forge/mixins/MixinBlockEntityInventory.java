@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
+@Deprecated(forRemoval = true)
 @Mixin(BlockEntityInventory.class)
 public abstract class MixinBlockEntityInventory extends BaseContainerBlockEntity implements WorldlyContainer
 {

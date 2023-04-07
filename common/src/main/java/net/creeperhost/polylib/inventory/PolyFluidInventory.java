@@ -4,6 +4,7 @@ import dev.architectury.fluid.FluidStack;
 import dev.architectury.hooks.fluid.FluidStackHooks;
 import net.minecraft.nbt.CompoundTag;
 
+@Deprecated(forRemoval = true)
 public class PolyFluidInventory
 {
     private FluidStack fluidStack = FluidStack.empty();
