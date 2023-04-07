@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
 public class ContainerInventoryTestBlock extends PolyContainer
@@ -23,7 +24,8 @@ public class ContainerInventoryTestBlock extends PolyContainer
     {
         super(TestContainers.TEST_INVENTORY_CONTAINER.get(), id);
 
-        inventoryTestBlock.getSlots().forEach(this::addSlot);
+        addSlot(new Slot(inventoryTestBlock.getContainer(), 0, 41, 61));
+        addSlot(new Slot(inventoryTestBlock.getContainer(), 1, 121, 61));
 
         drawPlayersInv(playerInv, 15, 132);
         drawPlayersHotBar(playerInv, 15, 132 + 58);

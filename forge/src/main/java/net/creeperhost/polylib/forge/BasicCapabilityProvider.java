@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
+@Deprecated(forRemoval = true)
 public class BasicCapabilityProvider<T> implements ICapabilityProvider
 {
     private final LazyOptional<T> instanceLazy;

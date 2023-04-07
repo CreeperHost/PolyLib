@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
 
+@Deprecated(forRemoval = true)
 public class PlayerTickEventHandler
 {
     //TODO
