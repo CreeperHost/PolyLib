@@ -5,6 +5,7 @@ import dev.architectury.event.EventFactory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+@Deprecated(forRemoval = true)
 public interface ArmourChangedEvent
 {
     Event<ArmourChangedEvent.ArmourEquippedEvent> ARMOUR_EQUIPPED_EVENT = EventFactory.createEventResult();

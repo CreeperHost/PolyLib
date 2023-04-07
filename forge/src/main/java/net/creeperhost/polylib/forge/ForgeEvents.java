@@ -29,10 +29,12 @@ public class ForgeEvents
     }
 
     @SubscribeEvent
-    public static void onCap(AttachCapabilitiesEvent<BlockEntity> event)
+    public static void OnAttachCapabilitiesEvent(AttachCapabilitiesEvent<BlockEntity> event)
     {
         if(event.getObject() instanceof ItemInventoryBlock itemInventoryBlock)
         {
+            String name = event.getObject().getBlockState().getBlock().getDescriptionId();
+            PolyLib.LOGGER.log(org.apache.logging.log4j.Level.INFO, "Adding item cap to " + name);
             event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemContainerWrapper(itemInventoryBlock.getContainer()));
         }
     }
