@@ -5,8 +5,8 @@ import net.minecraft.network.chat.Component;
 
 public class ButtonArrow extends PolyButton
 {
-    public ButtonArrow(int i, int j, int k, int l, EnumArrowButton arrowButton)
+    public ButtonArrow(int i, int j, int k, int l, EnumArrowButton arrowButton, OnPress onPress)
     {
-        super(i, j, k, l, Component.empty());
+        super(i, j, k, l, Component.empty(), onPress, DEFAULT_NARRATION);
     }
 }

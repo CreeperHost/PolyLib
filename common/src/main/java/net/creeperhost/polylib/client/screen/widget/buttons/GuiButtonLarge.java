@@ -20,9 +20,9 @@ public class GuiButtonLarge extends PolyButton
     private final String description;
     private final ItemStack stack;
 
-    public GuiButtonLarge(int x, int y, int widthIn, int heightIn, String buttonText, String description, ItemStack stack)
+    public GuiButtonLarge(int x, int y, int widthIn, int heightIn, String buttonText, String description, ItemStack stack, OnPress onPress)
     {
-        super(x, y, widthIn, heightIn, Component.translatable(buttonText));
+        super(x, y, widthIn, heightIn, Component.translatable(buttonText), onPress, DEFAULT_NARRATION);
         this.width = 200;
         this.height = 20;
         this.visible = true;

@@ -13,9 +13,9 @@ public class ButtonRedstoneControl extends PolyButton
     private EnumRedstoneState state;
     private final Screen screen;
 
-    public ButtonRedstoneControl(Screen screen, int i, int j, int k, int l, EnumRedstoneState state)
+    public ButtonRedstoneControl(Screen screen, int i, int j, int k, int l, EnumRedstoneState state, OnPress onPress)
     {
-        super(i, j, k, l, Component.literal(""));
+        super(i, j, k, l, Component.empty(), onPress, DEFAULT_NARRATION);
         this.screen = screen;
         this.state = state;
     }

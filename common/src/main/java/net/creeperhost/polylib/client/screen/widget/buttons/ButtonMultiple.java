@@ -4,15 +4,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class ButtonMultiple extends PolyButton
 {
     private final ResourceLocation resourceLocation;
     private final int index;
 
-    public ButtonMultiple(int xPos, int yPos, int index, ResourceLocation resourceLocation)
+    public ButtonMultiple(int xPos, int yPos, int index, ResourceLocation resourceLocation, OnPress onPress)
     {
-        super(xPos, yPos, 20, 20, Component.empty());
+        super(xPos, yPos, 20, 20, Component.empty(), onPress, DEFAULT_NARRATION);
         this.index = index;
         this.resourceLocation = resourceLocation;
     }
@@ -24,7 +25,7 @@ public class ButtonMultiple extends PolyButton
     }
 
     @Override
-    public void renderButton(PoseStack poseStack, int i, int j, float f)
+    public void renderButton(@NotNull PoseStack poseStack, int i, int j, float f)
     {
         if (this.visible)
         {

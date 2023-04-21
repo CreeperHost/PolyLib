@@ -15,9 +15,9 @@ public class ButtonInfoTab extends PolyButton
     ScreenBuilder screenBuilder = new ScreenBuilder();
     Screen screen;
 
-    public ButtonInfoTab(Screen screen, int i, int j, int k, int l, Component component)
+    public ButtonInfoTab(Screen screen, int i, int j, int k, int l, Component component, OnPress onPress)
     {
-        super(i, j, k, l, component);
+        super(i, j, k, l, component, onPress, DEFAULT_NARRATION);
         this.screen = screen;
     }
 

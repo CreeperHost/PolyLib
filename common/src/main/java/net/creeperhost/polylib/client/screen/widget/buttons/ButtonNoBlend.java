@@ -10,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ButtonNoBlend extends PolyButton
 {
-    public ButtonNoBlend(int x, int y, int width, int height, Component component)
+    public ButtonNoBlend(int x, int y, int width, int height, Component component, OnPress onPress)
     {
-        super(x, y, width, height, component);
+        super(x, y, width, height, component, onPress, DEFAULT_NARRATION);
     }
 
     @Override

@@ -22,9 +22,9 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
     public boolean wasJustClosed = false;
     Minecraft minecraft = Minecraft.getInstance();
 
-    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, boolean drawHeader)
+    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, boolean drawHeader, OnPress onPress)
     {
-        super(x, y, widthIn, heightIn, buttonText);
+        super(x, y, widthIn, heightIn, buttonText, onPress, DEFAULT_NARRATION);
         this.selected = def;
         possibleVals = (List<E>) def.getPossibleVals();
         baseButtonText = buttonText;
@@ -32,14 +32,14 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
         this.drawHeader = drawHeader;
     }
 
-    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic)
+    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, OnPress onPress)
     {
-        this(x, y, widthIn, heightIn, buttonText, def, dynamic, true);
+        this(x, y, widthIn, heightIn, buttonText, def, dynamic, true, onPress);
     }
 
-    public DropdownButton(int x, int y, Component buttonText, E def, boolean dynamic)
+    public DropdownButton(int x, int y, Component buttonText, E def, boolean dynamic, OnPress onPress)
     {
-        this(x, y, 200, 20, buttonText, def, dynamic);
+        this(x, y, 200, 20, buttonText, def, dynamic, onPress);
     }
 
     public boolean flipped = false;

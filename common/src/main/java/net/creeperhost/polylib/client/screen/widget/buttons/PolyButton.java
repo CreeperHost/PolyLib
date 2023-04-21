@@ -1,26 +1,12 @@
 package net.creeperhost.polylib.client.screen.widget.buttons;
 
-import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
-public class PolyButton extends AbstractButton
+public class PolyButton extends Button
 {
-    public PolyButton(int i, int j, int k, int l, Component component)
+    public PolyButton(int x, int y, int xSize, int ySize, Component component, OnPress onPress, CreateNarration createNarration)
     {
-        super(i, j, k, l, component);
-    }
-
-    @Override
-    public void onPress()
-    {
-
-    }
-
-    @Override
-    public void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
-    {
-        this.defaultButtonNarrationText(narrationElementOutput);
+        super(x, y, xSize, ySize, component, onPress, createNarration);
     }
 }

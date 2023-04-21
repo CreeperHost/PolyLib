@@ -19,16 +19,16 @@ public class ButtonString extends PolyButton
         EXACT, CENTRED
     }
 
-    public ButtonString(int xPos, int yPos, int width, int height, Supplier<Component> displayGetter, RenderPlace renderPlace)
+    public ButtonString(int xPos, int yPos, int width, int height, Supplier<Component> displayGetter, RenderPlace renderPlace, OnPress onPress)
     {
-        super(xPos, yPos, width, height, displayGetter.get());
+        super(xPos, yPos, width, height, displayGetter.get(), onPress, DEFAULT_NARRATION);
         this.displayGetter = displayGetter;
         this.renderPlace = renderPlace;
     }
 
-    public ButtonString(int xPos, int yPos, int width, int height, Component displayString)
+    public ButtonString(int xPos, int yPos, int width, int height, Component displayString, OnPress onPress)
     {
-        this(xPos, yPos, width, height, () -> displayString, RenderPlace.CENTRED);
+        this(xPos, yPos, width, height, () -> displayString, RenderPlace.CENTRED, onPress);
     }
 
     @Override

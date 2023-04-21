@@ -33,15 +33,15 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
     protected void init()
     {
         super.init();
-        addRenderableWidget(new Button.Builder(Component.empty(), button ->
+        addRenderableWidget(new ButtonRedstoneControl(this, leftPos + imageWidth - 29, topPos + 10, 20, 20, EnumRedstoneState.IGNORED, button ->
         {
 
-        }).pos(leftPos + imageWidth - 29, topPos + 10).size(20, 20).build());
+        }));
 
-        addRenderableWidget(new Button.Builder(Component.literal("i"), button ->
+        addRenderableWidget(new ButtonInfoTab(this, leftPos - 20, topPos, 20, 20, Component.literal("i"), button ->
         {
 
-        }).pos(leftPos - 20, topPos).size(20, 20).build());
+        }));
     }
 
     @Override
