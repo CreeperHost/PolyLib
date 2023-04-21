@@ -4,6 +4,7 @@ import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.CachedOutput;
@@ -15,18 +16,19 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class PolyLanguageProvider extends FabricLanguageProvider
 {
     ModuleType moduleType;
     Map<String, String> values = new HashMap<>();
 
-    public PolyLanguageProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
+    public PolyLanguageProvider(FabricDataOutput dataOutput, ModuleType moduleType)
     {
-        super(dataGenerator, "en_us");
+        super(dataOutput, "en_us");
         this.moduleType = moduleType;
 
-        PolyLib.LOGGER.info("PolyLanguageProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
+        PolyLib.LOGGER.info("PolyLanguageProvider created for " + dataOutput.getModId() + " " + moduleType.name());
     }
 
     public void add(String key, String translation, ModuleType moduleType)
@@ -63,7 +65,7 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     {
         this.values.forEach((s, s2) ->
         {
-            PolyLib.LOGGER.info("Running data gen for key " + s + " " + dataGenerator.getOutputFolder());
+            PolyLib.LOGGER.info("Running data gen for key " + s + " " + dataOutput.getOutputFolder());
             translationBuilder.add(s, s2);
         });
     }
@@ -74,11 +76,12 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     }
 
     @Override
-    public void run(CachedOutput writer) throws IOException
+    public CompletableFuture<?> run(CachedOutput writer)
     {
+        //TODO
         //If values is empty don't generate an empty array json file
-        if (values.isEmpty()) return;
-        dataGenerator.outputFolder = appendPath(moduleType);
-        super.run(writer);
+        //        if (values.isEmpty()) return;
+        //        dataGenerator.outputFolder = appendPath(moduleType);
+        return super.run(writer);
     }
 }

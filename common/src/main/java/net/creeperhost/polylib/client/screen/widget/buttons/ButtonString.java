@@ -5,10 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class ButtonString extends Button
+public class ButtonString extends PolyButton
 {
     private final Supplier<Component> displayGetter;
     private final RenderPlace renderPlace;
@@ -18,16 +19,16 @@ public class ButtonString extends Button
         EXACT, CENTRED
     }
 
-    public ButtonString(int xPos, int yPos, int width, int height, Supplier<Component> displayGetter, RenderPlace renderPlace, OnPress onPress)
+    public ButtonString(int xPos, int yPos, int width, int height, Supplier<Component> displayGetter, RenderPlace renderPlace)
     {
-        super(xPos, yPos, width, height, displayGetter.get(), onPress);
+        super(xPos, yPos, width, height, displayGetter.get());
         this.displayGetter = displayGetter;
         this.renderPlace = renderPlace;
     }
 
-    public ButtonString(int xPos, int yPos, int width, int height, Component displayString, OnPress onPress)
+    public ButtonString(int xPos, int yPos, int width, int height, Component displayString)
     {
-        this(xPos, yPos, width, height, () -> displayString, RenderPlace.CENTRED, onPress);
+        this(xPos, yPos, width, height, () -> displayString, RenderPlace.CENTRED);
     }
 
     @Override
@@ -41,22 +42,22 @@ public class ButtonString extends Button
     }
 
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partial)
+    public void renderButton(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partial)
     {
         this.visible = hasText();
         if (this.visible)
         {
-            this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
             Component buttonText = displayGetter.get();
 
             if (renderPlace == RenderPlace.CENTRED)
             {
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, buttonText,
-                        this.x + this.width / 2, this.y + (this.height - 8) / 2, 0xFFFFFF);
-            } else
+                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, buttonText, this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
+            }
+            else
             {
-                GuiComponent.drawString(poseStack, Minecraft.getInstance().font, buttonText, x, y, 0xFFFFFF);
+                GuiComponent.drawString(poseStack, Minecraft.getInstance().font, buttonText, getX(), getY(), 0xFFFFFF);
             }
         }
     }

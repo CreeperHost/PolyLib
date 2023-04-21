@@ -4,8 +4,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.GameRenderer;
@@ -18,6 +16,8 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 public class LoadingSpinner
 {
@@ -33,7 +33,8 @@ public class LoadingSpinner
         poseStack.pushPose();
         poseStack.translate(x, y, 0);
         poseStack.scale(scale, scale, 1F);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotationDegrees));
+        poseStack.mulPose(new Quaternionf().rotateLocalZ(rotationDegrees));
+//        poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotationDegrees));
         drawItem(poseStack, stack, 0, true, null);
         poseStack.popPose();
     }

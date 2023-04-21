@@ -7,6 +7,7 @@ import net.creeperhost.polylib.client.screen.widget.buttons.ButtonItemStack;
 import net.creeperhost.polylib.client.screen.widget.buttons.ButtonRedstoneControl;
 import net.creeperhost.polylib.client.screenbuilder.ScreenBuilder;
 import net.creeperhost.polylib.data.EnumRedstoneState;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,15 +33,15 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
     protected void init()
     {
         super.init();
-        addRenderableWidget(new ButtonRedstoneControl(this, leftPos + imageWidth - 29, topPos + 10, 20, 20, EnumRedstoneState.IGNORED, button ->
+        addRenderableWidget(new Button.Builder(Component.empty(), button ->
         {
 
-        }));
+        }).pos(leftPos + imageWidth - 29, topPos + 10).size(20, 20).build());
 
-        addRenderableWidget(new ButtonInfoTab(this, leftPos - 20, topPos, 20, 20, Component.literal("i"), button ->
+        addRenderableWidget(new Button.Builder(Component.literal("i"), button ->
         {
 
-        }));
+        }).pos(leftPos - 20, topPos).size(20, 20).build());
     }
 
     @Override

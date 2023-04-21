@@ -1,6 +1,6 @@
 package net.creeperhost.polylib.helpers;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -14,26 +14,26 @@ public class RegistryNameHelper
 {
     public static Optional<ResourceLocation> getRegistryName(Item item)
     {
-        return Optional.of(Registry.ITEM.getKey(item));
+        return Optional.of(BuiltInRegistries.ITEM.getKey(item));
     }
 
     public static Optional<ResourceLocation> getRegistryName(Block block)
     {
-        return Optional.of(Registry.BLOCK.getKey(block));
+        return Optional.of(BuiltInRegistries.BLOCK.getKey(block));
     }
 
     public static Optional<ResourceLocation> getRegistryName(EntityType<?> entityType)
     {
-        return Optional.of(Registry.ENTITY_TYPE.getKey(entityType));
+        return Optional.of(BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
     }
 
     public static Optional<ResourceLocation> getRegistryName(Enchantment enchantment)
     {
-        return Optional.ofNullable(Registry.ENCHANTMENT.getKey(enchantment));
+        return Optional.ofNullable(BuiltInRegistries.ENCHANTMENT.getKey(enchantment));
     }
 
     public static Optional<ResourceLocation> getRegistryName(Potion potion)
     {
-        return Optional.of(Registry.POTION.getKey(potion));
+        return Optional.of(BuiltInRegistries.POTION.getKey(potion));
     }
 }

@@ -2,7 +2,6 @@ package net.creeperhost.polylib;
 
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
-import net.creeperhost.polylib.core.PlayerTickEventHandler;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
 import net.fabricmc.api.EnvType;
@@ -20,8 +19,6 @@ public class PolyLib
         {
             PolyLibClient.init();
         }
-
-        PlayerTickEventHandler.init();
 
         TickEvent.SERVER_LEVEL_PRE.register(MultiblockRegistry::tickStart);
         ChunkEvents.CHUNK_LOAD_EVENT.register(MultiblockRegistry::onChunkLoaded);

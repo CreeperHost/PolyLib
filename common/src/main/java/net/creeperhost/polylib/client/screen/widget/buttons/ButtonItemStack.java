@@ -2,19 +2,21 @@ package net.creeperhost.polylib.client.screen.widget.buttons;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class ButtonItemStack extends Button
+public class ButtonItemStack extends AbstractWidget
 {
     private final ItemStack itemStack;
 
-    public ButtonItemStack(int i, int j, int k, int l, Component component, ItemStack itemStack, OnPress onPress)
+    public ButtonItemStack(int i, int j, int k, int l, Component component, ItemStack itemStack)
     {
-        super(i, j, k, l, component, onPress);
+        super(i, j, k, l, component);
         this.itemStack = itemStack;
     }
 
@@ -23,6 +25,12 @@ public class ButtonItemStack extends Button
     {
         super.render(poseStack, i, j, f);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        itemRenderer.renderGuiItem(itemStack, x + 2, y + 1);
+        itemRenderer.renderGuiItem(itemStack, getX() + 2, getY() + 1);
+    }
+
+    @Override
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    {
+
     }
 }

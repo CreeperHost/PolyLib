@@ -4,6 +4,7 @@ import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.CachedOutput;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class PolyAdvancementProvider extends FabricAdvancementProvider
@@ -19,9 +21,9 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     private final ModuleType moduleType;
     private List<Advancement> values = new ArrayList<>();
 
-    public PolyAdvancementProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
+    public PolyAdvancementProvider(FabricDataGenerator dataGenerator, FabricDataOutput fabricDataOutput, ModuleType moduleType)
     {
-        super(dataGenerator);
+        super(fabricDataOutput);
         this.moduleType = moduleType;
 
         PolyLib.LOGGER.info("PolyAdvancementProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
@@ -32,7 +34,7 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     {
         values.forEach(advancement ->
         {
-            PolyLib.LOGGER.info("Running data gen for advancement " + advancement.getId() + " " + dataGenerator.getOutputFolder());
+            PolyLib.LOGGER.info("Running data gen for advancement " + advancement.getId() + " " + output.getOutputFolder());
             consumer.accept(advancement);
         });
     }
@@ -43,11 +45,11 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     }
 
     @Override
-    public void run(CachedOutput writer) throws IOException
+    public CompletableFuture<?> run(CachedOutput writer)
     {
-        if (values.isEmpty()) return;
-        dataGenerator.outputFolder = appendPath(moduleType);
-        super.run(writer);
+//        if (values.isEmpty()) return;
+//        dataGenerator.outputFolder = appendPath(moduleType);
+        return super.run(writer);
     }
 
     public Path appendPath(ModuleType moduleType)

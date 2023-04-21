@@ -2,12 +2,12 @@ package net.creeperhost.polylib.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 public class ScreenHelper
@@ -30,19 +30,14 @@ public class ScreenHelper
         int rotateTicks = ticks % rotateTickMax;
         int throbTicks = ticks % throbTickMax;
         poseStack.pushPose();
-        //        RenderSystem.pushMatrix();
         poseStack.translate(x, y, 0);
-        //        RenderSystem.translated(x, y, 0);
         float scale = 1F + ((throbTicks >= (throbTickMax / 2) ? (throbTickMax - (throbTicks + partialTicks)) : (throbTicks + partialTicks)) * (2F / throbTickMax));
         poseStack.scale(scale, scale, scale);
-        //        RenderSystem.scalef(scale, scale, scale);
-        //        RenderSystem.rotatef((rotateTicks + partialTicks) * (360F / rotateTickMax), 0, 0, 1);
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         itemRenderer.renderGuiItem(stack, -8, -8);
 
         poseStack.popPose();
-        //        RenderSystem.popMatrix();
     }
 
     public static void drawModalRectWithCustomSizedTextureFloat(Matrix4f matrix, float x, float y, float u, float v, int width, int height, float textureWidth, float textureHeight)

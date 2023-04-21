@@ -4,6 +4,7 @@ import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.models.BlockModelGenerators;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.data.models.BlockModelGenerators.createSimpleBlock;
 
@@ -27,12 +29,14 @@ public class PolyModelProvider extends FabricModelProvider
     private final ModuleType moduleType;
     private Map<Item, ModelTemplate> itemValues = new HashMap<>();
     private Map<Block, MultiVariantGenerator> blockValues = new HashMap<>();
+    private FabricDataOutput dataOutput;
 
 
-    public PolyModelProvider(FabricDataGenerator dataGenerator, ModuleType moduleType)
+    public PolyModelProvider(FabricDataGenerator dataGenerator, FabricDataOutput dataOutput, ModuleType moduleType)
     {
-        super(dataGenerator);
+        super(dataOutput);
         this.moduleType = moduleType;
+        this.dataOutput = dataOutput;
         updatePaths();
 
         PolyLib.LOGGER.info("PolyModelProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
@@ -43,7 +47,7 @@ public class PolyModelProvider extends FabricModelProvider
     {
         blockValues.forEach((block, blockStateGenerator) ->
         {
-            PolyLib.LOGGER.info(block.getDescriptionId() + " " + dataGenerator.getOutputFolder());
+            PolyLib.LOGGER.info(block.getDescriptionId() + " " + dataOutput.getOutputFolder());
             blockStateModelGenerator.createTrivialCube(block);
         });
     }
@@ -72,7 +76,7 @@ public class PolyModelProvider extends FabricModelProvider
     {
         if (this.moduleType == moduleType)
         {
-            PolyLib.LOGGER.info("Adding item model for " + item.getDescriptionId() + " " + dataGenerator.getOutputFolder());
+            PolyLib.LOGGER.info("Adding item model for " + item.getDescriptionId() + " " + dataOutput.getOutputFolder());
             itemValues.put(item, modelTemplate);
         }
     }
@@ -88,17 +92,25 @@ public class PolyModelProvider extends FabricModelProvider
     }
 
     @Override
-    public void run(@NotNull CachedOutput cachedOutput)
+    public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cachedOutput)
     {
         updatePaths();
-        super.run(cachedOutput);
+        return super.run(cachedOutput);
     }
+
+    //    @Override
+//    public void run(@NotNull CachedOutput cachedOutput)
+//    {
+//        updatePaths();
+//        super.run(cachedOutput);
+//    }
 
     public void updatePaths()
     {
-        dataGenerator.outputFolder = appendPath(moduleType);
-        blockStatePathProvider.root = appendPath(moduleType);
-        modelPathProvider.root = appendPath(moduleType);
+        //TODO
+//        dataGenerator.outputFolder = appendPath(moduleType);
+//        blockStatePathProvider.root = appendPath(moduleType);
+//        modelPathProvider.root = appendPath(moduleType);
     }
 
     public Path appendPath(ModuleType moduleType)

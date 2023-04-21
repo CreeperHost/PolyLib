@@ -19,17 +19,6 @@ import java.util.function.Supplier;
 
 public class SpawnRegistry
 {
-    @Deprecated(forRemoval = true, since = "1.20")
-    public static void registerSpawn(Supplier<EntityType<?>> entityType, Predicate<BiomeModifications.BiomeContext> predicate, SpawnPlacements.SpawnPredicate<?> spawnPredicate, int minCluster, int maxCluster, int weight)
-    {
-        BiomeModifications.addProperties(predicate,
-                (biomeContext, mutable) -> mutable.getSpawnProperties().addSpawn(MobCategory.MONSTER,
-                        new MobSpawnSettings.SpawnerData(entityType.get(), minCluster, maxCluster, weight)));
-
-        registerSpawnPlacement(entityType, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                spawnPredicate);
-    }
-
     public static void registerSpawnPlacement(Supplier<EntityType<?>> entityType, SpawnPlacements.Type type, Heightmap.Types types, SpawnPlacements.SpawnPredicate<?> spawnPredicate)
     {
         InvokerSpawnPlacements.callRegister(entityType.get(), type, types, spawnPredicate);

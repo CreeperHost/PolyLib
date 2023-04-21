@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Button
+public class DropdownButton<E extends DropdownButton.IDropdownOption> extends PolyButton
 {
     public boolean dropdownOpen;
     private E selected;
@@ -20,15 +20,11 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
     private final boolean dynamic;
     private final boolean drawHeader;
     public boolean wasJustClosed = false;
-    private OnPress ourOnPress;
     Minecraft minecraft = Minecraft.getInstance();
 
-    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, OnPress onPress, boolean drawHeader)
+    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, boolean drawHeader)
     {
-        super(x, y, widthIn, heightIn, buttonText, (e) ->
-        {
-        });
-        this.ourOnPress = onPress;
+        super(x, y, widthIn, heightIn, buttonText);
         this.selected = def;
         possibleVals = (List<E>) def.getPossibleVals();
         baseButtonText = buttonText;
@@ -36,14 +32,14 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
         this.drawHeader = drawHeader;
     }
 
-    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic, OnPress onPress)
+    public DropdownButton(int x, int y, int widthIn, int heightIn, Component buttonText, E def, boolean dynamic)
     {
-        this(x, y, widthIn, heightIn, buttonText, def, dynamic, onPress, true);
+        this(x, y, widthIn, heightIn, buttonText, def, dynamic, true);
     }
 
-    public DropdownButton(int x, int y, Component buttonText, E def, boolean dynamic, OnPress onPress)
+    public DropdownButton(int x, int y, Component buttonText, E def, boolean dynamic)
     {
-        this(x, y, 200, 20, buttonText, def, dynamic, onPress);
+        this(x, y, 200, 20, buttonText, def, dynamic);
     }
 
     public boolean flipped = false;
@@ -54,11 +50,11 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
     {
         if (this.visible)
         {
-            int drawY = y;
+            int drawY = getY();
             Font fontrenderer = minecraft.font;
             RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            this.isHovered = mouseX >= this.x && mouseY >= drawY && mouseX < this.x + this.width && mouseY < drawY + this.height;
+            this.isHovered = mouseX >= this.getX() && mouseY >= drawY && mouseX < this.getX() + this.width && mouseY < drawY + this.height;
             int i = this.getHoverState(this.isHovered);
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
@@ -68,8 +64,8 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
                     GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             if (drawHeader)
             {
-                this.blit(matrixStack, this.x, drawY, 0, 46 + i * 20, this.width / 2, this.height);
-                this.blit(matrixStack, this.x + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20,
+                this.blit(matrixStack, this.getX(), drawY, 0, 46 + i * 20, this.width / 2, this.height);
+                this.blit(matrixStack, this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20,
                         this.width / 2, this.height);
                 int j = 14737632;
 
@@ -81,8 +77,8 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
                     j = 16777120;
                 }
 
-                drawCenteredString(matrixStack, fontrenderer, this.baseButtonText, this.x + this.width / 2,
-                        this.y + (this.height - 8) / 2, j);
+                drawCenteredString(matrixStack, fontrenderer, this.baseButtonText, this.getX() + this.width / 2,
+                        this.getX() + (this.height - 8) / 2, j);
             }
 
             if (dropdownOpen)
@@ -98,21 +94,21 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
                 {
                     E e = possibleVals.get(j);
                     drawY += yOffset;
-                    boolean ourHovered = mouseX >= this.x && mouseY >= drawY && mouseX < this.x + this.width && mouseY < drawY + this.height - 2;
+                    boolean ourHovered = mouseX >= this.getX() && mouseY >= drawY && mouseX < this.getX() + this.width && mouseY < drawY + this.height - 2;
 
                     int subHovered = ourHovered ? 2 : 0;
 
                     RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                     // TODO: Fix rendering being dodgy, but it is "good enough" to avoid spending too much time on right now
-                    this.blit(matrixStack, this.x, drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
-                    this.blit(matrixStack, this.x + this.width / 2, drawY, 200 - this.width / 2,
+                    this.blit(matrixStack, this.getX(), drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
+                    this.blit(matrixStack, this.getX() + this.width / 2, drawY, 200 - this.width / 2,
                             46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
 
                     String name = I18n.get(e.getTranslate(selected, true));
                     int textColour = 14737632;
 
-                    drawCenteredString(matrixStack, fontrenderer, name, this.x + this.width / 2,
+                    drawCenteredString(matrixStack, fontrenderer, name, this.getX() + this.width / 2,
                             drawY + (this.height - 10) / 2, textColour);
                 }
             }
@@ -171,7 +167,8 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
 
     public void ourOnPress()
     {
-        this.ourOnPress.onPress(this);
+//        this
+        //        .ourOnPress.onPress(this);
     }
 
     @Override
@@ -212,7 +209,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
     private E getClickedElement(double mouseX, double mouseY)
     {
         E clickedElement = null;
-        int y = this.y + 1;
+        int y = this.getY() + 1;
 
         int yOffset = height - 2;
         if (flipped)
@@ -223,7 +220,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Bu
         for (IDropdownOption e : possibleVals)
         {
             y += yOffset;
-            if (mouseX >= this.x && mouseY >= y && mouseX < this.x + this.width && mouseY < y + this.height - 2)
+            if (mouseX >= this.getX() && mouseY >= y && mouseX < this.getX() + this.width && mouseY < y + this.height - 2)
             {
                 clickedElement = (E) e;
                 break;

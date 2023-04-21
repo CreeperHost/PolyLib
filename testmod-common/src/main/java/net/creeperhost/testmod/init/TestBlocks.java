@@ -7,14 +7,14 @@ import net.creeperhost.testmod.blocks.inventorytestblock.InventoryTestBlock;
 import net.creeperhost.testmod.blocks.inventorytestblock.InventoryTestBlockEntity;
 import net.creeperhost.testmod.blocks.multiblock.BlockTestMultiblockBlock;
 import net.creeperhost.testmod.blocks.multiblock.TestMultiBlockBlockEntity;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class TestBlocks
 {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(TestMod.MOD_ID, Registry.BLOCK_REGISTRY);
-    public static final DeferredRegister<BlockEntityType<?>> TILES_ENTITIES = DeferredRegister.create(TestMod.MOD_ID, Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(TestMod.MOD_ID, Registries.BLOCK);
+    public static final DeferredRegister<BlockEntityType<?>> TILES_ENTITIES = DeferredRegister.create(TestMod.MOD_ID, Registries.BLOCK_ENTITY_TYPE);
 
     public static final RegistrySupplier<Block> INVENTORY_TEST_BLOCK = BLOCKS.register("inventory_test_block", InventoryTestBlock::new);
     public static final RegistrySupplier<Block> MULTIBLOCK_TEST_BLOCK = BLOCKS.register("multiblock_test_block", BlockTestMultiblockBlock::new);

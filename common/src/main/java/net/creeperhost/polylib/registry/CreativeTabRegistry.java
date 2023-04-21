@@ -12,7 +12,7 @@ public class CreativeTabRegistry
     public static CreativeModeTab of(ResourceLocation name, Supplier<ItemStack> itemStack)
     {
         PolyLib.LOGGER.info("Registering creative tab: " + name);
-        return dev.architectury.registry.CreativeTabRegistry.create(name, itemStack);
+        return dev.architectury.registry.CreativeTabRegistry.create(name, itemStack).get();
     }
 
     public static CreativeModeTab of(String modid, String name, Supplier<ItemStack> itemStack)
