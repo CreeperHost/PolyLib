@@ -25,3 +25,4 @@ classes/
 testmod-common/src/generated/resources/assets/.cache/
 testmod-fabric/src/generated/resources/.cache/
 testmod-forge/src/generated/resources/.cache/
+.architectury-transformer/
