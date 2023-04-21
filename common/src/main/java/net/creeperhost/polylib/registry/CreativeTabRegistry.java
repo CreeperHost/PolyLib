@@ -9,13 +9,13 @@ import java.util.function.Supplier;
 
 public class CreativeTabRegistry
 {
-    public static CreativeModeTab of(ResourceLocation name, Supplier<ItemStack> itemStack)
+    public static dev.architectury.registry.CreativeTabRegistry.TabSupplier of(ResourceLocation name, Supplier<ItemStack> itemStack)
     {
         PolyLib.LOGGER.info("Registering creative tab: " + name);
-        return dev.architectury.registry.CreativeTabRegistry.create(name, itemStack).get();
+        return dev.architectury.registry.CreativeTabRegistry.create(name, itemStack);
     }
 
-    public static CreativeModeTab of(String modid, String name, Supplier<ItemStack> itemStack)
+    public static dev.architectury.registry.CreativeTabRegistry.TabSupplier of(String modid, String name, Supplier<ItemStack> itemStack)
     {
         return of(new ResourceLocation(modid, name), itemStack);
     }
