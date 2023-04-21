@@ -13,6 +13,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: |
       !contains(github.event.head_commit.message, '[ciskip]')
     steps:
@@ -36,3 +37,13 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew build publish --stacktrace --no-daemon
+      - name: Send Forge notification to Discord
+        uses: sebastianpopp/discord-action@releases/v2
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: https://maven.creeperhost.net/net/creeperhost/polylib-forge/1930.0.2-build.${{github.run_number}}/polylib-forge-1930.0.2-build.${{github.run_number}}.jar
+      - name: Send Fabric notification to Discord
+        uses: sebastianpopp/discord-action@releases/v2
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: https://maven.creeperhost.net/net/creeperhost/polylib-fabric/1930.0.2-build.${{github.run_number}}/polylib-fabric-1930.0.2-build.${{github.run_number}}.jar
