@@ -15,20 +15,20 @@ description = '''
 [[dependencies.polylib]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[44,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.polylib]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,)"
+versionRange = "[1.19.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.polylib]]
 modId = "architectury"
 mandatory = true
-versionRange = "[6.4.62,)"
+versionRange = "[7.1.78,)"
 ordering = "AFTER"
 side = "BOTH"
