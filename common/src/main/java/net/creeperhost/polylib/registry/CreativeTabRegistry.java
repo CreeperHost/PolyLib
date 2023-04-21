@@ -2,12 +2,10 @@ package net.creeperhost.polylib.registry;
 
 import net.creeperhost.polylib.PolyLib;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class CreativeTabRegistry
 {

@@ -1,8 +1,6 @@
 package net.creeperhost.polylib;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.architectury.platform.Platform;
-import net.minecraft.data.DataGenerator;
 
 import java.nio.file.Path;
 

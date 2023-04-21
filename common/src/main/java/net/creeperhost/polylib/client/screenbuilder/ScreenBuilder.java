@@ -6,7 +6,6 @@ import dev.architectury.fluid.FluidStack;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.fluid.ScreenFluidRenderer;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
