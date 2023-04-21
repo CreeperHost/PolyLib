@@ -15,10 +15,12 @@ public class PolyLibFabric implements ModInitializer
     public void onInitialize()
     {
         PolyLib.init();
+
         ServerChunkEvents.CHUNK_LOAD.register(
                 (world, chunk) -> ChunkEvents.CHUNK_LOAD_EVENT.invoker().onChunkLoad(world, chunk));
         ServerChunkEvents.CHUNK_UNLOAD.register(
                 (world, chunk) -> ChunkEvents.CHUNK_UNLOAD_EVENT.invoker().onChunkUnload(world, chunk));
+
         if (Platform.getEnv() == EnvType.CLIENT)
         {
             WorldRenderEvents.END.register(context -> ClientRenderEvents.LAST.invoker().onRenderLastEvent(context.matrixStack()));
