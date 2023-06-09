@@ -63,14 +63,7 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     {
         values.forEach((block, builder) ->
         {
-            PolyLib.LOGGER.info("Running data gen for block loot table " + block.getDescriptionId() + " " + getFabricDataOutput().getOutputFolder());
             add(block, builder);
         });
-    }
-
-    @Override
-    public void accept(BiConsumer<ResourceLocation, LootTable.Builder> resourceLocationBuilderBiConsumer)
-    {
-
     }
 }
