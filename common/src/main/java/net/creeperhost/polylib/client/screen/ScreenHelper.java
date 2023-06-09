@@ -2,42 +2,19 @@ package net.creeperhost.polylib.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 public class ScreenHelper
 {
-    public void renderHead(PoseStack poseStack, int x, int y)
+    public void renderHead(GuiGraphics guiGraphics, int x, int y)
     {
-        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/entity/steve.png"));
-
-        GuiComponent.blit(poseStack, x, y - 2, 9, 9, 8.0F, 8.0F, 8, 8, 64, 64);
+        guiGraphics.blit(new ResourceLocation("textures/entity/steve.png"), x, y - 2, 9, 9, 8.0F, 8.0F, 8, 8, 64, 64);
         RenderSystem.enableBlend();
-        GuiComponent.blit(poseStack, x, y - 2, 9, 9, 40.0F, 8.0F, 8, 8, 64, 64);
+        guiGraphics.blit(new ResourceLocation("textures/entity/steve.png"), x, y - 2, 9, 9, 40.0F, 8.0F, 8, 8, 64, 64);
         RenderSystem.disableBlend();
-    }
-
-    @Deprecated//Use LoadingSpinner.class
-    public static void loadingSpin(PoseStack poseStack, float partialTicks, int ticks, int x, int y, ItemStack stack)
-    {
-        int rotateTickMax = 30;
-        int throbTickMax = 20;
-        int rotateTicks = ticks % rotateTickMax;
-        int throbTicks = ticks % throbTickMax;
-        poseStack.pushPose();
-        poseStack.translate(x, y, 0);
-        float scale = 1F + ((throbTicks >= (throbTickMax / 2) ? (throbTickMax - (throbTicks + partialTicks)) : (throbTicks + partialTicks)) * (2F / throbTickMax));
-        poseStack.scale(scale, scale, scale);
-
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        itemRenderer.renderGuiItem(stack, -8, -8);
-
-        poseStack.popPose();
     }
 
     public static void drawModalRectWithCustomSizedTextureFloat(Matrix4f matrix, float x, float y, float u, float v, int width, int height, float textureWidth, float textureHeight)

@@ -2,6 +2,7 @@ package net.creeperhost.polylib.client.screen.widget.buttons;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -25,13 +26,13 @@ public class ButtonMultiple extends PolyButton
     }
 
     @Override
-    public void renderButton(@NotNull PoseStack poseStack, int i, int j, float f)
+    public void renderWidget(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
     {
         if (this.visible)
         {
             RenderSystem.setShaderTexture(0, resourceLocation);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            this.blit(poseStack, getX(), getY(), index * 20, getY(), this.width, this.height);
+            guiGraphics.blit(resourceLocation, getX(), getY(), index * 20, getY(), this.width, this.height);
         }
     }
 }

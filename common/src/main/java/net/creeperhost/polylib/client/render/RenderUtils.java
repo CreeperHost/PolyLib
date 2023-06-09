@@ -88,13 +88,15 @@ public class RenderUtils
         fillGradient(matrix4f, bufferBuilder, x - 3, y - 3, x + width + 3, y - 3 + 1, 400, 1347420415, 1347420415);
         fillGradient(matrix4f, bufferBuilder, x - 3, y + height + 2, x + width + 3, y + height + 3, 400, 1344798847,
                 1344798847);
-        //        RenderSystem.enableDepthTest();
-        RenderSystem.disableTexture();
+
+        //TODO
+//        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
+        //TODO
+//        RenderSystem.enableTexture();
         MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(
                 Tesselator.getInstance().getBuilder());
         poseStack.translate(0.0, 0.0, 400.0);

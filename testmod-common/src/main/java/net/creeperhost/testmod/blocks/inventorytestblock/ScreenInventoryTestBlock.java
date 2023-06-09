@@ -7,6 +7,7 @@ import net.creeperhost.polylib.client.screen.widget.buttons.ButtonItemStack;
 import net.creeperhost.polylib.client.screen.widget.buttons.ButtonRedstoneControl;
 import net.creeperhost.polylib.client.screenbuilder.ScreenBuilder;
 import net.creeperhost.polylib.data.EnumRedstoneState;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -45,27 +46,27 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
     }
 
     @Override
-    protected void renderBg(@NotNull PoseStack poseStack, float f, int mouseX, int mouseY)
+    protected void renderBg(@NotNull GuiGraphics guiGraphics, float f, int mouseX, int mouseY)
     {
         int progress = getMenu().getContainerData().get(0);
-        renderBackground(poseStack);
-        screenBuilder.drawDefaultBackground(this, poseStack, leftPos, topPos, imageWidth, imageHeight, 256, 256);
-        screenBuilder.drawPlayerSlots(this, poseStack, leftPos + imageWidth / 2, topPos + 131, true, 256, 256);
+        renderBackground(guiGraphics);
+        screenBuilder.drawDefaultBackground(guiGraphics, leftPos, topPos, imageWidth, imageHeight, 256, 256);
+        screenBuilder.drawPlayerSlots(guiGraphics, leftPos + imageWidth / 2, topPos + 131, true, 256, 256);
 
-        screenBuilder.drawSlot(this, poseStack, leftPos + 40, topPos + 60, 256, 256);
-        screenBuilder.drawSlot(this, poseStack, leftPos + 120, topPos + 60, 256, 256);
+        screenBuilder.drawSlot(guiGraphics, leftPos + 40, topPos + 60, 256, 256);
+        screenBuilder.drawSlot(guiGraphics, leftPos + 120, topPos + 60, 256, 256);
 
-        screenBuilder.drawProgressBar(this, poseStack, progress, 100, leftPos + 80, topPos + 60, mouseX, mouseY);
+        screenBuilder.drawProgressBar(guiGraphics, progress, 100, leftPos + 80, topPos + 60, mouseX, mouseY);
         FluidStack fluidStack = FluidStack.create(Fluids.WATER, progress * 10);
-        screenBuilder.drawTankWithOverlay(this, poseStack, fluidStack, 1000, leftPos + imageWidth - 30, topPos + 40, 49, mouseX, mouseY);
-        screenBuilder.drawBar(this, poseStack, leftPos + 10, topPos + 20, 80, progress, 100, mouseX, mouseY, Component.literal(progress + " FE"));
+        screenBuilder.drawTankWithOverlay(guiGraphics, fluidStack, 1000, leftPos + imageWidth - 30, topPos + 40, 49, mouseX, mouseY);
+        screenBuilder.drawBar(guiGraphics, leftPos + 10, topPos + 20, 80, progress, 100, mouseX, mouseY, Component.literal(progress + " FE"));
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int i, int j, float f)
+    public void render(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
     {
-        super.render(poseStack, i, j, f);
+        super.render(guiGraphics, i, j, f);
 
-        renderTooltip(poseStack, i, j);
+        renderTooltip(guiGraphics, i, j);
     }
 }

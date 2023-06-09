@@ -15,3 +15,5 @@ accessWidener   v2  named
 
 #accessible field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
 #mutable field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+
+accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I

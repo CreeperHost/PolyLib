@@ -5,8 +5,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         if (this.visible)
         {
@@ -56,16 +58,12 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
             this.isHovered = mouseX >= this.getX() && mouseY >= drawY && mouseX < this.getX() + this.width && mouseY < drawY + this.height;
             int i = this.getHoverState(this.isHovered);
             RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
-                    GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
-                    GlStateManager.DestFactor.ZERO);
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
-                    GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             if (drawHeader)
             {
-                this.blit(matrixStack, this.getX(), drawY, 0, 46 + i * 20, this.width / 2, this.height);
-                this.blit(matrixStack, this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20,
-                        this.width / 2, this.height);
+                guiGraphics.blit(WIDGETS_LOCATION, this.getX(), drawY, 0, 46 + i * 20, this.width / 2, this.height);
+                guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
                 int j = 14737632;
 
                 if (!this.active)
@@ -76,8 +74,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
                     j = 16777120;
                 }
 
-                drawCenteredString(matrixStack, fontrenderer, this.baseButtonText, this.getX() + this.width / 2,
-                        this.getX() + (this.height - 8) / 2, j);
+                guiGraphics.drawCenteredString(fontrenderer, this.baseButtonText, this.getX() + this.width / 2, this.getX() + (this.height - 8) / 2, j);
             }
 
             if (dropdownOpen)
@@ -100,15 +97,13 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
                     RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                     // TODO: Fix rendering being dodgy, but it is "good enough" to avoid spending too much time on right now
-                    this.blit(matrixStack, this.getX(), drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
-                    this.blit(matrixStack, this.getX() + this.width / 2, drawY, 200 - this.width / 2,
-                            46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
+                    guiGraphics.blit(WIDGETS_LOCATION, this.getX(), drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
+                    guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
 
                     String name = I18n.get(e.getTranslate(selected, true));
                     int textColour = 14737632;
 
-                    drawCenteredString(matrixStack, fontrenderer, name, this.getX() + this.width / 2,
-                            drawY + (this.height - 10) / 2, textColour);
+                    guiGraphics.drawCenteredString(fontrenderer, name, this.getX() + this.width / 2, drawY + (this.height - 10) / 2, textColour);
                 }
             }
         }

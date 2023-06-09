@@ -31,14 +31,14 @@ public class PlayerHelper
     {
         if (player == null) return;
         if (itemStack.isEmpty()) return;
-        if (player.level == null) return;
+        if (player.level() == null) return;
 
         //Try and add the itemStack to the player
         boolean added = player.addItem(itemStack);
         //If it fails due to the players inventory being full add an itementity of the stack below the player
         if (!added)
         {
-            Level level = player.getLevel();
+            Level level = player.level();
             ItemEntity itemEntity = new ItemEntity(level, player.blockPosition().getX(), player.blockPosition().getY(),
                     player.blockPosition().getZ(), itemStack);
             level.addFreshEntity(itemEntity);

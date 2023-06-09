@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiComponent;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
@@ -30,10 +29,11 @@ public class ImageRenderer
 
     public void render(PoseStack matrixStack, int x, int y, int width, int height, float partialTicks)
     {
-        RenderSystem.enableTexture();
+        //TODO
+//        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
         RenderSystem.bindTexture(glTexture);
-        GuiComponent.blit(matrixStack, x, y, 0.0F, 0.0F, width, height, width, height);
+//        GuiComponent.blit(matrixStack, x, y, 0.0F, 0.0F, width, height, width, height);
     }
 
     public static Image fromURL(URL url) throws IOException

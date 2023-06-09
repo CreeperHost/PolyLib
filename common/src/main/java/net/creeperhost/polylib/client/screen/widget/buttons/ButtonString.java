@@ -1,8 +1,7 @@
 package net.creeperhost.polylib.client.screen.widget.buttons;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +40,7 @@ public class ButtonString extends PolyButton
     }
 
     @Override
-    public void renderButton(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partial)
+    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partial)
     {
         this.visible = hasText();
         if (this.visible)
@@ -52,11 +51,11 @@ public class ButtonString extends PolyButton
 
             if (renderPlace == RenderPlace.CENTRED)
             {
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, buttonText, this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
+                guiGraphics.drawCenteredString(Minecraft.getInstance().font, buttonText, this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
             }
             else
             {
-                GuiComponent.drawString(poseStack, Minecraft.getInstance().font, buttonText, getX(), getY(), 0xFFFFFF);
+                guiGraphics.drawString(Minecraft.getInstance().font, buttonText, getX(), getY(), 0xFFFFFF);
             }
         }
     }

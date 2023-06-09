@@ -3,6 +3,7 @@ package net.creeperhost.polylib.client.screen.widget.buttons;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.creeperhost.polylib.client.screenbuilder.ScreenBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,7 @@ public class ButtonInfoTab extends PolyButton
     int progress = 0;
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int i, int j, float f)
+    public void render(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
     {
         int start = (getX() + 19) - progress;
         if (isOpening)
@@ -52,25 +53,25 @@ public class ButtonInfoTab extends PolyButton
 
         if (isOpening || isClosing || isOpen)
         {
-            screenBuilder.drawDefaultBackground(screen, poseStack, start, getY(), progress, progress * 2, 256, 256);
+            screenBuilder.drawDefaultBackground(guiGraphics, start, getY(), progress, progress * 2, 256, 256);
         }
         if (!isOpening && !isClosing && !isOpen || progress < 20)
         {
-            screenBuilder.drawDefaultBackground(screen, poseStack, getX() - 1, getY(), 20, 20, 256, 256);
+            screenBuilder.drawDefaultBackground(guiGraphics, getX() - 1, getY(), 20, 20, 256, 256);
         }
-        drawCenteredString(poseStack, Minecraft.getInstance().font, this.getMessage(), getX() + this.width / 2,
+        guiGraphics.drawCenteredString(Minecraft.getInstance().font, this.getMessage(), getX() + this.width / 2,
                 this.getY() + (this.height - 8) / 2, -1);
         if (isOpen && !isOpening && !isClosing)
         {
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
+            guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
                     this.getY() + 20, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
+            guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
                     this.getY() + 40, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
+            guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
                     this.getY() + 60, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
+            guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
                     this.getY() + 80, -1);
-            drawString(poseStack, Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
+            guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("This is a sentence"), this.getX() - 84,
                     this.getY() + 100, -1);
 
         }

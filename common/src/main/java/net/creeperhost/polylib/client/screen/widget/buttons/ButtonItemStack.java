@@ -1,9 +1,7 @@
 package net.creeperhost.polylib.client.screen.widget.buttons;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -19,10 +17,9 @@ public class ButtonItemStack extends Button
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int i, int j, float f)
+    public void render(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
     {
-        super.render(poseStack, i, j, f);
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        itemRenderer.renderGuiItem(itemStack, getX() + 2, getY() + 1);
+        super.render(guiGraphics, i, j, f);
+        guiGraphics.renderItem(itemStack, getX() + 2, getY() + 1);
     }
 }

@@ -2,7 +2,6 @@ package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import dev.architectury.registry.menu.MenuRegistry;
 import net.creeperhost.polylib.blocks.BlockFacing;
-import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -14,7 +13,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +21,7 @@ public class InventoryTestBlock extends BlockFacing
 {
     public InventoryTestBlock()
     {
-        super(Properties.of(Material.METAL));
+        super(Properties.of());
     }
 
     @Override

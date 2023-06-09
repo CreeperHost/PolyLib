@@ -22,6 +22,7 @@ public class TestMod
     {
         TestBlocks.BLOCKS.register();
         TestBlocks.TILES_ENTITIES.register();
+        TestItems.CREATIVE_MODE_TABS.register();
         TestItems.ITEMS.register();
         TestContainers.CONTAINERS.register();
         if(Platform.getEnv() == EnvType.CLIENT)

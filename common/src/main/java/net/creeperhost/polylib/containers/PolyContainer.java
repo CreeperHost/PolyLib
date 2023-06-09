@@ -54,8 +54,7 @@ public abstract class PolyContainer extends AbstractContainerMenu
     public static boolean canStacksMerge(ItemStack stack1, ItemStack stack2)
     {
         if (stack1.isEmpty() || stack2.isEmpty()) return false;
-        if (!stack1.sameItem(stack2)) return false;
-        if (!ItemStack.tagMatches(stack1, stack2)) return false;
+        if (!ItemStack.matches(stack1, stack2)) return false;
         return true;
     }
 

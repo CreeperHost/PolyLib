@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
 import org.apache.commons.io.IOUtils;
@@ -211,7 +212,7 @@ public class AnimatedGif
             animationProgress++;
         }
 
-        public void render(PoseStack matrixStack, int x, int y, int w, int h, float partialTicks)
+        public void render(GuiGraphics guiGraphics, int x, int y, int w, int h, float partialTicks)
         {
             if (totalFrameTicks == 0) return;
 
@@ -246,10 +247,10 @@ public class AnimatedGif
                 lastFrame = frameIndex;
             }
 
-            RenderSystem.enableTexture();
             RenderSystem.disableBlend();
             RenderSystem.bindTexture(glTexture);
-            Screen.blit(matrixStack, x, y, w, h, 0, lastFrame * height, width, height, width, height * frames);
+            //TODO
+//            guiGraphics.blit(glTexture, x, y, w, h, 0, lastFrame * height, width, height, width, height * frames);
         }
 
         public void close()

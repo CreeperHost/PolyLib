@@ -33,8 +33,8 @@ public class LevelHelper
 
     public static Iterable<BlockPos> getPositionsFromBox(AABB box)
     {
-        return getPositionsFromBox(new BlockPos(box.minX, box.minY, box.minZ),
-                new BlockPos(box.maxX, box.maxY, box.maxZ));
+        return getPositionsFromBox(new BlockPos((int) box.minX, (int) box.minY, (int) box.minZ), new BlockPos(
+                (int) box.maxX, (int) box.maxY, (int) box.maxZ));
     }
 
     public static Iterable<BlockPos> getPositionsFromBox(BlockPos corner1, BlockPos corner2)

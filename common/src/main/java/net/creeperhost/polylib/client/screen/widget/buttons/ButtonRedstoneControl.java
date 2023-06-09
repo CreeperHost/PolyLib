@@ -1,10 +1,9 @@
 package net.creeperhost.polylib.client.screen.widget.buttons;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.creeperhost.polylib.data.EnumRedstoneState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,12 +20,11 @@ public class ButtonRedstoneControl extends PolyButton
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int i, int j, float f)
+    public void render(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
     {
-        super.render(poseStack, i, j, f);
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        itemRenderer.renderGuiItem(state.getRenderStack(), getX() + 2, getY() + 1);
-        if (isHovered) screen.renderTooltip(poseStack, Component.literal(state.getName()), i, j);
+        super.render(guiGraphics, i, j, f);
+        guiGraphics.renderItem(state.getRenderStack(), getX() + 2, getY() + 1);
+        if (isHovered) guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal(state.getName()), i, j);
     }
 
     @Override
