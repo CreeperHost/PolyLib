@@ -27,38 +27,44 @@ public class PlacementRenderer
         Item item = mc.player.getMainHandItem().getItem();
         if(mc.level == null) return;
 
-        if(Block.byItem(item) != Blocks.AIR)
+        try
         {
-            Block verticalSlabBlock = Block.byItem(item);
-            BlockHitResult blockHitResult = VectorHelper.getLookingAt(mc.player, 10);
-
-            EntityRenderDispatcher erd = mc.getEntityRenderDispatcher();
-            double renderPosX = erd.camera.getPosition().x();
-            double renderPosY = erd.camera.getPosition().y();
-            double renderPosZ = erd.camera.getPosition().z();
-
-            poseStack.pushPose();
-            poseStack.translate(-renderPosX, -renderPosY, -renderPosZ);
-
-            if(buffer == null) buffer = GhostBlockRenderer.initBuffers(mc.renderBuffers().bufferSource());
-
-            BlockPos checkPos = null;
-            if (mc.hitResult instanceof BlockHitResult blockRes)
+            if (Block.byItem(item) != Blocks.AIR)
             {
-                checkPos = blockRes.getBlockPos().relative(blockRes.getDirection());
+                Block verticalSlabBlock = Block.byItem(item);
+                BlockHitResult blockHitResult = VectorHelper.getLookingAt(mc.player, 10);
+
+                EntityRenderDispatcher erd = mc.getEntityRenderDispatcher();
+                double renderPosX = erd.camera.getPosition().x();
+                double renderPosY = erd.camera.getPosition().y();
+                double renderPosZ = erd.camera.getPosition().z();
+
+                poseStack.pushPose();
+                poseStack.translate(-renderPosX, -renderPosY, -renderPosZ);
+
+                if (buffer == null) buffer = GhostBlockRenderer.initBuffers(mc.renderBuffers().bufferSource());
+
+                BlockPos checkPos = null;
+                if (mc.hitResult != null && mc.hitResult instanceof BlockHitResult blockRes)
+                {
+                    checkPos = blockRes.getBlockPos().relative(blockRes.getDirection());
+                }
+
+                if (checkPos != null)
+                {
+                    BlockState blockState = verticalSlabBlock.getStateForPlacement(new BlockPlaceContext(mc.player, InteractionHand.MAIN_HAND, mc.player.getMainHandItem(), blockHitResult));
+                    if (blockState != null)
+                    {
+                        if (verticalSlabBlock.canSurvive(blockState, mc.level, checkPos))
+                        {
+                            GhostBlockRenderer.renderBlock(blockState, checkPos, poseStack, buffer);
+                        }
+                    }
+                }
+
+                buffer.endBatch();
+                poseStack.popPose();
             }
-            if(checkPos == null) return;
-
-            BlockState blockState = verticalSlabBlock.getStateForPlacement(new BlockPlaceContext(mc.player, InteractionHand.MAIN_HAND, mc.player.getMainHandItem(), blockHitResult));
-            if(blockState == null) return;
-
-            if(verticalSlabBlock.canSurvive(blockState, mc.level, checkPos))
-            {
-                GhostBlockRenderer.renderBlock(blockState, checkPos, poseStack, buffer);
-            }
-
-            buffer.endBatch();
-            poseStack.popPose();
-        }
+        } catch (Exception ignored){}
     }
 }

@@ -13,7 +13,7 @@ public class ForgeClientEvents
     @SubscribeEvent
     static void renderWorldLastEvent(RenderLevelStageEvent event)
     {
-        if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY)
+        if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES)
             ClientRenderEvents.LAST.invoker().onRenderLastEvent(event.getPoseStack());
     }
 }
