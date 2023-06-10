@@ -27,10 +27,21 @@ public class TestModDataGen implements DataGeneratorEntrypoint
         System.out.println("FORGE :" + PolyDataGen.FORGE);
         System.out.println("FABRIC :" + PolyDataGen.FABRIC);
         var pack = fabricDataGenerator.createPack();
-        for(ModuleType value : ModuleType.values())
-        {
-            pack.addProvider((output, registriesFuture) -> new PolyLanguageProvider(output, value));
-        }
+
+        pack.addProvider((output, registriesFuture) -> {
+            PolyLanguageProvider languageProvider = new PolyLanguageProvider(output, ModuleType.COMMON);
+            languageProvider.add(TestItems.MACHINE_TEST_ITEMBLOCK.get(), "Test Machine", ModuleType.COMMON);
+            languageProvider.add(TestItems.MULTIBLOCK_TEST_ITEMBLOCK.get(), "Test Multiblock block", ModuleType.COMMON);
+            languageProvider.add(TestItems.INVENTORY_TEST_ITEMBLOCK.get(), "inventory Test Block", ModuleType.COMMON);
+
+            return languageProvider;
+        });
+
+
+//        for(ModuleType value : ModuleType.values())
+//        {
+//            pack.addProvider((output, registriesFuture) -> new PolyLanguageProvider(output, value));
+//        }
 
 //        for (ModuleType value : ModuleType.values())
 //        {

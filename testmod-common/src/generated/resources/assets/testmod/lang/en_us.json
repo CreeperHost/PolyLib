@@ -1,3 +1,5 @@
 {
-  "itemGroup.testmod.creative_tab": "COMMON"
+  "block.testmod.inventory_test_block": "inventory Test Block",
+  "block.testmod.machine_test_block": "Test Machine",
+  "block.testmod.multiblock_test_block": "Test Multiblock block"
 }

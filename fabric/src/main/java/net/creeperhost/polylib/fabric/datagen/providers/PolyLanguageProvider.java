@@ -78,10 +78,9 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     @Override
     public CompletableFuture<?> run(CachedOutput writer)
     {
-        //TODO
         //If values is empty don't generate an empty array json file
-        //        if (values.isEmpty()) return;
-        //        dataGenerator.outputFolder = appendPath(moduleType);
+        if (values.isEmpty()) return null;
+        dataOutput.outputFolder = appendPath(moduleType);
         return super.run(writer);
     }
 }

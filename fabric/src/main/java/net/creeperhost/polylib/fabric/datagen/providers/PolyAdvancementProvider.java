@@ -47,8 +47,8 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     @Override
     public CompletableFuture<?> run(CachedOutput writer)
     {
-//        if (values.isEmpty()) return;
-//        dataGenerator.outputFolder = appendPath(moduleType);
+        if (values.isEmpty()) return null;
+        output.outputFolder = appendPath(moduleType);
         return super.run(writer);
     }
 

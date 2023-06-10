@@ -98,19 +98,11 @@ public class PolyModelProvider extends FabricModelProvider
         return super.run(cachedOutput);
     }
 
-    //    @Override
-//    public void run(@NotNull CachedOutput cachedOutput)
-//    {
-//        updatePaths();
-//        super.run(cachedOutput);
-//    }
-
     public void updatePaths()
     {
-        //TODO
-//        dataGenerator.outputFolder = appendPath(moduleType);
-//        blockStatePathProvider.root = appendPath(moduleType);
-//        modelPathProvider.root = appendPath(moduleType);
+        dataOutput.outputFolder = appendPath(moduleType);
+        blockStatePathProvider.root = appendPath(moduleType);
+        modelPathProvider.root = appendPath(moduleType);
     }
 
     public Path appendPath(ModuleType moduleType)

@@ -43,17 +43,11 @@ public class PolyRecipeProvider extends FabricRecipeProvider
     @Override
     public CompletableFuture<?> run(CachedOutput writer)
     {
+        //If values is empty don't generate an empty array json file
+        if (values.isEmpty()) return null;
+        recipePathProvider.root = appendPath(moduleType);
         return super.run(writer);
     }
-
-    //    @Override
-//    public void run(CachedOutput writer)
-//    {
-//        //If values is empty don't generate an empty array json file
-//        if (values.isEmpty()) return;
-//        recipePathProvider.root = appendPath(moduleType);
-//        super.run(writer);
-//    }
 
     public Path appendPath(ModuleType moduleType)
     {

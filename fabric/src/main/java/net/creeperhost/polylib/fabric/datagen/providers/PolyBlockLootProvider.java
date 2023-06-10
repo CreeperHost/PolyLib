@@ -23,11 +23,13 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
 {
     private final ModuleType moduleType;
     private final Map<Block, LootTable.Builder> values = Maps.newHashMap();
+    private final FabricDataOutput fabricDataOutput;
 
     public PolyBlockLootProvider(FabricDataGenerator dataGenerator, FabricDataOutput dataOutput, ModuleType moduleType)
     {
         super(dataOutput);
         this.moduleType = moduleType;
+        this.fabricDataOutput = dataOutput;
 
         PolyLib.LOGGER.info("PolyBlockLootProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
@@ -46,10 +48,9 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     @Override
     public CompletableFuture<?> run(CachedOutput writer)
     {
-        //TODO
         //If values is empty don't generate an empty array json file
-//        if (values.isEmpty()) return;
-//        dataGenerator.outputFolder = appendPath(moduleType);
+        if (values.isEmpty()) return null;
+        fabricDataOutput.outputFolder = appendPath(moduleType);
         return super.run(writer);
     }
 
@@ -61,9 +62,6 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     @Override
     public void generate()
     {
-        values.forEach((block, builder) ->
-        {
-            add(block, builder);
-        });
+        values.forEach(this::add);
     }
 }
