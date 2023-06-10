@@ -1,9 +1,7 @@
 package net.creeperhost.polylib.fabric.datagen.providers;
 
-import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.CachedOutput;
@@ -21,12 +19,10 @@ public class PolyRecipeProvider extends FabricRecipeProvider
     private final ModuleType moduleType;
     private final List<RecipeBuilder> values = new ArrayList<>();
 
-    public PolyRecipeProvider(FabricDataGenerator dataGenerator, FabricDataOutput dataOutput, ModuleType moduleType)
+    public PolyRecipeProvider(FabricDataOutput dataOutput, ModuleType moduleType)
     {
         super(dataOutput);
         this.moduleType = moduleType;
-
-        PolyLib.LOGGER.info("PolyRecipeProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
 
     public void add(RecipeBuilder recipeBuilder, ModuleType moduleType)

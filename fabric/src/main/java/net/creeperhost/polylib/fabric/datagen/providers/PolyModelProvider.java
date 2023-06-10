@@ -32,14 +32,12 @@ public class PolyModelProvider extends FabricModelProvider
     private FabricDataOutput dataOutput;
 
 
-    public PolyModelProvider(FabricDataGenerator dataGenerator, FabricDataOutput dataOutput, ModuleType moduleType)
+    public PolyModelProvider(FabricDataOutput dataOutput, ModuleType moduleType)
     {
         super(dataOutput);
         this.moduleType = moduleType;
         this.dataOutput = dataOutput;
         updatePaths();
-
-        PolyLib.LOGGER.info("PolyModelProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
 
     @Override

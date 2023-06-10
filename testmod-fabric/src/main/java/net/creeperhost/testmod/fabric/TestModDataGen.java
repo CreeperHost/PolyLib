@@ -8,6 +8,7 @@ import net.creeperhost.testmod.init.TestItems;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.tags.BannerPatternTagsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -37,49 +38,40 @@ public class TestModDataGen implements DataGeneratorEntrypoint
             return languageProvider;
         });
 
+        pack.addProvider((output, registriesFuture) -> {
+           PolyBlockLootProvider blockLootProvider = new PolyBlockLootProvider(output, ModuleType.COMMON);
+           TestBlocks.BLOCKS.forEach(blockRegistrySupplier -> blockLootProvider.addSelfDrop(blockRegistrySupplier.get(), ModuleType.COMMON));
+           return blockLootProvider;
+        });
 
-//        for(ModuleType value : ModuleType.values())
-//        {
-//            pack.addProvider((output, registriesFuture) -> new PolyLanguageProvider(output, value));
-//        }
+        pack.addProvider((output, registriesFuture) -> {
+            PolyBlockTagProvider blockTagProvider = new PolyBlockTagProvider(output, registriesFuture, ModuleType.COMMON);
+            TestBlocks.BLOCKS.forEach(blockRegistrySupplier -> blockTagProvider.add(BlockTags.MINEABLE_WITH_PICKAXE, blockRegistrySupplier.get(), ModuleType.COMMON));
+            return blockTagProvider;
+        });
 
-//        for (ModuleType value : ModuleType.values())
-//        {
-//            //Ignore Quilt
-//            if(value == ModuleType.QUILT) continue;
-//
-//            PolyLanguageProvider languageProvider = new PolyLanguageProvider(fabricDataGenerator, value);
-//            PolyBlockLootProvider blockLootProvider = new PolyBlockLootProvider(fabricDataGenerator, value);
-//            //TODO broken
-////            PolyBlockTagProvider blockTagProvider = new PolyBlockTagProvider(fabricDataGenerator, value);
-////            PolyItemTagProvider itemTagProvider = new PolyItemTagProvider(fabricDataGenerator, blockTagProvider, value);
-//            PolyRecipeProvider recipeProvider = new PolyRecipeProvider(fabricDataGenerator, value);
-//            PolyAdvancementProvider advancementProvider = new PolyAdvancementProvider(fabricDataGenerator, value);
-//            PolyModelProvider modelProvider = new PolyModelProvider(fabricDataGenerator, value);
-//
-//            languageProvider.add("itemGroup.testmod.creative_tab", "FORGE", ModuleType.FORGE);
-//            languageProvider.add("itemGroup.testmod.creative_tab", "FABRIC", ModuleType.FABRIC);
-//            languageProvider.add("itemGroup.testmod.creative_tab", "COMMON", ModuleType.COMMON);
-//
-//            TestBlocks.BLOCKS.forEach(blockRegistrySupplier ->
-//            {
-//                blockLootProvider.addSelfDrop(blockRegistrySupplier.get(), value);
-//                blockTagProvider.add(BlockTags.MINEABLE_WITH_PICKAXE, blockRegistrySupplier.get(), value);
-//                modelProvider.addSimpleBlockModel(blockRegistrySupplier.get(), new ResourceLocation("minecraft", "block/stone"), value);
-//            });
-//
-//            recipeProvider.add(RecipeProvider.slabBuilder(TestBlocks.INVENTORY_TEST_BLOCK.get(), Ingredient.of(
-//                    Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
-//
-//            itemTagProvider.add(ItemTags.ANVIL, TestItems.INVENTORY_TEST_ITEMBLOCK.get(), ModuleType.COMMON);
-//
-//            fabricDataGenerator.addProvider(languageProvider);
-//            fabricDataGenerator.addProvider(blockLootProvider);
-//            fabricDataGenerator.addProvider(blockTagProvider);
-//            fabricDataGenerator.addProvider(itemTagProvider);
-//            fabricDataGenerator.addProvider(recipeProvider);
-//            fabricDataGenerator.addProvider(advancementProvider);
-//            fabricDataGenerator.addProvider(modelProvider);
-//        }
+        pack.addProvider((output, registriesFuture) -> {
+           PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON);
+           recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC, TestBlocks.INVENTORY_TEST_BLOCK.get(), Ingredient.of(Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
+           return recipeProvider;
+        });
+
+        pack.addProvider((output, registriesFuture) -> {
+            PolyItemTagProvider itemTagProvider = new PolyItemTagProvider(output, registriesFuture, null, ModuleType.COMMON);
+            TestItems.ITEMS.forEach(itemRegistrySupplier -> itemTagProvider.add(ItemTags.ANVIL, itemRegistrySupplier.get(), ModuleType.COMMON));
+            return itemTagProvider;
+        });
+
+//        pack.addProvider((output, registriesFuture) -> {
+//            PolyAdvancementProvider advancementProvider = new PolyAdvancementProvider(output, ModuleType.COMMON);
+//            return advancementProvider;
+//        });
+
+        pack.addProvider((output, registriesFuture) -> {
+           PolyModelProvider modelProvider = new PolyModelProvider(output, ModuleType.COMMON);
+           modelProvider.addSimpleBlockModel(TestBlocks.INVENTORY_TEST_BLOCK.get(), new ResourceLocation("minecraft", "block/stone"), ModuleType.COMMON);
+           modelProvider.addSimpleBlockModel(TestBlocks.MULTIBLOCK_TEST_BLOCK.get(), new ResourceLocation("minecraft", "block/stone"), ModuleType.COMMON);
+           return modelProvider;
+        });
     }
 }

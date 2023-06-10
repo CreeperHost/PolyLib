@@ -25,13 +25,11 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     private final Map<Block, LootTable.Builder> values = Maps.newHashMap();
     private final FabricDataOutput fabricDataOutput;
 
-    public PolyBlockLootProvider(FabricDataGenerator dataGenerator, FabricDataOutput dataOutput, ModuleType moduleType)
+    public PolyBlockLootProvider(FabricDataOutput dataOutput, ModuleType moduleType)
     {
         super(dataOutput);
         this.moduleType = moduleType;
         this.fabricDataOutput = dataOutput;
-
-        PolyLib.LOGGER.info("PolyBlockLootProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
 
 

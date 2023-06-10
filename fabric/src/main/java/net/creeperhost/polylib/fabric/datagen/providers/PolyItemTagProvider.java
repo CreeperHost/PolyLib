@@ -27,16 +27,6 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
         this.moduleType = moduleType;
     }
 
-    //TODO
-//    @Override
-//    protected void generateTags()
-//    {
-//        values.forEach((item, tagKey) ->
-//        {
-//            tag(tagKey).add(item);
-//        });
-//    }
-
     public void add(TagKey<Item> tagKey, Item block, ModuleType moduleType)
     {
         if (this.moduleType == moduleType)
@@ -62,6 +52,6 @@ public class PolyItemTagProvider extends FabricTagProvider.ItemTagProvider
     @Override
     protected void addTags(HolderLookup.Provider arg)
     {
-
+        values.forEach((item, tagKey) -> tag(tagKey).add(reverseLookup(item)));
     }
 }

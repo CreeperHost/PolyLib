@@ -21,12 +21,10 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     private final ModuleType moduleType;
     private List<Advancement> values = new ArrayList<>();
 
-    public PolyAdvancementProvider(FabricDataGenerator dataGenerator, FabricDataOutput fabricDataOutput, ModuleType moduleType)
+    public PolyAdvancementProvider(FabricDataOutput fabricDataOutput, ModuleType moduleType)
     {
         super(fabricDataOutput);
         this.moduleType = moduleType;
-
-        PolyLib.LOGGER.info("PolyAdvancementProvider created for " + dataGenerator.getModId() + " " + moduleType.name());
     }
 
     @Override
