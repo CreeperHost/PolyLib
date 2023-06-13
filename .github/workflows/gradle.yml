@@ -41,9 +41,9 @@ jobs:
         uses: sebastianpopp/discord-action@releases/v2
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: https://maven.creeperhost.net/net/creeperhost/polylib-forge/1200.0.0-build.${{github.run_number}}/polylib-forge-1200.0.0-build.${{github.run_number}}.jar
+          message: https://maven.creeperhost.net/net/creeperhost/polylib-forge/1200.0.2-build.${{github.run_number}}/polylib-forge-1200.0.2-build.${{github.run_number}}.jar
       - name: Send Fabric notification to Discord
         uses: sebastianpopp/discord-action@releases/v2
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: https://maven.creeperhost.net/net/creeperhost/polylib-fabric/1200.0.0-build.${{github.run_number}}/polylib-fabric-1200.0.0-build.${{github.run_number}}.jar
+          message: https://maven.creeperhost.net/net/creeperhost/polylib-fabric/1200.0.2-build.${{github.run_number}}/polylib-fabric-1200.0.2-build.${{github.run_number}}.jar
