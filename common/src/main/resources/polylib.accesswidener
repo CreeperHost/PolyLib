@@ -16,3 +16,6 @@ accessible field net/minecraft/data/recipes/RecipeProvider recipePathProvider Ln
 mutable field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 
 accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I
+
+accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
+accessible method net/minecraft/client/gui/components/AbstractSelectionList$Entry <init> ()V
