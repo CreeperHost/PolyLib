@@ -17,55 +17,52 @@ import java.util.List;
 
 public class GuiButtonLarge extends PolyButton
 {
-    private final String description;
+    private final Component description;
     private final ItemStack stack;
 
-    public GuiButtonLarge(int x, int y, int widthIn, int heightIn, String buttonText, String description, ItemStack stack, OnPress onPress)
+    public GuiButtonLarge(int x, int y, int width, int height, String buttonText, Component description, ItemStack stack, OnPress onPress)
     {
-        super(x, y, widthIn, heightIn, Component.translatable(buttonText), onPress, DEFAULT_NARRATION);
-        this.width = 200;
-        this.height = 20;
+        super(x, y, width, height, Component.translatable(buttonText), onPress, DEFAULT_NARRATION);
         this.visible = true;
         this.active = true;
-        this.width = widthIn;
-        this.height = heightIn;
         this.setMessage(Component.translatable(buttonText));
         this.description = description;
         this.stack = stack;
     }
 
-    @Override
-    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partial)
+    public GuiButtonLarge(int x, int y, int width, int height, String buttonText, String description, ItemStack stack, OnPress onPress)
     {
-        if (this.visible)
-        {
-            Minecraft mc = Minecraft.getInstance();
-            this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-            //TODO
-//            int k = this.getYImage(this.isHovered);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-            //TODO
-//            ScreenHelper.drawContinuousTexturedBox(guiGraphics, this.getX(), this.getY(), 0, 46 + k * 20, this.width, this.height,
-//                    200, 20, 2, 3, 2, 2, this.getBlitOffset());
-//            this.renderBg(matrixStack, mc, mouseX, mouseY);
-            int color = 14737632;
+        this(x, y, width, height, buttonText, Component.literal(description), stack, onPress);
+    }
 
-            List<FormattedCharSequence> newstring = ComponentRenderUtils.wrapComponents(
-                    Component.translatable(description), width - 12, mc.font);
-            int start = getY() + 40;
+    @Override
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partial) {
+        Minecraft mc = Minecraft.getInstance();
+        int k = getYImage(isHovered);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+        ScreenHelper.drawContinuousTexturedBox(graphics.pose(), getX(), getY(), 0, 46 + k * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
+        int color = 14737632;
 
-            for (FormattedCharSequence s : newstring)
-            {
-                int left = ((this.getX() + 4));
-                //TODO
-//                mc.font.drawShadow(matrixStack, s, left, start += 10, -1);
-            }
+        List<FormattedCharSequence> newstring = ComponentRenderUtils.wrapComponents(description, width - 12, mc.font);
+        int start = getY() + 40;
 
-            Component buttonText = this.getMessage();
-
-            guiGraphics.drawCenteredString(mc.font, buttonText, this.getX() + this.width / 2, this.getY() + 10, color);
-            guiGraphics.renderItem(stack, (this.getX()) + (width / 2) - 8, (this.getY()) + 24);
+        for (FormattedCharSequence s : newstring) {
+            int left = ((getX() + 4));
+            graphics.drawString(mc.font, s, left, start += 10, -1, true);
         }
+
+        graphics.drawCenteredString(mc.font, getMessage(), getX() + width / 2, getY() + 10, color);
+        graphics.renderFakeItem(stack, (getX()) + (width / 2) - 8, (getY()) + 24);
+    }
+
+    protected int getYImage(boolean bl) {
+        int i = 1;
+        if (!this.active) {
+            i = 0;
+        } else if (bl) {
+            i = 2;
+        }
+        return i;
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
+@Deprecated //Most if not all of these methods now exist in GuiGraphics.
 public class ScreenHelper
 {
     public void renderHead(GuiGraphics guiGraphics, int x, int y)
@@ -24,15 +25,10 @@ public class ScreenHelper
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-
-        bufferbuilder.vertex(matrix, (float) x, (float) (y + height), 0.0F).uv((float) (u * f),
-                (float) ((v + (float) height) * f1)).endVertex();
-        bufferbuilder.vertex(matrix, (float) (x + width), (float) (y + height), 0.0F).uv(
-                (float) ((u + (float) width) * f), (float) ((v + (float) height) * f1)).endVertex();
-        bufferbuilder.vertex(matrix, (float) (x + width), (float) y, 0.0F).uv((float) ((u + (float) width) * f),
-                (float) (v * f1)).endVertex();
-        bufferbuilder.vertex(matrix, (float) x, (float) y, 0.0F).uv((float) (u * f), (float) (v * f1)).endVertex();
-        bufferbuilder.end();
+        bufferbuilder.vertex(matrix, x, y + height, 0.0F).uv(u * f, (v + (float) height) * f1).endVertex();
+        bufferbuilder.vertex(matrix, x + width, y + height, 0.0F).uv((u + (float) width) * f, (v + (float) height) * f1).endVertex();
+        bufferbuilder.vertex(matrix, x + width, y, 0.0F).uv((u + (float) width) * f, v * f1).endVertex();
+        bufferbuilder.vertex(matrix, x, y, 0.0F).uv(u * f, v * f1).endVertex();
         BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
@@ -108,7 +104,7 @@ public class ScreenHelper
         wr.vertex(matrix, x + width, y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
         wr.vertex(matrix, x + width, y, zLevel).uv((u + width) * uScale, (v * vScale)).endVertex();
         wr.vertex(matrix, x, y, zLevel).uv(u * uScale, (v * vScale)).endVertex();
-        tessellator.end();
+        BufferUploader.drawWithShader(wr.end());
     }
 
     public static void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight)
@@ -118,13 +114,13 @@ public class ScreenHelper
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex((double) x, (double) (y + height), 0.0D).uv((u * f),
+        bufferbuilder.vertex(x, y + height, 0.0D).uv((u * f),
                 ((v + (float) vHeight) * f1)).endVertex();
-        bufferbuilder.vertex((double) (x + width), (double) (y + height), 0.0D).uv(((u + (float) uWidth) * f),
+        bufferbuilder.vertex(x + width, y + height, 0.0D).uv(((u + (float) uWidth) * f),
                 ((v + (float) vHeight) * f1)).endVertex();
-        bufferbuilder.vertex((double) (x + width), (double) y, 0.0D).uv(((u + (float) uWidth) * f),
+        bufferbuilder.vertex(x + width, y, 0.0D).uv(((u + (float) uWidth) * f),
                 (v * f1)).endVertex();
-        bufferbuilder.vertex((double) x, (double) y, 0.0D).uv((u * f), (v * f1)).endVertex();
-        tessellator.end();
+        bufferbuilder.vertex(x, y, 0.0D).uv((u * f), (v * f1)).endVertex();
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 }
