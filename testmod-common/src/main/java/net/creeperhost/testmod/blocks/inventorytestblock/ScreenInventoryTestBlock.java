@@ -59,7 +59,10 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
         screenBuilder.drawProgressBar(guiGraphics, progress, 100, leftPos + 80, topPos + 60, mouseX, mouseY);
         FluidStack fluidStack = FluidStack.create(Fluids.WATER, progress * 10);
         screenBuilder.drawTankWithOverlay(guiGraphics, fluidStack, 1000, leftPos + imageWidth - 30, topPos + 40, 49, mouseX, mouseY);
-        screenBuilder.drawBar(guiGraphics, leftPos + 10, topPos + 20, 80, progress, 100, mouseX, mouseY, Component.literal(progress + " FE"));
+
+        int energy = getMenu().getContainerData().get(1);
+        int maxEnergy = getMenu().getContainerData().get(2);
+        screenBuilder.drawBar(guiGraphics, leftPos + 10, topPos + 20, 80, energy, maxEnergy, mouseX, mouseY, Component.literal(energy + " FE"));
     }
 
     @Override

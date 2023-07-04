@@ -34,7 +34,12 @@ dependencies {
     shadowCommon("io.sentry:sentry:5.7.2") { transitive false }
     implementation "blue.endless:jankson:1.2.1"
     shadowCommon "blue.endless:jankson:1.2.1"
+
+    include modApi('teamreborn:energy:2.2.0') {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 }
+
 
 processResources {
     inputs.property "version", project.version
