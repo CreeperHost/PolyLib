@@ -1,0 +1,324 @@
+package net.creeperhost.polylib.client.modulargui.elements;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
+import net.creeperhost.polylib.client.modulargui.lib.ElementEvents;
+import net.creeperhost.polylib.client.modulargui.lib.ForegroundRender;
+import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.ConstrainedGeometry;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
+
+/**
+ * This is the Base class for all gui elements in Modular Gui Version 3.
+ * <p>
+ * In v2 this vas a massive monolithic class that had way too much crammed into it.
+ * The primary goals of v3 are the following:
+ * <tr>- Build a new, Extremely flexible system for handling element geometry, including relative positions, anchoring, etc.
+ * This was archived using the new Geometry system. For details see {@link GuiParent} and {@link ConstrainedGeometry}
+ * <tr>- Implement a system to properly handle element z offsets.
+ * This was archived by giving all elements a 'depth' property which defines an elements size on the z axis.
+ * This is then used to properly layer elements and child elements when they are rendered.
+ * <tr>- Switch everything over to the new RenderType system. (This is mostly handled behind the scenes. You don't need to mess with it when creating a GUI)
+ * <tr>- Consolidate all the various rendering helper methods into one convenient utility class.
+ * The new {@link net.minecraft.client.gui.GuiGraphics} system showed me a good way to implement this.
+ * <tr>- Reduce the amount of ambiguity when building GUIs. (Whether I succeeded here is up for debate xD)
+ * <tr>- Cut out a lot of random bloat that was never used in v2.
+ * <p>
+ * <p>
+ * Created by brandon3055 on 04/07/2023
+ */
+public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> implements ElementEvents {
+
+    @NotNull
+    private GuiParent<?> parent;
+
+    private List<GuiElement<?>> addedQueue = new ArrayList<>();
+    private List<GuiElement<?>> removeQueue = new ArrayList<>();
+    private List<GuiElement<?>> childElements = new ArrayList<>();
+    public boolean initialized = false;
+
+    private Font font;
+    private Minecraft mc;
+    private int screenWidth;
+    private int screenHeight;
+
+    private boolean transparent = false;
+    private boolean enabled = true;
+    private boolean removed = true;
+    private Supplier<Boolean> enabledCallback = null;
+
+    /**
+     * @param parent parent {@link GuiParent}.
+     */
+    public GuiElement(@NotNull GuiParent<?> parent) {
+        this.parent = parent;
+        this.parent.addChild(this);
+    }
+
+    @NotNull
+    @Override
+    public GuiParent<?> getParent() {
+        return parent;
+    }
+
+    //=== Child Element Handling ===
+
+    /**
+     * When creating custom gui elements, use this method to add any required child elements.
+     * With ModularGui v3 it is technically possible to add children in the constructor,
+     * But that may not always be supported. This is the preferred method.
+     */
+    protected void addChildElements() {
+    }
+
+    @Override
+    public List<GuiElement<?>> getChildren() {
+        return Collections.unmodifiableList(childElements);
+    }
+
+    /**
+     * In Modular GUI v3, The add child method is primarily for internal use,
+     * Child elements are automatically added to their parent on construction.
+     *
+     * @param child The child element to be added.
+     */
+    @Override
+    public void addChild(GuiElement<?> child) {
+        if (!initialized) throw new IllegalStateException("Attempted to add a child to an element before that element has been initialised!");
+        if (child == this) throw new InvalidParameterException("Attempted to add element to itself as a child element.");
+        if (child.getParent() != this) throw new UnsupportedOperationException("Attempted to add an already initialized element to a different parent element.");
+        if (childElements.contains(child)) return;
+        addedQueue.add(child);
+        child.initElement(this);
+    }
+
+    /**
+     * Called immediately after an element is added to its parent, use to initialize the child element.
+     */
+    public void initElement(GuiParent<?> parent) {
+        removed = false;
+        updateScreenData(parent.mc(), parent.font(), parent.scaledScreenWidth(), parent.scaledScreenHeight());
+        if (!initialized) {
+            initialized = true;
+            addChildElements();
+        }
+    }
+
+    @Override
+    public void adoptChild(GuiElement<?> child) {
+        child.getParent().removeChild(child);
+        child.parent = this;
+        addChild(child);
+    }
+
+    @Override
+    public void removeChild(GuiElement<?> child) {
+        if (childElements.contains(child)) {
+            child.removed = true;
+            removeQueue.add(child);
+        }
+        addedQueue.remove(child);
+    }
+
+    //=== Minecraft Properties / Initialisation ===
+    //TODO I can probably just pass these calls all the way up to the root parent...
+
+    @Override
+    public Minecraft mc() {
+        return mc;
+    }
+
+    @Override
+    public Font font() {
+        return font;
+    }
+
+    @Override
+    public int scaledScreenWidth() {
+        return screenWidth;
+    }
+
+    @Override
+    public int scaledScreenHeight() {
+        return screenHeight;
+    }
+
+    @Override
+    public void onScreenInit(Minecraft mc, Font font, int screenWidth, int screenHeight) {
+        updateScreenData(mc, font, screenWidth, screenHeight);
+        super.onScreenInit(mc, font, screenWidth, screenHeight);
+    }
+
+    protected void updateScreenData(Minecraft mc, Font font, int screenWidth, int screenHeight) {
+        this.mc = mc;
+        this.font = font;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+    }
+
+    //=== Element Status ===//
+
+    public T setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return (T) this;
+    }
+
+    public T setEnabled(@Nullable Supplier<Boolean> enabled) {
+        this.enabledCallback = enabled;
+        return (T) this;
+    }
+
+    public boolean isEnabled() {
+        return !removed && (enabledCallback == null ? enabled : enabledCallback.get());
+    }
+
+    /**
+     * @return True if the cursor is within the bounds of this element.
+     */
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return GuiRender.isInRect(xMin(), yMin(), xSize(), ySize(), mouseX, mouseY);
+    }
+
+    public boolean isTransparent() {
+        return transparent || this.getClass() == GuiElement.class;
+    }
+
+    /**
+     * If an element is marked as transparent it will not obstruct things like the hovered status of elements bellow it.
+     */
+    public T setTransparent(boolean transparent) {
+        this.transparent = transparent;
+        return (T) this;
+    }
+
+    @Override
+    public void setFocused(@Nullable GuiElement<?> element) {
+        getParent().setFocused(element);
+    }
+
+    @Override
+    public @Nullable GuiElement<?> getFocused() {
+        return getParent().getFocused();
+    }
+
+    //=== Render / Update ===//
+
+    /**
+     * Returns the depth of this element plus all of its children (recursively)
+     * Note: You should almost never need to override this! Depth of background and / or foreground content
+     * should be specified via {@link BackgroundRender#getBackgroundDepth()} and {@link ForegroundRender#getForegroundDepth()}
+     *
+     * @return The depth (z height) of this element plus all of its children.
+     */
+    public double getCombinedElementDepth() {
+        double depth = 0;
+        if (this instanceof BackgroundRender bgr) depth += bgr.getBackgroundDepth();
+        if (this instanceof ForegroundRender fgr) depth += fgr.getForegroundDepth();
+
+        for (GuiElement<?> child : childElements) {
+            depth += child.getCombinedElementDepth();
+        }
+
+        return depth;
+    }
+
+    /**
+     * This is the main render method that handles rendering this element and any child elements it may have.
+     * <b>This method almost never needs to be overridden</b>, instead when creating custom elements with custom rendering,
+     * your element should implement {@link BackgroundRender} and / or {@link ForegroundRender} in or order to implement
+     * its rendering.
+     * <p>
+     * Note: After the render is complete, the poseStack's z pos will be offset by the total depth of this element and its children.
+     * This is intended behavior,
+     *
+     * @param render       Contains gui context information as well as essential render methods/utils including the PoseStack.
+     * @param mouseX       Current mouse X position
+     * @param mouseY       Current mouse Y position
+     * @param partialTicks Partial render ticks
+     */
+    public void render(GuiRender render, double mouseX, double mouseY, float partialTicks) {
+        if (this instanceof BackgroundRender bgr) {
+            double depth = bgr.getBackgroundDepth();
+            bgr.renderBehind(render);
+            if (depth > 0) {
+                render.poseStack().translate(0, 0, depth);
+            }
+        }
+
+        for (GuiElement<?> child : childElements) {
+            if (child.isEnabled()) {
+                child.render(render, mouseX, mouseY, partialTicks);
+            }
+        }
+
+        if (this instanceof ForegroundRender fgr) {
+            double depth = fgr.getForegroundDepth();
+            fgr.renderInFront(render);
+            if (depth > 0) {
+                render.poseStack().translate(0, 0, depth);
+            }
+        }
+    }
+
+    /**
+     * Used to render overlay's such as hover text. Anything rendered in this method will be rendered on top of everything else on the screen.
+     * Only one overlay should be rendered at a time, When an element renders content via the overlay method it must return true to indicate the render call has been 'consumed'
+     * If the render call has already been consumed (Check via the consumed boolean) then this element should avoid rendering its overlay.
+     * <p>
+     * When rendering overlay content, always use the {@link PoseStack} available via the provided {@link GuiRender}
+     * This stack will already have the correct Z translation to ensure the overlay renders above everything else on the screen.
+     * <p>
+     * To check if the cursor is over this element, use 'render.hoveredElement() == this'
+     * {@link #isMouseOver(double, double)} Will also work, but may be problematic when multiple, stacked elements have overlay content.
+     *
+     * @param render       Contains gui context information as well as essential render methods/utils including the PoseStack.
+     * @param mouseX       Current mouse X position
+     * @param mouseY       Current mouse Y position
+     * @param partialTicks Partial render ticks
+     * @param consumed     Will be true if the overlay render call has already been consumed by another element.
+     * @return true if the render call has been consumed.
+     */
+    @OverridingMethodsMustInvokeSuper
+    public boolean renderOverlay(GuiRender render, double mouseX, double mouseY, float partialTicks, boolean consumed) {
+        for (GuiElement<?> child : childElements) {
+            if (child.isEnabled()) {
+                consumed |= child.renderOverlay(render, mouseX, mouseY, partialTicks, consumed);
+            }
+        }
+        return consumed;
+    }
+
+    /**
+     * Called every tick to update the element. Note this is called regardless of weather or not the element is actually enabled.
+     *
+     * @param mouseX Current mouse X position
+     * @param mouseY Current mouse Y position
+     */
+    @OverridingMethodsMustInvokeSuper
+    public void tick(double mouseX, double mouseY) {
+        if (!removeQueue.isEmpty()) {
+            childElements.removeAll(removeQueue);
+            removeQueue.clear();
+        }
+
+        if (!addedQueue.isEmpty()) {
+            childElements.addAll(addedQueue);
+            addedQueue.clear();
+        }
+
+        for (GuiElement<?> childElement : childElements) {
+            childElement.tick(mouseX, mouseY);
+        }
+    }
+}

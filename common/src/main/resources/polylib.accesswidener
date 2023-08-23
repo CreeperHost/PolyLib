@@ -19,3 +19,6 @@ accessible method net/minecraft/client/gui/components/AbstractButton getTextureY
 
 accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
 accessible method net/minecraft/client/gui/components/AbstractSelectionList$Entry <init> ()V
+
+accessible method net/minecraft/client/renderer/texture/TextureAtlas getWidth ()I
+accessible method net/minecraft/client/renderer/texture/TextureAtlas getHeight ()I

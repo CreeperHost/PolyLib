@@ -2,20 +2,17 @@ package net.creeperhost.polylib.fabric;
 
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.PolyLib;
+import net.creeperhost.polylib.client.modulargui.sprite.GuiTextures;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.events.ClientRenderEvents;
-import net.creeperhost.polylib.fabric.inventory.energy.FabricBlockEnergyContainer;
-import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyBlock;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
+import net.creeperhost.polylib.fabric.client.ResourceReloadListenerWrapper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
-import team.reborn.energy.api.EnergyStorage;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 
 public class PolyLibFabric implements ModInitializer
 {
@@ -30,6 +27,8 @@ public class PolyLibFabric implements ModInitializer
         if (Platform.getEnv() == EnvType.CLIENT)
         {
             WorldRenderEvents.END.register(context -> ClientRenderEvents.LAST.invoker().onRenderLastEvent(context.matrixStack()));
+
+            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(GuiTextures::getAtlasHolder, new ResourceLocation(PolyLib.MOD_ID, "gui_atlas_reload")));
         }
 
         EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
