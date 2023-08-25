@@ -3,100 +3,80 @@ package net.creeperhost.polylib.client.modulargui.lib.geometry;
 /**
  * Created by brandon3055 on 14/08/2023
  */
-public class Rectangle {
-    private double xPos;
-    private double yPos;
-    private double width;
-    private double height;
+public record Rectangle(Position position, double width, double height) {
 
-    public Rectangle(double xPos, double yPos, double width, double height) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.width = width;
-        this.height = height;
+    public double x() {
+        return position.x();
     }
 
-    public double getX() {
-        return xPos;
+    public double y() {
+        return position.y();
     }
 
-    public double getY() {
-        return yPos;
+    public double maxX() {
+        return x() + width;
     }
 
-    public double getWidth() {
-        return width;
+    public double maxY() {
+        return y() + height;
     }
 
-    public double getHeight() {
-        return height;
+    public Rectangle translate(double xAmount, double yAmount) {
+        return create(x() + xAmount, y() + yAmount, width, height);
     }
 
-    public double getMaxX() {
-        return getX() + getWidth();
-    }
-
-    public double getMaxY() {
-        return getY() + getHeight();
-    }
-
-    public Rectangle setX(double xPos) {
-        this.xPos = xPos;
-        return this;
-    }
-
-    public Rectangle setY(double yPos) {
-        this.yPos = yPos;
-        return this;
-    }
-
-    public Rectangle setWidth(double width) {
-        this.width = width;
-        return this;
-    }
-
-    public Rectangle setHeight(double height) {
-        this.height = height;
-        return this;
-    }
-
-    public Rectangle setPos(double xPos, double yPos) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        return this;
+    public Rectangle move(double newX, double newY) {
+        return create(newX, newY, width, height);
     }
 
     public Rectangle setSize(double width, double height) {
-        this.width = width;
-        this.height = height;
-        return this;
+        return create(position, width, height);
+    }
+
+    public Rectangle adjustSize(double xAmount, double yAmount) {
+        return create(position, width() + xAmount, height() + yAmount);
     }
 
     /**
-     * Modifies this rectangle to match the intersection area between itself and the specified rectangle.
-     * @param other The other rectangle
+     * Returns a new rectangle that represents the intersection area between the two inputs
      */
-    public Rectangle intersect(Rectangle other) {
-        this.xPos = Math.max(this.xPos, other.getX());
-        this.yPos = Math.max(this.yPos, other.getY());
-        this.width = Math.max(0, Math.min(this.getMaxX(), other.getMaxX()) - this.xPos);
-        this.height = Math.max(0, Math.min(this.getMaxY(), other.getMaxY()) - this.yPos);
-        return this;
+    public static Rectangle intersect(Rectangle rectA, Rectangle rectB) {
+        double x = Math.max(rectA.x(), rectB.x());
+        double y = Math.max(rectA.y(), rectB.y());
+        double width = Math.max(0, Math.min(rectA.maxX(), rectB.maxX()) - rectA.x());
+        double height = Math.max(0, Math.min(rectA.maxY(), rectB.maxY()) - rectA.y());
+        return create(x, y, width, height);
     }
 
     /**
-     * Expands this the bounds of this rectangle to include the given other rectangle.
-     * @param other The other rectangle
+     * Returns a new rectangle, the bounds of which enclose all the input rectangles.
+     *
+     * @param rect        Starting rectangle
+     * @param combineWith Rectangles to combine with the start rectangle
      */
-    public Rectangle combine(Rectangle other) {
-        this.xPos = Math.min(this.xPos, other.getX());
-        this.yPos = Math.min(this.yPos, other.getY());
-        this.width = Math.max(this.getMaxX(), other.getMaxX()) - this.xPos;
-        this.height = Math.max(this.getMaxY(), other.getMaxY()) - this.yPos;
-        return this;
+    public static Rectangle combine(Rectangle rect, Rectangle... combineWith) {
+        double x = rect.x();
+        double y = rect.y();
+        double maxX = rect.maxX();
+        double maxY = rect.maxY();
+        for (Rectangle other : combineWith) {
+            x = Math.min(x, other.x());
+            y = Math.min(y, other.y());
+            maxX = Math.max(maxX, other.maxX());
+            maxY = Math.max(maxY, other.maxY());
+        }
+        return create(x, y, maxX - x, maxY - y);
     }
 
     public boolean contains(double x, double y) {
-        return x >= this.xPos && x <= this.xPos + this.width && y >= this.yPos && y <= this.yPos + this.height;
+        return x >= this.x() && x <= this.x() + this.width && y >= this.y() && y <= this.y() + this.height;
+    }
+
+    public static Rectangle create(Position position, double width, double height) {
+        return new Rectangle(position, width, height);
+    }
+
+    public static Rectangle create(double x, double y, double width, double height) {
+        return new Rectangle(Position.create(x, y), width, height);
     }
 }

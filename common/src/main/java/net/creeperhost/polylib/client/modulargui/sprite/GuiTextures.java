@@ -30,7 +30,7 @@ public class GuiTextures {
      * @param texture The texture path relative to "modid:gui/"
      */
     public static Material get(String texture) {
-        return MATERIAL_CACHE.computeIfAbsent(MOD_ID + ":" + texture, GuiTextures::getUncached);
+        return MATERIAL_CACHE.computeIfAbsent(MOD_ID + ":" + texture, e -> getUncached(texture));
     }
 
     /**

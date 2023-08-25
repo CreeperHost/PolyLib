@@ -252,7 +252,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
             double depth = bgr.getBackgroundDepth();
             bgr.renderBehind(render);
             if (depth > 0) {
-                render.poseStack().translate(0, 0, depth);
+                render.pose().translate(0, 0, depth);
             }
         }
 
@@ -266,7 +266,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
             double depth = fgr.getForegroundDepth();
             fgr.renderInFront(render);
             if (depth > 0) {
-                render.poseStack().translate(0, 0, depth);
+                render.pose().translate(0, 0, depth);
             }
         }
     }

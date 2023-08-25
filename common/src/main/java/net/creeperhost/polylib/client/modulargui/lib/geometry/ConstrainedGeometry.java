@@ -307,8 +307,12 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
 
     //=== Geometry Utilities ===//
 
+    public Position getPosition() {
+        return Position.create(xMin(), yMin());
+    }
+
     public Rectangle getRectangle() {
-        return new Rectangle(xMin(), yMin(), xSize(), ySize());
+        return Rectangle.create(xMin(), yMin(), xSize(), ySize());
     }
 
     /**
@@ -324,10 +328,10 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
      * And all of its child elements recursively.
      */
     public Rectangle addBoundsToRect(Rectangle enclosingRect) {
-        enclosingRect.combine(getRectangle());
+        enclosingRect = Rectangle.combine(enclosingRect, getRectangle());
         for (GuiElement<?> element : getChildren()) {
             if (element.isEnabled()) {
-                element.addBoundsToRect(enclosingRect);
+                enclosingRect = element.addBoundsToRect(enclosingRect);
             }
         }
         return enclosingRect;

@@ -1,13 +1,11 @@
 package net.creeperhost.polylib.client.modulargui;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
 import net.creeperhost.polylib.client.modulargui.lib.GuiBuilder;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -139,9 +137,9 @@ public class ModularGui implements GuiParent<ModularGui> {
 
         double depth = root.getCombinedElementDepth();
         if (depth <= 300) {
-            render.poseStack().translate(0, 0, 400 - depth);
+            render.pose().translate(0, 0, 400 - depth);
         } else {
-            render.poseStack().translate(0, 0, 100);
+            render.pose().translate(0, 0, 100);
         }
 
         return root.renderOverlay(render, mouseX, mouseY, partialTicks, false);
