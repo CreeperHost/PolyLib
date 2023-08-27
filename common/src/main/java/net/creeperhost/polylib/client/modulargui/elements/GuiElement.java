@@ -56,6 +56,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private boolean transparent = false;
     private boolean enabled = true;
     private boolean removed = true;
+    private boolean zStacking = false;
     private Supplier<Boolean> enabledCallback = null;
 
     /**
@@ -215,6 +216,20 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     //=== Render / Update ===//
 
     /**
+     * Allows you to disable child z-stacking, Meaning all child elements will be rendered at the same z-level
+     * rather than being stacked. (Not Recursive, children their sub elements with stacking)
+     * <p>
+     * This can be useful when rendering a lot of high z depth elements such as ItemStacks.
+     * As long as you know for sure none of the elements intersect, it should be safe to disable stacking.
+     *
+     * @param zStacking Enable z stacking (default true)
+     */
+    public T setZStacking(boolean zStacking) {
+        this.zStacking = zStacking;
+        return (T) this;
+    }
+
+    /**
      * Returns the depth of this element plus all of its children (recursively)
      * Note: You should almost never need to override this! Depth of background and / or foreground content
      * should be specified via {@link BackgroundRender#getBackgroundDepth()} and {@link ForegroundRender#getForegroundDepth()}
@@ -226,11 +241,16 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         if (this instanceof BackgroundRender bgr) depth += bgr.getBackgroundDepth();
         if (this instanceof ForegroundRender fgr) depth += fgr.getForegroundDepth();
 
+        double childDepth = 0;
         for (GuiElement<?> child : childElements) {
-            depth += child.getCombinedElementDepth();
+            if (zStacking) {
+                childDepth += child.getCombinedElementDepth();
+            } else {
+                childDepth = Math.max(childDepth, child.getCombinedElementDepth());
+            }
         }
 
-        return depth;
+        return depth + childDepth;
     }
 
     /**
@@ -256,10 +276,22 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
             }
         }
 
+        double maxDepth = 0;
         for (GuiElement<?> child : childElements) {
             if (child.isEnabled()) {
                 child.render(render, mouseX, mouseY, partialTicks);
+                //If z-stacking is disabled, we need to undo the z offset that was applied by the child element.
+                if (!zStacking) {
+                    double depth = child.getCombinedElementDepth();
+                    maxDepth = Math.max(maxDepth, depth);
+                    render.pose().translate(0, 0, -depth);
+                }
             }
+        }
+
+        if (!zStacking) {
+            //Now we need to apply the z offset of the tallest child.
+            render.pose().translate(0, 0, maxDepth);
         }
 
         if (this instanceof ForegroundRender fgr) {

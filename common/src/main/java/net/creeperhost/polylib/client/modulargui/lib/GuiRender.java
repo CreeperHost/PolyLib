@@ -1,20 +1,53 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.creeperhost.polylib.PolyLibClient;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor.ARGB32;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Vector2ic;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This class primarily based on GuiHelper from BrandonsCore
@@ -28,15 +61,21 @@ import org.joml.Matrix4f;
 public class GuiRender extends LegacyRender {
     public static final RenderType SOLID = RenderType.gui();
 
+    //Used for things like events that require the vanilla GuiGraphics
+    private final RenderWrapper renderWrapper;
+
     private final Minecraft mc;
     private final PoseStack pose;
+    private final ScissorHandler scissorHandler = new ScissorHandler();
     private final MultiBufferSource.BufferSource buffers;
     private boolean batchDraw;
+    private Font fontOverride;
 
     public GuiRender(Minecraft mc, PoseStack poseStack, MultiBufferSource.BufferSource buffers) {
         this.mc = mc;
         this.pose = poseStack;
         this.buffers = buffers;
+        this.renderWrapper = new RenderWrapper(this);
     }
 
     public GuiRender(Minecraft mc, MultiBufferSource.BufferSource buffers) {
@@ -56,6 +95,28 @@ public class GuiRender extends LegacyRender {
         return mc;
     }
 
+    public Font font() {
+        return fontOverride == null ? mc().font : fontOverride;
+    }
+
+    public int guiWidth() {
+        return mc().getWindow().getGuiScaledWidth();
+    }
+
+    public int guiHeight() {
+        return mc().getWindow().getGuiScaledHeight();
+    }
+
+    /**
+     * Allows you to override the font renderer used for all text rendering.
+     * Be sure to set the override back to null when you are finished using your custom font!
+     *
+     * @param font The font to use, or null to disable override.
+     */
+    public void overrideFont(@Nullable Font font) {
+        this.fontOverride = font;
+    }
+
     /**
      * Allow similar render calls to be batched together into a single draw for better render efficiency.
      * All render calls in batch must use the same render type.
@@ -63,6 +124,7 @@ public class GuiRender extends LegacyRender {
      * @param batch callback in which the rendering should be implemented.
      */
     public void batchDraw(Runnable batch) {
+        flush();
         batchDraw = true;
         batch.run();
         batchDraw = false;
@@ -70,17 +132,27 @@ public class GuiRender extends LegacyRender {
     }
 
     private void flushIfUnBatched() {
-        if (!this.batchDraw) this.flush();
+        if (!batchDraw) flush();
     }
 
     private void flushIfBatched() {
-        if (this.batchDraw) this.flush();
+        if (batchDraw) flush();
     }
 
     public void flush() {
         RenderSystem.disableDepthTest();
-        this.buffers.endBatch();
+        buffers.endBatch();
         RenderSystem.enableDepthTest();
+    }
+
+    /**
+     * Only use this as a last resort! It may explode... Have fun!
+     *
+     * @return A Vanilla GuiGraphics instance that wraps this {@link GuiRender}
+     */
+    @Deprecated
+    public RenderWrapper guiGraphicsWrapper() {
+        return renderWrapper;
     }
 
     //=== Un-Textured geometry ===//
@@ -225,8 +297,7 @@ public class GuiRender extends LegacyRender {
      * Draw a border of specified with, fill internal area with solid colour.
      */
     public void borderFill(RenderType type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int fillColour, int borderColour) {
-        //Draw batched for efficiency, unless already doing a batch draw.
-        if (batchDraw) {
+        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
             borderFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour);
         } else {
             batchDraw(() -> borderFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour));
@@ -293,8 +364,7 @@ public class GuiRender extends LegacyRender {
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
     public void shadedFill(RenderType type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
-        //Draw batched for efficiency, unless already doing a batch draw.
-        if (batchDraw) {
+        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
             shadedFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
         } else {
             batchDraw(() -> shadedFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour));
@@ -311,6 +381,49 @@ public class GuiRender extends LegacyRender {
 
         if (fillColour != 0) //No point rendering fill if there is no fill colour
             fill(type, xMin + borderWidth, yMin + borderWidth, xMax - borderWidth, yMax - borderWidth, fillColour);  //Fill
+    }
+
+    //=== Generic Backgrounds ===//
+
+    /**
+     * Draws a rectangle / background with a style matching vanilla tool tips.
+     */
+    public void toolTipBackground(double x, double y, double width, double height) {
+        toolTipBackground(x, y, width, height, 0xF0100010, 0x505000FF, 0x5028007f);
+    }
+
+    /**
+     * Draws a rectangle / background with a style matching vanilla tool tips.
+     * Vanilla Default Colours: 0xF0100010, 0x505000FF, 0x5028007f
+     */
+    public void toolTipBackground(double x, double y, double width, double height, int backgroundColour, int borderColourTop, int borderColourBottom) {
+        toolTipBackground(x, y, width, height, backgroundColour, backgroundColour, borderColourTop, borderColourBottom, false);
+    }
+
+    /**
+     * Draws a rectangle / background with a style matching vanilla tool tips.
+     * Vanilla Default Colours: 0xF0100010, 0xF0100010, 0x505000FF, 0x5028007f
+     */
+    public void toolTipBackground(double x, double y, double width, double height, int backgroundColourTop, int backgroundColourBottom, int borderColourTop, int borderColourBottom, boolean empty) {
+        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
+            toolTipBackgroundInternal(x, y, x + width, y + height, backgroundColourTop, backgroundColourBottom, borderColourTop, borderColourBottom, false);
+        } else {
+            batchDraw(() -> toolTipBackgroundInternal(x, y, x + width, y + height, backgroundColourTop, backgroundColourBottom, borderColourTop, borderColourBottom, false));
+        }
+    }
+
+    private void toolTipBackgroundInternal(double xMin, double yMin, double xMax, double yMax, int backgroundColourTop, int backgroundColourBottom, int borderColourTop, int borderColourBottom, boolean empty) {
+        fill(xMin + 1, yMin, xMax - 1, yMin + 1, backgroundColourTop);                                      // Top
+        fill(xMin + 1, yMax - 1, xMax - 1, yMax, backgroundColourBottom);                                   // Bottom
+        gradientFillV(xMin, yMin + 1, xMin + 1, yMax - 1, backgroundColourTop, backgroundColourBottom);     // Left
+        gradientFillV(xMax - 1, yMin + 1, xMax, yMax - 1, backgroundColourTop, backgroundColourBottom);     // Right
+        if (!empty) {
+            gradientFillV(xMin + 1, yMin + 1, xMax - 1, yMax - 1, backgroundColourTop, backgroundColourBottom);   // Fill
+        }
+        gradientFillV(xMin + 1, yMin + 1, xMin + 2, yMax - 1, borderColourTop, borderColourBottom);         // Left Accent
+        gradientFillV(xMax - 2, yMin + 1, xMax - 1, yMax - 1, borderColourTop, borderColourBottom);         // Right Accent
+        fill(xMin + 2, yMin + 1, xMax - 2, yMin + 2, borderColourTop);                                      // Top Accent
+        fill(xMin + 2, yMax - 2, xMax - 2, yMax - 1, borderColourBottom);                                   // Bottom Accent
     }
 
     //=== Textured geometry ===//
@@ -696,7 +809,7 @@ public class GuiRender extends LegacyRender {
     /**
      * This can be used to take something like a generic bordered background texture and dynamically resize it to draw at any size and shape you want.
      * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
-     * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders. 
+     * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
      */
     private void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder, float red, float green, float blue, float alpha) {
         if (batchDraw) {//Draw batched for efficiency, unless already doing a batch draw.
@@ -711,7 +824,7 @@ public class GuiRender extends LegacyRender {
     // That would be a lot more efficient and more compatible with custom resource packs.
     private void dynamicTexInternal(Material material, int xPos, int yPos, int xSize, int ySize, int topBorder, int leftBorder, int bottomBorder, int rightBorder, float red, float green, float blue, float alpha) {
         TextureAtlasSprite sprite = material.sprite();
-        VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);        
+        VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
         SpriteContents contents = sprite.contents();
         int texWidth = contents.width();
         int texHeight = contents.height();
@@ -772,25 +885,424 @@ public class GuiRender extends LegacyRender {
         //@formatter:on
     }
 
-
-
-
-//    buffer.vertex(mat, (float) xMax, (float) yMax, 0).color(eR, eG, eB, eA).endVertex(); //R-B
-//    buffer.vertex(mat, (float) xMax, (float) yMin, 0).color(eR, eG, eB, eA).endVertex(); //R-T
-//    buffer.vertex(mat, (float) xMin, (float) yMin, 0).color(sR, sG, sB, sA).endVertex(); //L-T
-//    buffer.vertex(mat, (float) xMin, (float) yMax, 0).color(sR, sG, sB, sA).endVertex(); //L-B
-
     //=== Strings ===//
+
+    /**
+     * Draw string with shadow.
+     */
+    public int drawString(@Nullable String message, double x, double y, int colour) {
+        return drawString(message, x, y, colour, true);
+    }
+
+    public int drawString(@Nullable String message, double x, double y, int colour, boolean shadow) {
+        if (message == null) return 0;
+        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880, font().isBidirectional());
+        this.flushIfUnBatched();
+        return i;
+    }
+
+    /**
+     * Draw string with shadow.
+     */
+    public int drawString(FormattedCharSequence message, double x, double y, int colour) {
+        return drawString(message, x, y, colour, true);
+    }
+
+    public int drawString(FormattedCharSequence message, double x, double y, int colour, boolean shadow) {
+        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+        this.flushIfUnBatched();
+        return i;
+    }
+
+    /**
+     * Draw string with shadow.
+     */
+    public int drawString(Component message, double x, double y, int colour) {
+        return drawString(message, x, y, colour, true);
+    }
+
+    public int drawString(Component message, double x, double y, int colour, boolean shadow) {
+        return drawString(message.getVisualOrderText(), x, y, colour, shadow);
+    }
+
+    /**
+     * Draw wrapped string with shadow.
+     */
+    public void drawWordWrap(FormattedText message, double x, double y, int width, int colour) {
+        drawWordWrap(message, x, y, width, colour, false);
+    }
+
+    public void drawWordWrap(FormattedText message, double x, double y, int width, int colour, boolean shadow) {
+        drawWordWrap(message, x, y, width, colour, shadow, font().lineHeight);
+    }
+
+    public void drawWordWrap(FormattedText message, double x, double y, int width, int colour, boolean shadow, double spacing) {
+        for (FormattedCharSequence formattedcharsequence : font().split(message, width)) {
+            drawString(formattedcharsequence, x, y, colour, shadow);
+            y += spacing;
+        }
+    }
+
+    /**
+     * Draw centered string with shadow. (centered on x position)
+     */
+    public void drawCenteredString(String message, double x, double y, int colour) {
+        drawCenteredString(message, x, y, colour, true);
+    }
+
+    public void drawCenteredString(String message, double x, double y, int colour, boolean shadow) {
+        drawString(message, x - font().width(message) / 2D, y, colour, shadow);
+    }
+
+    /**
+     * Draw centered string with shadow. (centered on x position)
+     */
+    public void drawCenteredString(Component message, double x, double y, int colour) {
+        drawCenteredString(message, x, y, colour, true);
+    }
+
+    public void drawCenteredString(Component message, double x, double y, int colour, boolean shadow) {
+        FormattedCharSequence formattedcharsequence = message.getVisualOrderText();
+        drawString(formattedcharsequence, x - font().width(formattedcharsequence) / 2D, y, colour, shadow);
+    }
+
+    /**
+     * Draw centered string with shadow. (centered on x position)
+     */
+    public void drawCenteredString(FormattedCharSequence message, double x, double y, int colour) {
+        drawCenteredString(message, x, y, colour, true);
+    }
+
+    public void drawCenteredString(FormattedCharSequence message, double x, double y, int colour, boolean shadow) {
+        drawString(message, x - font().width(message) / 2D, y, colour, shadow);
+    }
+
+    //=== Tool Tips ===//
+
+    private ItemStack tooltipStack = ItemStack.EMPTY;
+
+    public void renderTooltip(ItemStack stack, double mouseX, double mouseY) {
+        renderTooltip(stack, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f);
+    }
+
+    public void renderTooltip(ItemStack stack, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
+        this.tooltipStack = stack;
+        this.toolTipWithImage(Screen.getTooltipFromItem(this.mc(), stack), stack.getTooltipImage(), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
+        this.tooltipStack = ItemStack.EMPTY;
+    }
+
+    public void toolTipWithImage(List<Component> tooltips, Optional<TooltipComponent> tooltipImage, ItemStack stack, double mouseX, double mouseY) {
+        toolTipWithImage(tooltips, tooltipImage, stack, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f);
+    }
+
+    public void toolTipWithImage(List<Component> tooltips, Optional<TooltipComponent> tooltipImage, ItemStack stack, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
+        this.tooltipStack = stack;
+        this.toolTipWithImage(tooltips, tooltipImage, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
+        this.tooltipStack = ItemStack.EMPTY;
+    }
+
+    public void toolTipWithImage(List<Component> tooltip, Optional<TooltipComponent> tooltipImage, double mouseX, double mouseY) {
+        toolTipWithImage(tooltip, tooltipImage, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f);
+    }
+
+    public void toolTipWithImage(List<Component> tooltip, Optional<TooltipComponent> tooltipImage, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
+        List<ClientTooltipComponent> list = PolyLibClient.postGatherTooltipComponents(this.tooltipStack, tooltip, tooltipImage, (int) mouseX, guiWidth(), guiHeight(), font());
+        this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+    }
+
+    public void renderTooltip(Component message, double mouseX, double mouseY) {
+        renderTooltip(message, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f);
+    }
+
+    public void renderTooltip(Component message, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
+        this.renderTooltip(List.of(message.getVisualOrderText()), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
+    }
+
+    public void componentTooltip(List<Component> tooltips, double mouseX, double mouseY) {
+        componentTooltip(tooltips, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f);
+    }
+
+    public void componentTooltip(List<Component> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
+        List<ClientTooltipComponent> components = PolyLibClient.postGatherTooltipComponents(this.tooltipStack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+    }
+
+    public void componentTooltip(List<? extends FormattedText> tooltips, double mouseX, double mouseY, ItemStack stack) {
+        componentTooltip(tooltips, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f, stack);
+    }
+
+    public void componentTooltip(List<? extends net.minecraft.network.chat.FormattedText> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ItemStack stack) {
+        this.tooltipStack = stack;
+        List<ClientTooltipComponent> components = PolyLibClient.postGatherTooltipComponents(stack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        this.tooltipStack = ItemStack.EMPTY;
+    }
+
+    public void renderTooltip(List<? extends FormattedCharSequence> tooltips, double mouseX, double mouseY) {
+        renderTooltip(tooltips, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f);
+    }
+
+    public void renderTooltip(List<? extends FormattedCharSequence> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
+        this.renderTooltipInternal(tooltips.stream().map(ClientTooltipComponent::create).collect(Collectors.toList()), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+    }
+
+    public void renderTooltip(List<FormattedCharSequence> tooltips, ClientTooltipPositioner positioner, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
+        this.renderTooltipInternal(tooltips.stream().map(ClientTooltipComponent::create).collect(Collectors.toList()), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, positioner);
+    }
+
+    private void renderTooltipInternal(List<ClientTooltipComponent> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ClientTooltipPositioner positioner) {
+        if (!tooltips.isEmpty()) {
+            PolyLibClient.ToolTipResult event = PolyLibClient.postRenderTooltipPre(this.tooltipStack, renderWrapper, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
+            if (event.canceled()) return;
+
+            int width = 0;
+            int height = tooltips.size() == 1 ? -2 : 0;
+            for (ClientTooltipComponent line : tooltips) {
+                width = Math.max(width, line.getWidth(event.getFont()));
+                height += line.getHeight();
+            }
+
+            Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
+            int xPos = position.x();
+            int yPos = position.y();
+
+            PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, renderWrapper, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
+            toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
+            int linePos = yPos;
+
+            for (int i = 0; i < tooltips.size(); ++i) {
+                ClientTooltipComponent component = tooltips.get(i);
+                component.renderText(event.getFont(), xPos, linePos, pose.last().pose(), buffers);
+                linePos += component.getHeight() + (i == 0 ? 2 : 0);
+            }
+
+            linePos = yPos;
+
+            for (int i = 0; i < tooltips.size(); ++i) {
+                ClientTooltipComponent component = tooltips.get(i);
+                component.renderImage(event.getFont(), xPos, linePos, renderWrapper);
+                linePos += component.getHeight() + (i == 0 ? 2 : 0);
+            }
+        }
+    }
+
+    public void renderComponentHoverEffect(@Nullable Style style, int mouseX, int mouseY) {
+        if (style != null && style.getHoverEvent() != null) {
+            HoverEvent event = style.getHoverEvent();
+            HoverEvent.ItemStackInfo stackInfo = event.getValue(HoverEvent.Action.SHOW_ITEM);
+            if (stackInfo != null) {
+                renderTooltip(stackInfo.getItemStack(), mouseX, mouseY);
+            } else {
+                HoverEvent.EntityTooltipInfo tooltipInfo = event.getValue(HoverEvent.Action.SHOW_ENTITY);
+                if (tooltipInfo != null) {
+                    if (mc().options.advancedItemTooltips) {
+                        componentTooltip(tooltipInfo.getTooltipLines(), mouseX, mouseY);
+                    }
+                } else {
+                    Component component = event.getValue(HoverEvent.Action.SHOW_TEXT);
+                    if (component != null) {
+                        renderTooltip(font().split(component, Math.max(this.guiWidth() / 2, 200)), mouseX, mouseY);
+                    }
+                }
+            }
+        }
+    }
+
     //=== ItemStacks ===//
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is 32, This must be accounted for when setting the z depth in an element using this render method.
+     */
+    public void renderItem(ItemStack stack, double x, double y) {
+        renderItem(stack, x, y, 16);
+    }
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
+     */
+    public void renderItem(ItemStack stack, double x, double y, int size) {
+        this.renderItem(mc().player, mc().level, stack, x, y, size, 0);
+    }
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
+     */
+    public void renderItem(ItemStack stack, double x, double y, int size, int modelRand) {
+        this.renderItem(mc().player, mc().level, stack, x, y, size, modelRand);
+    }
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is 32, This must be accounted for when setting the z depth in an element using this render method.
+     */
+    public void renderFakeItem(ItemStack stack, double x, double y) {
+        renderFakeItem(stack, x, y, 16);
+    }
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
+     */
+    public void renderFakeItem(ItemStack stack, double x, double y, int size) {
+        this.renderItem(null, mc().level, stack, x, y, size, 0);
+    }
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is 32, This must be accounted for when setting the z depth in an element using this render method.
+     */
+    public void renderItem(LivingEntity entity, ItemStack stack, double x, double y, int modelRand) {
+        renderItem(entity, stack, x, y, 16, modelRand);
+    }
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
+     */
+    public void renderItem(LivingEntity entity, ItemStack stack, double x, double y, int size, int modelRand) {
+        this.renderItem(entity, entity.level(), stack, x, y, size, modelRand);
+    }
+
+    /**
+     * Renders an item stack on the screen.
+     * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
+     *
+     * @param size      Width and height of the stack in pixels (Standard default is 16)
+     * @param modelRand A somewhat random value used in model gathering, Not very important, Can just use 0 or x/y position.
+     */
+    public void renderItem(@Nullable LivingEntity entity, @Nullable Level level, ItemStack stack, double x, double y, int size, int modelRand) {
+        if (!stack.isEmpty()) {
+            BakedModel bakedmodel = mc().getItemRenderer().getModel(stack, level, entity, modelRand);
+            pose.pushPose();
+            pose.translate(x + (size / 2D), y + (size / 2D), size);
+            try {
+                pose.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
+                pose.scale(size, size, size);
+                boolean flag = !bakedmodel.usesBlockLight();
+                if (flag) Lighting.setupForFlatItems();
+                mc().getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, buffers, 0xf000f0, OverlayTexture.NO_OVERLAY, bakedmodel);
+                this.flush();
+                if (flag) Lighting.setupFor3DItems();
+            } catch (Throwable throwable) {
+                CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering item");
+                CrashReportCategory crashreportcategory = crashreport.addCategory("Item being rendered");
+                crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
+                crashreportcategory.setDetail("Item Stack", () -> String.valueOf(stack.getItem()));
+                crashreportcategory.setDetail("Item Damage", () -> String.valueOf(stack.getDamageValue()));
+                crashreportcategory.setDetail("Item NBT", () -> String.valueOf(stack.getTag()));
+                crashreportcategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));
+                throw new ReportedException(crashreport);
+            }
+            pose.popPose();
+        }
+    }
+
+    /**
+     * Draw item decorations (Count, Damage, Cool-down)
+     * This should be rendered at the same position and size as the item.
+     * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
+     * Z depth requirements are the same as the renderItem method.
+     */
+    public void renderItemDecorations(ItemStack stack, int x, int y) {
+        renderItemDecorations(stack, x, y, 16);
+    }
+
+    /**
+     * Draw item decorations (Count, Damage, Cool-down)
+     * This should be rendered at the same position and size as the item.
+     * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
+     * Z depth requirements are the same as the renderItem method.
+     */
+    public void renderItemDecorations(ItemStack stack, int x, int y, int size) {
+        this.renderItemDecorations(stack, x, y, size, null);
+    }
+
+    /**
+     * Draw item decorations (Count, Damage, Cool-down)
+     * This should be rendered at the same position and size as the item.
+     * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
+     * Z depth requirements are the same as the renderItem method.
+     */
+    public void renderItemDecorations(ItemStack stack, int x, int y,  @Nullable String text) {
+        renderItemDecorations(stack, x, y, 16, text);
+    }
+
+    /**
+     * Draw item decorations (Count, Damage, Cool-down)
+     * This should be rendered at the same position and size as the item.
+     * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
+     * Z depth requirements are the same as the renderItem method.
+     */
+    public void renderItemDecorations(ItemStack stack, int x, int y, int size, @Nullable String text) {
+        if (!stack.isEmpty()) {
+            pose.pushPose();
+            float scale = size / 16F;
+            pose.translate(x, y, (size * 2) - 0.1);
+            pose.scale(scale, scale, 1F);
+            pose.translate(-x, -y, 0);
+
+            if (stack.getCount() != 1 || text != null) {
+                String s = text == null ? String.valueOf(stack.getCount()) : text;
+                drawString(s, x + 19 - 2 - font().width(s), y + 6 + 3, 0xffffff, true);
+            }
+
+            if (stack.isBarVisible()) {
+                int l = stack.getBarWidth();
+                int i = stack.getBarColor();
+                int j = x + 2;
+                int k = y + 13;
+                pose.translate(0.0F, 0.0F, 0.04);
+                fill(j, k, j + 13, k + 2, 0xff000000);
+                pose.translate(0.0F, 0.0F, 0.02);
+                fill(j, k, j + l, k + 1, i | 0xff000000);
+            }
+
+            LocalPlayer localplayer = mc().player;
+            float f = localplayer == null ? 0.0F : localplayer.getCooldowns().getCooldownPercent(stack.getItem(), mc().getFrameTime());
+            if (f > 0.0F) {
+                int i1 = y + Mth.floor(16.0F * (1.0F - f));
+                int j1 = i1 + Mth.ceil(16.0F * f);
+                pose.translate(0.0F, 0.0F, 0.02);
+                fill(x, i1, x + 16, j1, Integer.MAX_VALUE);
+            }
+
+            pose.popPose();
+            if (size == 16) {
+                PolyLibClient.onItemDecorate(renderWrapper, font(), stack, x, y);
+            }
+        }
+    }
+
+
     //=== Entity? ===//
-    //=== Hover Text ===//
 
 
     //=== Render Utils ===//
 
-    //Push/Pop scissor
-    //Set Colour
+    public void pushScissor(Rectangle rectangle) {
+        pushScissor(rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height());
+    }
 
+    public void pushScissor(double x, double y, double width, double height) {
+        flushIfBatched();
+        scissorHandler.pushGuiScissor(x, y, width, height);
+    }
+
+    public void popScissor() {
+        scissorHandler.popScissor();
+    }
+
+    /**
+     * Sets the render system shader colour, Effect will vary depending on what is being rendered.
+     * Ideally this should be avoided in favor of render calls that accept colour.
+     */
+    public void setColor(float red, float green, float blue, float alpha) {
+        this.flushIfBatched();
+        RenderSystem.setShaderColor(red, green, blue, alpha);
+    }
 
     //=== Static Utils ===//
 
@@ -887,5 +1399,37 @@ public class GuiRender extends LegacyRender {
                 .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                 .setCullState(RenderStateShard.NO_CULL)
                 .createCompositeState(false));
+    }
+
+    /**
+     * This exists to allow thing like the Tooltip events to still function correctly, hopefully without exploding...
+     */
+    public static class RenderWrapper extends GuiGraphics {
+        private final GuiRender wrapped;
+
+        private RenderWrapper(GuiRender wrapped) {
+            super(wrapped.mc(), wrapped.pose(), wrapped.buffers());
+            this.wrapped = wrapped;
+        }
+
+        @Override
+        public void drawManaged(Runnable runnable) {
+            wrapped.batchDraw(runnable);
+        }
+
+        @Override
+        public void flush() {
+            wrapped.flush();
+        }
+
+        @Override
+        protected void flushIfManaged() {
+            wrapped.flushIfBatched();
+        }
+
+        @Override
+        protected void flushIfUnmanaged() {
+            wrapped.flushIfUnBatched();
+        }
     }
 }

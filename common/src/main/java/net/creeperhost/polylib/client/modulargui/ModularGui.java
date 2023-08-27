@@ -135,6 +135,7 @@ public class ModularGui implements GuiParent<ModularGui> {
         double mouseY = computeMouseY();
         root.render(render, mouseX, mouseY, partialTicks);
 
+        //Ensure overlay is rendered at a depth of ether 400 or total element depth + 100 (whichever is greater)
         double depth = root.getCombinedElementDepth();
         if (depth <= 300) {
             render.pose().translate(0, 0, 400 - depth);

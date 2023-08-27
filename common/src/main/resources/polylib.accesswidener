@@ -22,3 +22,7 @@ accessible method net/minecraft/client/gui/components/AbstractSelectionList$Entr
 
 accessible method net/minecraft/client/renderer/texture/TextureAtlas getWidth ()I
 accessible method net/minecraft/client/renderer/texture/TextureAtlas getHeight ()I
+
+extendable method net/minecraft/client/gui/GuiGraphics <init> (Lnet/minecraft/client/Minecraft;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V # <init>
+extendable method net/minecraft/client/gui/GuiGraphics flushIfUnmanaged ()V
+extendable method net/minecraft/client/gui/GuiGraphics flushIfManaged ()V
