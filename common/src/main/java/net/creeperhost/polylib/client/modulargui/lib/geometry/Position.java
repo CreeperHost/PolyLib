@@ -3,14 +3,49 @@ package net.creeperhost.polylib.client.modulargui.lib.geometry;
 /**
  * Created by brandon3055 on 24/08/2023
  */
-public record Position(double x, double y) {
+public interface Position {
 
-    public Position offset(double x, double y) {
-        return create(this.x + x, this.y + y);
+    double x();
+
+    double y();
+
+    default Position offset(double x, double y) {
+        return create(x() + x, y() + y);
     }
 
-    public static Position create(double x, double y) {
-        return new Position(x, y);
+    static Position create(double x, double y) {
+        return new Immutable(x, y);
+    }
+
+    /**
+     * Creates a new position, bound to the specified parent's position.
+     * */
+    static Position create(GuiParent<?> parent) {
+        return new Bound(parent);
+    }
+
+    record Immutable(double xPos, double yPos) implements Position {
+        @Override
+        public double x() {
+            return xPos;
+        }
+
+        @Override
+        public double y() {
+            return yPos;
+        }
+    }
+
+    record Bound(GuiParent<?> parent) implements Position {
+        @Override
+        public double x() {
+            return parent.xMin();
+        }
+
+        @Override
+        public double y() {
+            return parent.yMin();
+        }
     }
 
 }

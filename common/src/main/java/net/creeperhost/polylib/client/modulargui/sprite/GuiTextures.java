@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static net.creeperhost.polylib.PolyLib.MOD_ID;
 
@@ -31,6 +32,14 @@ public class GuiTextures {
      */
     public static Material get(String texture) {
         return MATERIAL_CACHE.computeIfAbsent(MOD_ID + ":" + texture, e -> getUncached(texture));
+    }
+
+    public static Material get(Supplier<String> texture) {
+        return get(texture.get());
+    }
+
+    public static Supplier<Material> getter(Supplier<String> texture) {
+        return () -> get(texture.get());
     }
 
     /**

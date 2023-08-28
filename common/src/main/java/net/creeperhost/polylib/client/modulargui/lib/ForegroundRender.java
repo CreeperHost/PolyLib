@@ -17,7 +17,9 @@ public interface ForegroundRender {
      *
      * @return the z height of the background content.
      */
-    double getForegroundDepth();
+    default double getForegroundDepth() {
+        return 0.01;
+    }
 
     /**
      * Used to render content in front of this elements child elements.

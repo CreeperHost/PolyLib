@@ -19,7 +19,9 @@ public interface BackgroundRender {
      *
      * @return the z height of the background content.
      */
-    double getBackgroundDepth();
+    default double getBackgroundDepth() {
+        return 0.01;
+    }
 
     /**
      * Used to render content behind this elements child elements.

@@ -53,6 +53,10 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
     private Constraint ySize = null;
     private AxisConfig yAxis = AxisConfig.NONE;
 
+    //Permanently bound immutable position and rectangle elements.
+    private Position position = Position.create(this);
+    private Rectangle rectangle = Rectangle.create(this);
+
     private boolean strictMode = false;
 
     @NotNull
@@ -307,12 +311,18 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
 
     //=== Geometry Utilities ===//
 
+    /**
+     * Returns a {@link Position} that is permanently bound to this element.
+     * */
     public Position getPosition() {
-        return Position.create(xMin(), yMin());
+        return position;
     }
 
+    /**
+     * Returns a {@link Rectangle} that is permanently bound to this element.
+     * */
     public Rectangle getRectangle() {
-        return Rectangle.create(xMin(), yMin(), xSize(), ySize());
+        return rectangle;
     }
 
     /**

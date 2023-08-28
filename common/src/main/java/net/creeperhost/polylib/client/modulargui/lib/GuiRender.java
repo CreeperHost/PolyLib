@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.creeperhost.polylib.PolyLibClient;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.minecraft.CrashReport;
@@ -275,8 +276,22 @@ public class GuiRender extends LegacyRender {
     /**
      * Draw a bordered rectangle of specified with specified border width, border colour and fill colour.
      */
+    public void borderRect(Rectangle rectangle, double borderWidth, int fillColour, int borderColour) {
+        borderFill(rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, fillColour, borderColour);
+    }
+
+    /**
+     * Draw a bordered rectangle of specified with specified border width, border colour and fill colour.
+     */
     public void borderRect(double x, double y, double width, double height, double borderWidth, int fillColour, int borderColour) {
         borderFill(x, y, x + width, y + height, borderWidth, fillColour, borderColour);
+    }
+
+    /**
+     * Draw a bordered rectangle of specified with specified border width, border colour and fill colour.
+     */
+    public void borderRect(RenderType type, Rectangle rectangle, double borderWidth, int fillColour, int borderColour) {
+        borderFill(type, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, fillColour, borderColour);
     }
 
     /**
@@ -318,8 +333,26 @@ public class GuiRender extends LegacyRender {
      * Example Usage: render.shadedFill(0, 0, 18, 18, 1, 0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b); //Renders a vanilla style inventory slot
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
+    public void shadedRect(Rectangle rectangle, double borderWidth, int topLeftColour, int bottomRightColour, int fillColour) {
+        shadedFill(SOLID, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
+    }
+
+    /**
+     * Can be used to create the illusion of an inset / outset rectangle. This is identical to the way inventory slots are rendered except in code rather than via a texture.
+     * Example Usage: render.shadedFill(0, 0, 18, 18, 1, 0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b); //Renders a vanilla style inventory slot
+     * This can also be used to render things like buttons that appear to actually "push in" when you press them.
+     */
     public void shadedRect(double x, double y, double width, double height, double borderWidth, int topLeftColour, int bottomRightColour, int fillColour) {
         shadedFill(SOLID, x, y, x + width, y + height, borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
+    }
+
+    /**
+     * Can be used to create the illusion of an inset / outset rectangle. This is identical to the way inventory slots are rendered except in code rather than via a texture.
+     * Example Usage: render.shadedFill(0, 0, 18, 18, 1, 0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b); //Renders a vanilla style inventory slot
+     * This can also be used to render things like buttons that appear to actually "push in" when you press them.
+     */
+    public void shadedRect(Rectangle rectangle, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
+        shadedFill(SOLID, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
     }
 
     /**
@@ -793,7 +826,25 @@ public class GuiRender extends LegacyRender {
      * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
      * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
      */
-    private void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder, int argb) {
+    public void dynamicTex(Material material, Rectangle rectangle, Borders borders, int argb) {
+        dynamicTex(material, (int) rectangle.x(), (int) rectangle.y(), (int) rectangle.width(), (int) rectangle.height(), (int) borders.top(), (int) borders.left(), (int) borders.bottom(), (int) borders.right(), argb);
+    }
+
+    /**
+     * This can be used to take something like a generic bordered background texture and dynamically resize it to draw at any size and shape you want.
+     * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
+     * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
+     */
+    public void dynamicTex(Material material, Rectangle rectangle, int topBorder, int leftBorder, int bottomBorder, int rightBorder, int argb) {
+        dynamicTex(material, (int) rectangle.x(), (int) rectangle.y(), (int) rectangle.width(), (int) rectangle.height(), topBorder, leftBorder, bottomBorder, rightBorder, argb);
+    }
+
+    /**
+     * This can be used to take something like a generic bordered background texture and dynamically resize it to draw at any size and shape you want.
+     * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
+     * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
+     */
+    public void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder, int argb) {
         dynamicTex(material, x, y, width, height, topBorder, leftBorder, bottomBorder, rightBorder, r(argb), g(argb), b(argb), a(argb));
     }
 
@@ -802,7 +853,25 @@ public class GuiRender extends LegacyRender {
      * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
      * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
      */
-    private void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder) {
+    public void dynamicTex(Material material, Rectangle rectangle, Borders borders) {
+        dynamicTex(material, (int) rectangle.x(), (int) rectangle.y(), (int) rectangle.width(), (int) rectangle.height(), (int) borders.top(), (int) borders.left(), (int) borders.bottom(), (int) borders.right());
+    }
+
+    /**
+     * This can be used to take something like a generic bordered background texture and dynamically resize it to draw at any size and shape you want.
+     * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
+     * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
+     */
+    public void dynamicTex(Material material, Rectangle rectangle, int topBorder, int leftBorder, int bottomBorder, int rightBorder) {
+        dynamicTex(material, (int) rectangle.x(), (int) rectangle.y(), (int) rectangle.width(), (int) rectangle.height(), topBorder, leftBorder, bottomBorder, rightBorder);
+    }
+
+    /**
+     * This can be used to take something like a generic bordered background texture and dynamically resize it to draw at any size and shape you want.
+     * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
+     * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
+     */
+    public void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder) {
         dynamicTex(material, x, y, width, height, topBorder, leftBorder, bottomBorder, rightBorder, 1F, 1F, 1F, 1F);
     }
 
@@ -811,7 +880,7 @@ public class GuiRender extends LegacyRender {
      * This is done by cutting up the texture and stitching it back to together using, cutting and tiling as required.
      * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
      */
-    private void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder, float red, float green, float blue, float alpha) {
+    public void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder, float red, float green, float blue, float alpha) {
         if (batchDraw) {//Draw batched for efficiency, unless already doing a batch draw.
             dynamicTexInternal(material, x, y, width, height, topBorder, leftBorder, bottomBorder, rightBorder, red, green, blue, alpha);
         } else {
@@ -1226,7 +1295,7 @@ public class GuiRender extends LegacyRender {
      * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
      * Z depth requirements are the same as the renderItem method.
      */
-    public void renderItemDecorations(ItemStack stack, int x, int y,  @Nullable String text) {
+    public void renderItemDecorations(ItemStack stack, int x, int y, @Nullable String text) {
         renderItemDecorations(stack, x, y, 16, text);
     }
 

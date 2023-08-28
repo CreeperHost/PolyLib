@@ -53,6 +53,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private int screenWidth;
     private int screenHeight;
 
+    private int hoverTime = 0;
     private boolean transparent = false;
     private boolean enabled = true;
     private boolean removed = true;
@@ -213,6 +214,14 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return getParent().getFocused();
     }
 
+    /**
+     * @return the amount of time the cursor has spent inside this element's bounds,
+     * resets to zero when the cursor leaves this element's bounds.
+     */
+    public int hoverTime() {
+        return hoverTime;
+    }
+
     //=== Render / Update ===//
 
     /**
@@ -347,6 +356,12 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         if (!addedQueue.isEmpty()) {
             childElements.addAll(addedQueue);
             addedQueue.clear();
+        }
+
+        if (isMouseOver(mouseX, mouseY)) {
+            hoverTime++;
+        } else {
+            hoverTime = 0;
         }
 
         for (GuiElement<?> childElement : childElements) {
