@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[41,)"
+loaderVersion = "[46,)"
 issueTrackerURL = "https://github.com/CreeperHost/PolyLib/issues"
 license = "Insert License Here"
 
@@ -15,7 +15,7 @@ description = '''
 [[dependencies.polylib]]
 modId = "forge"
 mandatory = true
-versionRange = "[44,)"
+versionRange = "[46,)"
 ordering = "NONE"
 side = "BOTH"
 

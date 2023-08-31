@@ -17,7 +17,7 @@ public class ContainerInventoryTestBlock extends PolyContainer
 
     public ContainerInventoryTestBlock(int id, Inventory playerInv, FriendlyByteBuf extraData)
     {
-        this(id, playerInv, (InventoryTestBlockEntity) Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(id, playerInv, (InventoryTestBlockEntity) Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
     }
 
     public ContainerInventoryTestBlock(int id, Inventory playerInv, InventoryTestBlockEntity inventoryTestBlock, ContainerData containerData)

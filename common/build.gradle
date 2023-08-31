@@ -5,7 +5,6 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
     implementation "blue.endless:jankson:1.2.1"
-
     implementation('io.sentry:sentry:5.7.2')
     {
         exclude group: 'com.google', module: 'gson'
