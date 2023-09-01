@@ -45,9 +45,6 @@ dependencies {
     implementation project(path: ":forge", configuration: "namedElements")
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
-
-    modApi rootProject.files('libs/HammerLib-1.20-20.0.8.jar')
-    modApi rootProject.files('libs/SolarFluxReborn-1.20-20.0.3.jar')
 }
 
 publishing {

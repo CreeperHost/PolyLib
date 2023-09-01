@@ -2,6 +2,7 @@ package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.client.screen.widget.LoadingSpinnerWidget;
 import net.creeperhost.polylib.client.screen.widget.buttons.ButtonInfoTab;
 import net.creeperhost.polylib.client.screen.widget.buttons.ButtonItemStack;
 import net.creeperhost.polylib.client.screen.widget.buttons.ButtonRedstoneControl;
@@ -43,6 +44,8 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
         {
 
         }));
+
+        addRenderableWidget(new LoadingSpinnerWidget(leftPos + 80, topPos + 20, 18, 18,  Component.literal("test"), new ItemStack(Items.COOKED_BEEF), () -> true));
     }
 
     @Override
