@@ -1,11 +1,12 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
-import com.google.common.base.Suppliers;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.sprite.GuiTextures;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 
 /**
  * Created by brandon3055 on 28/08/2023
@@ -28,8 +31,9 @@ public class GuiButton extends GuiElement<GuiButton> {
     private boolean pressed = false;
     private Holder<SoundEvent> pressSound = SoundEvents.UI_BUTTON_CLICK;
     private Holder<SoundEvent> releaseSound = null;
-    private Supplier<Boolean> disabled = Suppliers.memoize(() -> false);
+    private Supplier<Boolean> disabled = () -> false;
     private Supplier<Boolean> toggleState;
+    private GuiText label = null;
 
     /**
      * In its default state this is a blank, invisible element that can fire callbacks when pressed.
@@ -40,6 +44,23 @@ public class GuiButton extends GuiElement<GuiButton> {
      */
     public GuiButton(@NotNull GuiParent<?> parent) {
         super(parent);
+    }
+
+    /**
+     * When creating buttons with labels, use this method to store a reference to the label in the button fore easy retrival later.
+     *
+     * @param label The button label.
+     */
+    public GuiButton setLabel(GuiText label) {
+        this.label = label;
+        return this;
+    }
+
+    /**
+     * @return The buttons label element, If it has one.
+     */
+    public GuiText getLabel() {
+        return label;
     }
 
     /**
@@ -95,7 +116,7 @@ public class GuiButton extends GuiElement<GuiButton> {
      * When disabled via this method a button is still visible but greyed out / not clickable.
      */
     public GuiButton setDisabled(boolean disabled) {
-        this.disabled = Suppliers.memoize(() -> disabled);
+        this.disabled = () -> disabled;
         return this;
     }
 
@@ -206,14 +227,14 @@ public class GuiButton extends GuiElement<GuiButton> {
     /**
      * Creates a new gui button that looks and acts exactly like a standard vanilla button.
      */
-    public static GuiButton vanilla(@NotNull GuiParent<?> parent, Runnable onClick) {
-        return vanilla(parent).onClick(onClick);
+    public static GuiButton vanilla(@NotNull GuiParent<?> parent, @Nullable Component label, Runnable onClick) {
+        return vanilla(parent, label).onClick(onClick);
     }
 
     /**
      * Creates a new gui button that looks and acts exactly like a standard vanilla button.
      */
-    public static GuiButton vanilla(@NotNull GuiParent<?> parent) {
+    public static GuiButton vanilla(@NotNull GuiParent<?> parent, @Nullable Component label) {
         GuiButton button = new GuiButton(parent);
         GuiTexture texture = new GuiTexture(button, GuiTextures.getter(() -> button.toggleState() ? "dynamic/button_highlight" : "dynamic/button_vanilla"));
         texture.dynamicTexture();
@@ -222,7 +243,10 @@ public class GuiButton extends GuiElement<GuiButton> {
         Constraints.bindTo(texture, button);
         Constraints.bindTo(highlight, button);
 
-        //TODO GuiLabel
+        if (label != null) {
+            button.setLabel(new GuiText(parent, label));
+            Constraints.bindTo(button.getLabel(), button, 0, 2, 0, 2);
+        }
 
         return button;
     }
@@ -230,24 +254,32 @@ public class GuiButton extends GuiElement<GuiButton> {
     /**
      * Creates a vanilla button with a "press" animation.
      */
-    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, Runnable onPress) {
-        return vanillaAnimated(parent).onPress(onPress);
+    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Component label, Runnable onPress) {
+        return vanillaAnimated(parent, label).onPress(onPress);
     }
 
     //TODO Could use a quad-sliced texture for this.
+
     /**
      * Creates a vanilla button with a "press" animation.
      */
-    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent) {
+    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Component label) {
         GuiButton button = new GuiButton(parent);
         GuiTexture texture = new GuiTexture(button, GuiTextures.getter(() -> button.toggleState() || button.isPressed() ? "dynamic/button_pressed" : "dynamic/button_vanilla"));
         texture.dynamicTexture();
-        GuiRectangle highlight = new GuiRectangle(button).border(() -> button.hoverTime() > 0 ? 0xFFFFFFFF : 0);
+        GuiRectangle highlight = new GuiRectangle(button).border(() -> button.hovered() ? 0xFFFFFFFF : 0);
 
         Constraints.bindTo(texture, button);
         Constraints.bindTo(highlight, button);
 
-        //TODO GuiLabel
+        if (label != null) {
+            button.setLabel(new GuiText(parent, label)
+                    .constrain(TOP, Constraint.relative(button.get(TOP), () -> button.isPressed() ? -0.5D : 0.5D).precise())
+                    .constrain(LEFT, Constraint.relative(button.get(LEFT), () -> button.isPressed() ? 1.5D : 2.5D).precise())
+                    .constrain(WIDTH, Constraint.relative(button.get(WIDTH), -4))
+                    .constrain(HEIGHT, Constraint.match(button.get(HEIGHT)))
+            );
+        }
 
         return button;
     }

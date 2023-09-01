@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
-import com.google.common.base.Suppliers;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
@@ -19,7 +18,7 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     private Supplier<Integer> fill = null;
     private Supplier<Integer> border = null;
 
-    private Supplier<Integer> borderWidth = Suppliers.memoize(() -> 1);
+    private Supplier<Integer> borderWidth = () -> 1;
 
     private Supplier<Integer> shadeTopLeft;
     private Supplier<Integer> shadeBottomRight;
@@ -33,7 +32,7 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     }
 
     public GuiRectangle border(int border) {
-        return border(Suppliers.memoize(() -> border));
+        return border(() -> border);
     }
 
     public GuiRectangle border(Supplier<Integer> border) {
@@ -42,7 +41,7 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     }
 
     public GuiRectangle fill(int fill) {
-        return fill(Suppliers.memoize(() -> fill));
+        return fill(() -> fill);
     }
 
     public GuiRectangle fill(Supplier<Integer> fill) {
@@ -51,7 +50,7 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     }
 
     public GuiRectangle rectangle(int fill, int border) {
-        return rectangle(Suppliers.memoize(() -> fill), Suppliers.memoize(() -> border));
+        return rectangle(() -> fill, () -> border);
     }
 
     public GuiRectangle rectangle(Supplier<Integer> fill, Supplier<Integer> border) {
@@ -60,19 +59,19 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
         return this;
     }
 
-    public GuiRectangle shadedRect(int fill, int topLeft, int bottomRight) {
-        return shadedRect(Suppliers.memoize(() -> fill), Suppliers.memoize(() -> topLeft), Suppliers.memoize(() -> bottomRight));
+    public GuiRectangle shadedRect(int topLeft, int bottomRight, int fill) {
+        return shadedRect(() -> topLeft, () -> bottomRight, () -> fill);
     }
 
-    public GuiRectangle shadedRect(Supplier<Integer> fill, Supplier<Integer> topLeft, Supplier<Integer> bottomRight) {
-        return shadedRect(fill, topLeft, bottomRight, () -> GuiRender.midColour(topLeft.get(), bottomRight.get()));
+    public GuiRectangle shadedRect(Supplier<Integer> topLeft, Supplier<Integer> bottomRight, Supplier<Integer> fill) {
+        return shadedRect(topLeft, bottomRight, () -> GuiRender.midColour(topLeft.get(), bottomRight.get()), fill);
     }
 
-    public GuiRectangle shadedRect(int fill, int topLeft, int bottomRight, int cornerMix) {
-        return shadedRect(Suppliers.memoize(() -> fill), Suppliers.memoize(() -> topLeft), Suppliers.memoize(() -> bottomRight), Suppliers.memoize(() -> cornerMix));
+    public GuiRectangle shadedRect(int topLeft, int bottomRight, int cornerMix, int fill) {
+        return shadedRect(() -> topLeft, () -> bottomRight, () -> cornerMix, () -> fill);
     }
 
-    public GuiRectangle shadedRect(Supplier<Integer> fill, Supplier<Integer> topLeft, Supplier<Integer> bottomRight, Supplier<Integer> cornerMix) {
+    public GuiRectangle shadedRect(Supplier<Integer> topLeft, Supplier<Integer> bottomRight, Supplier<Integer> cornerMix, Supplier<Integer> fill) {
         this.fill = fill;
         this.shadeTopLeft = topLeft;
         this.shadeBottomRight = bottomRight;
@@ -81,7 +80,7 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     }
 
     public GuiRectangle borderWidth(int borderWidth) {
-        return borderWidth(Suppliers.memoize(() -> borderWidth));
+        return borderWidth(() -> borderWidth);
     }
 
     public GuiRectangle borderWidth(Supplier<Integer> borderWidth) {

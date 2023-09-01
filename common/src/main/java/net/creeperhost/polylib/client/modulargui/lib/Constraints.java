@@ -43,8 +43,8 @@ public class Constraints {
     public static void bindTo(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, double top, double left, double bottom, double right) {
         element.constrain(TOP, Constraint.relative(reference.get(TOP), top));
         element.constrain(LEFT, Constraint.relative(reference.get(LEFT), left));
-        element.constrain(BOTTOM, Constraint.relative(reference.get(BOTTOM), bottom));
-        element.constrain(RIGHT, Constraint.relative(reference.get(RIGHT), right));
+        element.constrain(BOTTOM, Constraint.relative(reference.get(BOTTOM), -bottom));
+        element.constrain(RIGHT, Constraint.relative(reference.get(RIGHT), -right));
     }
 
     /**
@@ -58,8 +58,8 @@ public class Constraints {
     public static void bindTo(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, Borders borders) {
         element.constrain(TOP, Constraint.relative(reference.get(TOP), borders::top));
         element.constrain(LEFT, Constraint.relative(reference.get(LEFT), borders::left));
-        element.constrain(BOTTOM, Constraint.relative(reference.get(BOTTOM), borders::bottom));
-        element.constrain(RIGHT, Constraint.relative(reference.get(RIGHT), borders::right));
+        element.constrain(BOTTOM, Constraint.relative(reference.get(BOTTOM), () -> -borders.bottom()));
+        element.constrain(RIGHT, Constraint.relative(reference.get(RIGHT), () -> -borders.right()));
     }
 
 

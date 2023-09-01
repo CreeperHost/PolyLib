@@ -68,7 +68,7 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
 
     //=== Simple Setters ===//
 
-     /**
+    /**
      * Simple method for setting the x position of this element.
      * <p>
      * Constrains the left side of this element, to the left side of the parent element,
@@ -136,7 +136,7 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
     /**
      * Convenience method for setting both width and height.
      *
-     * @param width The width to apply.
+     * @param width  The width to apply.
      * @param height The height to apply.
      * @return This Element.
      * @see #setWidth(double)
@@ -237,11 +237,11 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
     }
 
     /**
-     * @param param The geometry parameter to be constrained.
+     * @param param      The geometry parameter to be constrained.
      * @param constraint The constraint to apply
      * @return This Element.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public T constrain(GeoParam param, @Nullable Constraint constraint) {
         if (constraint != null && constraint.axis() != null && constraint.axis() != param.axis) {
             throw new IllegalStateException("Attempted to apply constraint for axis: " + constraint.axis() + ", to Parameter: " + param);
@@ -290,7 +290,7 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
      * @param strictMode Enable strict mode.
      * @return the geometry object.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public T strictMode(boolean strictMode) {
         this.strictMode = strictMode;
         //TODO Propagate to children (Will be handled in the base GuiElement)
@@ -313,14 +313,14 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
 
     /**
      * Returns a {@link Position} that is permanently bound to this element.
-     * */
+     */
     public Position getPosition() {
         return position;
     }
 
     /**
      * Returns a {@link Rectangle} that is permanently bound to this element.
-     * */
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
@@ -345,6 +345,21 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
             }
         }
         return enclosingRect;
+    }
+
+    /**
+     * @return a rectangle, the bounds of which enclose all enabled child elements.
+     * If there are no enabled child elements the returned rect will have the position of this element, with zero size.
+     */
+    public Rectangle getChildBounds() {
+        Rectangle bounds = null;
+        for (GuiElement<?> element : getChildren()) {
+            if (element.isEnabled()) {
+                bounds = element.addBoundsToRect(bounds == null ? element.getRectangle() : bounds);
+            }
+        }
+        if (bounds == null) bounds = Rectangle.create(xMin(), yMin(), 0, 0);
+        return bounds;
     }
 
 }

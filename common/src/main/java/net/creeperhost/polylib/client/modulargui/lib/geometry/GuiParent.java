@@ -141,6 +141,14 @@ public interface GuiParent<T extends GuiParent<?>> {
     void removeChild(GuiElement<?> child);
 
     /**
+     * Checks if this element is a descendant of the specified.
+     * @return true if the specified element is a parent or grandparent etc... of this element.
+     */
+    default boolean isDescendantOf(GuiElement<?> ancestor) {
+        return false;
+    }
+
+    /**
      * @return The minecraft instance.
      */
     Minecraft mc();
@@ -184,4 +192,15 @@ public interface GuiParent<T extends GuiParent<?>> {
      * @return the current gloabally focused element, or null if no element is focused.
      */
     @Nullable GuiElement<?> getFocused();
+
+    /**
+     * Allows an element to override the {@link GuiElement#isMouseOver(double, double)} method of its children.
+     * This is primarily used for things like scroll elements where mouseover interactions need to be blocked outside the view area.
+     *
+     * @param element The element on which isMouseOver is getting called.
+     * @return true if mouse-over interaction should be blocked for this child element.
+     */
+    default boolean blockMouseOver(GuiElement<?> element, double mouseX, double mouseY) {
+        return false;
+    }
 }

@@ -13,9 +13,11 @@ import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
@@ -894,6 +896,7 @@ public class GuiRender extends LegacyRender {
     private void dynamicTexInternal(Material material, int xPos, int yPos, int xSize, int ySize, int topBorder, int leftBorder, int bottomBorder, int rightBorder, float red, float green, float blue, float alpha) {
         TextureAtlasSprite sprite = material.sprite();
         VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
+        Matrix4f mat = pose.last().pose();
         SpriteContents contents = sprite.contents();
         int texWidth = contents.width();
         int texHeight = contents.height();
@@ -914,8 +917,8 @@ public class GuiRender extends LegacyRender {
             }
 
             //Top & Bottom trim
-            bufferDynamic(buffer, sprite, xPos + x, yPos, trimU, 0, rWidth, topBorder, red, green, blue, alpha);
-            bufferDynamic(buffer, sprite, xPos + x, yPos + ySize - bottomBorder, trimU, texHeight - bottomBorder, rWidth, bottomBorder, red, green, blue, alpha);
+            bufferDynamic(buffer, mat, sprite, xPos + x, yPos, trimU, 0, rWidth, topBorder, red, green, blue, alpha);
+            bufferDynamic(buffer, mat, sprite, xPos + x, yPos + ySize - bottomBorder, trimU, texHeight - bottomBorder, rWidth, bottomBorder, red, green, blue, alpha);
 
             rWidth = Math.min(xSize - x - leftBorder - rightBorder, trimWidth);
             for (int y = 0; y < ySize; ) {
@@ -929,13 +932,13 @@ public class GuiRender extends LegacyRender {
 
                 //Left & Right trim
                 if (x == 0 && y + topBorder < ySize - bottomBorder) {
-                    bufferDynamic(buffer, sprite, xPos, yPos + y + topBorder, 0, trimV, leftBorder, rHeight, red, green, blue, alpha);
-                    bufferDynamic(buffer, sprite, xPos + xSize - rightBorder, yPos + y + topBorder, trimU + texWidth - rightBorder, trimV, rightBorder, rHeight, red, green, blue, alpha);
+                    bufferDynamic(buffer, mat, sprite, xPos, yPos + y + topBorder, 0, trimV, leftBorder, rHeight, red, green, blue, alpha);
+                    bufferDynamic(buffer, mat, sprite, xPos + xSize - rightBorder, yPos + y + topBorder, trimU + texWidth - rightBorder, trimV, rightBorder, rHeight, red, green, blue, alpha);
                 }
 
                 //Core
                 if (y + topBorder < ySize - bottomBorder && x + leftBorder < xSize - rightBorder) {
-                    bufferDynamic(buffer, sprite, xPos + x + leftBorder, yPos + y + topBorder, leftBorder, topBorder, rWidth, rHeight, red, green, blue, alpha);
+                    bufferDynamic(buffer, mat, sprite, xPos + x + leftBorder, yPos + y + topBorder, leftBorder, topBorder, rWidth, rHeight, red, green, blue, alpha);
                 }
                 y += trimHeight;
             }
@@ -943,14 +946,14 @@ public class GuiRender extends LegacyRender {
         }
     }
 
-    private void bufferDynamic(VertexConsumer builder, TextureAtlasSprite tex, int x, int y, double textureX, double textureY, int width, int height, float red, float green, float blue, float alpha) {
+    private void bufferDynamic(VertexConsumer builder, Matrix4f mat, TextureAtlasSprite tex, int x, int y, double textureX, double textureY, int width, int height, float red, float green, float blue, float alpha) {
         int w = tex.contents().width();
         int h = tex.contents().height();
         //@formatter:off
-        builder.vertex(x,         y + height, 0).color(red, green, blue, alpha).uv(tex.getU((textureX / w) * 16D),          tex.getV(((textureY + height) / h) * 16)).endVertex();
-        builder.vertex(x + width, y + height, 0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w) * 16), tex.getV(((textureY + height) / h) * 16)).endVertex();
-        builder.vertex(x + width, y,          0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w) * 16), tex.getV(((textureY) / h) * 16)).endVertex();
-        builder.vertex(x,         y,          0).color(red, green, blue, alpha).uv(tex.getU((textureX / w) * 16),           tex.getV(((textureY) / h) * 16)).endVertex();
+        builder.vertex(mat, x,         y + height, 0).color(red, green, blue, alpha).uv(tex.getU((textureX / w) * 16D),          tex.getV(((textureY + height) / h) * 16)).endVertex();
+        builder.vertex(mat, x + width, y + height, 0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w) * 16), tex.getV(((textureY + height) / h) * 16)).endVertex();
+        builder.vertex(mat, x + width, y,          0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w) * 16), tex.getV(((textureY) / h) * 16)).endVertex();
+        builder.vertex(mat, x,         y,          0).color(red, green, blue, alpha).uv(tex.getU((textureX / w) * 16),           tex.getV(((textureY) / h) * 16)).endVertex();
         //@formatter:on
     }
 
@@ -1044,6 +1047,39 @@ public class GuiRender extends LegacyRender {
 
     public void drawCenteredString(FormattedCharSequence message, double x, double y, int colour, boolean shadow) {
         drawString(message, x - font().width(message) / 2D, y, colour, shadow);
+    }
+
+    /**
+     * If text is to long ti fit between x and xMaz, the text will scroll from left to right.
+     * Otherwise, will render centered.
+     * This is mostly copied from {@link AbstractWidget#renderScrollingString(GuiGraphics, Font, Component, int, int, int, int, int)}
+     */
+    @SuppressWarnings ("JavadocReference")
+    public void drawScrollingString(Component component, double x, double y, double xMax, int colour, boolean shadow) {
+        drawScrollingString(component, x, y, xMax, colour, shadow, true);
+    }
+
+    /**
+     * If text is to long ti fit between x and xMaz, the text will scroll from left to right.
+     * Otherwise, will render centered.
+     * This is mostly copied from {@link net.minecraft.client.gui.components.AbstractWidget#renderScrollingString(GuiGraphics, Font, Component, int, int, int, int, int)}
+     * */
+    @SuppressWarnings ("JavadocReference")
+    public void drawScrollingString(Component component, double x, double y, double xMax, int colour, boolean shadow, boolean doScissor) {
+        int textWidth = font().width(component);
+        double width = xMax - x;
+        if (textWidth > width) {
+            double outside = textWidth - width;
+            double anim = (double) Util.getMillis() / 1000.0;
+            double e = Math.max(outside * 0.5, 3.0);
+            double f = Math.sin(1.5707963267948966 * Math.cos(6.283185307179586 * anim / e)) / 2.0 + 0.5;
+            double offset = Mth.lerp(f, 0.0, outside);
+            if (doScissor) pushScissor(x, y - 1, xMax, y + font().lineHeight + 1);
+            drawString(component, x - offset, y, colour, shadow);
+            if (doScissor) popScissor();
+        } else {
+            drawCenteredString(component, (x + xMax) / 2, y, colour, shadow);
+        }
     }
 
     //=== Tool Tips ===//
@@ -1351,13 +1387,18 @@ public class GuiRender extends LegacyRender {
 
     //=== Render Utils ===//
 
-    public void pushScissor(Rectangle rectangle) {
-        pushScissor(rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height());
+    public void pushScissorRect(Rectangle rectangle) {
+        pushScissorRect(rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height());
     }
 
-    public void pushScissor(double x, double y, double width, double height) {
+    public void pushScissorRect(double x, double y, double width, double height) {
         flushIfBatched();
         scissorHandler.pushGuiScissor(x, y, width, height);
+    }
+
+    public void pushScissor(double xMin, double yMin, double xMax, double yMax) {
+        flushIfBatched();
+        scissorHandler.pushGuiScissor(xMin, yMin, xMax - xMin, yMax - yMin);
     }
 
     public void popScissor() {

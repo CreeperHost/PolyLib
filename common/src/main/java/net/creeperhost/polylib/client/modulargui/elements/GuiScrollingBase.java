@@ -1,0 +1,165 @@
+package net.creeperhost.polylib.client.modulargui.elements;
+
+import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.ScrollState;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
+
+/**
+ * So the logic behind this element is as follows.
+ * This element contains a base "Content Element" that holds all the scrollable content.
+ * The content element's position is controlled by the {@link GuiScrollingBase}
+ * But its {@link GeoParam#WIDTH} and {@link GeoParam#HEIGHT} constraints can be set by the user,
+ * Or they can be set to dynamically adjust to the child elements added to it.
+ * <p>
+ * The bounds of the {@link GuiScrollingBase} represent the "view window"
+ * When scrolling up/down, left/right the Content Element is effectively just moving around behind the view window
+ * and everything outside the view window is scissored off.
+ * Any events that occur outside the view window are not propagated to scroll element.
+ * Calls to {@link #isMouseOver(double, double)} from an area of an element that is outside the view window will return false.
+ * <p>
+ * Elements that are completely outside the view window will not be rendered at all for efficiency.
+ * <p>
+ * Created by brandon3055 on 01/09/2023
+ */
+public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<T> {
+
+    /**
+     * This is made available primarily for debugging purposes where it can be useful to see what's going on behind the scenes.
+     */
+    public boolean enableScissor = true;
+    private GuiElement<?> contentElement;
+    private double xScrollPos = 0;
+    private double yScrollPos = 0;
+    private double contentWidth = 0;
+    private double contentHeight = 0;
+    private boolean setup = false;
+
+    /**
+     * @param parent parent {@link GuiParent}.
+     */
+    public GuiScrollingBase(@NotNull GuiParent<?> parent) {
+        super(parent);
+        setContainerElement(new ContentElement(this));
+    }
+
+    //=== Scroll element setup ===//
+
+    /**
+     * Retrieves the content element that holds all the scrolling elements.
+     * You must add all of your scrolling content to this element.
+     * Scrolling content must also be constrained relative to this element.
+     * <p>
+     * The {@link GeoParam#TOP} and {@link GeoParam#LEFT} constraints for this element are set by the {@link GuiScrollingBase} and must not be overridden.
+     * These are used to control the 'scrolling' of the element.
+     * <p>
+     * By default, the {@link GeoParam#WIDTH} and {@link GeoParam#HEIGHT} (and therefor also BOTTOM, RIGHT) are dynamically constrained to match the outer bounds of the scrolling elements.
+     * So attempting to constrain the content to any of these dynamic parameters would result in a stack overflow.
+     * You can however override the WIDTH and HEIGHT constraints if you wish.
+     * This can be useful if you wish to create something like a fixed width scrolling list where the width of each scrolling element is bound to the width of the list.
+     * <p>
+     * The most important thing to note, Especially when manually constraining the WIDTH and HEIGHT of the content element,
+     * All scrolling elements must be withing the bounds of the content element. Anything outside the content element's bounds will not be visible.
+     *
+     * @return The content element.
+     */
+    public GuiElement<?> getContentElement() {
+        return contentElement;
+    }
+
+
+    /**
+     * This allows you to install a custom container element.
+     * The elements constraints will automatically be set by this method.
+     * <p>
+     * After calling this method you may override the container element WIDTH and HEIGHT constraints as described in the documentation for {@link #getContentElement()}
+     * But you must not touch the TOP or LEFT constraints.
+     * <p>
+     * Important thing to note, By default the container element is preinstalled before any children can be added, meaning any children added to the {@link GuiScrollingBase}
+     * will render on top of the scrolling content.
+     * As this method allows you to set a new child as the container element, any children added before the new content element, will render under the content element.
+     *
+     * @param element The new container element.
+     */
+    public void setContainerElement(GuiElement<?> element) {
+        if (element.getParent() != this) throw new IllegalStateException("Content element must be a child of the GuiScrollingBase it is being installed in");
+        if (contentElement != null) removeChild(contentElement);
+        setup = true;
+        contentElement = element;
+        contentElement.constrain(TOP, Constraint.relative(get(TOP), () -> yScrollPos * -verticalHiddenArea()));
+        contentElement.constrain(LEFT, Constraint.relative(get(LEFT), () -> xScrollPos * -horizontalHiddenArea()));
+        //TODO, using getChildBounds in a dynamic constraint like this is potentially very inefficient.
+        // Need to look into a better option for this. Perhaps using a MutableRectangle to reduce object creation
+        contentElement.constrain(WIDTH, Constraint.dynamic(() -> contentElement.getChildBounds().width()));
+        contentElement.constrain(HEIGHT, Constraint.dynamic(() -> contentElement.getChildBounds().height()));
+        setup = false;
+    }
+
+    /**
+     * @return a {@link ScrollState} that can be used to get or control the vertical scroll position of this scrolling element.
+     */
+    public ScrollState verticalScrollState() {
+        return ScrollState.create(() -> yScrollPos, e -> yScrollPos = Math.min(Math.max(e, 0), 1), () -> contentElement.ySize() / ySize());
+    }
+
+    /**
+     * @return a {@link ScrollState} that can be used to get or control the horizontal scroll position of this scrolling element.
+     */
+    public ScrollState horizontalScrollState() {
+        return ScrollState.create(() -> xScrollPos, e -> xScrollPos = Math.min(Math.max(e, 0), 1), () -> contentElement.xSize() / xSize());
+    }
+
+    //=== Internal logic ===//
+
+    public double verticalHiddenArea() {
+        return Math.max(contentHeight - ySize(), 0);
+    }
+
+    public double horizontalHiddenArea() {
+        return Math.max(contentWidth - xSize(), 0);
+    }
+
+    @Override
+    public void tick(double mouseX, double mouseY) {
+        super.tick(mouseX, mouseY);
+        //These can not be generated dynamically, Doing so would result in a calculation loop, aka a stack overflow.
+        contentWidth = contentElement.xSize();
+        contentHeight = contentElement.ySize();
+    }
+
+    @Override
+    public boolean blockMouseOver(GuiElement<?> element, double mouseX, double mouseY) {
+        return super.blockMouseOver(element, mouseX, mouseY) || (element.isDescendantOf(contentElement) && !this.isMouseOver(mouseX, mouseY));
+    }
+
+    //=== Rendering ===//
+
+    @Override
+    protected void renderChild(GuiElement<?> child, GuiRender render, double mouseX, double mouseY, float partialTicks) {
+        boolean scissor = child == contentElement && enableScissor;
+        if (scissor) render.pushScissorRect(getRectangle());
+        super.renderChild(child, render, mouseX, mouseY, partialTicks);
+        if (scissor) render.popScissor();
+        //TODO Dont render children that are fully out of Scissor bounds.
+    }
+
+    private class ContentElement extends GuiElement<ContentElement> {
+        /**
+         * @param parent parent {@link GuiParent}.
+         */
+        public ContentElement(@NotNull GuiParent<?> parent) {
+            super(parent);
+        }
+
+        @Override
+        public ContentElement constrain(GeoParam param, @Nullable Constraint constraint) {
+            if (!setup && (param == TOP || param == LEFT)) throw new IllegalStateException("Can not override TOP or LEFT constraints on content element, These are used to control the scrolling behavior!");
+            return super.constrain(param, constraint);
+        }
+    }
+}

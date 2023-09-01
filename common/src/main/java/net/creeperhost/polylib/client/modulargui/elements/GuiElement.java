@@ -1,14 +1,13 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
-import net.creeperhost.polylib.client.modulargui.lib.ElementEvents;
-import net.creeperhost.polylib.client.modulargui.lib.ForegroundRender;
-import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.ConstrainedGeometry;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +37,8 @@ import java.util.function.Supplier;
  * <p>
  * Created by brandon3055 on 04/07/2023
  */
-public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> implements ElementEvents {
+@SuppressWarnings ("unchecked")
+public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> implements ElementEvents, ToolTipHandler<T> {
 
     @NotNull
     private GuiParent<?> parent;
@@ -54,11 +54,13 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private int screenHeight;
 
     private int hoverTime = 0;
+    private int hoverTextDelay = 10;
     private boolean transparent = false;
     private boolean enabled = true;
     private boolean removed = true;
-    private boolean zStacking = false;
+    private boolean zStacking = true;
     private Supplier<Boolean> enabledCallback = null;
+    private Supplier<List<Component>> hoverText = null;
 
     /**
      * @param parent parent {@link GuiParent}.
@@ -74,7 +76,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return parent;
     }
 
-    //=== Child Element Handling ===
+    //=== Child Element Handling ===//
 
     /**
      * When creating custom gui elements, use this method to add any required child elements.
@@ -133,7 +135,12 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         addedQueue.remove(child);
     }
 
-    //=== Minecraft Properties / Initialisation ===
+    @Override
+    public boolean isDescendantOf(GuiElement<?> ancestor) {
+        return ancestor == parent || parent.isDescendantOf(ancestor);
+    }
+
+    //=== Minecraft Properties / Initialisation ===//
     //TODO I can probably just pass these calls all the way up to the root parent...
 
     @Override
@@ -185,11 +192,16 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return !removed && (enabledCallback == null ? enabled : enabledCallback.get());
     }
 
+    @Override
+    public boolean blockMouseOver(GuiElement<?> element, double mouseX, double mouseY) {
+        return getParent().blockMouseOver(element, mouseX, mouseY);
+    }
+
     /**
      * @return True if the cursor is within the bounds of this element.
      */
     public boolean isMouseOver(double mouseX, double mouseY) {
-        return GuiRender.isInRect(xMin(), yMin(), xSize(), ySize(), mouseX, mouseY);
+        return GuiRender.isInRect(xMin(), yMin(), xSize(), ySize(), mouseX, mouseY) && !blockMouseOver(this, mouseX, mouseY);
     }
 
     public boolean isTransparent() {
@@ -222,6 +234,13 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return hoverTime;
     }
 
+    /**
+     * Note, Due to this using hoverTime, there may be a 1 tick delay in the updating of this value.
+     */
+    public boolean hovered() {
+        return hoverTime > 0;
+    }
+
     //=== Render / Update ===//
 
     /**
@@ -236,6 +255,10 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     public T setZStacking(boolean zStacking) {
         this.zStacking = zStacking;
         return (T) this;
+    }
+
+    public boolean zStacking() {
+        return zStacking;
     }
 
     /**
@@ -288,7 +311,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         double maxDepth = 0;
         for (GuiElement<?> child : childElements) {
             if (child.isEnabled()) {
-                child.render(render, mouseX, mouseY, partialTicks);
+                renderChild(child, render, mouseX, mouseY, partialTicks);
                 //If z-stacking is disabled, we need to undo the z offset that was applied by the child element.
                 if (!zStacking) {
                     double depth = child.getCombinedElementDepth();
@@ -312,6 +335,10 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         }
     }
 
+    protected void renderChild(GuiElement<?> child, GuiRender render, double mouseX, double mouseY, float partialTicks) {
+        child.render(render, mouseX, mouseY, partialTicks);
+    }
+
     /**
      * Used to render overlay's such as hover text. Anything rendered in this method will be rendered on top of everything else on the screen.
      * Only one overlay should be rendered at a time, When an element renders content via the overlay method it must return true to indicate the render call has been 'consumed'
@@ -332,12 +359,12 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      */
     @OverridingMethodsMustInvokeSuper
     public boolean renderOverlay(GuiRender render, double mouseX, double mouseY, float partialTicks, boolean consumed) {
-        for (GuiElement<?> child : childElements) {
+        for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
                 consumed |= child.renderOverlay(render, mouseX, mouseY, partialTicks, consumed);
             }
         }
-        return consumed;
+        return consumed || (isMouseOver(mouseX, mouseY) && renderTooltip(render, mouseX, mouseY));
     }
 
     /**
@@ -367,5 +394,29 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         for (GuiElement<?> childElement : childElements) {
             childElement.tick(mouseX, mouseY);
         }
+    }
+
+    //=== Hover Text ===//
+
+    @Override
+    public Supplier<List<Component>> getTooltip() {
+        return hoverText;
+    }
+
+    @Override
+    public T setTooltipDelay(int tooltipDelay) {
+        this.hoverTextDelay = tooltipDelay;
+        return (T) this;
+    }
+
+    @Override
+    public int getTooltipDelay() {
+        return hoverTextDelay;
+    }
+
+    @Override
+    public T setTooltip(@Nullable Supplier<List<Component>> tooltip) {
+        this.hoverText = tooltip;
+        return (T) this;
     }
 }

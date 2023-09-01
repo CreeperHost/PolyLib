@@ -1,5 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
+import java.util.function.Supplier;
+
 /**
  * Created by brandon3055 on 24/08/2023
  */
@@ -45,6 +47,18 @@ public interface Position {
         @Override
         public double y() {
             return parent.yMin();
+        }
+    }
+
+    record Dynamic(Supplier<Double> getX, Supplier<Double> getY) implements Position {
+        @Override
+        public double x() {
+            return getX.get();
+        }
+
+        @Override
+        public double y() {
+            return getY.get();
         }
     }
 

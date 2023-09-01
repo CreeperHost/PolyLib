@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
-import com.google.common.base.Suppliers;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
@@ -41,7 +40,7 @@ public class GuiTexture extends GuiElement<GuiTexture> implements BackgroundRend
     }
 
     public GuiTexture setMaterial(Material material) {
-        this.getMaterial = Suppliers.memoize(() -> material);
+        this.getMaterial = () -> material;
         return this;
     }
 
