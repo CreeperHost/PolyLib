@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
+import net.creeperhost.polylib.client.modulargui.lib.Axis;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +12,7 @@ import java.util.function.Supplier;
 public abstract class ConstraintImpl<T extends ConstraintImpl<?>> implements Constraint {
 
     protected boolean precise = false;
-    protected GeoParam.Axis axis = null;
+    protected Axis axis = null;
 
     /**
      * @return True if precise mode is enabled.
@@ -41,12 +42,12 @@ public abstract class ConstraintImpl<T extends ConstraintImpl<?>> implements Con
     }
 
     @Override
-    public @Nullable GeoParam.Axis axis() {
+    public @Nullable Axis axis() {
         return axis;
     }
 
     @SuppressWarnings("unchecked")
-    public T setAxis(@Nullable GeoParam.Axis axis) {
+    public T setAxis(@Nullable Axis axis) {
         this.axis = axis;
         return (T) this;
     }

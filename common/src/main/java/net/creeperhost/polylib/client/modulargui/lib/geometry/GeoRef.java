@@ -13,10 +13,10 @@ import java.util.function.Supplier;
  * Created by brandon3055 on 30/06/2023
  */
 public class GeoRef implements Supplier<Double> {
-    public final GuiParent geometry;
+    public final GuiParent<?> geometry;
     public final GeoParam parameter;
 
-    public GeoRef(GuiParent geometry, GeoParam parameter) {
+    public GeoRef(GuiParent<?> geometry, GeoParam parameter) {
         this.geometry = geometry;
         this.parameter = parameter;
     }

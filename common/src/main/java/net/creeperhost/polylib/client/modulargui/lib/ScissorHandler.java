@@ -18,13 +18,13 @@ public class ScissorHandler {
 
     public void pushGuiScissor(double x, double y, double width, double height) {
         Window window = Minecraft.getInstance().getWindow();
-        double yResScale = (double) window.getScreenHeight() / window.getGuiScaledHeight();
-        double xResScale = (double) window.getScreenWidth() / window.getGuiScaledWidth();
-        double scaledWidth = width * xResScale;
-        double scaledHeight = height * yResScale;
-        int screenX = (int) (x * xResScale);
-        int screenY = (int) (window.getScreenHeight() - (y * yResScale) - scaledHeight);
-        pushScissor(screenX, screenY, (int) scaledWidth, (int) scaledHeight);
+        int windowHeight = window.getHeight();
+        double scale = window.getGuiScale();
+        double scX = x * scale;
+        double scY = (double) windowHeight - (y + height) * scale;
+        double scW = Math.max(width * scale, 0);
+        double scH = Math.max(height * scale, 0);
+        pushScissor((int) scX, (int) scY, (int) scW, (int) scH);
     }
 
     public void pushScissor(int x, int y, int width, int height) {

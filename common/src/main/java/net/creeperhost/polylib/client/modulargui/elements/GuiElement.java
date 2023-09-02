@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.ConstrainedGeometry;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Position;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
@@ -44,6 +46,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private GuiParent<?> parent;
 
     private List<GuiElement<?>> addedQueue = new ArrayList<>();
+    private List<GuiElement<?>> addedFirstQueue = new ArrayList<>();
     private List<GuiElement<?>> removeQueue = new ArrayList<>();
     private List<GuiElement<?>> childElements = new ArrayList<>();
     public boolean initialized = false;
@@ -61,6 +64,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private boolean zStacking = true;
     private Supplier<Boolean> enabledCallback = null;
     private Supplier<List<Component>> hoverText = null;
+    private Rectangle renderCull = Rectangle.create(Position.create(0, 0), () -> (double) screenWidth, () -> (double) screenHeight);
 
     /**
      * @param parent parent {@link GuiParent}.
@@ -243,6 +247,17 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
 
     //=== Render / Update ===//
 
+
+    /**
+     * Any child elements completely outside this rectangle will not be rendered at all.
+     * By default, this is set to the screen bounds (meaning the minecraft window)
+     * Setting this to null will disable culling.
+     */
+    public T setRenderCull(@Nullable Rectangle renderCull) {
+        this.renderCull = renderCull;
+        return (T) this;
+    }
+
     /**
      * Allows you to disable child z-stacking, Meaning all child elements will be rendered at the same z-level
      * rather than being stacked. (Not Recursive, children their sub elements with stacking)
@@ -336,6 +351,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     }
 
     protected void renderChild(GuiElement<?> child, GuiRender render, double mouseX, double mouseY, float partialTicks) {
+        if (renderCull != null && !renderCull.intersects(child.getRectangle())) return;
         child.render(render, mouseX, mouseY, partialTicks);
     }
 

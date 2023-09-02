@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static net.creeperhost.polylib.client.modulargui.lib.Align.LEFT;
-import static net.creeperhost.polylib.client.modulargui.lib.Align.RIGHT;
+import static net.creeperhost.polylib.client.modulargui.lib.Align.MIN;
+import static net.creeperhost.polylib.client.modulargui.lib.Align.MAX;
 
 /**
  * Created by brandon3055 on 31/08/2023
@@ -29,11 +29,12 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
     private Supplier<Boolean> shadow = () -> true;
     private Supplier<Integer> textColour = () -> 0xFFFFFFFF;
     private Supplier<Double> rotation = null;
-    private Position rotatePoint = new Position.Dynamic(() -> xSize() / 2, () -> ySize() / 2);
+    private Position rotatePoint = Position.create(() -> xSize() / 2, () -> ySize() / 2);
     private boolean trim = false;
     private boolean wrap = false;
     private boolean scroll = true;
     private Align alignment = Align.CENTER;
+    //TODO, Arbitrary rotation is run, But may want to switch to Axis, with option for "reverse"
 
     /**
      * @param parent parent {@link GuiParent}.
@@ -221,7 +222,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
             FormattedCharSequence formatted = Language.getInstance().getVisualOrder(FormattedText.composite(head, tail));
             textWidth = font.width(formatted);
 
-            double xPos = alignment == LEFT ? xMin() : alignment == RIGHT ? xMax() - textWidth : xMin() + xSize() / 2 - textWidth / 2D;
+            double xPos = alignment == MIN ? xMin() : alignment == MAX ? xMax() - textWidth : xMin() + xSize() / 2 - textWidth / 2D;
             render.drawString(formatted, xPos, yPos, getTextColour(), getShadow());
         }
         //Draw Wrapped
@@ -232,7 +233,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
             yPos = yMin() + ySize() / 2 - textHeight / 2D;
             for (FormattedCharSequence line : list) {
                 int lineWidth = font.width(line);
-                double xPos = alignment == LEFT ? xMin() : alignment == RIGHT ? xMax() - lineWidth : xMin() + xSize() / 2 - lineWidth / 2D;
+                double xPos = alignment == MIN ? xMin() : alignment == MAX ? xMax() - lineWidth : xMin() + xSize() / 2 - lineWidth / 2D;
                 render.drawString(line, xPos, yPos, getTextColour(), getShadow());
                 yPos += font.lineHeight;
             }
@@ -245,7 +246,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
         }
         //Draw
         else {
-            double xPos = alignment == LEFT ? xMin() : alignment == RIGHT ? xMax() - textWidth : xMin() + xSize() / 2 - textWidth / 2D;
+            double xPos = alignment == MIN ? xMin() : alignment == MAX ? xMax() - textWidth : xMin() + xSize() / 2 - textWidth / 2D;
             render.drawString(component, xPos, yPos, getTextColour(), getShadow());
         }
 

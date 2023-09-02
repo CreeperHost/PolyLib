@@ -191,6 +191,9 @@ public class GuiButton extends GuiElement<GuiButton> {
         if (!isMouseOver(mouseX, mouseY) || isDisabled()) return false;
         Runnable onClick = this.onClick.get(button);
         Runnable onPress = this.onPress.get(button);
+        if (onClick == null && onPress == null) return false;
+        pressed = true;
+
         boolean consume = false;
         if (onClick != null) {
             onClick.run();
@@ -199,17 +202,22 @@ public class GuiButton extends GuiElement<GuiButton> {
         if (onPress != null) {
             consume = true;
         }
+
         if (getPressSound() != null) {
             mc().getSoundManager().play(SimpleSoundInstance.forUI(getPressSound(), 1F));
         }
-        pressed = true;
         return consume;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button, boolean consumed) {
         consumed = super.mouseReleased(mouseX, mouseY, button, consumed);
+        if (!pressed) return consumed;
+        Runnable onClick = this.onClick.get(button);
         Runnable onPress = this.onPress.get(button);
+        if (onClick == null && onPress == null) return consumed;
+        pressed = false;
+
         if (!isDisabled()) {
             if (!consumed && pressed && onPress != null) {
                 onPress.run();
@@ -219,7 +227,6 @@ public class GuiButton extends GuiElement<GuiButton> {
                 mc().getSoundManager().play(SimpleSoundInstance.forUI(getReleaseSound(), 1F));
             }
         }
-        pressed = false;
         return consumed;
     }
 
@@ -244,7 +251,7 @@ public class GuiButton extends GuiElement<GuiButton> {
         Constraints.bindTo(highlight, button);
 
         if (label != null) {
-            button.setLabel(new GuiText(parent, label));
+            button.setLabel(new GuiText(button, label));
             Constraints.bindTo(button.getLabel(), button, 0, 2, 0, 2);
         }
 
@@ -273,7 +280,7 @@ public class GuiButton extends GuiElement<GuiButton> {
         Constraints.bindTo(highlight, button);
 
         if (label != null) {
-            button.setLabel(new GuiText(parent, label)
+            button.setLabel(new GuiText(button, label)
                     .constrain(TOP, Constraint.relative(button.get(TOP), () -> button.isPressed() ? -0.5D : 0.5D).precise())
                     .constrain(LEFT, Constraint.relative(button.get(LEFT), () -> button.isPressed() ? 1.5D : 2.5D).precise())
                     .constrain(WIDTH, Constraint.relative(button.get(WIDTH), -4))

@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
+import net.creeperhost.polylib.client.modulargui.lib.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -246,9 +247,9 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
         if (constraint != null && constraint.axis() != null && constraint.axis() != param.axis) {
             throw new IllegalStateException("Attempted to apply constraint for axis: " + constraint.axis() + ", to Parameter: " + param);
         }
-        if (param.axis == GeoParam.Axis.X) {
+        if (param.axis == Axis.X) {
             constrainX(param, constraint);
-        } else if (param.axis == GeoParam.Axis.Y) {
+        } else if (param.axis == Axis.Y) {
             constrainY(param, constraint);
         }
         return (T) this;
@@ -325,41 +326,55 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
         return rectangle;
     }
 
+    public double xCenter() {
+        return xMin() + (xSize() / 2);
+    }
+
+    public double yCenter() {
+        return yMin() + (ySize() / 2);
+    }
+
     /**
      * Returns a new {@link Rectangle} the bounds of which will enclose this element and all of its child
      * elements recursively.
      */
-    public Rectangle getEnclosingRect() {
-        return addBoundsToRect(getRectangle());
+    public Rectangle.Mutable getEnclosingRect() {
+        return addBoundsToRect(getRectangle().mutable());
     }
 
     /**
      * Expands the bounds of the given rectangle (if needed) so that they enclose this element.
      * And all of its child elements recursively.
      */
-    public Rectangle addBoundsToRect(Rectangle enclosingRect) {
-        enclosingRect = Rectangle.combine(enclosingRect, getRectangle());
+    public Rectangle.Mutable addBoundsToRect(Rectangle.Mutable enclosingRect) {
+        enclosingRect.combine(getRectangle());
         for (GuiElement<?> element : getChildren()) {
             if (element.isEnabled()) {
-                enclosingRect = element.addBoundsToRect(enclosingRect);
+                element.addBoundsToRect(enclosingRect);
             }
         }
         return enclosingRect;
     }
 
+    private Rectangle.Mutable childBounds = getRectangle().mutable();
+
     /**
      * @return a rectangle, the bounds of which enclose all enabled child elements.
      * If there are no enabled child elements the returned rect will have the position of this element, with zero size.
      */
-    public Rectangle getChildBounds() {
-        Rectangle bounds = null;
+    public Rectangle.Mutable getChildBounds() {
+        boolean set = false;
         for (GuiElement<?> element : getChildren()) {
             if (element.isEnabled()) {
-                bounds = element.addBoundsToRect(bounds == null ? element.getRectangle() : bounds);
+                if (!set) {
+                    childBounds.set(element.getRectangle());
+                    set = true;
+                } else {
+                    element.addBoundsToRect(childBounds);
+                }
             }
         }
-        if (bounds == null) bounds = Rectangle.create(xMin(), yMin(), 0, 0);
-        return bounds;
+        if (!set) childBounds.setPos(xMin(), yMin()).setSize(0, 0);
+        return childBounds;
     }
-
 }

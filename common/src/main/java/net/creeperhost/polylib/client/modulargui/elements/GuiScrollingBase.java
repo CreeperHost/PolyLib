@@ -1,10 +1,12 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import net.creeperhost.polylib.client.modulargui.lib.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
-import net.creeperhost.polylib.client.modulargui.lib.ScrollState;
+import net.creeperhost.polylib.client.modulargui.lib.SliderState;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.creeperhost.polylib.helpers.MathUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +47,7 @@ public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<
      */
     public GuiScrollingBase(@NotNull GuiParent<?> parent) {
         super(parent);
-        setContainerElement(new ContentElement(this));
+        installContainerElement(new ContentElement(this));
     }
 
     //=== Scroll element setup ===//
@@ -72,7 +74,6 @@ public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<
         return contentElement;
     }
 
-
     /**
      * This allows you to install a custom container element.
      * The elements constraints will automatically be set by this method.
@@ -86,42 +87,49 @@ public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<
      *
      * @param element The new container element.
      */
-    public void setContainerElement(GuiElement<?> element) {
+    public void installContainerElement(GuiElement<?> element) {
         if (element.getParent() != this) throw new IllegalStateException("Content element must be a child of the GuiScrollingBase it is being installed in");
         if (contentElement != null) removeChild(contentElement);
         setup = true;
         contentElement = element;
-        contentElement.constrain(TOP, Constraint.relative(get(TOP), () -> yScrollPos * -verticalHiddenArea()));
-        contentElement.constrain(LEFT, Constraint.relative(get(LEFT), () -> xScrollPos * -horizontalHiddenArea()));
-        //TODO, using getChildBounds in a dynamic constraint like this is potentially very inefficient.
-        // Need to look into a better option for this. Perhaps using a MutableRectangle to reduce object creation
+        contentElement.setRenderCull(getRectangle());
+        contentElement.constrain(TOP, Constraint.relative(get(TOP), () -> yScrollPos * -hiddenSize(Axis.Y)));
+        contentElement.constrain(LEFT, Constraint.relative(get(LEFT), () -> xScrollPos * -hiddenSize(Axis.X)));
         contentElement.constrain(WIDTH, Constraint.dynamic(() -> contentElement.getChildBounds().width()));
         contentElement.constrain(HEIGHT, Constraint.dynamic(() -> contentElement.getChildBounds().height()));
         setup = false;
     }
 
     /**
-     * @return a {@link ScrollState} that can be used to get or control the vertical scroll position of this scrolling element.
+     * @return a {@link SliderState} that can be used to get or control the scroll position of the specified axis.
      */
-    public ScrollState verticalScrollState() {
-        return ScrollState.create(() -> yScrollPos, e -> yScrollPos = Math.min(Math.max(e, 0), 1), () -> contentElement.ySize() / ySize());
-    }
-
-    /**
-     * @return a {@link ScrollState} that can be used to get or control the horizontal scroll position of this scrolling element.
-     */
-    public ScrollState horizontalScrollState() {
-        return ScrollState.create(() -> xScrollPos, e -> xScrollPos = Math.min(Math.max(e, 0), 1), () -> contentElement.xSize() / xSize());
+    public SliderState scrollState(Axis axis) {
+        return switch (axis) {
+            case X -> SliderState.forScrollBar(() -> xScrollPos, e -> xScrollPos = e, () -> MathUtil.clamp(xSize() / contentElement.xSize(), 0, 1));
+            case Y -> SliderState.forScrollBar(() -> yScrollPos, e -> yScrollPos = e, () -> MathUtil.clamp(ySize() / contentElement.ySize(), 0, 1));
+        };
     }
 
     //=== Internal logic ===//
 
-    public double verticalHiddenArea() {
-        return Math.max(contentHeight - ySize(), 0);
+    /**
+     * @return the total content size / length for the given axis
+     */
+    public double totalSize(Axis axis) {
+        return switch (axis) {
+            case X -> contentWidth;
+            case Y -> contentHeight;
+        };
     }
 
-    public double horizontalHiddenArea() {
-        return Math.max(contentWidth - xSize(), 0);
+    /**
+     * @return the hidden content size / length for the given axis (How much of the content is outside the view area)
+     */
+    public double hiddenSize(Axis axis) {
+        return switch (axis) {
+            case X -> Math.max(contentWidth - xSize(), 0);
+            case Y -> Math.max(contentHeight - ySize(), 0);
+        };
     }
 
     @Override
@@ -145,7 +153,6 @@ public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<
         if (scissor) render.pushScissorRect(getRectangle());
         super.renderChild(child, render, mouseX, mouseY, partialTicks);
         if (scissor) render.popScissor();
-        //TODO Dont render children that are fully out of Scissor bounds.
     }
 
     private class ContentElement extends GuiElement<ContentElement> {
