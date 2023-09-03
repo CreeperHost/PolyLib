@@ -11,9 +11,18 @@ import static net.creeperhost.polylib.PolyLib.MOD_ID;
 /**
  * This class contains Polylib's gui texture atlas and methods for retrieving gui materials.
  * <p>
+ * Mods wishing to use their own textures in guis can pretty much just copy-paste this class.
+ * Just make sure MOD_ID points to your mod's id.
+ * <p>
+ * Don't forget to register the atlas holder as a resource reload listener.
+ * polylib does this in PolyLibFabric (fabric) and ForgeClientEvents (forge)
+ * <p>
+ * Then the last thing you need is an atlas json identical to polylib's in "assets/[mod-id]/atlasses/gui.json"
+ *
+ * <p>
  * Created by brandon3055 on 29/06/2023
  */
-public class GuiTextures {
+public class PolyTextures {
 
     private static final ModAtlasHolder ATLAS_HOLDER = new ModAtlasHolder(MOD_ID, "textures/atlas/gui.png", "gui");
     private static final Map<String, Material> MATERIAL_CACHE = new HashMap<>();

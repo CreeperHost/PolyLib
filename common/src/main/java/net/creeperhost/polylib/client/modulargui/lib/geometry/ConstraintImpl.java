@@ -13,6 +13,8 @@ public abstract class ConstraintImpl<T extends ConstraintImpl<?>> implements Con
 
     protected boolean precise = false;
     protected Axis axis = null;
+    private double value;
+    private boolean isDirty = true;
 
     /**
      * @return True if precise mode is enabled.
@@ -38,7 +40,11 @@ public abstract class ConstraintImpl<T extends ConstraintImpl<?>> implements Con
 
     @Override
     public double get() {
-        return isPrecise() ? getImpl() : (int) getImpl();
+        if (isDirty) {
+            value = isPrecise() ? getImpl() : (int) getImpl();
+            isDirty = false;
+        }
+        return value;
     }
 
     @Override
@@ -50,6 +56,11 @@ public abstract class ConstraintImpl<T extends ConstraintImpl<?>> implements Con
     public T setAxis(@Nullable Axis axis) {
         this.axis = axis;
         return (T) this;
+    }
+
+    @Override
+    public void markDirty() {
+        isDirty = true;
     }
 
     protected abstract double getImpl();

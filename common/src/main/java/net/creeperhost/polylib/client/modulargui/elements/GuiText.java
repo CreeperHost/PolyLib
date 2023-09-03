@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static net.creeperhost.polylib.client.modulargui.lib.Align.MIN;
 import static net.creeperhost.polylib.client.modulargui.lib.Align.MAX;
+import static net.creeperhost.polylib.client.modulargui.lib.Align.MIN;
 
 /**
  * Created by brandon3055 on 31/08/2023
@@ -34,7 +34,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
     private boolean wrap = false;
     private boolean scroll = true;
     private Align alignment = Align.CENTER;
-    //TODO, Arbitrary rotation is run, But may want to switch to Axis, with option for "reverse"
+    //TODO, Arbitrary rotation is fun, But may want to switch to Axis, with option for "reverse"
 
     /**
      * @param parent parent {@link GuiParent}.
@@ -197,7 +197,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
     }
 
     @Override
-    public void renderInFront(GuiRender render) {
+    public void renderInFront(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         Component component = getText();
         if (component == null) return;
         Font font = render.font();

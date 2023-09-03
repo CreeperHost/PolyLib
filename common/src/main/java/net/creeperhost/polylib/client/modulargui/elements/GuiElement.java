@@ -59,11 +59,11 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private int hoverTime = 0;
     private int hoverTextDelay = 10;
     private boolean transparent = false;
-    private boolean enabled = true;
     private boolean removed = true;
     private boolean zStacking = true;
-    private Supplier<Boolean> enabledCallback = null;
-    private Supplier<List<Component>> hoverText = null;
+    private Supplier<Boolean> enabled = () -> true;
+    private Supplier<Boolean> enableToolTip = () -> true;
+    private Supplier<List<Component>> toolTip = null;
     private Rectangle renderCull = Rectangle.create(Position.create(0, 0), () -> (double) screenWidth, () -> (double) screenHeight);
 
     /**
@@ -183,17 +183,17 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     //=== Element Status ===//
 
     public T setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        this.enabled = () -> enabled;
         return (T) this;
     }
 
     public T setEnabled(@Nullable Supplier<Boolean> enabled) {
-        this.enabledCallback = enabled;
+        this.enableToolTip = enabled;
         return (T) this;
     }
 
     public boolean isEnabled() {
-        return !removed && (enabledCallback == null ? enabled : enabledCallback.get());
+        return !removed && enableToolTip.get();
     }
 
     @Override
@@ -220,15 +220,16 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return (T) this;
     }
 
-    @Override
-    public void setFocused(@Nullable GuiElement<?> element) {
-        getParent().setFocused(element);
-    }
-
-    @Override
-    public @Nullable GuiElement<?> getFocused() {
-        return getParent().getFocused();
-    }
+    //TODO
+//    @Override
+//    public void setFocused(@Nullable GuiElement<?> element) {
+//        getParent().setFocused(element);
+//    }
+//
+//    @Override
+//    public @Nullable GuiElement<?> getFocused() {
+//        return getParent().getFocused();
+//    }
 
     /**
      * @return the amount of time the cursor has spent inside this element's bounds,
@@ -246,7 +247,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     }
 
     //=== Render / Update ===//
-
 
     /**
      * Any child elements completely outside this rectangle will not be rendered at all.
@@ -317,7 +317,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     public void render(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         if (this instanceof BackgroundRender bgr) {
             double depth = bgr.getBackgroundDepth();
-            bgr.renderBehind(render);
+            bgr.renderBehind(render, mouseX, mouseY, partialTicks);
             if (depth > 0) {
                 render.pose().translate(0, 0, depth);
             }
@@ -343,7 +343,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
 
         if (this instanceof ForegroundRender fgr) {
             double depth = fgr.getForegroundDepth();
-            fgr.renderInFront(render);
+            fgr.renderInFront(render, mouseX, mouseY, partialTicks);
             if (depth > 0) {
                 render.pose().translate(0, 0, depth);
             }
@@ -380,7 +380,11 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
                 consumed |= child.renderOverlay(render, mouseX, mouseY, partialTicks, consumed);
             }
         }
-        return consumed || (isMouseOver(mouseX, mouseY) && renderTooltip(render, mouseX, mouseY));
+        return consumed || (showToolTip(mouseX, mouseY) && renderTooltip(render, mouseX, mouseY));
+    }
+
+    private boolean showToolTip(double mouseX, double mouseY) {
+        return isMouseOver(mouseX, mouseY) && enableToolTip.get() && hoverTime() >= getTooltipDelay();
     }
 
     /**
@@ -416,7 +420,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
 
     @Override
     public Supplier<List<Component>> getTooltip() {
-        return hoverText;
+        return toolTip;
     }
 
     @Override
@@ -432,7 +436,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
 
     @Override
     public T setTooltip(@Nullable Supplier<List<Component>> tooltip) {
-        this.hoverText = tooltip;
+        this.toolTip = tooltip;
         return (T) this;
     }
 }

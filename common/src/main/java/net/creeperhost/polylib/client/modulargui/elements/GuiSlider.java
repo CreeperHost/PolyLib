@@ -1,10 +1,10 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
-import net.creeperhost.polylib.client.modulargui.lib.Axis;
-import net.creeperhost.polylib.client.modulargui.lib.Constraints;
-import net.creeperhost.polylib.client.modulargui.lib.SliderState;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.*;
-import net.creeperhost.polylib.client.modulargui.sprite.GuiTextures;
+import net.creeperhost.polylib.client.modulargui.lib.*;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Position;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.helpers.MathUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -169,7 +169,7 @@ public class GuiSlider extends GuiElement<GuiSlider> {
     }
 
     /**
-     * @param scrollDragButton The button used to scroll by clicking and dragging the defined scrollableElement (Default {@link GuiButton#MIDDLE_CLICK>})
+     * @param scrollDragButton The button used to scroll by clicking and dragging the defined scrollableElement (Default {@link GuiButton#MIDDLE_CLICK})
      * @see #setScrollableElement(GuiElement, boolean)
      */
     public GuiSlider setScrollDragButton(int scrollDragButton) {
@@ -246,27 +246,23 @@ public class GuiSlider extends GuiElement<GuiSlider> {
      * Vanilla does not really seem to have a standard for its scroll bars,
      * But this is something that should at least fit in to a typical vanilla gui.
      */
-    public static GuiSlider vanillaScrollBar(GuiElement<?> parent, Axis axis) {
-        GuiSlider slider = new GuiSlider(parent, axis);
+    public static Assembly<GuiRectangle, GuiSlider> vanillaScrollBar(GuiElement<?> parent, Axis axis) {
+        GuiRectangle background = new GuiRectangle(parent)
+                .shadedRect(0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b);
 
-        GuiRectangle background = new GuiRectangle(slider).shadedRect(0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b);
-        Constraints.bindTo(background, slider);
+        GuiSlider slider = new GuiSlider(background, axis);
+        Constraints.bindTo(slider, background, 1);
 
-        //Puts the slider element on top of the background we just installed.
-        //If your creating your own slider it would be simpler to just make the slider a child of the background.
-        //But since this method needs to return the GuiSlider rather than the background, this is required.
-        slider.installSlider(new GuiElement<>(slider))
+        slider.installSlider(new GuiRectangle(slider).shadedRect(0xFFaaaaaa, 0xFF545454, 0xFF6f6f6f))
                 .bindSliderLength()
                 .bindSliderWidth();
 
-        GuiRectangle slideElement = new GuiRectangle(slider.getSlider()).shadedRect(0xFFaaaaaa, 0xFF545454, 0xFF6f6f6f);
-        Constraints.bindTo(slideElement, slider.getSlider(), 1);
-
-        GuiRectangle sliderHighlight = new GuiRectangle(slideElement)
+        GuiRectangle sliderHighlight = new GuiRectangle(slider.getSlider())
                 .fill(0x5000b6FF)
-                .setEnabled(slideElement::hovered);
-        Constraints.bindTo(sliderHighlight, slideElement);
+                .setEnabled(() -> slider.getSlider().hovered());
 
-        return slider;
+        Constraints.bindTo(sliderHighlight, slider.getSlider());
+
+        return new Assembly<>(background, slider).addParts(sliderHighlight);
     }
 }

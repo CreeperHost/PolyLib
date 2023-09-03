@@ -130,6 +130,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @return true if an overlay such as a tooltip is currently being drawn.
      */
     public boolean render(MultiBufferSource.BufferSource buffers, float partialTicks) {
+        root.clearGeometryCache();
         GuiRender render = new GuiRender(mc, buffers);
         double mouseX = computeMouseX();
         double mouseY = computeMouseY();
@@ -337,16 +338,16 @@ public class ModularGui implements GuiParent<ModularGui> {
 
     //=== Other ===//
 
-    @Override
-    public void setFocused(@Nullable GuiElement<?> element) {
-        focused = element;
-    }
-
-    @Nullable
-    @Override
-    public GuiElement<?> getFocused() {
-        return focused;
-    }
+//    @Override
+//    public void setFocused(@Nullable GuiElement<?> element) {
+//        focused = element;
+//    }
+//
+//    @Nullable
+//    @Override
+//    public GuiElement<?> getFocused() {
+//        return focused;
+//    }
 
     public double computeMouseX() {
         return mc.mouseHandler.xpos() * (double) mc.getWindow().getGuiScaledWidth() / (double) mc.getWindow().getScreenWidth();

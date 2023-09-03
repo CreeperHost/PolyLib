@@ -41,6 +41,13 @@ public interface Constraint {
     Axis axis();
 
     /**
+     * This is part of a late addition to improve performance.
+     * Rather than computing a constraint value every single time it is queried, which can be many, many times per render frame,
+     * We now cache the constraint value, and that cache is cleared at the start of each render frame.
+     */
+    void markDirty();
+
+    /**
      * This is the most basic constraint. It constrains a parameter to a single fixed value.
      *
      * @param value The fixed value that will be returned by this constraint.

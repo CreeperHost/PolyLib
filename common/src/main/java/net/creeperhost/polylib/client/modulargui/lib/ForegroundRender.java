@@ -26,7 +26,7 @@ public interface ForegroundRender {
      * When rendering element content, always use the {@link PoseStack} available via the provided {@link GuiRender}
      * Where applicable, always use push/pop to ensure the stack is returned to its original state after your rendering is complete.
      *
-     * @param render Contains gui context information as well as essential render methods/utils including the PoseStack.
+     * @param render       Contains gui context information as well as essential render methods/utils including the PoseStack.
      */
-    void renderInFront(GuiRender render);
+    void renderInFront(GuiRender render, double mouseX, double mouseY, float partialTicks);
 }

@@ -93,7 +93,7 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     }
 
     @Override
-    public void renderBehind(GuiRender render) {
+    public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         if (shadeTopLeft != null && shadeBottomRight != null && shadeCorners != null) {
             render.shadedRect(getRectangle(), getBorderWidth(), shadeTopLeft.get(), shadeBottomRight.get(), shadeCorners.get(), fill == null ? 0 : fill.get());
         } else if (border != null){

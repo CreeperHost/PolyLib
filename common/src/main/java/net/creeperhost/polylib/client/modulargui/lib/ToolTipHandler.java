@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
+import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,6 +89,10 @@ public interface ToolTipHandler<T extends ToolTipHandler<T>> {
         return (T) this;
     }
 
+    /**
+     * The method responsible for rendering element tool tips.
+     * Called from {@link GuiElement#renderOverlay(GuiRender, double, double, float, boolean)}
+     */
     default boolean renderTooltip(GuiRender render, double mouseX, double mouseY) {
         Supplier<List<Component>> supplier = getTooltip();
         if (supplier == null) return false;

@@ -2,7 +2,7 @@ package net.creeperhost.polylib.fabric;
 
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.PolyLib;
-import net.creeperhost.polylib.client.modulargui.sprite.GuiTextures;
+import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.polylib.fabric.client.ResourceReloadListenerWrapper;
@@ -28,7 +28,7 @@ public class PolyLibFabric implements ModInitializer
         {
             WorldRenderEvents.END.register(context -> ClientRenderEvents.LAST.invoker().onRenderLastEvent(context.matrixStack()));
 
-            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(GuiTextures::getAtlasHolder, new ResourceLocation(PolyLib.MOD_ID, "gui_atlas_reload")));
+            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(PolyTextures::getAtlasHolder, new ResourceLocation(PolyLib.MOD_ID, "gui_atlas_reload")));
         }
 
         EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {

@@ -1063,7 +1063,7 @@ public class GuiRender extends LegacyRender {
      * If text is to long ti fit between x and xMaz, the text will scroll from left to right.
      * Otherwise, will render centered.
      * This is mostly copied from {@link net.minecraft.client.gui.components.AbstractWidget#renderScrollingString(GuiGraphics, Font, Component, int, int, int, int, int)}
-     * */
+     */
     @SuppressWarnings ("JavadocReference")
     public void drawScrollingString(Component component, double x, double y, double xMax, int colour, boolean shadow, boolean doScissor) {
         int textWidth = font().width(component);
@@ -1227,7 +1227,7 @@ public class GuiRender extends LegacyRender {
      * Renders an item stack on the screen.
      * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
      */
-    public void renderItem(ItemStack stack, double x, double y, int size) {
+    public void renderItem(ItemStack stack, double x, double y, double size) {
         this.renderItem(mc().player, mc().level, stack, x, y, size, 0);
     }
 
@@ -1235,7 +1235,7 @@ public class GuiRender extends LegacyRender {
      * Renders an item stack on the screen.
      * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
      */
-    public void renderItem(ItemStack stack, double x, double y, int size, int modelRand) {
+    public void renderItem(ItemStack stack, double x, double y, double size, int modelRand) {
         this.renderItem(mc().player, mc().level, stack, x, y, size, modelRand);
     }
 
@@ -1251,7 +1251,7 @@ public class GuiRender extends LegacyRender {
      * Renders an item stack on the screen.
      * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
      */
-    public void renderFakeItem(ItemStack stack, double x, double y, int size) {
+    public void renderFakeItem(ItemStack stack, double x, double y, double size) {
         this.renderItem(null, mc().level, stack, x, y, size, 0);
     }
 
@@ -1267,7 +1267,7 @@ public class GuiRender extends LegacyRender {
      * Renders an item stack on the screen.
      * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
      */
-    public void renderItem(LivingEntity entity, ItemStack stack, double x, double y, int size, int modelRand) {
+    public void renderItem(LivingEntity entity, ItemStack stack, double x, double y, double size, int modelRand) {
         this.renderItem(entity, entity.level(), stack, x, y, size, modelRand);
     }
 
@@ -1278,14 +1278,14 @@ public class GuiRender extends LegacyRender {
      * @param size      Width and height of the stack in pixels (Standard default is 16)
      * @param modelRand A somewhat random value used in model gathering, Not very important, Can just use 0 or x/y position.
      */
-    public void renderItem(@Nullable LivingEntity entity, @Nullable Level level, ItemStack stack, double x, double y, int size, int modelRand) {
+    public void renderItem(@Nullable LivingEntity entity, @Nullable Level level, ItemStack stack, double x, double y, double size, int modelRand) {
         if (!stack.isEmpty()) {
             BakedModel bakedmodel = mc().getItemRenderer().getModel(stack, level, entity, modelRand);
             pose.pushPose();
             pose.translate(x + (size / 2D), y + (size / 2D), size);
             try {
                 pose.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
-                pose.scale(size, size, size);
+                pose.scale((float) size, (float) size, (float) size);
                 boolean flag = !bakedmodel.usesBlockLight();
                 if (flag) Lighting.setupForFlatItems();
                 mc().getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, buffers, 0xf000f0, OverlayTexture.NO_OVERLAY, bakedmodel);
@@ -1311,7 +1311,7 @@ public class GuiRender extends LegacyRender {
      * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
      * Z depth requirements are the same as the renderItem method.
      */
-    public void renderItemDecorations(ItemStack stack, int x, int y) {
+    public void renderItemDecorations(ItemStack stack, double x, double y) {
         renderItemDecorations(stack, x, y, 16);
     }
 
@@ -1321,7 +1321,7 @@ public class GuiRender extends LegacyRender {
      * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
      * Z depth requirements are the same as the renderItem method.
      */
-    public void renderItemDecorations(ItemStack stack, int x, int y, int size) {
+    public void renderItemDecorations(ItemStack stack, double x, double y, double size) {
         this.renderItemDecorations(stack, x, y, size, null);
     }
 
@@ -1331,7 +1331,7 @@ public class GuiRender extends LegacyRender {
      * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
      * Z depth requirements are the same as the renderItem method.
      */
-    public void renderItemDecorations(ItemStack stack, int x, int y, @Nullable String text) {
+    public void renderItemDecorations(ItemStack stack, double x, double y, @Nullable String text) {
         renderItemDecorations(stack, x, y, 16, text);
     }
 
@@ -1341,10 +1341,10 @@ public class GuiRender extends LegacyRender {
      * There is no need to fiddle with z offsets or anything, just call renderItemDecorations after renderItem and it will work.
      * Z depth requirements are the same as the renderItem method.
      */
-    public void renderItemDecorations(ItemStack stack, int x, int y, int size, @Nullable String text) {
+    public void renderItemDecorations(ItemStack stack, double x, double y, double size, @Nullable String text) {
         if (!stack.isEmpty()) {
             pose.pushPose();
-            float scale = size / 16F;
+            float scale = (float) size / 16F;
             pose.translate(x, y, (size * 2) - 0.1);
             pose.scale(scale, scale, 1F);
             pose.translate(-x, -y, 0);
@@ -1357,8 +1357,8 @@ public class GuiRender extends LegacyRender {
             if (stack.isBarVisible()) {
                 int l = stack.getBarWidth();
                 int i = stack.getBarColor();
-                int j = x + 2;
-                int k = y + 13;
+                double j = x + 2;
+                double k = y + 13;
                 pose.translate(0.0F, 0.0F, 0.04);
                 fill(j, k, j + 13, k + 2, 0xff000000);
                 pose.translate(0.0F, 0.0F, 0.02);
@@ -1368,15 +1368,15 @@ public class GuiRender extends LegacyRender {
             LocalPlayer localplayer = mc().player;
             float f = localplayer == null ? 0.0F : localplayer.getCooldowns().getCooldownPercent(stack.getItem(), mc().getFrameTime());
             if (f > 0.0F) {
-                int i1 = y + Mth.floor(16.0F * (1.0F - f));
-                int j1 = i1 + Mth.ceil(16.0F * f);
+                double i1 = y + Mth.floor(16.0F * (1.0F - f));
+                double j1 = i1 + Mth.ceil(16.0F * f);
                 pose.translate(0.0F, 0.0F, 0.02);
                 fill(x, i1, x + 16, j1, Integer.MAX_VALUE);
             }
 
             pose.popPose();
             if (size == 16) {
-                PolyLibClient.onItemDecorate(renderWrapper, font(), stack, x, y);
+                PolyLibClient.onItemDecorate(renderWrapper, font(), stack, (int) x, (int) y);
             }
         }
     }

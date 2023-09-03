@@ -180,18 +180,19 @@ public interface GuiParent<T extends GuiParent<?>> {
         getChildren().forEach(e -> e.onScreenInit(mc, font, screenWidth, screenHeight));
     }
 
-    /**
-     * Not sure how much this will get used, if at all, but allows an element to be specified as the globally focused element.
-     * This does not have any effect at all on the base functionality of Modular Gui, it is up to individual elements to choose how they handle focus.
-     *
-     * @param element the element to be set as the current focused element, or null to clear focused element.
-     */
-    void setFocused(@Nullable GuiElement<?> element);
-
-    /**
-     * @return the current gloabally focused element, or null if no element is focused.
-     */
-    @Nullable GuiElement<?> getFocused();
+    //TODO, May still keep this, but i currently have a different focus system in mind that *may* be better
+//    /**
+//     * Not sure how much this will get used, if at all, but allows an element to be specified as the globally focused element.
+//     * This does not have any effect at all on the base functionality of Modular Gui, it is up to individual elements to choose how they handle focus.
+//     *
+//     * @param element the element to be set as the current focused element, or null to clear focused element.
+//     */
+//    void setFocused(@Nullable GuiElement<?> element);
+//
+//    /**
+//     * @return the current gloabally focused element, or null if no element is focused.
+//     */
+//    @Nullable GuiElement<?> getFocused();
 
     /**
      * Allows an element to override the {@link GuiElement#isMouseOver(double, double)} method of its children.

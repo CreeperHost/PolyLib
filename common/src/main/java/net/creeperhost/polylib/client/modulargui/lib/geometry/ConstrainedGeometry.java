@@ -310,6 +310,16 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
         }
     }
 
+    public void clearGeometryCache() {
+        if (xMin != null) xMin.markDirty();
+        if (xMax != null) xMax.markDirty();
+        if (xSize != null) xSize.markDirty();
+        if (yMin != null) yMin.markDirty();
+        if (yMax != null) yMax.markDirty();
+        if (ySize != null) ySize.markDirty();
+        getChildren().forEach(ConstrainedGeometry::clearGeometryCache);
+    }
+
     //=== Geometry Utilities ===//
 
     /**

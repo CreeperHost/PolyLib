@@ -3,7 +3,7 @@ package net.creeperhost.polylib.client.modulargui.elements;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
-import net.creeperhost.polylib.client.modulargui.sprite.GuiTextures;
+import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -243,7 +243,7 @@ public class GuiButton extends GuiElement<GuiButton> {
      */
     public static GuiButton vanilla(@NotNull GuiParent<?> parent, @Nullable Component label) {
         GuiButton button = new GuiButton(parent);
-        GuiTexture texture = new GuiTexture(button, GuiTextures.getter(() -> button.toggleState() ? "dynamic/button_highlight" : "dynamic/button_vanilla"));
+        GuiTexture texture = new GuiTexture(button, PolyTextures.getter(() -> button.toggleState() ? "dynamic/button_highlight" : "dynamic/button_vanilla"));
         texture.dynamicTexture();
         GuiRectangle highlight = new GuiRectangle(button).border(() -> button.hoverTime() > 0 ? 0xFFFFFFFF : 0);
 
@@ -272,7 +272,7 @@ public class GuiButton extends GuiElement<GuiButton> {
      */
     public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Component label) {
         GuiButton button = new GuiButton(parent);
-        GuiTexture texture = new GuiTexture(button, GuiTextures.getter(() -> button.toggleState() || button.isPressed() ? "dynamic/button_pressed" : "dynamic/button_vanilla"));
+        GuiTexture texture = new GuiTexture(button, PolyTextures.getter(() -> button.toggleState() || button.isPressed() ? "dynamic/button_pressed" : "dynamic/button_vanilla"));
         texture.dynamicTexture();
         GuiRectangle highlight = new GuiRectangle(button).border(() -> button.hovered() ? 0xFFFFFFFF : 0);
 

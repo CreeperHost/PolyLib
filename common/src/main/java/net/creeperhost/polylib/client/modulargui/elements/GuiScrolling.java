@@ -15,11 +15,11 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 /**
  * So the logic behind this element is as follows.
  * This element contains a base "Content Element" that holds all the scrollable content.
- * The content element's position is controlled by the {@link GuiScrollingBase}
+ * The content element's position is controlled by the {@link GuiScrolling}
  * But its {@link GeoParam#WIDTH} and {@link GeoParam#HEIGHT} constraints can be set by the user,
  * Or they can be set to dynamically adjust to the child elements added to it.
  * <p>
- * The bounds of the {@link GuiScrollingBase} represent the "view window"
+ * The bounds of the {@link GuiScrolling} represent the "view window"
  * When scrolling up/down, left/right the Content Element is effectively just moving around behind the view window
  * and everything outside the view window is scissored off.
  * Any events that occur outside the view window are not propagated to scroll element.
@@ -29,7 +29,7 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  * <p>
  * Created by brandon3055 on 01/09/2023
  */
-public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<T> {
+public class GuiScrolling extends GuiElement<GuiScrolling> {
 
     /**
      * This is made available primarily for debugging purposes where it can be useful to see what's going on behind the scenes.
@@ -45,7 +45,7 @@ public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<
     /**
      * @param parent parent {@link GuiParent}.
      */
-    public GuiScrollingBase(@NotNull GuiParent<?> parent) {
+    public GuiScrolling(@NotNull GuiParent<?> parent) {
         super(parent);
         installContainerElement(new ContentElement(this));
     }
@@ -57,7 +57,7 @@ public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<
      * You must add all of your scrolling content to this element.
      * Scrolling content must also be constrained relative to this element.
      * <p>
-     * The {@link GeoParam#TOP} and {@link GeoParam#LEFT} constraints for this element are set by the {@link GuiScrollingBase} and must not be overridden.
+     * The {@link GeoParam#TOP} and {@link GeoParam#LEFT} constraints for this element are set by the {@link GuiScrolling} and must not be overridden.
      * These are used to control the 'scrolling' of the element.
      * <p>
      * By default, the {@link GeoParam#WIDTH} and {@link GeoParam#HEIGHT} (and therefor also BOTTOM, RIGHT) are dynamically constrained to match the outer bounds of the scrolling elements.
@@ -81,7 +81,7 @@ public class GuiScrollingBase<T extends GuiScrollingBase<T>> extends GuiElement<
      * After calling this method you may override the container element WIDTH and HEIGHT constraints as described in the documentation for {@link #getContentElement()}
      * But you must not touch the TOP or LEFT constraints.
      * <p>
-     * Important thing to note, By default the container element is preinstalled before any children can be added, meaning any children added to the {@link GuiScrollingBase}
+     * Important thing to note, By default the container element is preinstalled before any children can be added, meaning any children added to the {@link GuiScrolling}
      * will render on top of the scrolling content.
      * As this method allows you to set a new child as the container element, any children added before the new content element, will render under the content element.
      *

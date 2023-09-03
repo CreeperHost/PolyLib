@@ -1,10 +1,8 @@
 package net.creeperhost.polylib.forge;
 
-import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.modulargui.ModularGuiScreen;
 import net.creeperhost.polylib.client.modulargui.TestGui;
-import net.creeperhost.polylib.client.modulargui.sprite.GuiTextures;
-import net.creeperhost.polylib.client.modulargui.sprite.ModAtlasHolder;
+import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
@@ -42,6 +40,6 @@ public class ForgeClientEvents
 
     private static void registerReloadListeners(RegisterClientReloadListenersEvent event)
     {
-        event.registerReloadListener(GuiTextures.getAtlasHolder());
+        event.registerReloadListener(PolyTextures.getAtlasHolder());
     }
 }
