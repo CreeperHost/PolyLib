@@ -510,30 +510,30 @@ public class GuiRender extends LegacyRender {
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
     public void spriteRect(RenderType type, double x, double y, double width, double height, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
-        sprite(type, x, x + width, y, y + height, sprite, red, green, blue, alpha);
+        sprite(type, x, y, x + width, y + height, sprite, red, green, blue, alpha);
     }
 
     /**
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void sprite(RenderType type, double xMin, double xMax, double yMin, double yMax, TextureAtlasSprite sprite) {
-        sprite(type, xMin, xMax, yMin, yMax, sprite, 1F, 1F, 1F, 1F);
+    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite) {
+        sprite(type, xMin, yMin, xMax, yMax, sprite, 1F, 1F, 1F, 1F);
     }
 
     /**
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void sprite(RenderType type, double xMin, double xMax, double yMin, double yMax, TextureAtlasSprite sprite, int argb) {
-        sprite(type, xMin, xMax, yMin, yMax, sprite, r(argb), g(argb), b(argb), a(argb));
+    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int argb) {
+        sprite(type, xMin, yMin, xMax, yMax, sprite, r(argb), g(argb), b(argb), a(argb));
     }
 
     /**
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void sprite(RenderType type, double xMin, double xMax, double yMin, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
         VertexConsumer buffer = buffers().getBuffer(type);
         Matrix4f mat = pose.last().pose();
         buffer.vertex(mat, (float) xMax, (float) yMax, 0).color(red, green, blue, alpha).uv(sprite.getU1(), sprite.getV1()).endVertex();  //R-B
@@ -600,7 +600,7 @@ public class GuiRender extends LegacyRender {
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
     public void spriteRect(RenderType type, double x, double y, double width, double height, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
-        sprite(type, x, x + width, y, y + height, rotation, sprite, red, green, blue, alpha);
+        sprite(type, x, y, x + width, y + height, rotation, sprite, red, green, blue, alpha);
     }
 
     /**
@@ -609,8 +609,8 @@ public class GuiRender extends LegacyRender {
      *
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
-    public void sprite(RenderType type, double xMin, double xMax, double yMin, double yMax, int rotation, TextureAtlasSprite sprite) {
-        sprite(type, xMin, xMax, yMin, yMax, rotation, sprite, 1F, 1F, 1F, 1F);
+    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite) {
+        sprite(type, xMin, yMin, xMax, yMax, rotation, sprite, 1F, 1F, 1F, 1F);
     }
 
     /**
@@ -619,8 +619,8 @@ public class GuiRender extends LegacyRender {
      *
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
-    public void sprite(RenderType type, double xMin, double xMax, double yMin, double yMax, int rotation, TextureAtlasSprite sprite, int argb) {
-        sprite(type, xMin, xMax, yMin, yMax, rotation, sprite, r(argb), g(argb), b(argb), a(argb));
+    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, int argb) {
+        sprite(type, xMin, yMin, xMax, yMax, rotation, sprite, r(argb), g(argb), b(argb), a(argb));
     }
 
     /**
@@ -629,7 +629,7 @@ public class GuiRender extends LegacyRender {
      *
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
-    public void sprite(RenderType type, double xMin, double xMax, double yMin, double yMax, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
         float[] u = {sprite.getU0(), sprite.getU1(), sprite.getU1(), sprite.getU0()};
         float[] v = {sprite.getV1(), sprite.getV1(), sprite.getV0(), sprite.getV0()};
         VertexConsumer buffer = buffers().getBuffer(type);
@@ -688,30 +688,30 @@ public class GuiRender extends LegacyRender {
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
     public void texRect(Material material, double x, double y, double width, double height, float red, float green, float blue, float alpha) {
-        tex(material, x, x + width, y, y + height, red, green, blue, alpha);
+        tex(material, x, y, x + width, y + height, red, green, blue, alpha);
     }
 
     /**
      * Draws a texture sprite derived from the provided material.
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void tex(Material material, double xMin, double xMax, double yMin, double yMax) {
-        tex(material, xMin, xMax, yMin, yMax, 1F, 1F, 1F, 1F);
+    public void tex(Material material, double xMin, double yMin, double xMax, double yMax) {
+        tex(material, xMin, yMin, xMax, yMax, 1F, 1F, 1F, 1F);
     }
 
     /**
      * Draws a texture sprite derived from the provided material.
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void tex(Material material, double xMin, double xMax, double yMin, double yMax, int argb) {
-        tex(material, xMin, xMax, yMin, yMax, r(argb), g(argb), b(argb), a(argb));
+    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, int argb) {
+        tex(material, xMin, yMin, xMax, yMax, r(argb), g(argb), b(argb), a(argb));
     }
 
     /**
      * Draws a texture sprite derived from the provided material.
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void tex(Material material, double xMin, double xMax, double yMin, double yMax, float red, float green, float blue, float alpha) {
+    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, float red, float green, float blue, float alpha) {
         TextureAtlasSprite sprite = material.sprite();
         VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
         Matrix4f mat = pose.last().pose();
@@ -779,7 +779,7 @@ public class GuiRender extends LegacyRender {
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
     public void texRect(Material material, double x, double y, double width, double height, int rotation, float red, float green, float blue, float alpha) {
-        tex(material, x, x + width, y, y + height, rotation, red, green, blue, alpha);
+        tex(material, x, y, x + width, y + height, rotation, red, green, blue, alpha);
     }
 
     /**
@@ -788,8 +788,8 @@ public class GuiRender extends LegacyRender {
      *
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
-    public void tex(Material material, int rotation, double xMin, double xMax, double yMin, double yMax) {
-        tex(material, xMin, xMax, yMin, yMax, rotation, 1F, 1F, 1F, 1F);
+    public void tex(Material material, int rotation, double xMin, double yMin, double xMax, double yMax) {
+        tex(material, xMin, yMin, xMax, yMax, rotation, 1F, 1F, 1F, 1F);
     }
 
     /**
@@ -798,8 +798,8 @@ public class GuiRender extends LegacyRender {
      *
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
-    public void tex(Material material, double xMin, double xMax, double yMin, double yMax, int rotation, int argb) {
-        tex(material, xMin, xMax, yMin, yMax, rotation, r(argb), g(argb), b(argb), a(argb));
+    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, int rotation, int argb) {
+        tex(material, xMin, yMin, xMax, yMax, rotation, r(argb), g(argb), b(argb), a(argb));
     }
 
     /**
@@ -808,7 +808,7 @@ public class GuiRender extends LegacyRender {
      *
      * @param rotation Rotates sprite clockwise in 90 degree steps.
      */
-    public void tex(Material material, double xMin, double xMax, double yMin, double yMax, int rotation, float red, float green, float blue, float alpha) {
+    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, int rotation, float red, float green, float blue, float alpha) {
         TextureAtlasSprite sprite = material.sprite();
         VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
         float[] u = {sprite.getU0(), sprite.getU1(), sprite.getU1(), sprite.getU0()};
