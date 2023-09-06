@@ -53,7 +53,15 @@ public class TestModDataGen implements DataGeneratorEntrypoint
 
         pack.addProvider((output, registriesFuture) -> {
            PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON);
-           recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC, TestBlocks.INVENTORY_TEST_BLOCK.get(), Ingredient.of(Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
+
+           recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
+                   TestBlocks.INVENTORY_TEST_BLOCK.get(),
+                   Ingredient.of(Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
+
+            recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
+                    TestBlocks.INVENTORY_TEST_BLOCK.get(),
+                    Ingredient.of(Items.COPPER_BLOCK)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), new ResourceLocation("testmod", "namedrecipe"), ModuleType.COMMON);
+
            return recipeProvider;
         });
 

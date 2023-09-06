@@ -4,20 +4,24 @@ import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class PolyRecipeProvider extends FabricRecipeProvider
 {
     private final ModuleType moduleType;
-    private final List<RecipeBuilder> values = new ArrayList<>();
+    private final Map<ResourceLocation, RecipeBuilder> values = new HashMap<>();
 
     public PolyRecipeProvider(FabricDataOutput dataOutput, ModuleType moduleType)
     {
@@ -25,15 +29,21 @@ public class PolyRecipeProvider extends FabricRecipeProvider
         this.moduleType = moduleType;
     }
 
+    public void add(RecipeBuilder recipeBuilder, ResourceLocation id, ModuleType moduleType)
+    {
+        if (this.moduleType == moduleType) values.put(id, recipeBuilder);
+    }
+
     public void add(RecipeBuilder recipeBuilder, ModuleType moduleType)
     {
-        if (this.moduleType == moduleType) values.add(recipeBuilder);
+        ResourceLocation resourceLocation = BuiltInRegistries.ITEM.getKey(recipeBuilder.getResult().asItem());
+        add(recipeBuilder, resourceLocation, moduleType);
     }
 
     @Override
     public void buildRecipes(Consumer<FinishedRecipe> exporter)
     {
-        values.forEach((recipeBuilder) -> recipeBuilder.save(exporter));
+        values.forEach((resourceLocation, recipeBuilder) -> recipeBuilder.save(exporter, resourceLocation));
     }
 
     @Override
