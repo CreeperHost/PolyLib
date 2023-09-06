@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
-import net.creeperhost.polylib.client.modulargui.lib.Axis;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 

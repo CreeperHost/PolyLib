@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.minecraft.client.gui.screens.Screen;
 
 import java.util.function.Consumer;

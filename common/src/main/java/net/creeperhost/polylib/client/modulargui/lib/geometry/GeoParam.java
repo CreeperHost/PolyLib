@@ -1,7 +1,5 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
-import net.creeperhost.polylib.client.modulargui.lib.Axis;
-
 /**
  * Used to define the 6 core parameters that make up an elements geometry
  * These are named Left, Right, Width, Top, Bottom, Height.

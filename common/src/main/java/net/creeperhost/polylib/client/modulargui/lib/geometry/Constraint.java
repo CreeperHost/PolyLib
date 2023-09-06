@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
-import net.creeperhost.polylib.client.modulargui.lib.Axis;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;

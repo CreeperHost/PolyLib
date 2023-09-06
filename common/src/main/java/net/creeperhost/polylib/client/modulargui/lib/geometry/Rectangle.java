@@ -1,7 +1,5 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
-import net.creeperhost.polylib.client.modulargui.lib.Axis;
-
 import java.util.function.Supplier;
 
 /**

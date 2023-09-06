@@ -641,6 +641,112 @@ public class GuiRender extends LegacyRender {
         flushIfUnBatched();
     }
 
+    //Partial Sprite
+
+    //TODO figure out if there is a way to make this work.
+//    /**
+//     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     * <p>
+//     * This is similar to {@link #partialSprite(RenderType, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
+//     * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, int texXMin, int texYMin, int texXMax, int texYMax, int argb) {
+//        float width = sprite.contents().width();
+//        float height = sprite.contents().height();
+//        partialSprite(type, xMin, yMin, xMax, yMax, rotation, sprite, texXMin / width, texYMin / height, texXMax / width, texYMax / height, argb);
+//    }
+//
+
+//    /**
+//     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     * Valid input u/v value range is 0 to 1 [0, 0, 1, 1 would render the full sprite]
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, int argb) {
+//        partialSprite(type, xMin, yMin, xMax, yMax, rotation, sprite, uMin, vMin, uMax, vMax, r(argb), g(argb), b(argb), a(argb));
+//    }
+//
+//    /**
+//     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     * Valid input u/v value range is 0 to 1 [0, 0, 1, 1 would render the full sprite]
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float left, float top, float right, float bottom, float red, float green, float blue, float alpha) {
+//        VertexConsumer buffer = buffers().getBuffer(type);
+//        Matrix4f mat = pose.last().pose();
+//        rotation = Math.floorMod(rotation, 4);
+//
+//        float[] sub = {left, top, right, bottom};
+//        left = sub[rotation % 4];
+//        top = sub[(rotation + 1) % 4];
+//        right = sub[(rotation + 2) % 4];
+//        bottom = sub[(rotation + 3) % 4];
+//
+//        float ul = sprite.getU1() - sprite.getU0();
+//        float vl = sprite.getV1() - sprite.getV0();
+//        float u0 = sprite.getU0() + (left * ul);
+//        float v0 = sprite.getV0() + (top * vl);
+//        float u1 = sprite.getU0() + (right * ul);
+//        float v1 = sprite.getV0() + (bottom * vl);
+//        float[] u = {u0, u1, u1, u0};
+//        float[] v = {v1, v1, v0, v0};
+//        buffer.vertex(mat, (float) xMax, (float) yMax, 0).color(red, green, blue, alpha).uv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]).endVertex();  //R-B
+//        buffer.vertex(mat, (float) xMax, (float) yMin, 0).color(red, green, blue, alpha).uv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]).endVertex();  //R-T
+//        buffer.vertex(mat, (float) xMin, (float) yMin, 0).color(red, green, blue, alpha).uv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]).endVertex();  //L-T
+//        buffer.vertex(mat, (float) xMin, (float) yMax, 0).color(red, green, blue, alpha).uv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]).endVertex();  //L-B
+//        flushIfUnBatched();
+//    }
+
+    /**
+     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+     * Texture will be resized / reshaped as appropriate to fit the defined area.
+     * <p>
+     * This is similar to {@link #partialSprite(RenderType, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
+     * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
+     */
+    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int texXMin, int texYMin, int texXMax, int texYMax, int argb) {
+        float width = sprite.contents().width();
+        float height = sprite.contents().height();
+        partialSprite(type, xMin, yMin, xMax, yMax, sprite, texXMin / width, texYMin / height, texXMax / width, texYMax / height, argb);
+    }
+
+    /**
+     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+     * Texture will be resized / reshaped as appropriate to fit the defined area.
+     * Valid input u/v value range is 0 to 1 [0, 0, 1, 1 would render the full sprite]
+     */
+    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, int argb) {
+        partialSprite(type, xMin, yMin, xMax, yMax, sprite, uMin, vMin, uMax, vMax, r(argb), g(argb), b(argb), a(argb));
+    }
+
+    /**
+     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+     * Texture will be resized / reshaped as appropriate to fit the defined area.
+     * Valid input u/v value range is 0 to 1 [0, 0, 1, 1 would render the full sprite]
+     */
+    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, float red, float green, float blue, float alpha) {
+        VertexConsumer buffer = buffers().getBuffer(type);
+        Matrix4f mat = pose.last().pose();
+        float u0 = sprite.getU0();
+        float v0 = sprite.getV0();
+        float u1 = sprite.getU1();
+        float v1 = sprite.getV1();
+        float ul = u1 - u0;
+        float vl = v1 - v0;
+        buffer.vertex(mat, (float) xMax, (float) yMax, 0).color(red, green, blue, alpha).uv(u0 + (uMax * ul), v0 + (vMax * vl)).endVertex();  //R-B
+        buffer.vertex(mat, (float) xMax, (float) yMin, 0).color(red, green, blue, alpha).uv(u0 + (uMax * ul), v0 + (vMin * vl)).endVertex();  //R-T
+        buffer.vertex(mat, (float) xMin, (float) yMin, 0).color(red, green, blue, alpha).uv(u0 + (uMin * ul), v0 + (vMin * vl)).endVertex();  //L-T
+        buffer.vertex(mat, (float) xMin, (float) yMax, 0).color(red, green, blue, alpha).uv(u0 + (uMin * ul), v0 + (vMax * vl)).endVertex();  //L-B
+        flushIfUnBatched();
+    }
+
     //Material
 
     /**

@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.client.modulargui.lib;
+package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
 /**
  * Created by brandon3055 on 31/08/2023

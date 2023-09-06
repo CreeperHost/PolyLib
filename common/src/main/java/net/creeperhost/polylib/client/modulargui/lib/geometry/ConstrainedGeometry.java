@@ -1,7 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
-import net.creeperhost.polylib.client.modulargui.lib.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

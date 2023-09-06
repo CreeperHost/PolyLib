@@ -1,6 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
-import net.creeperhost.polylib.client.modulargui.lib.Axis;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.SliderState;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;

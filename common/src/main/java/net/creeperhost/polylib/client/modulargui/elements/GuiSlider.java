@@ -1,10 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
 import net.creeperhost.polylib.client.modulargui.lib.*;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.Position;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.*;
 import net.creeperhost.polylib.helpers.MathUtil;
 import org.jetbrains.annotations.NotNull;
 

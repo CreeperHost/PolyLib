@@ -2,7 +2,7 @@ package net.creeperhost.polylib.client.modulargui.elements;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.creeperhost.polylib.client.modulargui.lib.Align;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Align;
 import net.creeperhost.polylib.client.modulargui.lib.ForegroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static net.creeperhost.polylib.client.modulargui.lib.Align.MAX;
-import static net.creeperhost.polylib.client.modulargui.lib.Align.MIN;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Align.MAX;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Align.MIN;
 
 /**
  * Created by brandon3055 on 31/08/2023
