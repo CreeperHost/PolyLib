@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated(since = "1.20.1")
 public class ButtonRedstoneControl extends PolyButton
 {
     private EnumRedstoneState state;

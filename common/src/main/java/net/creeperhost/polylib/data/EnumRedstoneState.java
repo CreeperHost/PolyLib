@@ -3,6 +3,7 @@ package net.creeperhost.polylib.data;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+@Deprecated(since = "1.20.1")
 public enum EnumRedstoneState
 {
     IGNORED("ignored", new ItemStack(Items.BARRIER)),
