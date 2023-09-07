@@ -50,7 +50,8 @@ public class EnergyHooks
 
     public static Optional<PlatformEnergyManager> safeGetBlockEnergyManager(BlockEntity entity, @Nullable Direction direction)
     {
-        return isEnergyContainer(entity, direction) ? Optional.of(getBlockEnergyManager(entity, direction)) : Optional.empty();
+        return isEnergyContainer(entity, direction) ? Optional.of(
+                getBlockEnergyManager(entity, direction)) : Optional.empty();
     }
 
     public static Optional<PlatformItemEnergyManager> safeGetItemEnergyManager(ItemStack stack)
@@ -84,22 +85,26 @@ public class EnergyHooks
 
     public static long safeMoveItemToItemEnergy(ItemStackHolder from, ItemStackHolder to, long amount)
     {
-        return safeGetItemEnergyManager(from.getStack()).map(f -> safeGetItemEnergyManager(to.getStack()).map(t -> moveItemToItemEnergy(f, from, t, to, amount)).orElse(0L)).orElse(0L);
+        return safeGetItemEnergyManager(from.getStack()).map(f -> safeGetItemEnergyManager(to.getStack()).map(
+                t -> moveItemToItemEnergy(f, from, t, to, amount)).orElse(0L)).orElse(0L);
     }
 
     public static long safeMoveItemToBlockEnergy(ItemStackHolder from, BlockEntity to, @Nullable Direction direction, long amount)
     {
-        return safeGetItemEnergyManager(from.getStack()).map(f -> safeGetBlockEnergyManager(to, direction).map(t -> moveItemToStandardEnergy(f, from, t, amount)).orElse(0L)).orElse(0L);
+        return safeGetItemEnergyManager(from.getStack()).map(f -> safeGetBlockEnergyManager(to, direction).map(
+                t -> moveItemToStandardEnergy(f, from, t, amount)).orElse(0L)).orElse(0L);
     }
 
     public static long safeMoveBlockToItemEnergy(BlockEntity from, @Nullable Direction direction, ItemStackHolder to, long amount)
     {
-        return safeGetBlockEnergyManager(from, direction).map(f -> safeGetItemEnergyManager(to.getStack()).map(t -> moveStandardToItemEnergy(f, t, to, amount)).orElse(0L)).orElse(0L);
+        return safeGetBlockEnergyManager(from, direction).map(f -> safeGetItemEnergyManager(to.getStack()).map(
+                t -> moveStandardToItemEnergy(f, t, to, amount)).orElse(0L)).orElse(0L);
     }
 
     public static long moveBlockToBlockEnergy(BlockEntity from, @Nullable Direction fromDirection, BlockEntity to, @Nullable Direction toDirection, long amount)
     {
-        return safeMoveEnergy(safeGetBlockEnergyManager(from, fromDirection), safeGetBlockEnergyManager(to, toDirection), amount);
+        return safeMoveEnergy(safeGetBlockEnergyManager(from, fromDirection),
+                safeGetBlockEnergyManager(to, toDirection), amount);
     }
 
     public static long moveBlockToBlockEnergy(BlockEntity from, BlockEntity to, long amount)
