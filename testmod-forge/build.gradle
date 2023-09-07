@@ -1,21 +1,22 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
-//    id "com.matthewprenger.cursegradle"
 }
 
 loom {
 
     accessWidenerPath = project(":testmod-common").loom.accessWidenerPath
 
-    forge {
-        mixinConfig "architectury.mixins.json"
-        mixinConfig "polylib-forge.mixins.json"
-
-        localMods {
-            forge {
-                it.add(project(":forge").sourceSets.main)
-            }
+    mods {
+        forge {
+            sourceSet project(":forge").sourceSets.main
         }
+    }
+
+    forge {
+//        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+
+        mixinConfig "architectury.mixins.json"
     }
 }
 

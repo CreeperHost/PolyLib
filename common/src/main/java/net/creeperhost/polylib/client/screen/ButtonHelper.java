@@ -5,8 +5,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 public class ButtonHelper
 {

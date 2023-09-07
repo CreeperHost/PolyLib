@@ -5,7 +5,6 @@ import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.JsonObject;
 import dev.architectury.platform.Platform;
 
-import javax.annotation.Nonnull;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,7 +18,7 @@ public class ConfigBuilder
 
     Jankson JANKSON = Jankson.builder().build();
 
-    public ConfigBuilder(@Nonnull String configName, @Nonnull Path configPath, @Nonnull Class<?> clazz)
+    public ConfigBuilder(String configName, Path configPath, Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
         this.CONFIG_PATH = configPath;
@@ -33,7 +32,7 @@ public class ConfigBuilder
         }
     }
 
-    public ConfigBuilder(@Nonnull String configName, @Nonnull Path configPath, ConfigData data)
+    public ConfigBuilder(String configName, Path configPath, ConfigData data)
     {
         this.CONFIG_NAME = configName;
         this.CONFIG_PATH = configPath;
@@ -47,7 +46,7 @@ public class ConfigBuilder
         }
     }
 
-    public ConfigBuilder(@Nonnull String configName, @Nonnull Class<?> clazz)
+    public ConfigBuilder(String configName, Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
         this.CONFIG_PATH = Platform.getConfigFolder().resolve(configName + ".json");
