@@ -3,7 +3,6 @@ package net.creeperhost.polylib.client.modulargui.lib;
 import com.google.common.collect.Lists;
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
 
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.List;
 
 /**
@@ -33,7 +32,6 @@ public interface ElementEvents {
      * @param mouseX new mouse X position
      * @param mouseY new mouse Y position
      */
-    @OverridingMethodsMustInvokeSuper
     default void mouseMoved(double mouseX, double mouseY) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
@@ -70,7 +68,6 @@ public interface ElementEvents {
      * @param consumed Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    @OverridingMethodsMustInvokeSuper
     default boolean mouseClicked(double mouseX, double mouseY, int button, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
@@ -108,7 +105,6 @@ public interface ElementEvents {
      * @param consumed Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    @OverridingMethodsMustInvokeSuper
     default boolean mouseReleased(double mouseX, double mouseY, int button, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
@@ -146,7 +142,6 @@ public interface ElementEvents {
      * @param consumed Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    @OverridingMethodsMustInvokeSuper
     default boolean mouseScrolled(double mouseX, double mouseY, double scroll, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
@@ -186,7 +181,6 @@ public interface ElementEvents {
      * @param consumed  Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    @OverridingMethodsMustInvokeSuper
     default boolean keyPressed(int key, int scancode, int modifiers, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
@@ -224,7 +218,6 @@ public interface ElementEvents {
      * @param consumed  Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    @OverridingMethodsMustInvokeSuper
     default boolean keyReleased(int key, int scancode, int modifiers, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
@@ -260,7 +253,6 @@ public interface ElementEvents {
      * @param consumed  Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    @OverridingMethodsMustInvokeSuper
     default boolean charTyped(char character, int modifiers, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {

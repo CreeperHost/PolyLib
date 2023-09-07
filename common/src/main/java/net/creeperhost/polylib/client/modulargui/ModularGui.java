@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.client.modulargui;
 
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
+import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
 import net.creeperhost.polylib.client.modulargui.lib.GuiBuilder;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
@@ -10,9 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -47,6 +47,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      */
     public ModularGui(GuiBuilder builder) {
         this.builder = builder;
+        if (builder instanceof DynamicTextures textures) textures.makeTextures(DynamicTextures.DynamicTexture::guiTexturePath);
         Minecraft mc = Minecraft.getInstance();
         updateScreenData(mc, mc.font, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
         this.root = builder.createRootElement(this);
@@ -55,11 +56,11 @@ public class ModularGui implements GuiParent<ModularGui> {
 
     //=== Modular Gui Setup ===//
 
-    public void setGuiTitle(@Nonnull Component guiTitle) {
+    public void setGuiTitle(@NotNull Component guiTitle) {
         this.guiTitle = guiTitle;
     }
 
-    @Nonnull
+    @NotNull
     public Component getGuiTitle() {
         return guiTitle;
     }

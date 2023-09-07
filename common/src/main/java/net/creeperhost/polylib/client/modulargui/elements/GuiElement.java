@@ -13,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -373,7 +372,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      * @param consumed     Will be true if the overlay render call has already been consumed by another element.
      * @return true if the render call has been consumed.
      */
-    @OverridingMethodsMustInvokeSuper
     public boolean renderOverlay(GuiRender render, double mouseX, double mouseY, float partialTicks, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
@@ -393,7 +391,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      * @param mouseX Current mouse X position
      * @param mouseY Current mouse Y position
      */
-    @OverridingMethodsMustInvokeSuper
     public void tick(double mouseX, double mouseY) {
         if (!removeQueue.isEmpty()) {
             childElements.removeAll(removeQueue);

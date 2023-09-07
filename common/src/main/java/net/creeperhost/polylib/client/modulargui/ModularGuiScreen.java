@@ -8,8 +8,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-
 /**
  * A simple ModularGui screen implementation.
  * <p>
@@ -24,7 +22,7 @@ public class ModularGuiScreen extends Screen {
         this.modularGui = new ModularGui(builder);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Component getTitle() {
         return modularGui.getGuiTitle();
