@@ -73,7 +73,7 @@ public class DynamicTextureProvider implements DataProvider {
             }
 
             Resource inputResource = fileHelper.getResource(dynamicInput, PackType.CLIENT_RESOURCES);
-            PackOutput packOutput = gen.getPackOutput("assets/" + nameSpace);
+            PackOutput packOutput = gen.getPackOutput("assets/" + modid);
             Path outputFile = packOutput.getOutputFolder().resolve(outputTexture.getPath());
 
             BufferedImage input = ImageIO.read(inputResource.open());
@@ -156,6 +156,7 @@ public class DynamicTextureProvider implements DataProvider {
                 HashingOutputStream hos = new HashingOutputStream(Hashing.sha1(), bos);
                 hos.write(result.fileBytes);
                 arg.writeIfNeeded(result.path, bos.toByteArray(), hos.hash());
+                LOGGER.info("Saved file to {}", result.path);
             } catch (IOException ex) {
                 LOGGER.error("Failed to save file to {}", result.path, ex);
             }
