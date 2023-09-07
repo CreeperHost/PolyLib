@@ -9,4 +9,4 @@ Ideally we want to try to make live easy for the resource pack developers, so tr
 Instead, use the dynamic texture data generator to generate proper textures based on these dynamic textures.
 This is better for performance, and it is better for the resource pack devs.
 
-If your reading this and I have not implemented the dynamic texture datagen... well... you know who to yell at...    
+If your reading this and I have not implemented the dynamic texture datagen... well... you know who to yell at... @Brandon3055   
