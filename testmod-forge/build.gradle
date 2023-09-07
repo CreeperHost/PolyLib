@@ -26,7 +26,7 @@ loom {
             programArgs "--existing", project(":common").file("src/main/resources").absolutePath
 
             //I believe this should work for any mods that dep on polylib, it just does not work with the builtin test mod
-            programArgs "--existing-mod", "polylib"
+//            programArgs "--existing-mod", "polylib"
         }
     }
 
@@ -35,8 +35,6 @@ loom {
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         mixinConfig "architectury.mixins.json"
-//        mixinConfig "polylib-forge.mixins.json"
-
     }
 }
 
@@ -46,16 +44,6 @@ architectury {
 }
 
 configurations {
-//    common
-//    shadowLib
-//    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-//    shadowCommon.extendsFrom shadowLib
-//    compileClasspath.extendsFrom common
-//    runtimeClasspath.extendsFrom common
-//    developmentForge.extendsFrom common
-//    implementation.extendsFrom shadowLib
-//    forgeRuntimeLibrary.extendsFrom shadowLib
-
     common
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
@@ -70,11 +58,7 @@ repositories {
 
 dependencies {
     forge "net.minecraftforge:forge:${gradle.rootProject.architectury.minecraft}-${rootProject.forge_version}"
-//    modApi "dev.architectury:architectury-forge:${gradle.rootProject.architectury_version}"
-
     forgeRuntimeLibrary("blue.endless:jankson:1.2.1")
-
-//    modApi project(path: ":forge", configuration: "namedElements")
 
     implementation project(path: ":forge", configuration: "namedElements")
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
@@ -82,6 +66,6 @@ dependencies {
 }
 
 
-//publishing {
-//
-//}
+publishing {
+
+}
