@@ -47,7 +47,7 @@ public class DynamicTextureProvider implements DataProvider {
     public void addTextures() {
     }
 
-    public void texturesForGui(DynamicTextures dynamicTextures) {
+    public void addDynamicTextures(DynamicTextures dynamicTextures) {
         dynamicTextures.makeTextures(t -> {
             addDynamicTexture(t.dynamicInput(), t.outputLocation(), t.width(), t.height(), t.topBorder(), t.leftBorder(), t.bottomBorder(), t.rightBorder());
             return t.guiTexturePath();
@@ -67,13 +67,12 @@ public class DynamicTextureProvider implements DataProvider {
             if (!dynamicInput.getPath().endsWith(".png")) {
                 dynamicInput = new ResourceLocation(dynamicInput.getNamespace(), dynamicInput.getPath() + ".png");
             }
-            String nameSpace = outputTexture.getNamespace();
-            if (!nameSpace.endsWith(".png")) {
-                nameSpace += ".png";
+            if (!outputTexture.getPath().endsWith(".png")) {
+                outputTexture = new ResourceLocation(outputTexture.getNamespace(), outputTexture.getPath() + ".png");
             }
 
             Resource inputResource = fileHelper.getResource(dynamicInput, PackType.CLIENT_RESOURCES);
-            PackOutput packOutput = gen.getPackOutput("assets/" + modid);
+            PackOutput packOutput = gen.getPackOutput("assets/" + outputTexture.getNamespace());
             Path outputFile = packOutput.getOutputFolder().resolve(outputTexture.getPath());
 
             BufferedImage input = ImageIO.read(inputResource.open());

@@ -388,8 +388,20 @@ mutable field net/minecraft/data/models/ModelProvider blockStatePathProvider Lne
 accessible field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 mutable field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 
+accessible field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
+mutable field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
+
 accessible field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 mutable field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 
-accessible field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
-mutable field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
+accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I
+
+accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
+accessible method net/minecraft/client/gui/components/AbstractSelectionList$Entry <init> ()V
+
+accessible method net/minecraft/client/renderer/texture/TextureAtlas getWidth ()I
+accessible method net/minecraft/client/renderer/texture/TextureAtlas getHeight ()I
+
+extendable method net/minecraft/client/gui/GuiGraphics <init> (Lnet/minecraft/client/Minecraft;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V # <init>
+extendable method net/minecraft/client/gui/GuiGraphics flushIfUnmanaged ()V
+extendable method net/minecraft/client/gui/GuiGraphics flushIfManaged ()V

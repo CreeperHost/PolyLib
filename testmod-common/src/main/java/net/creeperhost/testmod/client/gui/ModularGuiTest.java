@@ -1,20 +1,20 @@
-package net.creeperhost.polylib.client.modulargui;
+package net.creeperhost.testmod.client.gui;
 
 import net.creeperhost.polylib.PolyLib;
+import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.elements.*;
-import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
+import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
 import net.creeperhost.polylib.client.modulargui.lib.GuiBuilder;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Direction;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
+import net.creeperhost.testmod.TestMod;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,35 +26,31 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-import static net.creeperhost.polylib.PolyLib.MOD_ID;
-import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.*;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.relative;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 
 /**
  * Created by brandon3055 on 19/08/2023
  */
-public class TestGui implements GuiBuilder, DynamicTextures {
+public class ModularGuiTest implements GuiBuilder, DynamicTextures {
 
     private String BACKGROUND_TEXTURE;
 
     @Override
     public void makeTextures(Function<DynamicTexture, String> textures) {
-        BACKGROUND_TEXTURE = dynamicTexture(textures, new ResourceLocation(MOD_ID, "textures/gui/dynamic/gui_vanilla"), new ResourceLocation(MOD_ID, "textures/gui/test_gui"), 200, 200, 4);
+        BACKGROUND_TEXTURE = dynamicTexture(textures, new ResourceLocation(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), new ResourceLocation(TestMod.MOD_ID, "textures/gui/test_gui"), 200, 200, 4);
     }
 
     @Override
     public GuiElement<?> createRootElement(ModularGui gui) {
-        return new GuiTexture(gui, PolyTextures.get(BACKGROUND_TEXTURE)).dynamicTexture();
+        return new GuiTexture(gui, TestModTextures.get(BACKGROUND_TEXTURE));
     }
 
     @Override
     public void buildGui(ModularGui gui) {
         gui.initStandardGui(200, 200);
-        gui.setGuiTitle(Component.literal("Hello").append(Component.literal(" World!")
-                .withStyle(Style.EMPTY
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("Test World Hover Text!")))
-                )
-        ));
+        gui.setGuiTitle(Component.literal("Hello World!"));
 
         GuiElement<?> root = gui.getRoot();
 
