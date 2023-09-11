@@ -5,7 +5,7 @@ import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.elements.*;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
-import net.creeperhost.polylib.client.modulargui.lib.GuiBuilder;
+import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
@@ -33,7 +33,7 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 /**
  * Created by brandon3055 on 19/08/2023
  */
-public class ModularGuiTest implements GuiBuilder, DynamicTextures {
+public class ModularGuiTest implements GuiProvider, DynamicTextures {
 
     private String BACKGROUND_TEXTURE;
 
@@ -88,6 +88,8 @@ public class ModularGuiTest implements GuiBuilder, DynamicTextures {
                 .constrain(LEFT, relative(root.get(LEFT), 5))
                 .constrain(WIDTH, literal(22))
                 .constrain(HEIGHT, literal(16));
+        progressRight.setTooltipSingle(() -> Component.literal(((int) (progressRight.getProgress() * 100)) + "%"));
+        progressRight.setTooltipDelay(0);
 
         GuiProgressIcon progressDown = new GuiProgressIcon(root)
                 .setBackground(PolyTextures.get("widgets/progress_arrow_empty"))
@@ -129,7 +131,7 @@ public class ModularGuiTest implements GuiBuilder, DynamicTextures {
 
 
         GuiScrolling scroll = new GuiScrolling(scrollBackground);
-        Constraints.bindTo(scroll, scrollBackground, 1);
+        Constraints.bind(scroll, scrollBackground, 1);
 
         var xScrollBar = GuiSlider.vanillaScrollBar(root, Axis.X);
         xScrollBar.container

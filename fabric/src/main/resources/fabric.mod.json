@@ -20,7 +20,8 @@
     ]
   },
   "mixins": [
-    "polylib.mixins.json"
+    "polylib.mixins.json",
+    "polylib-fabric.mixins.json"
   ],
   "depends": {
     "fabric": "*",

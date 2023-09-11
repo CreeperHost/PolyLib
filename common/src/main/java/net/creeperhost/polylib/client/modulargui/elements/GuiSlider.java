@@ -244,13 +244,12 @@ public class GuiSlider extends GuiElement<GuiSlider> {
      * But this is something that should at least fit in to a typical vanilla gui.
      */
     public static Assembly<GuiRectangle, GuiSlider> vanillaScrollBar(GuiElement<?> parent, Axis axis) {
-        GuiRectangle background = new GuiRectangle(parent)
-                .shadedRect(0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b);
+        GuiRectangle background = GuiRectangle.vanillaSlot(parent);
 
         GuiSlider slider = new GuiSlider(background, axis);
-        Constraints.bindTo(slider, background, 1);
+        Constraints.bind(slider, background, 1);
 
-        slider.installSlider(new GuiRectangle(slider).shadedRect(0xFFaaaaaa, 0xFF545454, 0xFF6f6f6f))
+        slider.installSlider(GuiRectangle.planeButton(slider))
                 .bindSliderLength()
                 .bindSliderWidth();
 
@@ -258,7 +257,7 @@ public class GuiSlider extends GuiElement<GuiSlider> {
                 .fill(0x5000b6FF)
                 .setEnabled(() -> slider.getSlider().hovered());
 
-        Constraints.bindTo(sliderHighlight, slider.getSlider());
+        Constraints.bind(sliderHighlight, slider.getSlider());
 
         return new Assembly<>(background, slider).addParts(sliderHighlight);
     }

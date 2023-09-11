@@ -2,6 +2,7 @@ package net.creeperhost.polylib.client.modulargui.elements;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.ConstrainedGeometry;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
@@ -86,6 +87,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      * With ModularGui v3 it is technically possible to add children in the constructor,
      * But that may not always be supported. This is the preferred method.
      */
+    @Deprecated//I'm starting to just do everything in the element constructors.
     protected void addChildElements() {
     }
 
@@ -164,6 +166,11 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     @Override
     public int scaledScreenHeight() {
         return screenHeight;
+    }
+
+    @Override
+    public ModularGui getModularGui() {
+        return getParent().getModularGui();
     }
 
     @Override

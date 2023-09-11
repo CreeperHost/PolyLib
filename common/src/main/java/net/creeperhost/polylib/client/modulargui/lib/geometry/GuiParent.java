@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
 import com.google.common.annotations.Beta;
+import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -167,6 +168,11 @@ public interface GuiParent<T extends GuiParent<?>> {
      * @return The current gui screen height, As returned by mc.getWindow().getGuiScaledHeight()
      */
     int scaledScreenHeight();
+
+    /**
+     * @return the parent ModularGui instance.
+     */
+    ModularGui getModularGui();
 
     /**
      * Called when the minecraft Screen is initialised or resized.

@@ -1,8 +1,10 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
-import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
+import net.creeperhost.polylib.client.modulargui.lib.Assembly;
+import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.SliderState;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
@@ -10,6 +12,8 @@ import net.creeperhost.polylib.helpers.MathUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.match;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.relative;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 
 /**
@@ -168,5 +172,45 @@ public class GuiScrolling extends GuiElement<GuiScrolling> {
             if (!setup && (param == TOP || param == LEFT)) throw new IllegalStateException("Can not override TOP or LEFT constraints on content element, These are used to control the scrolling behavior!");
             return super.constrain(param, constraint);
         }
+    }
+
+    public static Assembly<? extends GuiElement<?>, GuiScrolling> simpleScrollWindow(@NotNull GuiParent<?> parent, boolean verticalScrollBar, boolean horizontalScrollBar) {
+        GuiElement<?> container = new GuiElement<>(parent);
+        GuiRectangle background = GuiRectangle.vanillaSlot(container)
+                .constrain(TOP, match(container.get(TOP)))
+                .constrain(LEFT, match(container.get(LEFT)))
+                .constrain(BOTTOM, relative(container.get(BOTTOM), horizontalScrollBar ? -10 : 0))
+                .constrain(RIGHT, relative(container.get(RIGHT), verticalScrollBar ? -10 : 0));
+
+        GuiScrolling scroll = new GuiScrolling(background);
+        Constraints.bind(scroll, background, 1);
+
+        var result = new Assembly<>(container, scroll);
+
+        if (verticalScrollBar) {
+            var bar = GuiSlider.vanillaScrollBar(container, Axis.Y);
+            bar.container
+                    .constrain(TOP, match(container.get(TOP)))
+                    .constrain(BOTTOM, relative(container.get(BOTTOM), horizontalScrollBar ? -10 : 0))
+                    .constrain(RIGHT, match(container.get(RIGHT)))
+                    .constrain(WIDTH, Constraint.literal(9));
+            bar.primary
+                    .setSliderState(scroll.scrollState(Axis.Y))
+                    .setScrollableElement(scroll);
+            result.addParts(bar.container, bar.primary, bar.getPart(0));
+        }
+        if (horizontalScrollBar) {
+            var bar = GuiSlider.vanillaScrollBar(container, Axis.X);
+            bar.container
+                    .constrain(BOTTOM, match(container.get(BOTTOM)))
+                    .constrain(LEFT, match(container.get(LEFT)))
+                    .constrain(RIGHT, relative(container.get(RIGHT), verticalScrollBar ? -10 : 0))
+                    .constrain(HEIGHT, Constraint.literal(9));
+            bar.primary
+                    .setSliderState(scroll.scrollState(Axis.X))
+                    .setScrollableElement(scroll);
+            result.addParts(bar.container, bar.primary, bar.getPart(0));
+        }
+        return result;
     }
 }

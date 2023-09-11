@@ -216,7 +216,6 @@ public class GuiButton extends GuiElement<GuiButton> {
         Runnable onClick = this.onClick.get(button);
         Runnable onPress = this.onPress.get(button);
         if (onClick == null && onPress == null) return consumed;
-        pressed = false;
 
         if (!isDisabled()) {
             if (!consumed && pressed && onPress != null) {
@@ -227,6 +226,7 @@ public class GuiButton extends GuiElement<GuiButton> {
                 mc().getSoundManager().play(SimpleSoundInstance.forUI(getReleaseSound(), 1F));
             }
         }
+        pressed = false;
         return consumed;
     }
 
@@ -247,12 +247,12 @@ public class GuiButton extends GuiElement<GuiButton> {
         texture.dynamicTexture();
         GuiRectangle highlight = new GuiRectangle(button).border(() -> button.hoverTime() > 0 ? 0xFFFFFFFF : 0);
 
-        Constraints.bindTo(texture, button);
-        Constraints.bindTo(highlight, button);
+        Constraints.bind(texture, button);
+        Constraints.bind(highlight, button);
 
         if (label != null) {
             button.setLabel(new GuiText(button, label));
-            Constraints.bindTo(button.getLabel(), button, 0, 2, 0, 2);
+            Constraints.bind(button.getLabel(), button, 0, 2, 0, 2);
         }
 
         return button;
@@ -276,8 +276,8 @@ public class GuiButton extends GuiElement<GuiButton> {
         texture.dynamicTexture();
         GuiRectangle highlight = new GuiRectangle(button).border(() -> button.hovered() ? 0xFFFFFFFF : 0);
 
-        Constraints.bindTo(texture, button);
-        Constraints.bindTo(highlight, button);
+        Constraints.bind(texture, button);
+        Constraints.bind(highlight, button);
 
         if (label != null) {
             button.setLabel(new GuiText(button, label)

@@ -15,8 +15,9 @@ import java.util.function.Supplier;
  */
 public class GuiTexture extends GuiElement<GuiTexture> implements BackgroundRender {
     private Supplier<Material> getMaterial;
+    private Supplier<Integer> colour = () -> 0xFFFFFFFF;
     private Borders dynamicBorders = null;
-    
+
     /**
      * @param parent parent {@link GuiParent}.
      */
@@ -79,14 +80,31 @@ public class GuiTexture extends GuiElement<GuiTexture> implements BackgroundRend
         return this;
     }
 
+    /**
+     * Allows you to set an argb colour.
+     * This colour will be applied when rendering the texture.
+     */
+    public GuiTexture setColour(int colourARGB) {
+        return setColour(() -> colourARGB);
+    }
+
+    /**
+     * Allows you to set an argb colour provider.
+     * This colour will be applied when rendering the texture.
+     */
+    public GuiTexture setColour(Supplier<Integer> colour) {
+        this.colour = colour;
+        return this;
+    }
+
     @Override
     public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         Material material = getMaterial();
         if (material == null) return;
         if (dynamicBorders != null) {
-            render.dynamicTex(material, getRectangle(), dynamicBorders);
+            render.dynamicTex(material, getRectangle(), dynamicBorders, colour.get());
         } else {
-            render.texRect(material, getRectangle());
+            render.texRect(material, getRectangle(), colour.get());
         }
     }
 }

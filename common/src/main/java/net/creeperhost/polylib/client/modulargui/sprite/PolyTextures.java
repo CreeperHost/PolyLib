@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.sprite;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;

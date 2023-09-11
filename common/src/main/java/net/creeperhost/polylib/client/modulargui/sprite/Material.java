@@ -77,4 +77,23 @@ public class Material {
         }
         return vanillaMat;
     }
+
+    /**
+     * Convenient method for getting a material from a vanilla texture atlas.
+     *
+     * @return an un-cached material from a vanilla atlas.
+     */
+    public static Material fromAtlas(ResourceLocation atlasLocation, String texture) {
+        return new Material(atlasLocation, new ResourceLocation(atlasLocation.getNamespace(), texture), e -> Minecraft.getInstance().getTextureAtlas(atlasLocation).apply(e));
+    }
+
+    /**
+     * Create a material from an existing sprite.
+     * Note: This will only work with sprites from a vanilla atlas.
+     */
+    @Nullable
+    public static Material fromSprite(@Nullable TextureAtlasSprite sprite) {
+        if (sprite == null) return null;
+        return new Material(sprite.atlasLocation(), sprite.contents().name(), e -> Minecraft.getInstance().getTextureAtlas(sprite.atlasLocation()).apply(e));
+    }
 }

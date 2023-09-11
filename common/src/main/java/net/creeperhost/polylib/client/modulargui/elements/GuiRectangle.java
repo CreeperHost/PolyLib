@@ -102,4 +102,27 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
             render.rect(getRectangle(), fill.get());
         }
     }
+
+    /**
+     * Creates a rectangle that mimics the appearance of a vanilla inventory slot.
+     * Uses shadedRect to create the 3D "inset" look.
+     */
+    public static GuiRectangle vanillaSlot(@NotNull GuiParent<?> parent) {
+        return new GuiRectangle(parent).shadedRect(0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b);
+    }
+
+    /**
+     * Creates a rectangle that mimics the appearance of a vanilla inventory slot, except inverted
+     * Uses shadedRect to create the 3D "popped out" appearance
+     */
+    public static GuiRectangle invertedSlot(@NotNull GuiParent<?> parent) {
+        return new GuiRectangle(parent).shadedRect(0xFFffffff, 0xFF373737, 0xFF8b8b8b, 0xFF8b8b8b);
+    }
+
+    /**
+     * Creates a rectangle similar in appearance to a vanilla button, but with no texture and no black border.
+     */
+    public static GuiRectangle planeButton(@NotNull GuiParent<?> parent) {
+        return new GuiRectangle(parent).shadedRect(0xFFaaaaaa, 0xFF545454, 0xFF6f6f6f);
+    }
 }

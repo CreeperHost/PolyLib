@@ -35,6 +35,8 @@ loom {
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         mixinConfig "architectury.mixins.json"
+        mixinConfig "polylib.mixins.json"
+        mixinConfig "polylib-forge.mixins.json"
     }
 }
 

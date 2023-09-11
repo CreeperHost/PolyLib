@@ -20,8 +20,8 @@ public class Constraints {
      * @param element   The element to be bound.
      * @param reference The element to be bound to.
      */
-    public static void bindTo(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference) {
-        bindTo(element, reference, 0.0);
+    public static void bind(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference) {
+        bind(element, reference, 0.0);
     }
 
     /**
@@ -30,8 +30,8 @@ public class Constraints {
      * @param element   The element to be bound.
      * @param reference The element to be bound to.
      */
-    public static void bindTo(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, double borders) {
-        bindTo(element, reference, borders, borders, borders, borders);
+    public static void bind(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, double borders) {
+        bind(element, reference, borders, borders, borders, borders);
     }
 
     /**
@@ -40,7 +40,7 @@ public class Constraints {
      * @param element   The element to be bound.
      * @param reference The element to be bound to.
      */
-    public static void bindTo(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, double top, double left, double bottom, double right) {
+    public static void bind(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, double top, double left, double bottom, double right) {
         element.constrain(TOP, Constraint.relative(reference.get(TOP), top));
         element.constrain(LEFT, Constraint.relative(reference.get(LEFT), left));
         element.constrain(BOTTOM, Constraint.relative(reference.get(BOTTOM), -bottom));
@@ -55,7 +55,7 @@ public class Constraints {
      * @param reference The element to be bound to.
      * @param borders   Border offsets.
      */
-    public static void bindTo(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, Borders borders) {
+    public static void bind(ConstrainedGeometry<?> element, ConstrainedGeometry<?> reference, Borders borders) {
         element.constrain(TOP, Constraint.relative(reference.get(TOP), borders::top));
         element.constrain(LEFT, Constraint.relative(reference.get(LEFT), borders::left));
         element.constrain(BOTTOM, Constraint.relative(reference.get(BOTTOM), () -> -borders.bottom()));

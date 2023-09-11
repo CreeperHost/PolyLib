@@ -2,8 +2,9 @@ package net.creeperhost.polylib.client.modulargui;
 
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
 import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
-import net.creeperhost.polylib.client.modulargui.lib.GuiBuilder;
+import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
@@ -11,28 +12,36 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.Slot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
  * The modular gui system is built around "Gui Elements" but those elements need to be rendered by a base parent element. That's what this class is.
  * This class is essentially just a container for the root gui element.
  * <p>
- * Implementation: TODO...
- * <p>
  * Created by brandon3055 on 18/08/2023
- * @see GuiBuilder
+ *
+ * @see GuiProvider
+ * @see ContainerGuiProvider
  */
 public class ModularGui implements GuiParent<ModularGui> {
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    private final GuiBuilder builder;
+    private final GuiProvider provider;
     private final GuiElement<?> root;
 
     private boolean guiBuilt = false;
     private boolean pauseScreen = false;
     private boolean closeOnEscape = true;
+    private boolean renderBackground = true;
+    private boolean vanillaSlotRendering = false;
 
     private Font font;
     private Minecraft mc;
@@ -42,16 +51,22 @@ public class ModularGui implements GuiParent<ModularGui> {
     private Component guiTitle = Component.empty();
     private GuiElement<?> focused;
 
+    private final Map<Slot, GuiElement<?>> slotHandlers = new HashMap<>();
+
     /**
-     * @param builder The gui builder that will be used to construct this modular gui when the screen is initialized.
+     * @param provider The gui builder that will be used to construct this modular gui when the screen is initialized.
      */
-    public ModularGui(GuiBuilder builder) {
-        this.builder = builder;
-        if (builder instanceof DynamicTextures textures) textures.makeTextures(DynamicTextures.DynamicTexture::guiTexturePath);
+    public ModularGui(GuiProvider provider) {
+        this.provider = provider;
+        if (provider instanceof DynamicTextures textures) textures.makeTextures(DynamicTextures.DynamicTexture::guiTexturePath);
         Minecraft mc = Minecraft.getInstance();
         updateScreenData(mc, mc.font, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
-        this.root = builder.createRootElement(this);
-        this.root.initElement(this);
+        try {
+            this.root = provider.createRootElement(this);
+        } catch (Throwable ex) {
+            LOGGER.error("An error occurred while constructing a modular gui", ex);
+            throw ex;
+        }
     }
 
     //=== Modular Gui Setup ===//
@@ -85,6 +100,18 @@ public class ModularGui implements GuiParent<ModularGui> {
     }
 
     /**
+     * Enable / disable the default screen background. (Default Enabled)
+     * This will be the usual darkened background when in-game, or the dirt background when not in game.
+     */
+    public void renderScreenBackground(boolean renderBackground) {
+        this.renderBackground = renderBackground;
+    }
+
+    public boolean renderBackground() {
+        return renderBackground;
+    }
+
+    /**
      * @return the root element.
      */
     public GuiElement<?> getRoot() {
@@ -112,6 +139,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Sets up this gui to render as a full screen gui.
      * Meaning the root element's geometry will match that of the underlying minecraft screen.
      * <p>
+     *
      * @see #initStandardGui(int, int)
      */
     public ModularGui initFullscreenGui() {
@@ -122,17 +150,42 @@ public class ModularGui implements GuiParent<ModularGui> {
         return this;
     }
 
+    /**
+     * By default, modular gui completely overrides vanillas default slot rendering.
+     * This ensures slots render within the depth constraint of the slot element and avoids situations where
+     * stacks in slots render on top of other parts of the gui.
+     * Meaning you can do things like hide slots by disabling the slot element, Or render elements on top of the slots.
+     * <p>
+     * This method allow you to return full rendering control to vanilla if you need to for whatever reason.
+     */
+    public void setVanillaSlotRendering(boolean vanillaSlotRendering) {
+        this.vanillaSlotRendering = vanillaSlotRendering;
+    }
+
+    public boolean vanillaSlotRendering() {
+        return vanillaSlotRendering;
+    }
+
     //=== Modular Gui Passthrough Methods ===//
 
     /**
-     * Primary render method for ModularGui. The screen implementing ModularGui must call this in its render method.
+     * Create a new {@link GuiRender} for the current render call.
      *
      * @param buffers BufferSource can be retried from {@link net.minecraft.client.gui.GuiGraphics}
-     * @return true if an overlay such as a tooltip is currently being drawn.
+     * @return A new {@link GuiRender} for the current render call.
      */
-    public boolean render(MultiBufferSource.BufferSource buffers, float partialTicks) {
+    public GuiRender createRender(MultiBufferSource.BufferSource buffers) {
+        return new GuiRender(mc, buffers);
+    }
+
+    /**
+     * Primary render method for ModularGui. The screen implementing ModularGui must call this in its render method.
+     * Followed by the {@link #renderOverlay(GuiRender, float)} method to handle overlay rendering.
+     *
+     * @param render A new gui render call should be constructed for each frame via {@link #createRender(MultiBufferSource.BufferSource)}
+     */
+    public void render(GuiRender render, float partialTicks) {
         root.clearGeometryCache();
-        GuiRender render = new GuiRender(mc, buffers);
         double mouseX = computeMouseX();
         double mouseY = computeMouseY();
         root.render(render, mouseX, mouseY, partialTicks);
@@ -144,7 +197,21 @@ public class ModularGui implements GuiParent<ModularGui> {
         } else {
             render.pose().translate(0, 0, 100);
         }
+    }
 
+    /**
+     * Handles gui overlay rendering. This is where things like tool tips are rendered.
+     * This should be called immediately after {@link #render(GuiRender, float)}
+     * <p>
+     * The reason this is split out from {@link #render(GuiRender, float)} is to allow
+     * stack tool tips to override gui overlay rendering in {@link ModularGuiContainer}
+     *
+     * @param render This should be the same render instance that was passed to the previous {@link #render(GuiRender, float)} call.
+     * @return true if an overlay such as a tooltip is currently being drawn.
+     */
+    public boolean renderOverlay(GuiRender render, float partialTicks) {
+        double mouseX = computeMouseX();
+        double mouseY = computeMouseY();
         return root.renderOverlay(render, mouseX, mouseY, partialTicks, false);
     }
 
@@ -248,11 +315,16 @@ public class ModularGui implements GuiParent<ModularGui> {
     @Override
     public void onScreenInit(Minecraft mc, Font font, int screenWidth, int screenHeight) {
         updateScreenData(mc, font, screenWidth, screenHeight);
-        root.onScreenInit(mc, font, screenWidth, screenHeight);
-
-        if (!guiBuilt) {
-            builder.buildGui(this);
-            guiBuilt = true;
+        try {
+            root.onScreenInit(mc, font, screenWidth, screenHeight);
+            if (!guiBuilt) {
+                guiBuilt = true;
+                provider.buildGui(this);
+            }
+        } catch (Throwable ex) {
+            //Because it seems the default behavior is to just silently consume init errors... Not helpful!
+            LOGGER.error("An error occurred while building a modular gui", ex);
+            throw ex;
         }
     }
 
@@ -276,6 +348,11 @@ public class ModularGui implements GuiParent<ModularGui> {
         return screenHeight;
     }
 
+    @Override
+    public ModularGui getModularGui() {
+        return this;
+    }
+
     //=== Child Elements ===//
 
     @Override
@@ -285,7 +362,10 @@ public class ModularGui implements GuiParent<ModularGui> {
 
     @Override
     public void addChild(GuiElement<?> child) {
-        if (root == null) return; //Root installation calls parent.addChild
+        if (root == null) { //If child is null, we are adding the root element.
+            child.initElement(this);
+            return;
+        }
         throw new UnsupportedOperationException("Child elements must be managed via the root gui element not the modular gui itself.");
     }
 
@@ -356,5 +436,20 @@ public class ModularGui implements GuiParent<ModularGui> {
 
     public double computeMouseY() {
         return mc.mouseHandler.ypos() * (double) mc.getWindow().getGuiScaledHeight() / (double) mc.getWindow().getScreenHeight();
+    }
+
+    /**
+     * Provides a way to later retrieve the gui element responsible for positioning and rendering a slot.
+     */
+    public void setSlotHandler(Slot slot, GuiElement<?> handler) {
+        if (slotHandlers.containsKey(slot)) throw new IllegalStateException("A gui slot can only have a single handler!");
+        slotHandlers.put(slot, handler);
+    }
+
+    /**
+     * Returns the gui element responsible for managing a gui slot.
+     */
+    public GuiElement<?> getSlotHandler(Slot slot) {
+        return slotHandlers.get(slot);
     }
 }

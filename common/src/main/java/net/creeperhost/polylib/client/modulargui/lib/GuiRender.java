@@ -711,10 +711,21 @@ public class GuiRender extends LegacyRender {
      * This is similar to {@link #partialSprite(RenderType, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
      * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
      */
-    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int texXMin, int texYMin, int texXMax, int texYMax, int argb) {
-        float width = sprite.contents().width();
-        float height = sprite.contents().height();
-        partialSprite(type, xMin, yMin, xMax, yMax, sprite, texXMin / width, texYMin / height, texXMax / width, texYMax / height, argb);
+    public void partialSpriteTex(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, double texXMin, double texYMin, double texXMax, double texYMax, int argb) {
+        partialSpriteTex(type, xMin, yMin, xMax, yMax, sprite, texXMin, texYMin, texXMax, texYMax, r(argb), g(argb), b(argb), a(argb));
+    }
+
+    /**
+     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+     * Texture will be resized / reshaped as appropriate to fit the defined area.
+     * <p>
+     * This is similar to {@link #partialSprite(RenderType, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
+     * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
+     */
+    public void partialSpriteTex(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, double texXMin, double texYMin, double texXMax, double texYMax, float red, float green, float blue, float alpha) {
+        int width = sprite.contents().width();
+        int height = sprite.contents().height();
+        partialSprite(type, xMin, yMin, xMax, yMax, sprite, (float) texXMin / width, (float) texYMin / height, (float) texXMax / width, (float) texYMax / height, red, green, blue, alpha);
     }
 
     /**
@@ -745,6 +756,69 @@ public class GuiRender extends LegacyRender {
         buffer.vertex(mat, (float) xMin, (float) yMin, 0).color(red, green, blue, alpha).uv(u0 + (uMin * ul), v0 + (vMin * vl)).endVertex();  //L-T
         buffer.vertex(mat, (float) xMin, (float) yMax, 0).color(red, green, blue, alpha).uv(u0 + (uMin * ul), v0 + (vMax * vl)).endVertex();  //L-B
         flushIfUnBatched();
+    }
+
+    /**
+     * Draw a sprite tiled to fit the specified area.
+     * Sprite is drawn from the top-left so sprite will be tiled right and down.
+     */
+    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int argb) {
+        tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.contents().width(), sprite.contents().height(), argb);
+    }
+
+    /**
+     * Draw a sprite tiled to fit the specified area.
+     * Sprite is drawn from the top-left so sprite will be tiled right and down.
+     *
+     * @param textureWidth Set base width of the sprite texture in pixels
+     * @param textureHeight Set base height of the sprite texture in pixels
+     */
+    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int argb) {
+        tileSprite(type, xMin, yMin, xMax, yMax, sprite, textureWidth, textureHeight, r(argb), g(argb), b(argb), a(argb));
+    }
+
+    /**
+     * Draw a sprite tiled to fit the specified area.
+     * Sprite is drawn from the top-left so sprite will be tiled right and down.
+     */
+    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+        tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.contents().width(), sprite.contents().height(), red, green, blue, alpha);
+    }
+
+    /**
+     * Draw a sprite tiled to fit the specified area.
+     * Sprite is drawn from the top-left so sprite will be tiled right and down.
+     *
+     * @param textureWidth Set base width of the sprite texture in pixels
+     * @param textureHeight Set base height of the sprite texture in pixels
+     */
+    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, float red, float green, float blue, float alpha) {
+        double width = xMax - xMin;
+        double height = yMax - yMin;
+        if (width <= textureWidth && height <= textureHeight) {
+            partialSprite(type, xMin, yMin, xMax, yMax, sprite, 0F, 0F, (float) width / textureWidth, (float) height / textureHeight, red, green, blue, alpha);
+        } else {
+            Runnable draw = () -> {
+                double xPos = xMin;
+                do {
+                    double sectionWidth = Math.min(textureWidth, xMax - xPos);
+                    double uWidth = sectionWidth / textureWidth;
+                    double yPos = yMin;
+                    do {
+                        double sectionHeight = Math.min(textureHeight, yMax - yPos);
+                        double vWidth = sectionHeight / textureHeight;
+                        partialSprite(type, xPos, yPos, xPos + sectionWidth, yPos + sectionHeight, sprite, 0, 0, (float) uWidth, (float) vWidth, red, green, blue, alpha);
+                        yPos += textureHeight;
+                    } while (yPos < yMax);
+                    xPos += textureWidth;
+                } while (xPos < xMax);
+            };
+            if (batchDraw) {
+                draw.run();
+            } else {
+                batchDraw(draw);
+            }
+        }
     }
 
     //Material

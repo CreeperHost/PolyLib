@@ -148,6 +148,7 @@ public class DynamicTextureProvider implements DataProvider {
         return CompletableFuture.allOf(futures);
     }
 
+    @SuppressWarnings ("UnstableApiUsage")
     static CompletableFuture<?> saveResult(CachedOutput arg, GeneratorResult result) {
         return CompletableFuture.runAsync(() -> {
             try {

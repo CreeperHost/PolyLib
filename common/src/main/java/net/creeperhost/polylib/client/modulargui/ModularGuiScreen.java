@@ -1,7 +1,7 @@
 package net.creeperhost.polylib.client.modulargui;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import net.creeperhost.polylib.client.modulargui.lib.GuiBuilder;
+import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
+import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A simple ModularGui screen implementation.
+ * This is simply a wrapper for a {@link ModularGui} that takes a {@link GuiProvider}
+ * This should be suitable for most basic gui screens.
  * <p>
  * Created by brandon3055 on 19/08/2023
  */
@@ -17,7 +19,7 @@ public class ModularGuiScreen extends Screen {
 
     protected final ModularGui modularGui;
 
-    public ModularGuiScreen(GuiBuilder builder) {
+    public ModularGuiScreen(GuiProvider builder) {
         super(Component.empty());
         this.modularGui = new ModularGui(builder);
     }
@@ -34,6 +36,11 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
+    public boolean shouldCloseOnEsc() {
+        return modularGui.closeOnEscape();
+    }
+
+    @Override
     protected void init() {
         modularGui.onScreenInit(minecraft, font, width, height);
     }
@@ -46,13 +53,21 @@ public class ModularGuiScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        modularGui.render(graphics.bufferSource(), partialTicks);
+        if (modularGui.renderBackground()) {
+            renderBackground(graphics);
+        }
+        GuiRender render = modularGui.createRender(graphics.bufferSource());
+        modularGui.render(render, partialTicks);
+        modularGui.renderOverlay(render, partialTicks);
     }
 
     @Override
     public void tick() {
         modularGui.tick();
     }
+
+    //=== Input Pass-though ===//
+    //TODO, We probably dont need to call super for most of these, If anyone tries adding vanilla components to these guis its probably going to break.
 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
@@ -61,35 +76,31 @@ public class ModularGuiScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return modularGui.mouseClicked(mouseX, mouseY, button);
+        return modularGui.mouseClicked(mouseX, mouseY, button) || super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return modularGui.mouseReleased(mouseX, mouseY, button);
+        return modularGui.mouseReleased(mouseX, mouseY, button) || super.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-        return modularGui.mouseScrolled(mouseX, mouseY, scroll);
+        return modularGui.mouseScrolled(mouseX, mouseY, scroll) || super.mouseScrolled(mouseX, mouseY, scroll);
     }
 
     @Override
     public boolean keyPressed(int key, int scancode, int modifiers) {
-        if (key == InputConstants.KEY_ESCAPE && modularGui.closeOnEscape()) {
-            onClose();
-            return true;
-        }
-        return modularGui.keyPressed(key, scancode, modifiers);
+        return modularGui.keyPressed(key, scancode, modifiers) || super.keyPressed(key, scancode, modifiers);
     }
 
     @Override
     public boolean keyReleased(int key, int scancode, int modifiers) {
-        return modularGui.keyReleased(key, scancode, modifiers);
+        return modularGui.keyReleased(key, scancode, modifiers) || super.keyReleased(key, scancode, modifiers);
     }
 
     @Override
     public boolean charTyped(char character, int modifiers) {
-        return modularGui.charTyped(character, modifiers);
+        return modularGui.charTyped(character, modifiers) || super.charTyped(character, modifiers);
     }
 }

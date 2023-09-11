@@ -22,13 +22,13 @@ import java.util.List;
  * <p>
  * Created by brandon3055 on 03/09/2023
  */
-public class Assembly<C extends GuiElement<C>, E extends GuiElement<E>> {
+public class Assembly<C extends GuiElement<?>, E extends GuiElement<?>> {
     /**
      * This is the root/container element, Apply any relevant constraints to this element.
      */
     public final C container;
     /**
-     * This is the actual functional element.
+     * This is the actual primary / functional element.
      */
     public final E primary;
     /**
@@ -44,5 +44,9 @@ public class Assembly<C extends GuiElement<C>, E extends GuiElement<E>> {
     public Assembly<C, E> addParts(GuiElement<?>... parts) {
         this.parts.addAll(Arrays.asList(parts));
         return this;
+    }
+
+    public GuiElement<?> getPart(int index) {
+        return parts.get(index);
     }
 }

@@ -85,6 +85,10 @@ public class GuiProgressIcon extends GuiElement<GuiProgressIcon> implements Back
         return this;
     }
 
+    public double getProgress() {
+        return progress.get();
+    }
+
     @Override
     public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         render.pose().pushPose();
@@ -102,7 +106,7 @@ public class GuiProgressIcon extends GuiElement<GuiProgressIcon> implements Back
         }
 
         if (animated == null) return;
-        float progress = this.progress.get().floatValue();
+        float progress = (float) getProgress();
         render.partialSprite(animated.renderType(GuiRender::texColType), -halfWidth, -halfHeight, -halfWidth + (width* progress), -halfHeight + height, animated.sprite(), 0F, 0F, progress, 1F, 0xFFFFFFFF);
 
         render.pose().popPose();

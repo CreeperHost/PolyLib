@@ -2,11 +2,15 @@ package net.creeperhost.polylib.client.modulargui.lib;
 
 import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
+import net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvider;
 
 /**
+ * This interface is used to build modular gui Screens.
+ * For modular gui container screens use {@link ContainerGuiProvider}
+ *
  * Created by brandon3055 on 19/08/2023
  */
-public interface GuiBuilder {
+public interface GuiProvider {
 
     /**
      * Override this to defile a custom root gui element.
@@ -31,7 +35,7 @@ public interface GuiBuilder {
      * Note: gui elements are added on construction, meaning you do not need to use element.addChild.
      * Instead, just construct the elements, and pass in the root element (or any other initialized element) as the parent.
      *
-     * @param gui The modular gui container.
+     * @param gui The modular gui instance.
      */
     void buildGui(ModularGui gui);
 
