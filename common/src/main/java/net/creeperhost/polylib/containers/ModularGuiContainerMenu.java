@@ -13,6 +13,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +31,7 @@ import java.util.function.Consumer;
  * Created by brandon3055 on 08/09/2023
  */
 public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public final Inventory inventory;
     public final List<SlotGroup> slotGroups = new ArrayList<>();
@@ -56,34 +59,35 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * How you handle the containers slots is up to you, For something like a machine with several spread out slots,
      * you can still add all the slots to a single group, then pass each individual slot from the group to a single {@link GuiSlots#singleSlot(GuiParent, ContainerScreenAccess, SlotGroup, int)} element.
      *
-     * @param zoneId Slot zoneId used to control quick-move. Quick move will always attempt to move to the next zoneId with space,
-     *               If moving from the highest zoneId, Will wrap around to the lowest zoneId.
-     *               zoneId must be >= 0, or you can use -1 to disable quick move into a zone.
+     * @param zoneId      Used for quick-move (shift click) operations. Each group has a zone id, and you can specify which zones a group can quick-move to.
+     *                    Multiple groups can have the same zone id. Quick move work though the groups in a zone in the order the groups here added.
+     * @param quickMoveTo List of zones this group can quick-move to.
      */
-    //TODO, Implement zone-based quick move.
-    protected SlotGroup createSlotGroup(int zoneId) {
-        SlotGroup group = new SlotGroup(this, zoneId);
+    protected SlotGroup createSlotGroup(int zoneId, int... quickMoveTo) {
+        SlotGroup group = new SlotGroup(this, zoneId, quickMoveTo);
         slotGroups.add(group);
         return group;
     }
 
     /**
-     * Convenience method to create a slot group for player slots. (zoneId 0)
+     * Convenience method to create a slot group for player slots.
+     * Configured to quick-move to {@link #remoteSlotGroup()} groups.
      *
-     * @see #createSlotGroup(int)
+     * @see #createSlotGroup(int, int[])
      */
     protected SlotGroup playerSlotGroup() {
-        return createSlotGroup(0);
+        return createSlotGroup(0, 1);
     }
 
     /**
      * Convenience method to create a slot group for the 'other side' of the inventory
-     * So the Block/tile or whatever this inventory is attached to. (zoneId 1)
+     * So the Block/tile or whatever this inventory is attached to.
+     * Configured to quick-move to {@link #playerSlotGroup()} groups.
      *
-     * @see #createSlotGroup(int)
+     * @see #createSlotGroup(int, int[])
      */
     protected SlotGroup remoteSlotGroup() {
-        return createSlotGroup(1);
+        return createSlotGroup(1, 0);
     }
 
     //=== Network ===//
@@ -203,94 +207,137 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
     }
 
     /**
-     * Logic to figure out where/if a shift-clicked slot can move its @link {@link ItemStack} to another @link {@link Slot}
+     * Transfers to the next zone in order, and will loop around to the lowest zone.
+     * TODO, Would be nice to have better control over quick-move
+     *  Maybe just the ability to specify which zones each group quick-moves to...
      */
     @Override
     public ItemStack quickMoveStack(@NotNull Player player, int slotIndex) {
-        ItemStack originalStack = ItemStack.EMPTY;
-        Slot slot = slots.get(slotIndex);
-        int numSlots = slots.size();
-        if (slot.hasItem()) {
-            ItemStack stackInSlot = slot.getItem();
-            originalStack = stackInSlot.copy();
-            if (slotIndex < numSlots - 9 * 4 || !tryShiftItem(stackInSlot, numSlots)) {
-                if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9) {
-                    if (!shiftItemStack(stackInSlot, numSlots - 9, numSlots)) {
-                        return ItemStack.EMPTY;
+        Slot slot = getSlot(slotIndex);
+        if (slot == null || !slot.hasItem()) {
+            return ItemStack.EMPTY;
+        }
+
+        SlotGroup group = slotGroupMap.get(slot);
+        if (group == null) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack stack = slot.getItem();
+        ItemStack result = stack.copy();
+
+        boolean movedAnything = false;
+        for (Integer zone : group.quickMoveTo) {
+            if (!zonedSlots.containsKey(zone)) {
+                LOGGER.warn("Attempted to quick move to zone id {} but there are no slots assigned to this zone! This is a bug!", zone);
+                continue;
+            }
+            if (moveItemStackTo(stack, zonedSlots.get(zone), false)) {
+                movedAnything = true;
+                break;
+            }
+        }
+
+        if (!movedAnything) {
+            return ItemStack.EMPTY;
+        }
+
+        if (stack.isEmpty()) {
+            slot.set(ItemStack.EMPTY);
+        } else {
+            slot.setChanged();
+        }
+
+        slot.onTake(player, stack);
+        return result;
+    }
+
+    protected boolean moveItemStackTo(ItemStack stack, List<Slot> targets, boolean reverse) {
+        int start = 0;
+        int end = targets.size();
+        boolean moved = false;
+        int position = start;
+        if (reverse) {
+            position = end - 1;
+        }
+
+        Slot slot;
+        ItemStack itemStack2;
+        if (stack.isStackable()) {
+            while (!stack.isEmpty()) {
+                if (reverse) {
+                    if (position < start) {
+                        break;
                     }
-                } else if (slotIndex >= numSlots - 9 && slotIndex < numSlots) {
-                    if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9)) {
-                        return ItemStack.EMPTY;
+                } else if (position >= end) {
+                    break;
+                }
+
+                slot = targets.get(position);
+                itemStack2 = slot.getItem();
+                if (!itemStack2.isEmpty() && ItemStack.isSameItemSameTags(stack, itemStack2)) {
+                    int l = itemStack2.getCount() + stack.getCount();
+                    if (l <= stack.getMaxStackSize()) {
+                        stack.setCount(0);
+                        itemStack2.setCount(l);
+                        slot.setChanged();
+                        moved = true;
+                    } else if (itemStack2.getCount() < stack.getMaxStackSize()) {
+                        stack.shrink(stack.getMaxStackSize() - itemStack2.getCount());
+                        itemStack2.setCount(stack.getMaxStackSize());
+                        slot.setChanged();
+                        moved = true;
                     }
-                } else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots)) {
-                    return ItemStack.EMPTY;
+                }
+
+                if (reverse) {
+                    --position;
+                } else {
+                    ++position;
                 }
             }
+        }
 
-            slot.onQuickCraft(stackInSlot, originalStack);
-            if (stackInSlot.getCount() <= 0) {
-                slot.set(ItemStack.EMPTY);
+        if (!stack.isEmpty()) {
+            if (reverse) {
+                position = end - 1;
             } else {
-                slot.setChanged();
+                position = start;
             }
-            if (stackInSlot.getCount() == originalStack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-            slot.onTake(player, stackInSlot);
-        }
-        return originalStack;
-    }
 
-    public boolean shiftItemStack(ItemStack stackToShift, int start, int end) {
-        boolean changed = false;
-        if (stackToShift.isStackable()) {
-            for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++) {
-                Slot slot = slots.get(slotIndex);
-                ItemStack stackInSlot = slot.getItem();
-                if (!stackInSlot.isEmpty() && canStacksMerge(stackInSlot, stackToShift)) {
-                    int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
-                    int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
-                    if (resultingStackSize <= max) {
-                        stackToShift.setCount(0);
-                        stackInSlot.setCount(resultingStackSize);
-                        slot.setChanged();
-                        changed = true;
-                    } else if (stackInSlot.getCount() < max) {
-                        stackToShift.setCount(stackToShift.getCount() - (max - stackInSlot.getCount()));
-                        stackInSlot.setCount(max);
-                        slot.setChanged();
-                        changed = true;
+            while (true) {
+                if (reverse) {
+                    if (position < start) {
+                        break;
                     }
+                } else if (position >= end) {
+                    break;
                 }
-            }
-        }
-        if (stackToShift.getCount() > 0) {
-            for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++) {
-                Slot slot = slots.get(slotIndex);
-                ItemStack stackInSlot = slot.getItem();
-                if (stackInSlot.isEmpty()) {
-                    int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
-                    stackInSlot = stackToShift.copy();
-                    stackInSlot.setCount(Math.min(stackToShift.getCount(), max));
-                    stackToShift.setCount(stackToShift.getCount() - stackInSlot.getCount());
-                    slot.set(stackInSlot);
+
+                slot = targets.get(position);
+                itemStack2 = slot.getItem();
+                if (itemStack2.isEmpty() && slot.mayPlace(stack)) {
+                    if (stack.getCount() > slot.getMaxStackSize()) {
+                        slot.setByPlayer(stack.split(slot.getMaxStackSize()));
+                    } else {
+                        slot.setByPlayer(stack.split(stack.getCount()));
+                    }
+
                     slot.setChanged();
-                    changed = true;
+                    moved = true;
+                    break;
+                }
+
+                if (reverse) {
+                    --position;
+                } else {
+                    ++position;
                 }
             }
         }
-        return changed;
-    }
 
-    public boolean tryShiftItem(ItemStack stackToShift, int numSlots) {
-        for (int machineIndex = 0; machineIndex < numSlots - 9 * 4; machineIndex++) {
-            Slot slot = slots.get(machineIndex);
-            if (!slot.mayPlace(stackToShift)) continue;
-            if (shiftItemStack(stackToShift, machineIndex, machineIndex + 1)) return true;
-        }
-        return false;
+        return moved;
     }
-
 
     //=== Internal Methods ===//
 

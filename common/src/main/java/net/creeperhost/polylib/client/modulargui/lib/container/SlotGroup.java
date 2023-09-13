@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -32,12 +33,15 @@ import java.util.function.Function;
 public class SlotGroup {
 
     public final int zone;
+    public final List<Integer> quickMoveTo;
+
     private final ModularGuiContainerMenu containerMenu;
     private final List<PolySlot> slots = new ArrayList<>();
 
-    public SlotGroup(ModularGuiContainerMenu containerMenu, int zone) {
+    public SlotGroup(ModularGuiContainerMenu containerMenu, int zone, int... quickMoveTo) {
         this.zone = zone;
         this.containerMenu = containerMenu;
+        this.quickMoveTo = Arrays.stream(quickMoveTo).boxed().toList();
     }
 
     public PolySlot addSlot(PolySlot slot) {

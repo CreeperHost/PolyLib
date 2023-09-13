@@ -26,12 +26,14 @@ public class MGuiTestBlockContainerMenu extends ModularGuiContainerMenu {
     public final DataSync<FluidStack> waterTank;
     public final DataSync<FluidStack> lavaTank;
 
-    public final SlotGroup main = playerSlotGroup();
-    public final SlotGroup hotBar = playerSlotGroup();
-    public final SlotGroup armor = playerSlotGroup();
-    public final SlotGroup offhand = playerSlotGroup();
-    public final SlotGroup machineInputs = remoteSlotGroup();
-    public final SlotGroup machineOutputs = remoteSlotGroup();
+    public final SlotGroup main = createSlotGroup(0, 1, 3); //zone id is 0, Quick move to zone 1, then 3
+    public final SlotGroup hotBar = createSlotGroup(0, 1, 3);
+
+    public final SlotGroup armor = createSlotGroup(1, 3, 0); //zone id is 1, Quick move to zone 3, then 0
+    public final SlotGroup offhand = createSlotGroup(2, 3, 0);
+
+    public final SlotGroup machineInputs = createSlotGroup(3, 1, 0, 2);//zone id is 3, Quick move to zone 1, then 0, then 2
+    public final SlotGroup machineOutputs = createSlotGroup(3, 1, 0, 2);
 
     public MGuiTestBlockContainerMenu(int containerId, Inventory inventory, FriendlyByteBuf extraData) {
         this(containerId, inventory, (MGuiTestBlockEntity) Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()));
@@ -51,10 +53,15 @@ public class MGuiTestBlockContainerMenu extends ModularGuiContainerMenu {
         waterTank = new DataSync<>(this, new FluidData(), () -> blockEntity.waterStorage);
         lavaTank = new DataSync<>(this, new FluidData(), () -> blockEntity.lavaStorage);
 
+        //When shift-clicking to player inventory, groups are processed in the order they are added.
+        //So in this case we will try to move to main slots first, then hotBar.
         main.addPlayerMain(inventory);
         hotBar.addPlayerBar(inventory);
+
         armor.addPlayerArmor(inventory);
         offhand.addPlayerOffhand(inventory);
+
+        //Setup machine slots
         machineInputs.addSlots(3, 0, index -> new PolySlot(blockEntity.inventory, index)
                 .setValidator(stack ->
                         switch (index) {
