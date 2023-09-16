@@ -56,7 +56,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private int screenWidth;
     private int screenHeight;
 
-    private int hoverTime = 0;
+    protected int hoverTime = 0;
     private int hoverTextDelay = 10;
     private boolean transparent = false;
     private boolean removed = true;
@@ -296,6 +296,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
 
         double childDepth = 0;
         for (GuiElement<?> child : childElements) {
+            if (!child.isEnabled()) continue;
             if (zStacking) {
                 childDepth += child.getCombinedElementDepth();
             } else {
@@ -332,9 +333,9 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         double maxDepth = 0;
         for (GuiElement<?> child : childElements) {
             if (child.isEnabled()) {
-                renderChild(child, render, mouseX, mouseY, partialTicks);
+                boolean rendered = renderChild(child, render, mouseX, mouseY, partialTicks);
                 //If z-stacking is disabled, we need to undo the z offset that was applied by the child element.
-                if (!zStacking) {
+                if (!zStacking && rendered) {
                     double depth = child.getCombinedElementDepth();
                     maxDepth = Math.max(maxDepth, depth);
                     render.pose().translate(0, 0, -depth);
@@ -356,9 +357,10 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         }
     }
 
-    protected void renderChild(GuiElement<?> child, GuiRender render, double mouseX, double mouseY, float partialTicks) {
-        if (renderCull != null && !renderCull.intersects(child.getRectangle())) return;
+    protected boolean renderChild(GuiElement<?> child, GuiRender render, double mouseX, double mouseY, float partialTicks) {
+        if (renderCull != null && !renderCull.intersects(child.getRectangle())) return false;
         child.render(render, mouseX, mouseY, partialTicks);
+        return true;
     }
 
     /**

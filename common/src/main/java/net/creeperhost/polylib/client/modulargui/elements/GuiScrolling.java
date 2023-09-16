@@ -152,11 +152,12 @@ public class GuiScrolling extends GuiElement<GuiScrolling> {
     //=== Rendering ===//
 
     @Override
-    protected void renderChild(GuiElement<?> child, GuiRender render, double mouseX, double mouseY, float partialTicks) {
+    protected boolean renderChild(GuiElement<?> child, GuiRender render, double mouseX, double mouseY, float partialTicks) {
         boolean scissor = child == contentElement && enableScissor;
         if (scissor) render.pushScissorRect(getRectangle());
-        super.renderChild(child, render, mouseX, mouseY, partialTicks);
+        boolean ret = super.renderChild(child, render, mouseX, mouseY, partialTicks);
         if (scissor) render.popScissor();
+        return ret;
     }
 
     private class ContentElement extends GuiElement<ContentElement> {

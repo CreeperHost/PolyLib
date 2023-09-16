@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
@@ -193,6 +194,7 @@ public class GuiButton extends GuiElement<GuiButton> {
         Runnable onPress = this.onPress.get(button);
         if (onClick == null && onPress == null) return false;
         pressed = true;
+        hoverTime = 1;
 
         boolean consume = false;
         if (onClick != null) {
@@ -216,6 +218,7 @@ public class GuiButton extends GuiElement<GuiButton> {
         Runnable onClick = this.onClick.get(button);
         Runnable onPress = this.onPress.get(button);
         if (onClick == null && onPress == null) return consumed;
+        hoverTime = 1;
 
         if (!isDisabled()) {
             if (!consumed && pressed && onPress != null) {
@@ -286,6 +289,32 @@ public class GuiButton extends GuiElement<GuiButton> {
                     .constrain(WIDTH, Constraint.relative(button.get(WIDTH), -4))
                     .constrain(HEIGHT, Constraint.match(button.get(HEIGHT)))
             );
+        }
+
+        return button;
+    }
+
+    /**
+     * Super simple button that is just a coloured rectangle with a label.
+     */
+    public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Component label, Function<Boolean, Integer> buttonColour) {
+        return flatColourButton(parent, label, buttonColour, null);
+    }
+
+    /**
+     * Super simple button that is just a coloured rectangle with a label.
+     */
+    public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Component label, Function<Boolean, Integer> buttonColour, @Nullable Function<Boolean, Integer> borderColour) {
+        GuiButton button = new GuiButton(parent);
+        GuiRectangle background = new GuiRectangle(button)
+                .fill(() -> buttonColour.apply(button.hovered() || button.toggleState() || button.isPressed()))
+                .border(borderColour == null ? null : () -> borderColour.apply(button.hovered() || button.toggleState() || button.isPressed()));
+        Constraints.bind(background, button);
+
+        if (label != null) {
+            GuiText text = new GuiText(button, label);
+            button.setLabel(text);
+            Constraints.bind(text, button, 0, 2, 0, 2);
         }
 
         return button;

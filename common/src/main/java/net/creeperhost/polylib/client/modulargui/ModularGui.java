@@ -15,8 +15,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,21 +54,31 @@ public class ModularGui implements GuiParent<ModularGui> {
     private GuiElement<?> focused;
 
     private final Map<Slot, GuiElement<?>> slotHandlers = new HashMap<>();
+    private final List<Runnable> tickListeners = new ArrayList<>();
+    private final List<Runnable> resizeListeners = new ArrayList<>();
+    private final List<TriConsumer<Double, Double, Integer>> preClickListeners = new ArrayList<>();
+    private final List<TriConsumer<Double, Double, Integer>> postClickListeners = new ArrayList<>();
+    private final List<TriConsumer<Integer, Integer, Integer>> preKeyPressListeners = new ArrayList<>();
+    private final List<TriConsumer<Integer, Integer, Integer>> postKeyPressListeners = new ArrayList<>();
 
     /**
      * @param provider The gui builder that will be used to construct this modular gui when the screen is initialized.
      */
     public ModularGui(GuiProvider provider) {
+        long time = System.currentTimeMillis();
         this.provider = provider;
         if (provider instanceof DynamicTextures textures) textures.makeTextures(DynamicTextures.DynamicTexture::guiTexturePath);
+        System.out.println("Time ModularGui 1: " + (System.currentTimeMillis() - time) + "ms");
         Minecraft mc = Minecraft.getInstance();
         updateScreenData(mc, mc.font, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
+        System.out.println("Time ModularGui 2: " + (System.currentTimeMillis() - time) + "ms");
         try {
             this.root = provider.createRootElement(this);
         } catch (Throwable ex) {
             LOGGER.error("An error occurred while constructing a modular gui", ex);
             throw ex;
         }
+        System.out.println("Time ModularGui 3: " + (System.currentTimeMillis() - time) + "ms");
     }
 
     //=== Modular Gui Setup ===//
@@ -219,6 +231,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Primary update / tick method. Must be called from the tick method of the implementing screen.
      */
     public void tick() {
+        tickListeners.forEach(Runnable::run);
         root.tick(computeMouseX(), computeMouseY());
     }
 
@@ -241,7 +254,12 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @return true if this event has been consumed.
      */
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return root.mouseClicked(mouseX, mouseY, button, false);
+        preClickListeners.forEach(e -> e.accept(mouseX, mouseY, button));
+        boolean consumed = root.mouseClicked(mouseX, mouseY, button, false);
+        if (!consumed) {
+            postClickListeners.forEach(e -> e.accept(mouseX, mouseY, button));
+        }
+        return consumed;
     }
 
     /**
@@ -265,7 +283,12 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @return true if this event has been consumed.
      */
     public boolean keyPressed(int key, int scancode, int modifiers) {
-        return root.keyPressed(key, scancode, modifiers, false);
+        preKeyPressListeners.forEach(e -> e.accept(key, scancode, modifiers));
+        boolean consumed = root.keyPressed(key, scancode, modifiers, false);
+        if (!consumed) {
+            postKeyPressListeners.forEach(e -> e.accept(key, scancode, modifiers));
+        }
+        return consumed;
     }
 
     /**
@@ -320,6 +343,8 @@ public class ModularGui implements GuiParent<ModularGui> {
             if (!guiBuilt) {
                 guiBuilt = true;
                 provider.buildGui(this);
+            } else {
+                resizeListeners.forEach(Runnable::run);
             }
         } catch (Throwable ex) {
             //Because it seems the default behavior is to just silently consume init errors... Not helpful!
@@ -451,5 +476,50 @@ public class ModularGui implements GuiParent<ModularGui> {
      */
     public GuiElement<?> getSlotHandler(Slot slot) {
         return slotHandlers.get(slot);
+    }
+
+    /**
+     * Allows you to attach a callback that will be fired at the start of each gui tick.
+     */
+    public void onTick(Runnable onTick) {
+        tickListeners.add(onTick);
+    }
+
+    /**
+     * Allows you to attach a callback that will be fired when the parent screen is resized.
+     */
+    public void onResize(Runnable onResize) {
+        resizeListeners.add(onResize);
+    }
+
+    /**
+     * Allows you to attach a callback that will be fired on mouse click, before the click is handled by the rest of the gui.
+     */
+    public void onMouseClickPre(TriConsumer<Double, Double, Integer> onClick) {
+        preClickListeners.add(onClick);
+    }
+
+    /**
+     * Allows you to attach a callback that will be fired on mouse click, after the click has been handled by the rest of the gui.
+     * Will only be fired if the event was not consumed by an element.
+     */
+    public void onMouseClickPost(TriConsumer<Double, Double, Integer> onClick) {
+        postClickListeners.add(onClick);
+    }
+
+
+    /**
+     * Allows you to attach a callback that will be fired on key press, before the is handled by the rest of the gui.
+     */
+    public void onKeyPressPre(TriConsumer<Integer, Integer, Integer> preKeyPress) {
+        preKeyPressListeners.add(preKeyPress);
+    }
+
+    /**
+     * Allows you to attach a callback that will be fired on key press, after it has been handled by the rest of the gui.
+     * Will only be fired if the event was not consumed by an element.
+     */
+    public void onKeyPressPost(TriConsumer<Integer, Integer, Integer> postKeyPress) {
+        postKeyPressListeners.add(postKeyPress);
     }
 }
