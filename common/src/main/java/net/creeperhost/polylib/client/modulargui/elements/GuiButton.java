@@ -264,7 +264,14 @@ public class GuiButton extends GuiElement<GuiButton> {
     /**
      * Creates a vanilla button with a "press" animation.
      */
-    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Component label, Runnable onPress) {
+    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, Component label, Runnable onPress) {
+        return vanillaAnimated(parent, label == null ? null : () -> label, onPress);
+    }
+
+    /**
+     * Creates a vanilla button with a "press" animation.
+     */
+    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label, Runnable onPress) {
         return vanillaAnimated(parent, label).onPress(onPress);
     }
 
@@ -273,7 +280,14 @@ public class GuiButton extends GuiElement<GuiButton> {
     /**
      * Creates a vanilla button with a "press" animation.
      */
-    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Component label) {
+    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, Component label) {
+        return vanillaAnimated(parent, label == null ? null : () -> label);
+    }
+
+    /**
+     * Creates a vanilla button with a "press" animation.
+     */
+    public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label) {
         GuiButton button = new GuiButton(parent);
         GuiTexture texture = new GuiTexture(button, PolyTextures.getter(() -> button.toggleState() || button.isPressed() ? "dynamic/button_pressed" : "dynamic/button_vanilla"));
         texture.dynamicTexture();
@@ -297,14 +311,14 @@ public class GuiButton extends GuiElement<GuiButton> {
     /**
      * Super simple button that is just a coloured rectangle with a label.
      */
-    public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Component label, Function<Boolean, Integer> buttonColour) {
+    public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label, Function<Boolean, Integer> buttonColour) {
         return flatColourButton(parent, label, buttonColour, null);
     }
 
     /**
      * Super simple button that is just a coloured rectangle with a label.
      */
-    public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Component label, Function<Boolean, Integer> buttonColour, @Nullable Function<Boolean, Integer> borderColour) {
+    public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label, Function<Boolean, Integer> buttonColour, @Nullable Function<Boolean, Integer> borderColour) {
         GuiButton button = new GuiButton(parent);
         GuiRectangle background = new GuiRectangle(button)
                 .fill(() -> buttonColour.apply(button.hovered() || button.toggleState() || button.isPressed()))
