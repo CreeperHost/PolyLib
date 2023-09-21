@@ -65,20 +65,16 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @param provider The gui builder that will be used to construct this modular gui when the screen is initialized.
      */
     public ModularGui(GuiProvider provider) {
-        long time = System.currentTimeMillis();
         this.provider = provider;
         if (provider instanceof DynamicTextures textures) textures.makeTextures(DynamicTextures.DynamicTexture::guiTexturePath);
-        System.out.println("Time ModularGui 1: " + (System.currentTimeMillis() - time) + "ms");
         Minecraft mc = Minecraft.getInstance();
         updateScreenData(mc, mc.font, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
-        System.out.println("Time ModularGui 2: " + (System.currentTimeMillis() - time) + "ms");
         try {
             this.root = provider.createRootElement(this);
         } catch (Throwable ex) {
             LOGGER.error("An error occurred while constructing a modular gui", ex);
             throw ex;
         }
-        System.out.println("Time ModularGui 3: " + (System.currentTimeMillis() - time) + "ms");
     }
 
     //=== Modular Gui Setup ===//

@@ -236,7 +236,7 @@ public class GuiSlider extends GuiElement<GuiSlider> {
             state.setPos(MathUtil.clamp(state.getPos() + (state.scrollSpeed() * -scroll), 0, 1));
             return true;
         }
-        return true;
+        return false;
     }
 
     /**

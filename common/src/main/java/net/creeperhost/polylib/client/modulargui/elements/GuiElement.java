@@ -107,9 +107,30 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         if (!initialized) throw new IllegalStateException("Attempted to add a child to an element before that element has been initialised!");
         if (child == this) throw new InvalidParameterException("Attempted to add element to itself as a child element.");
         if (child.getParent() != this) throw new UnsupportedOperationException("Attempted to add an already initialized element to a different parent element.");
-        if (childElements.contains(child)) return;
-        addedQueue.add(child);
-        child.initElement(this);
+        if (removeQueue.contains(child)) {
+            removeQueue.remove(child);
+            if (!childElements.contains(child)) {
+                addedQueue.add(child);
+            }
+            child.initElement(this);
+        } else if (!childElements.contains(child)) {
+            addedQueue.add(child);
+            child.initElement(this);
+        }
+    }
+
+    public void addChildUnsafe(GuiElement<?> child) {
+        if (!childElements.contains(child)) {
+            childElements.add(child);
+            child.initElement(this);
+        }
+    }
+
+    public void removeChildUnsafe(GuiElement<?> child) {
+        if (childElements.contains(child)) {
+            child.removed = true;
+            childElements.remove(child);
+        }
     }
 
     /**
@@ -250,6 +271,14 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      */
     public boolean hovered() {
         return hoverTime > 0;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+                "parent=" + parent +
+                "geometry=" + getRectangle() +
+                '}';
     }
 
     //=== Render / Update ===//

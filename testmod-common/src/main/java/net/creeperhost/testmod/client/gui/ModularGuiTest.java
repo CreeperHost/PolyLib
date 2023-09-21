@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal;
-import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.relative;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.*;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 
 /**
@@ -70,6 +69,31 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
                 render.drawString(render.mc().getFps() + " FPS", 5, 5, 0xFFFFFFFF, true);
             }
         }.setPos(1, 1).setSize(1, 1);
+
+
+        GuiRectangle listBG = GuiRectangle.vanillaSlot(root)
+                .constrain(TOP, literal(50))
+                .constrain(LEFT, literal(10))
+                .constrain(WIDTH, literal(80))
+                .constrain(HEIGHT, literal(200));
+
+        GuiList<String> guiList = new GuiList<>(listBG);
+//        guiList.addHiddenScrollBar();
+        Constraints.bind(guiList, listBG, 1, 2, 1, 2);
+
+        for (int i = 0; i < 10000; i++) {
+            guiList.add("GuiList Test String number " + i);
+        }
+
+        var listSlider = GuiSlider.vanillaScrollBar(root, Axis.Y);
+        listSlider.container
+                .constrain(TOP, match(listBG.get(TOP)))
+                .constrain(BOTTOM, match(listBG.get(BOTTOM)))
+                .constrain(LEFT, match(listBG.get(RIGHT)))
+                .constrain(WIDTH, literal(6));
+        listSlider.primary
+                .setScrollableElement(guiList)
+                .setSliderState(guiList.scrollState());
 
 
         GuiText title = new GuiText(root, gui.getGuiTitle())
