@@ -119,17 +119,15 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         }
     }
 
-    public void addChildUnsafe(GuiElement<?> child) {
-        if (!childElements.contains(child)) {
-            childElements.add(child);
-            child.initElement(this);
+    protected void applyQueuedChildUpdates() {
+        if (!removeQueue.isEmpty()) {
+            childElements.removeAll(removeQueue);
+            removeQueue.clear();
         }
-    }
 
-    public void removeChildUnsafe(GuiElement<?> child) {
-        if (childElements.contains(child)) {
-            child.removed = true;
-            childElements.remove(child);
+        if (!addedQueue.isEmpty()) {
+            childElements.addAll(addedQueue);
+            addedQueue.clear();
         }
     }
 
@@ -351,6 +349,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      * @param partialTicks Partial render ticks
      */
     public void render(GuiRender render, double mouseX, double mouseY, float partialTicks) {
+        applyQueuedChildUpdates();
         if (this instanceof BackgroundRender bgr) {
             double depth = bgr.getBackgroundDepth();
             bgr.renderBehind(render, mouseX, mouseY, partialTicks);
@@ -430,16 +429,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      * @param mouseY Current mouse Y position
      */
     public void tick(double mouseX, double mouseY) {
-        if (!removeQueue.isEmpty()) {
-            childElements.removeAll(removeQueue);
-            removeQueue.clear();
-        }
-
-        if (!addedQueue.isEmpty()) {
-            childElements.addAll(addedQueue);
-            addedQueue.clear();
-        }
-
         if (isMouseOver(mouseX, mouseY)) {
             hoverTime++;
         } else {

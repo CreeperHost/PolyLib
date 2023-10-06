@@ -32,6 +32,23 @@ public interface TextState {
         };
     }
 
+    static TextState simpleState(String defaultValue, Consumer<String> changeListener) {
+        return new TextState() {
+            private String value = defaultValue;
+
+            @Override
+            public String getText() {
+                return value;
+            }
+
+            @Override
+            public void setText(String text) {
+                this.value = text;
+                changeListener.accept(value);
+            }
+        };
+    }
+
     static TextState create(Supplier<String> getValue, Consumer<String> setValue) {
         return new TextState() {
             @Override

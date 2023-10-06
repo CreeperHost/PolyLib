@@ -1349,7 +1349,7 @@ public class GuiRender extends LegacyRender {
 
             Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
             int xPos = position.x();
-            int yPos = position.y();
+            int yPos = Math.max(position.y(), 3); //Default positioner allows negative y-pos for some reason...
 
             PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, renderWrapper, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
             toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);

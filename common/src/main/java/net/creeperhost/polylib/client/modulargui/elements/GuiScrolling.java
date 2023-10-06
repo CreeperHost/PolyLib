@@ -99,8 +99,8 @@ public class GuiScrolling extends GuiElement<GuiScrolling> {
         contentElement.setRenderCull(getRectangle());
         contentElement.constrain(TOP, Constraint.relative(get(TOP), () -> yScrollPos * -hiddenSize(Axis.Y)));
         contentElement.constrain(LEFT, Constraint.relative(get(LEFT), () -> xScrollPos * -hiddenSize(Axis.X)));
-        contentElement.constrain(WIDTH, Constraint.dynamic(() -> contentElement.getChildBounds().width()));
-        contentElement.constrain(HEIGHT, Constraint.dynamic(() -> contentElement.getChildBounds().height()));
+        contentElement.constrain(WIDTH, Constraint.dynamic(() -> contentElement.getChildBounds().xMax() - contentElement.xMin()));
+        contentElement.constrain(HEIGHT, Constraint.dynamic(() -> contentElement.getChildBounds().yMax() - contentElement.yMin()));
         setup = false;
     }
 

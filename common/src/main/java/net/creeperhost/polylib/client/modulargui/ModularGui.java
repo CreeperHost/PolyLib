@@ -10,6 +10,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
@@ -17,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +51,8 @@ public class ModularGui implements GuiParent<ModularGui> {
     private Minecraft mc;
     private int screenWidth;
     private int screenHeight;
+    private Screen screen;
+    private Screen parentScreen;
 
     private Component guiTitle = Component.empty();
     private GuiElement<?> focused;
@@ -56,6 +60,7 @@ public class ModularGui implements GuiParent<ModularGui> {
     private final Map<Slot, GuiElement<?>> slotHandlers = new HashMap<>();
     private final List<Runnable> tickListeners = new ArrayList<>();
     private final List<Runnable> resizeListeners = new ArrayList<>();
+    private final List<Runnable> closeListeners = new ArrayList<>();
     private final List<TriConsumer<Double, Double, Integer>> preClickListeners = new ArrayList<>();
     private final List<TriConsumer<Double, Double, Integer>> postClickListeners = new ArrayList<>();
     private final List<TriConsumer<Integer, Integer, Integer>> preKeyPressListeners = new ArrayList<>();
@@ -75,6 +80,19 @@ public class ModularGui implements GuiParent<ModularGui> {
             LOGGER.error("An error occurred while constructing a modular gui", ex);
             throw ex;
         }
+    }
+
+    public ModularGui(GuiProvider provider, Screen parentScreen) {
+        this(provider);
+        this.parentScreen = parentScreen;
+    }
+
+    public void setScreen(Screen screen) {
+        this.screen = screen;
+    }
+
+    public GuiProvider getProvider() {
+        return provider;
     }
 
     //=== Modular Gui Setup ===//
@@ -322,6 +340,13 @@ public class ModularGui implements GuiParent<ModularGui> {
         return root.mouseScrolled(mouseX, mouseY, scroll, false);
     }
 
+    /**
+     * Must be called by the screen when this gui is closed.
+     */
+    public void onGuiClose() {
+        closeListeners.forEach(Runnable::run);
+    }
+
     //=== Basic Minecraft Stuff ===//
 
     protected void updateScreenData(Minecraft mc, Font font, int screenWidth, int screenHeight) {
@@ -372,6 +397,19 @@ public class ModularGui implements GuiParent<ModularGui> {
     @Override
     public ModularGui getModularGui() {
         return this;
+    }
+
+    /**
+     * Returns the Screen housing this {@link ModularGui}
+     * With custom ModularGui implementations this may be null.
+     */
+    public Screen getScreen() {
+        return screen;
+    }
+
+    @Nullable
+    public Screen getParentScreen() {
+        return parentScreen;
     }
 
     //=== Child Elements ===//
@@ -486,6 +524,10 @@ public class ModularGui implements GuiParent<ModularGui> {
      */
     public void onResize(Runnable onResize) {
         resizeListeners.add(onResize);
+    }
+
+    public void onClose(Runnable onClose) {
+        closeListeners.add(onClose);
     }
 
     /**

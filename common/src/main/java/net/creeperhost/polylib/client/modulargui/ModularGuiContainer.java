@@ -33,6 +33,11 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         super(containerMenu, inventory, Component.empty());
         provider.setMenuAccess(this);
         this.modularGui = new ModularGui(provider);
+        this.modularGui.setScreen(this);
+    }
+
+    public ModularGui getModularGui() {
+        return modularGui;
     }
 
     @NotNull
@@ -132,6 +137,12 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         leftPos = (int) root.getValue(GeoParam.LEFT);
         imageWidth = (int) root.getValue(GeoParam.WIDTH);
         imageHeight = (int) root.getValue(GeoParam.HEIGHT);
+    }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        modularGui.onGuiClose();
     }
 
     //=== Input Pass-though ===//

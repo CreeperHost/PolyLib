@@ -205,7 +205,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
         int textHeight = font.lineHeight;
         int textWidth = font.width(component);
         boolean tooLong = textWidth > xSize();
-        double yPos = yMin() + ySize() / 2 - textHeight / 2D;
+        double yPos = (yMin() + ySize() / 2 - textHeight / 2D) + 1; //Adding 1 here makes the text look 'visually' centered, Text height includes the height of the optional underline.
 
         PoseStack stack = render.pose();
         if (rotation != null) {

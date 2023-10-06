@@ -19,9 +19,20 @@ public class ModularGuiScreen extends Screen {
 
     protected final ModularGui modularGui;
 
-    public ModularGuiScreen(GuiProvider builder) {
+    public ModularGuiScreen(GuiProvider provider) {
         super(Component.empty());
-        this.modularGui = new ModularGui(builder);
+        this.modularGui = new ModularGui(provider);
+        this.modularGui.setScreen(this);
+    }
+
+    public ModularGuiScreen(GuiProvider builder, Screen parentScreen) {
+        super(Component.empty());
+        this.modularGui = new ModularGui(builder, parentScreen);
+        this.modularGui.setScreen(this);
+    }
+
+    public ModularGui getModularGui() {
+        return modularGui;
     }
 
     @NotNull
@@ -64,6 +75,12 @@ public class ModularGuiScreen extends Screen {
     @Override
     public void tick() {
         modularGui.tick();
+    }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        modularGui.onGuiClose();
     }
 
     //=== Input Pass-though ===//

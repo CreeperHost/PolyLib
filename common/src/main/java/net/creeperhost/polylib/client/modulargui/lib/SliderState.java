@@ -43,7 +43,7 @@ public interface SliderState {
      * @return The amount added to the position per scroll increment.
      */
     default double scrollSpeed() {
-        return sliderRatio() * 0.1; //TODO, fiddle with this to get a default implementation that "feels right"
+        return sliderRatio() * 0.1;
     }
 
     /**
@@ -70,6 +70,33 @@ public interface SliderState {
             @Override
             public void setPos(double pos) {
                 this.pos = pos;
+            }
+
+            @Override
+            public double scrollSpeed() {
+                return speed;
+            }
+        };
+    }
+
+    /**
+     * Creates a basic slide state which stores its position internally.
+     * And allows you to attach a change listener.
+     * Useful for things like simple slide control elements.
+     */
+    static SliderState create(double speed, Consumer<Double> changeListener) {
+        return new SliderState() {
+            double pos = 0;
+
+            @Override
+            public double getPos() {
+                return pos;
+            }
+
+            @Override
+            public void setPos(double pos) {
+                this.pos = pos;
+                changeListener.accept(pos);
             }
 
             @Override

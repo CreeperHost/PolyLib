@@ -98,7 +98,31 @@ public class PolyPalette {
         public static GuiButton buttonCaution(GuiElement<?> parent, @Nullable Supplier<Component> label) {
             GuiButton button = new GuiButton(parent);
             GuiRectangle background = new GuiRectangle(button)
-                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.hovered() || button.toggleState() || button.isPressed() ? 0xFFFF9090 : 0xFFFF5050));
+                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.hovered() || button.toggleState() || button.isPressed() ? 0xFFAA4444 : 0xFF881111));
+            Constraints.bind(background, button);
+
+            if (label != null) {
+                GuiText text = new GuiText(button, label);
+                button.setLabel(text);
+                Constraints.bind(text, button, 0, 2, 0, 2);
+            }
+            return button;
+        }
+
+        /**
+         * Typically a green / friendly colour button, Use for things like "Accept" / "OK" buttons.
+         */
+        public static GuiButton buttonPrimary(GuiElement<?> parent, Component label) {
+            return buttonPrimary(parent, () -> label);
+        }
+
+        /**
+         * Typically a green / friendly colour button, Use for things like "Accept" / "OK" buttons.
+         */
+        public static GuiButton buttonPrimary(GuiElement<?> parent, @Nullable Supplier<Component> label) {
+            GuiButton button = new GuiButton(parent);
+            GuiRectangle background = new GuiRectangle(button)
+                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.hovered() || button.toggleState() || button.isPressed() ? 0xFF44AA44 : 0xFF118811));
             Constraints.bind(background, button);
 
             if (label != null) {

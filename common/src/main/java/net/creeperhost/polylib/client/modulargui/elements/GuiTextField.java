@@ -55,6 +55,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     private Supplier<Boolean> canLoseFocus = () -> true;
 
     private Runnable onEditComplete = null;
+    private Runnable onEnterPressed = null;
 
     private TextState textState = TextState.simpleState("");
     private Supplier<Boolean> shadow = () -> true;
@@ -77,6 +78,14 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
      */
     public GuiTextField setOnEditComplete(Runnable onEditComplete) {
         this.onEditComplete = onEditComplete;
+        return this;
+    }
+
+    /**
+     * Called when the user presses enter key (Including numpad enter) with the text box ion focus
+     */
+    public GuiTextField setEnterPressed(Runnable onEnterPressed) {
+        this.onEnterPressed = onEnterPressed;
         return this;
     }
 
@@ -192,6 +201,21 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     }
 
     /**
+     * If false, It will not be possible for the user to edit the value of this text field.
+     */
+    public GuiTextField setEditable(boolean editable) {
+        return setEditable(() -> editable);
+    }
+
+    /**
+     * If false, It will not be possible for the user to edit the value of this text field.
+     */
+    public GuiTextField setEditable(Supplier<Boolean> editable) {
+        this.isEditable = editable;
+        return this;
+    }
+
+    /**
      * Sets the maximum allowed text length
      */
     public GuiTextField setMaxLength(int newWidth) {
@@ -209,6 +233,11 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
 
     //=== Text field logic ===//
 
+    /**
+     * Note, Initial value should be set after element is constrained,
+     * If element width is zero when set, nothing will render until the field is updated.
+     * TODO, I need to fix this. Element size should be able to change dynamically without things breaking.
+     */
     public GuiTextField setValue(String newValue) {
         if (this.filter.test(newValue)) {
             if (newValue.length() > maxLength) {
@@ -357,7 +386,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
         moveCursorToEnd(true);
     }
 
-    private boolean isEditable() {
+    public boolean isEditable() {
         return isEditable.get();
     }
 
@@ -439,9 +468,13 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
                         }
 
                         return true;
+                    case InputConstants.KEY_NUMPADENTER:
                     case InputConstants.KEY_RETURN: {
                         if (onEditComplete != null) {
                             onEditComplete.run();
+                        }
+                        if (onEnterPressed != null) {
+                            onEnterPressed.run();
                         }
                     }
                     case InputConstants.KEY_INSERT:

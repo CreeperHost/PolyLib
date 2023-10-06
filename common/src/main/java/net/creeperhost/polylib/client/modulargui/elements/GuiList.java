@@ -44,7 +44,7 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
     private final Map<E, GuiElement<?>> elementMap = new HashMap<>();
     private final LinkedList<GuiElement<?>> visible = new LinkedList<>();
 
-    private BiFunction<GuiElement<?>, E, ? extends GuiElement<?>> displayBuilder = (parent, e) -> {
+    private BiFunction<GuiList<E>, E, ? extends GuiElement<?>> displayBuilder = (parent, e) -> {
         GuiText text = new GuiText(parent, () -> Component.literal(String.valueOf(e))).setWrap(true);
         text.constrain(GeoParam.HEIGHT, Constraint.dynamic(() -> (double) font().wordWrapHeight(text.getText(), (int) text.xSize())));
         return text;
@@ -78,13 +78,14 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
         this.rebuild = true;
     }
 
-    public GuiList<E> setDisplayBuilder(BiFunction<GuiElement<?>, E, ? extends GuiElement<?>> displayBuilder) {
+    public GuiList<E> setDisplayBuilder(BiFunction<GuiList<E>, E, ? extends GuiElement<?>> displayBuilder) {
         this.displayBuilder = displayBuilder;
         return this;
     }
 
-    public void setItemSpacing(double itemSpacing) {
+    public GuiList<E> setItemSpacing(double itemSpacing) {
         this.itemSpacing = itemSpacing;
+        return this;
     }
 
     public SliderState scrollState() {
@@ -132,7 +133,7 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
         super.tick(mouseX, mouseY);
     }
 
-    private void rebuildElements() {
+    public void rebuildElements() {
         elementMap.values().forEach(this::removeChild);
         elementMap.clear();
 
@@ -148,7 +149,7 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
     }
 
     private void updateVisible() {
-        visible.forEach(this::removeChildUnsafe);
+        visible.forEach(this::removeChild);
         visible.clear();
         if (listContent.isEmpty()) return;
 
@@ -169,7 +170,7 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
             double bottom = yPos + element.ySize();
 
             if ((top >= winTop && top <= winBottom) || (bottom >= winTop && bottom <= winBottom)) {
-                addChildUnsafe(element);
+                addChild(element);
                 visible.add(element);
                 element.constrain(TOP, literal(top));
             }
