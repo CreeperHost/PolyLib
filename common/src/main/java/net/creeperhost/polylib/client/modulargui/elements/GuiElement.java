@@ -45,10 +45,10 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     @NotNull
     private GuiParent<?> parent;
 
-    private List<GuiElement<?>> addedQueue = new ArrayList<>();
-    private List<GuiElement<?>> addedFirstQueue = new ArrayList<>();
-    private List<GuiElement<?>> removeQueue = new ArrayList<>();
-    private List<GuiElement<?>> childElements = new ArrayList<>();
+    private final List<GuiElement<?>> addedQueue = new ArrayList<>();
+    private final List<GuiElement<?>> addedFirstQueue = new ArrayList<>();
+    private final List<GuiElement<?>> removeQueue = new ArrayList<>();
+    private final List<GuiElement<?>> childElements = new ArrayList<>();
     public boolean initialized = false;
 
     private Font font;
@@ -58,7 +58,8 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
 
     protected int hoverTime = 0;
     private int hoverTextDelay = 10;
-    private boolean transparent = false;
+    private boolean isMouseOver = false;
+    private boolean opaque = false;
     private boolean removed = true;
     private boolean zStacking = true;
     private Supplier<Boolean> enabled = () -> true;
@@ -226,22 +227,36 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return getParent().blockMouseOver(element, mouseX, mouseY);
     }
 
+    @Override
+    public boolean blockMouseEvents() {
+        return isMouseOver() && isOpaque();
+    }
+
     /**
      * @return True if the cursor is within the bounds of this element.
      */
+    @Deprecated(forRemoval = true) //use #isMouseOver()
     public boolean isMouseOver(double mouseX, double mouseY) {
-        return GuiRender.isInRect(xMin(), yMin(), xSize(), ySize(), mouseX, mouseY) && !blockMouseOver(this, mouseX, mouseY);
-    }
-
-    public boolean isTransparent() {
-        return transparent || this.getClass() == GuiElement.class;
+        return isMouseOver;//GuiRender.isInRect(xMin(), yMin(), xSize(), ySize(), mouseX, mouseY) && !blockMouseOver(this, mouseX, mouseY);
     }
 
     /**
-     * If an element is marked as transparent it will not obstruct things like the hovered status of elements bellow it.
+     * @return True if the cursor is within the bounds of this element, and there is no opaque element above this one obstructing the cursor.
      */
-    public T setTransparent(boolean transparent) {
-        this.transparent = transparent;
+    public boolean isMouseOver() {
+        return isMouseOver;
+    }
+
+    public boolean isOpaque() {
+        return opaque;
+    }
+
+    /**
+     * If an element is marked as opaque it will consume mouseOver updates, thereby preventing elements bellow from accepting mouseOver input.
+     * Also prevents mouse events within this element from being passed to elements bellow.
+     */
+    public T setOpaque(boolean opaque) {
+        this.opaque = opaque;
         return (T) this;
     }
 
@@ -267,6 +282,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     /**
      * Note, Due to this using hoverTime, there may be a 1 tick delay in the updating of this value.
      */
+    @Deprecated(forRemoval = true) //use #isMouseOver()
     public boolean hovered() {
         return hoverTime > 0;
     }
@@ -274,7 +290,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-                "parent=" + parent +
                 "geometry=" + getRectangle() +
                 '}';
     }
@@ -400,7 +415,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      * This stack will already have the correct Z translation to ensure the overlay renders above everything else on the screen.
      * <p>
      * To check if the cursor is over this element, use 'render.hoveredElement() == this'
-     * {@link #isMouseOver(double, double)} Will also work, but may be problematic when multiple, stacked elements have overlay content.
+     * {@link #isMouseOver()} Will also work, but may be problematic when multiple, stacked elements have overlay content.
      *
      * @param render       Contains gui context information as well as essential render methods/utils including the PoseStack.
      * @param mouseX       Current mouse X position
@@ -415,11 +430,11 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
                 consumed |= child.renderOverlay(render, mouseX, mouseY, partialTicks, consumed);
             }
         }
-        return consumed || (showToolTip(mouseX, mouseY) && renderTooltip(render, mouseX, mouseY));
+        return consumed || (showToolTip() && renderTooltip(render, mouseX, mouseY));
     }
 
-    private boolean showToolTip(double mouseX, double mouseY) {
-        return isMouseOver(mouseX, mouseY) && enableToolTip.get() && hoverTime() >= getTooltipDelay();
+    private boolean showToolTip() {
+        return isMouseOver() && enableToolTip.get() && hoverTime() >= getTooltipDelay();
     }
 
     /**
@@ -429,7 +444,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      * @param mouseY Current mouse Y position
      */
     public void tick(double mouseX, double mouseY) {
-        if (isMouseOver(mouseX, mouseY)) {
+        if (isMouseOver()) {
             hoverTime++;
         } else {
             hoverTime = 0;
@@ -438,6 +453,27 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         for (GuiElement<?> childElement : childElements) {
             childElement.tick(mouseX, mouseY);
         }
+    }
+
+    /**
+     * Called at the start of each tick to update the 'mouseOver' state of each element.
+     * If the cursor is over an element that is marked as opaque, the update will be consumed.
+     * This ensures no elements below the opaque element will have their mouseOver flag set to true.
+     *
+     * @param mouseX   Mouse X position
+     * @param mouseY   Mouse Y position
+     * @param consumed True if mouseover event has been consumed.
+     * @return true if this event has been consumed.
+     */
+    public boolean updateMouseOver(double mouseX, double mouseY, boolean consumed) {
+        for (GuiElement<?> child : Lists.reverse(getChildren())) {
+            if (child.isEnabled()) {
+                consumed |= child.updateMouseOver(mouseX, mouseY, consumed);
+            }
+        }
+
+        isMouseOver = !consumed && GuiRender.isInRect(xMin(), yMin(), xSize(), ySize(), mouseX, mouseY) && !blockMouseOver(this, mouseX, mouseY);
+        return consumed || (isMouseOver && isOpaque());
     }
 
     //=== Hover Text ===//

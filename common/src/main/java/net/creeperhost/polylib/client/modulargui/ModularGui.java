@@ -245,8 +245,11 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Primary update / tick method. Must be called from the tick method of the implementing screen.
      */
     public void tick() {
+        double mouseX = computeMouseX();
+        double mouseY = computeMouseY();
+        root.updateMouseOver(mouseX, mouseY, false);
         tickListeners.forEach(Runnable::run);
-        root.tick(computeMouseX(), computeMouseY());
+        root.tick(mouseX, mouseY);
     }
 
     /**

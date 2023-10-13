@@ -74,7 +74,7 @@ public class PolyPalette {
         public static GuiButton button(GuiElement<?> parent, @Nullable Supplier<Component> label) {
             GuiButton button = new GuiButton(parent);
             GuiRectangle background = new GuiRectangle(button)
-                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.hovered() || button.toggleState() || button.isPressed() ? 0xFF909090 : 0xFF505050));
+                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.isMouseOver() || button.toggleState() || button.isPressed() ? 0xFF909090 : 0xFF505050));
             Constraints.bind(background, button);
 
             if (label != null) {
@@ -98,7 +98,7 @@ public class PolyPalette {
         public static GuiButton buttonCaution(GuiElement<?> parent, @Nullable Supplier<Component> label) {
             GuiButton button = new GuiButton(parent);
             GuiRectangle background = new GuiRectangle(button)
-                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.hovered() || button.toggleState() || button.isPressed() ? 0xFFAA4444 : 0xFF881111));
+                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.isMouseOver() || button.toggleState() || button.isPressed() ? 0xFFAA4444 : 0xFF881111));
             Constraints.bind(background, button);
 
             if (label != null) {
@@ -122,7 +122,7 @@ public class PolyPalette {
         public static GuiButton buttonPrimary(GuiElement<?> parent, @Nullable Supplier<Component> label) {
             GuiButton button = new GuiButton(parent);
             GuiRectangle background = new GuiRectangle(button)
-                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.hovered() || button.toggleState() || button.isPressed() ? 0xFF44AA44 : 0xFF118811));
+                    .fill(() -> button.isDisabled() ? 0x88202020 : (button.isMouseOver() || button.toggleState() || button.isPressed() ? 0xFF44AA44 : 0xFF118811));
             Constraints.bind(background, button);
 
             if (label != null) {
@@ -137,9 +137,9 @@ public class PolyPalette {
             GuiRectangle background = new GuiRectangle(parent);
             GuiSlider slider = new GuiSlider(background, axis);
             Constraints.bind(slider, background);
-            background.fill(() -> background.hovered() || slider.isDragging() ? 0x80505050 : 0x20505050);
+            background.fill(() -> background.isMouseOver() || slider.isDragging() ? 0x80505050 : 0x20505050);
             GuiRectangle handle = new GuiRectangle(slider);
-            handle.fill(() -> handle.hovered() || slider.isDragging() ? 0xFFFFFFFF : 0x88FFFFFF);
+            handle.fill(() -> handle.isMouseOver() || slider.isDragging() ? 0xFFFFFFFF : 0x88FFFFFF);
             slider.installSlider(handle)
                     .bindSliderLength()
                     .bindSliderWidth();

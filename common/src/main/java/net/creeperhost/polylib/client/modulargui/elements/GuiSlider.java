@@ -179,15 +179,15 @@ public class GuiSlider extends GuiElement<GuiSlider> {
         dragging = false;
         clickPos = Position.create(mouseX, mouseY);
         slideStartPos = state.getPos();
-        if (button == dragButton && isMouseOver(mouseX, mouseY)) {
-            if (!slider.isMouseOver(mouseX, mouseY)) {
+        if (button == dragButton && isMouseOver()) {
+            if (!slider.isMouseOver()) {
                 clickPos = Position.create(slider.xCenter(), slider.yCenter());
                 handleDrag(mouseX, mouseY);
             }
             dragging = true;
             return true;
         }
-        if (button == scrollDragButton && scrollableElement != null && scrollableElement.isMouseOver(mouseX, mouseY)) {
+        if (button == scrollDragButton && scrollableElement != null && scrollableElement.isMouseOver()) {
             scrollableDragging = true;
         }
         return false;
@@ -231,7 +231,7 @@ public class GuiSlider extends GuiElement<GuiSlider> {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-        if (isMouseOver(mouseX, mouseY) || (scrollableElement != null && scrollableElement.isMouseOver(mouseX, mouseY))) {
+        if (isMouseOver() || (scrollableElement != null && scrollableElement.isMouseOver())) {
             if (!state.canScroll(axis)) return false;
             state.setPos(MathUtil.clamp(state.getPos() + (state.scrollSpeed() * -scroll), 0, 1));
             return true;
@@ -255,7 +255,7 @@ public class GuiSlider extends GuiElement<GuiSlider> {
 
         GuiRectangle sliderHighlight = new GuiRectangle(slider.getSlider())
                 .fill(0x5000b6FF)
-                .setEnabled(() -> slider.getSlider().hovered());
+                .setEnabled(() -> slider.getSlider().isMouseOver());
 
         Constraints.bind(sliderHighlight, slider.getSlider());
 

@@ -2,9 +2,10 @@ package net.creeperhost.polylib.client.modulargui.elements;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.Align;
 import net.creeperhost.polylib.client.modulargui.lib.ForegroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Align;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Position;
 import net.minecraft.client.gui.Font;
@@ -20,6 +21,7 @@ import java.util.function.Supplier;
 
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.Align.MAX;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.Align.MIN;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.dynamic;
 
 /**
  * Created by brandon3055 on 31/08/2023
@@ -56,6 +58,14 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
     public GuiText(@NotNull GuiParent<?> parent, @NotNull Supplier<@Nullable Component> text) {
         super(parent);
         this.text = text;
+    }
+
+    /**
+     * Apply a dynamic height constraint that sets the height based on text height (accounting for wrapping)
+     */
+    public GuiText autoHeight() {
+        constrain(GeoParam.HEIGHT, dynamic(() -> wrap ? (double) font().wordWrapHeight(getText(), (int) xSize()) : font().lineHeight));
+        return this;
     }
 
     public GuiText setTextSupplier(@NotNull Supplier<@Nullable Component> textSupplier) {
@@ -187,8 +197,9 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
      * Sets the point around which the text rotates relative to the top left of the element.
      * Default rotation point is a dynamic point set to the dead center of the element.
      */
-    public void setRotatePoint(Position rotatePoint) {
+    public GuiText setRotatePoint(Position rotatePoint) {
         this.rotatePoint = rotatePoint;
+        return this;
     }
 
     @Override

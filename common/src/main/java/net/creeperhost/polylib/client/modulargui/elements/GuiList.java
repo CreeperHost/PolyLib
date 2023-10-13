@@ -148,6 +148,35 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
         updateVisible();
     }
 
+    public Map<E, GuiElement<?>> getElementMap() {
+        return elementMap;
+    }
+
+    public void scrollTo(E scrollTo) {
+        if (rebuild) {
+            rebuild = false;
+            rebuildElements();
+        }
+
+        if (elementMap.containsKey(scrollTo)) {
+            scrollState().setPos(0);
+            double yMax = yMin();
+
+            for (E item : getList()) {
+                GuiElement<?> e = elementMap.get(item);
+                if (e != null) {
+                    yMax += e.ySize() + 1;
+                    if (item.equals(scrollTo)) break;
+                }
+            }
+
+            if (yMax > yMax()) {
+                double move = yMax - yMax();
+                scrollState().setPos(move / hiddenSize());
+            }
+        }
+    }
+
     private void updateVisible() {
         visible.forEach(this::removeChild);
         visible.clear();
@@ -180,7 +209,7 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
 
     @Override
     public boolean blockMouseOver(GuiElement<?> element, double mouseX, double mouseY) {
-        return super.blockMouseOver(element, mouseX, mouseY) || (element.isDescendantOf(this) && !this.isMouseOver(mouseX, mouseY));
+        return super.blockMouseOver(element, mouseX, mouseY) || (element.isDescendantOf(this) && !isMouseOver());
     }
 
     @Override

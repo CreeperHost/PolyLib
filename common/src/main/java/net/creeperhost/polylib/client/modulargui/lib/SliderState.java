@@ -43,7 +43,8 @@ public interface SliderState {
      * @return The amount added to the position per scroll increment.
      */
     default double scrollSpeed() {
-        return sliderRatio() * 0.1;
+        double ratio = sliderRatio();
+        return ratio < 0.1 ? ratio * 0.1 : ratio * ratio;
     }
 
     /**

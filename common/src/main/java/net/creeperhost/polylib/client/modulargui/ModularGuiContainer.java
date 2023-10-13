@@ -263,7 +263,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         Slot slot = super.findSlot(mouseX, mouseY);
         if (slot == null) return null;
         GuiElement<?> handler = modularGui.getSlotHandler(slot);
-        if (handler != null && (!handler.isEnabled() || !handler.isMouseOver(mouseX, mouseY))) {
+        if (handler != null && (!handler.isEnabled() || !handler.isMouseOver())) {
             return null;
         }
         return slot;

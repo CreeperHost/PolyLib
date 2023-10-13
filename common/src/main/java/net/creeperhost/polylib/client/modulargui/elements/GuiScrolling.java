@@ -27,7 +27,7 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  * When scrolling up/down, left/right the Content Element is effectively just moving around behind the view window
  * and everything outside the view window is scissored off.
  * Any events that occur outside the view window are not propagated to scroll element.
- * Calls to {@link #isMouseOver(double, double)} from an area of an element that is outside the view window will return false.
+ * Calls to {@link #isMouseOver()} from an area of an element that is outside the view window will return false.
  * <p>
  * Elements that are completely outside the view window will not be rendered at all for efficiency.
  * <p>
@@ -146,7 +146,7 @@ public class GuiScrolling extends GuiElement<GuiScrolling> {
 
     @Override
     public boolean blockMouseOver(GuiElement<?> element, double mouseX, double mouseY) {
-        return super.blockMouseOver(element, mouseX, mouseY) || (element.isDescendantOf(contentElement) && !this.isMouseOver(mouseX, mouseY));
+        return super.blockMouseOver(element, mouseX, mouseY) || (element.isDescendantOf(contentElement) && !this.isMouseOver());
     }
 
     //=== Rendering ===//

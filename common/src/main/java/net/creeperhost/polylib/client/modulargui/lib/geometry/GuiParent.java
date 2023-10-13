@@ -201,7 +201,7 @@ public interface GuiParent<T extends GuiParent<?>> {
 //    @Nullable GuiElement<?> getFocused();
 
     /**
-     * Allows an element to override the {@link GuiElement#isMouseOver(double, double)} method of its children.
+     * Allows an element to override the {@link GuiElement#isMouseOver()} method of its children.
      * This is primarily used for things like scroll elements where mouseover interactions need to be blocked outside the view area.
      *
      * @param element The element on which isMouseOver is getting called.

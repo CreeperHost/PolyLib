@@ -545,7 +545,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     public boolean mouseClicked(double mouseX, double mouseY, int button, boolean consumed) {
         consumed = super.mouseClicked(mouseX, mouseY, button, consumed);
 
-        boolean mouseOver = isMouseOver(mouseX, mouseY);
+        boolean mouseOver = isMouseOver();
         if (isFocused() && !mouseOver) {
             setFocus(isFocusable.get() && !canLoseFocus.get());
         }

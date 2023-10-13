@@ -189,7 +189,7 @@ public class GuiButton extends GuiElement<GuiButton> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (!isMouseOver(mouseX, mouseY) || isDisabled()) return false;
+        if (!isMouseOver() || isDisabled()) return false;
         Runnable onClick = this.onClick.get(button);
         Runnable onPress = this.onPress.get(button);
         if (onClick == null && onPress == null) return false;
@@ -291,7 +291,7 @@ public class GuiButton extends GuiElement<GuiButton> {
         GuiButton button = new GuiButton(parent);
         GuiTexture texture = new GuiTexture(button, PolyTextures.getter(() -> button.toggleState() || button.isPressed() ? "dynamic/button_pressed" : "dynamic/button_vanilla"));
         texture.dynamicTexture();
-        GuiRectangle highlight = new GuiRectangle(button).border(() -> button.hovered() ? 0xFFFFFFFF : 0);
+        GuiRectangle highlight = new GuiRectangle(button).border(() -> button.isMouseOver() ? 0xFFFFFFFF : 0);
 
         Constraints.bind(texture, button);
         Constraints.bind(highlight, button);
@@ -321,8 +321,8 @@ public class GuiButton extends GuiElement<GuiButton> {
     public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label, Function<Boolean, Integer> buttonColour, @Nullable Function<Boolean, Integer> borderColour) {
         GuiButton button = new GuiButton(parent);
         GuiRectangle background = new GuiRectangle(button)
-                .fill(() -> buttonColour.apply(button.hovered() || button.toggleState() || button.isPressed()))
-                .border(borderColour == null ? null : () -> borderColour.apply(button.hovered() || button.toggleState() || button.isPressed()));
+                .fill(() -> buttonColour.apply(button.isMouseOver() || button.toggleState() || button.isPressed()))
+                .border(borderColour == null ? null : () -> borderColour.apply(button.isMouseOver() || button.toggleState() || button.isPressed()));
         Constraints.bind(background, button);
 
         if (label != null) {

@@ -74,7 +74,7 @@ public interface ElementEvents {
                 consumed |= child.mouseClicked(mouseX, mouseY, button, consumed);
             }
         }
-        return consumed || mouseClicked(mouseX, mouseY, button);
+        return consumed || mouseClicked(mouseX, mouseY, button) || blockMouseEvents();
     }
 
     /**
@@ -111,7 +111,7 @@ public interface ElementEvents {
                 consumed |= child.mouseReleased(mouseX, mouseY, button, consumed);
             }
         }
-        return consumed || mouseReleased(mouseX, mouseY, button);
+        return consumed || mouseReleased(mouseX, mouseY, button) || blockMouseEvents();
     }
 
     /**
@@ -148,7 +148,14 @@ public interface ElementEvents {
                 consumed |= child.mouseScrolled(mouseX, mouseY, scroll, consumed);
             }
         }
-        return consumed || mouseScrolled(mouseX, mouseY, scroll);
+        return consumed || mouseScrolled(mouseX, mouseY, scroll) || blockMouseEvents();
+    }
+
+    /**
+     * @return True to prevent mouse events from being passed to elements bellow this element.
+     */
+    default boolean blockMouseEvents() {
+        return false;
     }
 
     //=== Keyboard Events ==//
