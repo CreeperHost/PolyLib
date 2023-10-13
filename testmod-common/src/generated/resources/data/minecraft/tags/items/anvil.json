@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "testmod:mgui_test_block"
     "testmod:inventory_test_block"
   ]
 }
