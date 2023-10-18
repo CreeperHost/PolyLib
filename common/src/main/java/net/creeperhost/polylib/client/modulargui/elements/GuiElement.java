@@ -214,12 +214,17 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     }
 
     public T setEnabled(@Nullable Supplier<Boolean> enabled) {
-        this.enableToolTip = enabled;
+        this.enabled = enabled;
         return (T) this;
     }
 
     public boolean isEnabled() {
-        return !removed && enableToolTip.get();
+        return !removed && enabled.get();
+    }
+
+    public T setEnableToolTip(Supplier<Boolean> enableToolTip) {
+        this.enableToolTip = enableToolTip;
+        return (T) this;
     }
 
     @Override
