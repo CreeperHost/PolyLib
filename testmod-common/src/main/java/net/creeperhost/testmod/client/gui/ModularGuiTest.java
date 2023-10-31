@@ -1,5 +1,6 @@
 package net.creeperhost.testmod.client.gui;
 
+import dev.architectury.registry.registries.Registries;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.elements.*;
@@ -13,7 +14,8 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.Direction;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.testmod.TestMod;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -66,7 +68,7 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
         new GuiElement(root) {
             @Override
             public void render(GuiRender render, double mouseX, double mouseY, float partialTicks) {
-                render.drawString(render.mc().getFps() + " FPS", 5, 5, 0xFFFFFFFF, true);
+                render.drawString(render.mc().fpsString + " FPS", 5, 5, 0xFFFFFFFF, true);
             }
         }.setPos(1, 1).setSize(1, 1);
 
@@ -218,7 +220,7 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
 
         RandomSource randy = RandomSource.create(0);
         Random random = new Random(0);
-        List<Item> itemList = BuiltInRegistries.ITEM.stream().toList();
+//        List<Item> itemList = Registry.ITEM.stream().toList();
 
         GuiButton lastButton = null;
 
@@ -238,7 +240,7 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
 
             GuiButton finalLastButton = lastButton;
 //            new GuiItemStack(lastButton, new ItemStack(itemList.get(random.nextInt(itemList.size()))))
-            new GuiItemStack(lastButton, new ItemStack(BuiltInRegistries.ITEM.getRandom(randy).map(Holder.Reference::value).orElse(Items.BARRIER)))
+            new GuiItemStack(lastButton, new ItemStack(Registry.ITEM.getRandom(randy).map(Holder::value).orElse(Items.BARRIER)))
                     .constrain(TOP, Constraint.relative(lastButton.get(TOP), () -> finalLastButton.isPressed() ? 1.5 : 2.5))
                     .constrain(RIGHT, Constraint.relative(lastButton.get(RIGHT), () -> finalLastButton.isPressed() ? -4.5 : -3.5))
                     .constrain(WIDTH, Constraint.literal(16))

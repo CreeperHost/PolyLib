@@ -8,13 +8,18 @@ import net.minecraft.commands.Commands;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class ForgeClientEvents
 {
+    //This is a terrible but quick hack, do not do this in a real mod!
+    private static boolean openTestUI = false;
+
     public static void init() {
         MinecraftForge.EVENT_BUS.addListener(ForgeClientEvents::registerClientCommands);
+        MinecraftForge.EVENT_BUS.addListener(ForgeClientEvents::clientTick);
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(ForgeClientEvents::registerReloadListeners);
     }
@@ -22,14 +27,21 @@ public class ForgeClientEvents
     private static void registerClientCommands(RegisterClientCommandsEvent event)
     {
         var testGui = Commands.literal("modular_gui_test").executes(context -> {
-            Minecraft.getInstance().setScreen(new ModularGuiScreen(new ModularGuiTest()));
+            openTestUI = true;
             return 0;
         });
         event.getDispatcher().register(testGui);
     }
 
+    private static void clientTick(TickEvent.ClientTickEvent event) {
+        if (openTestUI) {
+            openTestUI = false;
+            Minecraft.getInstance().setScreen(new ModularGuiScreen(new ModularGuiTest()));
+        }
+    }
+
     private static void registerReloadListeners(RegisterClientReloadListenersEvent event)
     {
-        event.registerReloadListener(TestModTextures.getAtlasHolder());
+        event.registerReloadListener(TestModTextures.getUploader());
     }
 }

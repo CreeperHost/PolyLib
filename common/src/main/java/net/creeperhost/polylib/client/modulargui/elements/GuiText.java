@@ -1,7 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.creeperhost.polylib.client.modulargui.lib.ForegroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Align;
@@ -222,7 +222,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
         if (rotation != null) {
             stack.pushPose();
             stack.translate(xMin() + rotatePoint.x(), yMin() + rotatePoint.y(), 0);
-            stack.mulPose(Axis.ZP.rotationDegrees(rotation.get().floatValue()));
+            stack.mulPose(Vector3f.ZP.rotationDegrees(rotation.get().floatValue()));
             stack.translate(-xMin() - rotatePoint.x(), -yMin() - rotatePoint.y(), 0);
         }
 

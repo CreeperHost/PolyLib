@@ -9,7 +9,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
@@ -86,7 +85,7 @@ public class SlotGroup {
         for (int i = 0; i < 4; ++i) {
             EquipmentSlot slot = EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, 3 - i);
             addSlot(new PolySlot(inventory, 39 - i)
-                    .onSetByPlayer((oldStack, newStack) -> onEquipItem(inventory, slot, newStack, oldStack))
+                    .onSet((oldStack, newStack) -> onEquipItem(inventory, slot, newStack, oldStack))
                     .setStackLimit(stack -> 1)
                     .setValidator(stack -> slot == Mob.getEquipmentSlotForItem(stack))
                     .setCanRemove((player, stack) -> stack.isEmpty() || player.isCreative() || !EnchantmentHelper.hasBindingCurse(stack))
@@ -95,14 +94,11 @@ public class SlotGroup {
     }
 
     public void addPlayerOffhand(Inventory inventory) {
-        addSlot(new PolySlot(inventory, 40).onSetByPlayer((oldStack, newStack) -> onEquipItem(inventory, EquipmentSlot.OFFHAND, newStack, oldStack)));
+        addSlot(new PolySlot(inventory, 40).onSet((oldStack, newStack) -> onEquipItem(inventory, EquipmentSlot.OFFHAND, newStack, oldStack)));
     }
 
     static void onEquipItem(Inventory inventory, EquipmentSlot slot, ItemStack newStack, ItemStack oldStack) {
-        Equipable equipable = Equipable.get(newStack);
-        if (equipable != null) {
-            inventory.player.onEquipItem(slot, oldStack, newStack);
-        }
+        inventory.player.onEquipItem(slot, oldStack, newStack);
     }
 
     public int size() {

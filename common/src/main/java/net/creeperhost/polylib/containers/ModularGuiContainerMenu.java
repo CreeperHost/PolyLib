@@ -318,9 +318,9 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
                 itemStack2 = slot.getItem();
                 if (itemStack2.isEmpty() && slot.mayPlace(stack)) {
                     if (stack.getCount() > slot.getMaxStackSize()) {
-                        slot.setByPlayer(stack.split(slot.getMaxStackSize()));
+                        slot.set(stack.split(slot.getMaxStackSize()));
                     } else {
-                        slot.setByPlayer(stack.split(stack.getCount()));
+                        slot.set(stack.split(stack.getCount()));
                     }
 
                     slot.setChanged();

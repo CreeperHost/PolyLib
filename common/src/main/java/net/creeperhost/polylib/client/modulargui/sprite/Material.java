@@ -1,10 +1,13 @@
 package net.creeperhost.polylib.client.modulargui.sprite;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,6 +97,26 @@ public class Material {
     @Nullable
     public static Material fromSprite(@Nullable TextureAtlasSprite sprite) {
         if (sprite == null) return null;
-        return new Material(sprite.atlasLocation(), sprite.contents().name(), e -> Minecraft.getInstance().getTextureAtlas(sprite.atlasLocation()).apply(e));
+        return new Material(sprite.atlas().location(), sprite.getName(), e -> sprite.atlas().getSprite(e));
+    }
+
+    public static Material fromRawTexture(ResourceLocation texture) {
+        return new Material(texture, texture, FullSprite::new);
+    }
+
+    private static class FullSprite extends TextureAtlasSprite {
+        private FullSprite(ResourceLocation location) {
+            super(new TextureAtlas(location), new Info(location, 1, 1, AnimationMetadataSection.EMPTY), 0, 1, 1, 0, 0, new NativeImage(1, 1, false));
+        }
+
+        @Override
+        public float getU(double u) {
+            return (float) u / 16;
+        }
+
+        @Override
+        public float getV(double v) {
+            return (float) v / 16;
+        }
     }
 }

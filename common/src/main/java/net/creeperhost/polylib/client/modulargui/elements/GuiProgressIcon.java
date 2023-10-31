@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import com.mojang.math.Vector3f;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
@@ -97,7 +98,7 @@ public class GuiProgressIcon extends GuiElement<GuiProgressIcon> implements Back
         double height = direction.getAxis() == Axis.X ? ySize() : xSize();
 
         render.pose().translate(xMin() + (xSize() / 2), yMin() + (ySize() / 2), 0);
-        render.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees((float) Direction.RIGHT.rotationTo(direction)));
+        render.pose().mulPose(Vector3f.ZP.rotationDegrees((float) Direction.RIGHT.rotationTo(direction)));
 
         double halfWidth = width / 2;
         double halfHeight = height / 2;

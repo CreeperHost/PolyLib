@@ -2,12 +2,11 @@ package net.creeperhost.polylib.forge.datagen.providers;
 
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
+import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
-import net.minecraft.Util;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * This provider can be used to create a data generator that can generate various textures programmatically.
@@ -72,8 +70,10 @@ public class DynamicTextureProvider implements DataProvider {
             }
 
             Resource inputResource = fileHelper.getResource(dynamicInput, PackType.CLIENT_RESOURCES);
-            PackOutput packOutput = gen.getPackOutput("assets/" + outputTexture.getNamespace());
-            Path outputFile = packOutput.getOutputFolder().resolve(outputTexture.getPath());
+
+            Path mainOutput = gen.getOutputFolder();
+            String pathSuffix = "assets/" + outputTexture.getNamespace();
+            Path outputFile = mainOutput.resolve(pathSuffix).resolve(outputTexture.getPath());
 
             BufferedImage input = ImageIO.read(inputResource.open());
             BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
@@ -139,29 +139,22 @@ public class DynamicTextureProvider implements DataProvider {
     }
 
     @Override
-    public CompletableFuture<?> run(CachedOutput writer) {
+    public void run(CachedOutput writer) {
         addTextures();
-        CompletableFuture<?>[] futures = new CompletableFuture[results.size()];
-        for (int i = 0; i < results.size(); i++) {
-            futures[i] = saveResult(writer, results.get(i));
-        }
-        return CompletableFuture.allOf(futures);
+        results.forEach(result -> saveResult(writer, result));
     }
 
     @SuppressWarnings ("UnstableApiUsage")
-    static CompletableFuture<?> saveResult(CachedOutput arg, GeneratorResult result) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                HashingOutputStream hos = new HashingOutputStream(Hashing.sha1(), bos);
-                hos.write(result.fileBytes);
-                arg.writeIfNeeded(result.path, bos.toByteArray(), hos.hash());
-                LOGGER.info("Saved file to {}", result.path);
-            } catch (IOException ex) {
-                LOGGER.error("Failed to save file to {}", result.path, ex);
-            }
-
-        }, Util.backgroundExecutor());
+    static void saveResult(CachedOutput arg, GeneratorResult result) {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            HashingOutputStream hos = new HashingOutputStream(Hashing.sha1(), bos);
+            hos.write(result.fileBytes);
+            arg.writeIfNeeded(result.path, bos.toByteArray(), hos.hash());
+            PolyLib.LOGGER.info("Saved file to {}", result.path);
+        } catch (IOException ex) {
+            PolyLib.LOGGER.error("Failed to save file to {}", result.path, ex);
+        }
     }
 
     @Override

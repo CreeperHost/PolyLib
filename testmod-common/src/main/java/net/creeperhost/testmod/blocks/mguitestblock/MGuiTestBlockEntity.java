@@ -59,7 +59,7 @@ public class MGuiTestBlockEntity extends BlockEntity implements MenuProvider {
                     ItemStack stack = outputInv.getItem(i);
                     if (stack.isEmpty()) {
                         outputInv.setItem(i, output);
-                    } else if (ItemStack.isSameItem(stack, output) && stack.getCount() < stack.getMaxStackSize()) {
+                    } else if (ItemStack.isSame(stack, output) && stack.getCount() < stack.getMaxStackSize()) {
                         stack.grow(1);
                     } else {
                         continue;

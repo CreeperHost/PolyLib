@@ -1,7 +1,7 @@
 package net.creeperhost.polylib.forge.mixins;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,12 +21,12 @@ public class AbstractContainerScreenMixin {
             method = "render",
             at = @At (
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V"
+                    target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderSlotHighlight(Lcom/mojang/blaze3d/vertex/PoseStack;IIII)V"
             )
     )
-    private void redirectHighlight(GuiGraphics guiGraphics, int i, int j, int k, int c) {
+    private void redirectHighlight(PoseStack poseStack, int i, int j, int k, int c) {
         if (!(getThis() instanceof ModularGuiContainer screen) || screen.modularGui.vanillaSlotRendering()) {
-            AbstractContainerScreen.renderSlotHighlight(guiGraphics, i, j, k);
+            AbstractContainerScreen.renderSlotHighlight(poseStack, i, j, k);
         }
     }
 }

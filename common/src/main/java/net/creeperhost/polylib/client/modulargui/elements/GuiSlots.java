@@ -77,6 +77,8 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             Slot slot = slots.getSlot(index + firstSlot);
             getModularGui().setSlotHandler(slot, this);
         }
+
+        updateSlots(parent.getModularGui().getRoot());
     }
 
     //=== Slots Setup ===//
@@ -195,7 +197,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             }
 
             screenAccess.renderSlot(render, slot);
-            if (GuiRender.isInRect(slot.x + root.xMin(), slot.y + root.yMin(), 16, 16, mouseX, mouseY) && slot.isHighlightable() && !blockMouseOver(this, mouseX, mouseY)) {
+            if (GuiRender.isInRect(slot.x + root.xMin(), slot.y + root.yMin(), 16, 16, mouseX, mouseY) && !blockMouseOver(this, mouseX, mouseY)) {
                 highlightSlot = slot;
             }
         }

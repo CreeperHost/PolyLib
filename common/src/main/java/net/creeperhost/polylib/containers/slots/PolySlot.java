@@ -20,7 +20,7 @@ public class PolySlot extends Slot {
     private Predicate<ItemStack> validator = stack -> true;
     private Function<ItemStack, Integer> stackLimit = stack -> Integer.MAX_VALUE;
     private BiPredicate<Player, ItemStack> canRemove = (player, stack) -> true;
-    private BiConsumer<ItemStack, ItemStack> onSetByPlayer = (oldStack, newStack) -> {
+    private BiConsumer<ItemStack, ItemStack> onSet = (oldStack, newStack) -> {
     };
 
     public PolySlot(Container container, int index) {
@@ -60,11 +60,11 @@ public class PolySlot extends Slot {
     }
 
     /**
-     * Allows you to get a callback when the player sets this slots contents.
+     * Allows you to get a callback when the slot contents are set.
      * Parameters given are Old stack then New stack.
      */
-    public PolySlot onSetByPlayer(BiConsumer<ItemStack, ItemStack> onSetByPlayer) {
-        this.onSetByPlayer = onSetByPlayer;
+    public PolySlot onSet(BiConsumer<ItemStack, ItemStack> onSet) {
+        this.onSet = onSet;
         return this;
     }
 
@@ -105,9 +105,9 @@ public class PolySlot extends Slot {
     }
 
     @Override
-    public void setByPlayer(ItemStack itemStack) {
-        onSetByPlayer.accept(getItem(), itemStack);
-        super.setByPlayer(itemStack);
+    public void set(ItemStack itemStack) {
+        onSet.accept(getItem(), itemStack);
+        super.set(itemStack);
     }
 
     @Override

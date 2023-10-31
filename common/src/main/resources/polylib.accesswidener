@@ -13,30 +13,26 @@ mutable field net/minecraft/data/models/ModelProvider blockStatePathProvider Lne
 accessible field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
 mutable field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/DataGenerator$PathProvider;
 
-accessible field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
-mutable field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
-accessible field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
-mutable field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
+#accessible field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+#mutable field net/minecraft/data/DataGenerator$PathProvider root Ljava/nio/file/Path;
+#accessible field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
+#mutable field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
 
-accessible field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
-mutable field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
+#accessible field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
+#mutable field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 
-accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I
+#accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I
 
 accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
 accessible method net/minecraft/client/gui/components/AbstractSelectionList$Entry <init> ()V
 
-accessible method net/minecraft/client/renderer/texture/TextureAtlas getWidth ()I
-accessible method net/minecraft/client/renderer/texture/TextureAtlas getHeight ()I
+extendable method net/minecraft/client/resources/TextureAtlasHolder resolveLocation (Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;
+accessible method net/minecraft/client/resources/TextureAtlasHolder resolveLocation (Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;
 
-extendable method net/minecraft/client/gui/GuiGraphics <init> (Lnet/minecraft/client/Minecraft;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V # <init>
-extendable method net/minecraft/client/gui/GuiGraphics flushIfUnmanaged ()V
-extendable method net/minecraft/client/gui/GuiGraphics flushIfManaged ()V
-
-extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;)V
-accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;)V
-extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderFloatingItem (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V
-accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderFloatingItem (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/inventory/Slot;)V
+accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/inventory/Slot;)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderFloatingItem (Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V
+accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderFloatingItem (Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V
 extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen findSlot (DD)Lnet/minecraft/world/inventory/Slot;
 accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen findSlot (DD)Lnet/minecraft/world/inventory/Slot;
 extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen recalculateQuickCraftRemaining ()V
@@ -52,7 +48,6 @@ accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScr
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackEnd Lnet/minecraft/world/inventory/Slot;
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackStartX I
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackStartY I
-
 
 mutable field net/minecraft/world/inventory/Slot x I
 mutable field net/minecraft/world/inventory/Slot y I

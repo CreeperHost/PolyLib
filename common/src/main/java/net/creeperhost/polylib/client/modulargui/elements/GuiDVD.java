@@ -1,14 +1,12 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import com.mojang.math.Vector3f;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.helpers.MathUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2d;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -25,9 +23,10 @@ public class GuiDVD extends GuiElement<GuiDVD> {
     private final GuiElement<?> movingElement;
     private double xOffset = 0;
     private double yOffset = 0;
-    private Vector2d velocity = null;
+    private Vector3f velocity = null;
     private int bounce = 0;
-    private Consumer<Integer> onBounce = bounce -> {};
+    private Consumer<Integer> onBounce = bounce -> {
+    };
 
     public GuiDVD(@NotNull GuiParent<?> parent) {
         super(parent);
@@ -44,7 +43,7 @@ public class GuiDVD extends GuiElement<GuiDVD> {
 
     public void start() {
         if (velocity == null) {
-            velocity = new Vector2d(randy.nextBoolean() ? 1 : -1, randy.nextBoolean() ? 1 : -1);
+            velocity = new Vector3f(randy.nextBoolean() ? 1 : -1, randy.nextBoolean() ? 1 : -1, 0);
             velocity.normalize();
         } else {
             velocity = null;
@@ -68,31 +67,32 @@ public class GuiDVD extends GuiElement<GuiDVD> {
         if (velocity == null) return;
 
         double speed = 5 * partialTicks;
-        xOffset += velocity.x * speed;
-        yOffset += velocity.y * speed;
+        xOffset += velocity.x() * speed;
+        yOffset += velocity.y() * speed;
         Rectangle rect = movingElement.getRectangle();
 
         int bounces = 0;
-        if ((velocity.y < 0 && rect.y() < 0) || (velocity.y > 0 && rect.yMax() > scaledScreenHeight())) {
-            velocity.y *= -1;
+        if ((velocity.y() < 0 && rect.y() < 0) || (velocity.y() > 0 && rect.yMax() > scaledScreenHeight())) {
+            velocity.mul(1, -1, 1);
             onBounce.accept(bounce++);
             bounces++;
         }
 
-        if ((velocity.x < 0 && rect.x() < 0) || (velocity.x > 0 && rect.xMax() > scaledScreenWidth())) {
-            velocity.x *= -1;
+        if ((velocity.x() < 0 && rect.x() < 0) || (velocity.x() > 0 && rect.xMax() > scaledScreenWidth())) {
+            velocity.mul(-1, 1, 1);
             onBounce.accept(bounce++);
             bounces++;
         }
 
         if (bounce > 0) {
-            velocity.y += -0.05 + (randy.nextGaussian() * 0.1);
-            velocity.x += -0.05 + (randy.nextGaussian() * 0.1);
-            velocity.x = velocity.x > 0 ? MathUtil.clamp(velocity.x, 0.4, 0.6) : MathUtil.clamp(velocity.x, -0.4, -0.6);
-            velocity.y = velocity.y > 0 ? MathUtil.clamp(velocity.y, 0.4, 0.6) : MathUtil.clamp(velocity.y, -0.4, -0.6);
+            double x = velocity.x();
+            double y = velocity.y();
+            y += -0.05 + (randy.nextGaussian() * 0.1);
+            x += -0.05 + (randy.nextGaussian() * 0.1);
+            x = x > 0 ? MathUtil.clamp(x, 0.4, 0.6) : MathUtil.clamp(x, -0.4, -0.6);
+            y = y > 0 ? MathUtil.clamp(y, 0.4, 0.6) : MathUtil.clamp(y, -0.4, -0.6);
+            velocity.set((float) x, (float) y, 0);
             velocity.normalize();
         }
-
-//        if (bounces == 2)
     }
 }

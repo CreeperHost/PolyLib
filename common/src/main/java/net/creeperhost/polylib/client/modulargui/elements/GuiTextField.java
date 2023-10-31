@@ -1,8 +1,10 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import net.creeperhost.polylib.client.modulargui.lib.Assembly;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
@@ -37,11 +39,6 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  * Created by brandon3055 on 03/09/2023
  */
 public class GuiTextField extends GuiElement<GuiTextField> implements BackgroundRender {
-    private static final RenderType HIGHLIGHT_TYPE = RenderType.create("text_field_highlight", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-            .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
-            .setColorLogicState(RenderStateShard.OR_REVERSE_COLOR_LOGIC)
-            .createCompositeState(false));
-
     private int tick;
     private int cursorPos;
     private int maxLength = 32;
@@ -627,10 +624,42 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
         if (highlightStart != textStart) {
             int l1 = (int) (drawX + font().width(displayText.substring(0, highlightStart)));
             render.pose().translate(0, 0, 0.035);
-            render.fill(HIGHLIGHT_TYPE, k1, drawY - 1, l1 - 1, drawY + 1 + 9, 0xFF0000FF);
+            highlight(render, k1, drawY - 1, l1 - 1, drawY + 1 + 9);
             render.pose().translate(0, 0, -0.035);
         }
     }
+
+    private void highlight(GuiRender render, double xMin, double yMin, double xMax, double yMax) {
+        if (xMax < xMin) {
+            double min = xMax;
+            xMax = xMin;
+            xMin = min;
+        }
+        if (yMax < yMin) {
+            double min = yMax;
+            yMax = yMin;
+            yMin = min;
+        }
+
+        Matrix4f mat = render.pose().last().pose();
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferBuilder = tesselator.getBuilder();
+        RenderSystem.setShader(GameRenderer::getPositionShader);
+        RenderSystem.setShaderColor(0.0F, 0.0F, 1.0F, 1.0F);
+        RenderSystem.disableTexture();
+        RenderSystem.enableColorLogicOp();
+        RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+        bufferBuilder.vertex(mat, (float) xMax, (float) yMax, 0).endVertex();
+        bufferBuilder.vertex(mat, (float) xMax, (float) yMin, 0).endVertex();
+        bufferBuilder.vertex(mat, (float) xMin, (float) yMin, 0).endVertex();
+        bufferBuilder.vertex(mat, (float) xMin, (float) yMax, 0).endVertex();
+        tesselator.end();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableColorLogicOp();
+        RenderSystem.enableTexture();
+    }
+
 
     @Override
     public void tick(double mouseX, double mouseY) {

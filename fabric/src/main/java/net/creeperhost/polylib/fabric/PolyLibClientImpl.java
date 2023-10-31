@@ -1,13 +1,12 @@
 package net.creeperhost.polylib.fabric;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import net.creeperhost.polylib.PolyLibClient;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -27,12 +26,12 @@ import java.util.stream.Stream;
  */
 public class PolyLibClientImpl {
 
-    public static PolyLibClient.ToolTipResult postRenderTooltipPre(@NotNull ItemStack stack, GuiGraphics graphics, int x, int y, int screenWidth, int screenHeight, @NotNull List<ClientTooltipComponent> components, @NotNull Font font, @NotNull ClientTooltipPositioner positioner) {
-        EventResult result = ClientTooltipEvent.RENDER_PRE.invoker().renderTooltip(graphics, components, x, y);
+    public static PolyLibClient.ToolTipResult postRenderTooltipPre(@NotNull ItemStack stack, PoseStack poseStack, int x, int y, int screenWidth, int screenHeight, @NotNull List<ClientTooltipComponent> components, @NotNull Font font) {
+        EventResult result = ClientTooltipEvent.RENDER_PRE.invoker().renderTooltip(poseStack, components, x, y);
         return new TTR(x, y, font, result.isFalse());
     }
 
-    public static PolyLibClient.ToolTipColour postTooltipColour(@NotNull ItemStack stack, GuiGraphics graphics, int x, int y, int backgroundStart, int backgroundEnd, int borderStart, int borderEnd, @NotNull Font font, @NotNull List<ClientTooltipComponent> components) {
+    public static PolyLibClient.ToolTipColour postTooltipColour(@NotNull ItemStack stack, PoseStack poseStack, int x, int y, int backgroundStart, int backgroundEnd , int borderStart, int borderEnd, @NotNull Font font, @NotNull List<ClientTooltipComponent> components) {
         return new TTC(backgroundStart, backgroundEnd, borderStart, borderEnd);
     }
 
@@ -74,7 +73,9 @@ public class PolyLibClientImpl {
                 .toList();
     }
 
-    public static void onItemDecorate(GuiGraphics guiGraphics, Font font, ItemStack stack, int xOffset, int yOffset) {}
+    public static void onItemDecorate(Font font, ItemStack stack, int xOffset, int yOffset) {
+
+    }
 
         //@formatter:off
     private record TTR(int x, int y, Font font, boolean canceled) implements PolyLibClient.ToolTipResult {

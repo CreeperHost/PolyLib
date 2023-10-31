@@ -30,8 +30,8 @@ public class GuiButton extends GuiElement<GuiButton> {
     private final Map<Integer, Runnable> onClick = new HashMap<>();
     private final Map<Integer, Runnable> onPress = new HashMap<>();
     private boolean pressed = false;
-    private Holder<SoundEvent> pressSound = SoundEvents.UI_BUTTON_CLICK;
-    private Holder<SoundEvent> releaseSound = null;
+    private SoundEvent pressSound = SoundEvents.UI_BUTTON_CLICK;
+    private SoundEvent releaseSound = null;
     private Supplier<Boolean> disabled = () -> false;
     private Supplier<Boolean> toggleState;
     private GuiText label = null;
@@ -166,7 +166,7 @@ public class GuiButton extends GuiElement<GuiButton> {
     /**
      * Sets the sound to be played when this button is pressed.
      */
-    public GuiButton setPressSound(Holder<SoundEvent> pressSound) {
+    public GuiButton setPressSound(SoundEvent pressSound) {
         this.pressSound = pressSound;
         return this;
     }
@@ -174,16 +174,16 @@ public class GuiButton extends GuiElement<GuiButton> {
     /**
      * Sets the sound to be played when this button is released.
      */
-    public GuiButton setReleaseSound(Holder<SoundEvent> releaseSound) {
+    public GuiButton setReleaseSound(SoundEvent releaseSound) {
         this.releaseSound = releaseSound;
         return this;
     }
 
-    public Holder<SoundEvent> getPressSound() {
+    public SoundEvent getPressSound() {
         return pressSound;
     }
 
-    public Holder<SoundEvent> getReleaseSound() {
+    public SoundEvent getReleaseSound() {
         return releaseSound;
     }
 

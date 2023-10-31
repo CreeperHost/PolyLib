@@ -1,9 +1,9 @@
 package net.creeperhost.polylib.client.modulargui;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -63,11 +63,11 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         if (modularGui.renderBackground()) {
-            renderBackground(graphics);
+            renderBackground(poseStack);
         }
-        GuiRender render = modularGui.createRender(graphics.bufferSource());
+        GuiRender render = modularGui.createRender(minecraft.renderBuffers().bufferSource());
         modularGui.render(render, partialTicks);
         modularGui.renderOverlay(render, partialTicks);
     }

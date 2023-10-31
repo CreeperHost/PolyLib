@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
 import net.creeperhost.polylib.PolyLibClient;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
@@ -16,19 +17,16 @@ import net.minecraft.ReportedException;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
@@ -41,12 +39,10 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import org.joml.Vector2ic;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,11 +57,14 @@ import java.util.stream.Collectors;
  * <p>
  * Created by brandon3055 on 29/06/2023
  */
-public class GuiRender extends LegacyRender {
-    public static final RenderType SOLID = RenderType.gui();
-
-    //Used for things like events that require the vanilla GuiGraphics
-    private final RenderWrapper renderWrapper;
+public class GuiRender {
+    public static final RenderType SOLID = RenderType.create("gui_solid", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256,
+            RenderType.CompositeState.builder()
+                    .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+                    .createCompositeState(false)
+    );
 
     private final Minecraft mc;
     private final PoseStack pose;
@@ -78,14 +77,12 @@ public class GuiRender extends LegacyRender {
         this.mc = mc;
         this.pose = poseStack;
         this.buffers = buffers;
-        this.renderWrapper = new RenderWrapper(this);
     }
 
     public GuiRender(Minecraft mc, MultiBufferSource.BufferSource buffers) {
         this(mc, new PoseStack(), buffers);
     }
 
-    @Override
     public PoseStack pose() {
         return pose;
     }
@@ -146,16 +143,6 @@ public class GuiRender extends LegacyRender {
         RenderSystem.disableDepthTest();
         buffers.endBatch();
         RenderSystem.enableDepthTest();
-    }
-
-    /**
-     * Only use this as a last resort! It may explode... Have fun!
-     *
-     * @return A Vanilla GuiGraphics instance that wraps this {@link GuiRender}
-     */
-    @Deprecated
-    public RenderWrapper guiGraphicsWrapper() {
-        return renderWrapper;
     }
 
     //=== Un-Textured geometry ===//
@@ -723,8 +710,8 @@ public class GuiRender extends LegacyRender {
      * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
      */
     public void partialSpriteTex(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, double texXMin, double texYMin, double texXMax, double texYMax, float red, float green, float blue, float alpha) {
-        int width = sprite.contents().width();
-        int height = sprite.contents().height();
+        int width = sprite.getWidth();
+        int height = sprite.getHeight();
         partialSprite(type, xMin, yMin, xMax, yMax, sprite, (float) texXMin / width, (float) texYMin / height, (float) texXMax / width, (float) texYMax / height, red, green, blue, alpha);
     }
 
@@ -763,14 +750,14 @@ public class GuiRender extends LegacyRender {
      * Sprite is drawn from the top-left so sprite will be tiled right and down.
      */
     public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int argb) {
-        tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.contents().width(), sprite.contents().height(), argb);
+        tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.getWidth(), sprite.getHeight(), argb);
     }
 
     /**
      * Draw a sprite tiled to fit the specified area.
      * Sprite is drawn from the top-left so sprite will be tiled right and down.
      *
-     * @param textureWidth Set base width of the sprite texture in pixels
+     * @param textureWidth  Set base width of the sprite texture in pixels
      * @param textureHeight Set base height of the sprite texture in pixels
      */
     public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int argb) {
@@ -782,14 +769,14 @@ public class GuiRender extends LegacyRender {
      * Sprite is drawn from the top-left so sprite will be tiled right and down.
      */
     public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
-        tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.contents().width(), sprite.contents().height(), red, green, blue, alpha);
+        tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.getWidth(), sprite.getHeight(), red, green, blue, alpha);
     }
 
     /**
      * Draw a sprite tiled to fit the specified area.
      * Sprite is drawn from the top-left so sprite will be tiled right and down.
      *
-     * @param textureWidth Set base width of the sprite texture in pixels
+     * @param textureWidth  Set base width of the sprite texture in pixels
      * @param textureHeight Set base height of the sprite texture in pixels
      */
     public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, float red, float green, float blue, float alpha) {
@@ -1077,9 +1064,8 @@ public class GuiRender extends LegacyRender {
         TextureAtlasSprite sprite = material.sprite();
         VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
         Matrix4f mat = pose.last().pose();
-        SpriteContents contents = sprite.contents();
-        int texWidth = contents.width();
-        int texHeight = contents.height();
+        int texWidth = sprite.getWidth();
+        int texHeight = sprite.getHeight();
         int trimWidth = texWidth - leftBorder - rightBorder;
         int trimHeight = texHeight - topBorder - bottomBorder;
         if (xSize <= texWidth) trimWidth = Math.min(trimWidth, xSize - rightBorder);
@@ -1127,8 +1113,8 @@ public class GuiRender extends LegacyRender {
     }
 
     private void bufferDynamic(VertexConsumer builder, Matrix4f mat, TextureAtlasSprite tex, int x, int y, double textureX, double textureY, int width, int height, float red, float green, float blue, float alpha) {
-        int w = tex.contents().width();
-        int h = tex.contents().height();
+        int w = tex.getWidth();
+        int h = tex.getHeight();
         //@formatter:off
         builder.vertex(mat, x,         y + height, 0).color(red, green, blue, alpha).uv(tex.getU((textureX / w) * 16D),          tex.getV(((textureY + height) / h) * 16)).endVertex();
         builder.vertex(mat, x + width, y + height, 0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w) * 16), tex.getV(((textureY + height) / h) * 16)).endVertex();
@@ -1148,7 +1134,7 @@ public class GuiRender extends LegacyRender {
 
     public int drawString(@Nullable String message, double x, double y, int colour, boolean shadow) {
         if (message == null) return 0;
-        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880, font().isBidirectional());
+        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, false, 0, 15728880, font().isBidirectional());
         this.flushIfUnBatched();
         return i;
     }
@@ -1161,7 +1147,7 @@ public class GuiRender extends LegacyRender {
     }
 
     public int drawString(FormattedCharSequence message, double x, double y, int colour, boolean shadow) {
-        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, false, 0, 15728880);
         this.flushIfUnBatched();
         return i;
     }
@@ -1272,7 +1258,8 @@ public class GuiRender extends LegacyRender {
 
     public void renderTooltip(ItemStack stack, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
         this.tooltipStack = stack;
-        this.toolTipWithImage(Screen.getTooltipFromItem(this.mc(), stack), stack.getTooltipImage(), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
+        List<Component> list = stack.getTooltipLines(mc().player, mc().options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
+        this.toolTipWithImage(list, stack.getTooltipImage(), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
         this.tooltipStack = ItemStack.EMPTY;
     }
 
@@ -1292,7 +1279,7 @@ public class GuiRender extends LegacyRender {
 
     public void toolTipWithImage(List<Component> tooltip, Optional<TooltipComponent> tooltipImage, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
         List<ClientTooltipComponent> list = PolyLibClient.postGatherTooltipComponents(this.tooltipStack, tooltip, tooltipImage, (int) mouseX, guiWidth(), guiHeight(), font());
-        this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
     }
 
     public void renderTooltip(Component message, double mouseX, double mouseY) {
@@ -1309,7 +1296,7 @@ public class GuiRender extends LegacyRender {
 
     public void componentTooltip(List<Component> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
         List<ClientTooltipComponent> components = PolyLibClient.postGatherTooltipComponents(this.tooltipStack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
-        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
     }
 
     public void componentTooltip(List<? extends FormattedText> tooltips, double mouseX, double mouseY, ItemStack stack) {
@@ -1319,7 +1306,7 @@ public class GuiRender extends LegacyRender {
     public void componentTooltip(List<? extends net.minecraft.network.chat.FormattedText> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ItemStack stack) {
         this.tooltipStack = stack;
         List<ClientTooltipComponent> components = PolyLibClient.postGatherTooltipComponents(stack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
-        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
         this.tooltipStack = ItemStack.EMPTY;
     }
 
@@ -1328,16 +1315,12 @@ public class GuiRender extends LegacyRender {
     }
 
     public void renderTooltip(List<? extends FormattedCharSequence> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        this.renderTooltipInternal(tooltips.stream().map(ClientTooltipComponent::create).collect(Collectors.toList()), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        this.renderTooltipInternal(tooltips.stream().map(ClientTooltipComponent::create).collect(Collectors.toList()), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom);
     }
 
-    public void renderTooltip(List<FormattedCharSequence> tooltips, ClientTooltipPositioner positioner, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        this.renderTooltipInternal(tooltips.stream().map(ClientTooltipComponent::create).collect(Collectors.toList()), mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, positioner);
-    }
-
-    private void renderTooltipInternal(List<ClientTooltipComponent> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ClientTooltipPositioner positioner) {
+    private void renderTooltipInternal(List<ClientTooltipComponent> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
         if (!tooltips.isEmpty()) {
-            PolyLibClient.ToolTipResult event = PolyLibClient.postRenderTooltipPre(this.tooltipStack, renderWrapper, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
+            PolyLibClient.ToolTipResult event = PolyLibClient.postRenderTooltipPre(this.tooltipStack, pose(), (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font());
             if (event.canceled()) return;
 
             int width = 0;
@@ -1347,11 +1330,11 @@ public class GuiRender extends LegacyRender {
                 height += line.getHeight();
             }
 
-            Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
-            int xPos = position.x();
-            int yPos = Math.max(position.y(), 3); //Default positioner allows negative y-pos for some reason...
 
-            PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, renderWrapper, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
+            int xPos = event.getX() + 12;
+            int yPos = Math.max(event.getY() - 12, 3); //Default positioner allows negative y-pos for some reason...
+
+            PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, pose(), xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
             toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
             int linePos = yPos;
 
@@ -1365,9 +1348,10 @@ public class GuiRender extends LegacyRender {
 
             for (int i = 0; i < tooltips.size(); ++i) {
                 ClientTooltipComponent component = tooltips.get(i);
-                component.renderImage(event.getFont(), xPos, linePos, renderWrapper);
+                component.renderImage(event.getFont(), xPos, linePos, pose(), mc().getItemRenderer(), 0);
                 linePos += component.getHeight() + (i == 0 ? 2 : 0);
             }
+            this.flushIfUnBatched();
         }
     }
 
@@ -1448,7 +1432,7 @@ public class GuiRender extends LegacyRender {
      * Important Note: Required z clearance is size*2, This must be accounted for when setting the z depth in an element using this render method.
      */
     public void renderItem(LivingEntity entity, ItemStack stack, double x, double y, double size, int modelRand) {
-        this.renderItem(entity, entity.level(), stack, x, y, size, modelRand);
+        this.renderItem(entity, entity.getLevel(), stack, x, y, size, modelRand);
     }
 
     /**
@@ -1464,11 +1448,11 @@ public class GuiRender extends LegacyRender {
             pose.pushPose();
             pose.translate(x + (size / 2D), y + (size / 2D), size);
             try {
-                pose.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
+                pose.mulPoseMatrix(Matrix4f.createScaleMatrix(1.0F, -1.0F, 1.0F));//TODO Is this correct??
                 pose.scale((float) size, (float) size, (float) size);
                 boolean flag = !bakedmodel.usesBlockLight();
                 if (flag) Lighting.setupForFlatItems();
-                mc().getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, buffers, 0xf000f0, OverlayTexture.NO_OVERLAY, bakedmodel);
+                mc().getItemRenderer().render(stack, ItemTransforms.TransformType.GUI, false, pose, buffers, 0xf000f0, OverlayTexture.NO_OVERLAY, bakedmodel);
                 this.flush();
                 if (flag) Lighting.setupFor3DItems();
             } catch (Throwable throwable) {
@@ -1556,7 +1540,7 @@ public class GuiRender extends LegacyRender {
 
             pose.popPose();
             if (size == 16) {
-                PolyLibClient.onItemDecorate(renderWrapper, font(), stack, (int) x, (int) y);
+                PolyLibClient.onItemDecorate(font(), stack, (int) x, (int) y);
             }
         }
     }
@@ -1689,37 +1673,5 @@ public class GuiRender extends LegacyRender {
                 .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                 .setCullState(RenderStateShard.NO_CULL)
                 .createCompositeState(false));
-    }
-
-    /**
-     * This exists to allow thing like the Tooltip events to still function correctly, hopefully without exploding...
-     */
-    public static class RenderWrapper extends GuiGraphics {
-        private final GuiRender wrapped;
-
-        private RenderWrapper(GuiRender wrapped) {
-            super(wrapped.mc(), wrapped.pose(), wrapped.buffers());
-            this.wrapped = wrapped;
-        }
-
-        @Override
-        public void drawManaged(Runnable runnable) {
-            wrapped.batchDraw(runnable);
-        }
-
-        @Override
-        public void flush() {
-            wrapped.flush();
-        }
-
-        @Override
-        protected void flushIfManaged() {
-            wrapped.flushIfBatched();
-        }
-
-        @Override
-        protected void flushIfUnmanaged() {
-            wrapped.flushIfUnBatched();
-        }
     }
 }

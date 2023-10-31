@@ -1,8 +1,8 @@
 package net.creeperhost.polylib.fabric.client;
 
-import net.creeperhost.polylib.client.modulargui.sprite.ModAtlasHolder;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 
@@ -15,9 +15,9 @@ import java.util.function.Supplier;
  */
 public class ResourceReloadListenerWrapper implements IdentifiableResourceReloadListener {
     private final ResourceLocation listenerId;
-    private final Supplier<ModAtlasHolder> getWrapped;
+    private final Supplier<PreparableReloadListener> getWrapped;
 
-    public ResourceReloadListenerWrapper(Supplier<ModAtlasHolder> getWrapped, ResourceLocation listenerId) {
+    public ResourceReloadListenerWrapper(Supplier<PreparableReloadListener> getWrapped, ResourceLocation listenerId) {
         this.getWrapped = getWrapped;
         this.listenerId = listenerId;
     }
