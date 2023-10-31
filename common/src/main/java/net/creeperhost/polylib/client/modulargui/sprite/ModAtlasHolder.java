@@ -52,19 +52,11 @@ public class ModAtlasHolder implements PreparableReloadListener, AutoCloseable {
     @Override
     public final @NotNull CompletableFuture<Void> reload(PreparableReloadListener.PreparationBarrier prepParrier, ResourceManager resourceManager, ProfilerFiller profiler, ProfilerFiller profiler2, Executor executor, Executor executor2) {
         Objects.requireNonNull(prepParrier);
-
         SpriteLoader spriteLoader = ModSpriteLoader.create(this.textureAtlas, modid);
-
-        CompletableFuture<SpriteLoader.Preparations> future = spriteLoader.loadAndStitch(resourceManager, this.atlasInfoLocation, 0, executor);
-
-        future.thenCompose(SpriteLoader.Preparations::waitForUpload);
-        future.thenCompose(prepParrier::wait);
-
-        future.thenAcceptAsync((preparations) -> {
-            this.apply(preparations, profiler2);
-        }, executor2);
-
-        return (CompletableFuture) future;
+        return spriteLoader.loadAndStitch(resourceManager, this.atlasInfoLocation, 0, executor)
+                .thenCompose(SpriteLoader.Preparations::waitForUpload)
+                .thenCompose(prepParrier::wait)
+                .thenAcceptAsync((preparations) -> this.apply(preparations, profiler2), executor2);
     }
 
     private void apply(SpriteLoader.Preparations preparations, ProfilerFiller profilerFiller) {

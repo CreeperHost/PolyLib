@@ -31,9 +31,6 @@ public class PolyLibClientImpl {
         RenderTooltipEvent.Color colorEvent = new RenderTooltipEvent.Color(stack, graphics, x, y, font, backgroundStart, borderStart, borderEnd, components);
         colorEvent.setBackgroundEnd(backgroundEnd);
         MinecraftForge.EVENT_BUS.post(colorEvent);
-
-
-
         return new TTC(colorEvent);
     }
 

@@ -64,6 +64,12 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
 
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        GuiElement<?> root = modularGui.getRoot();
+        topPos = (int) root.getValue(GeoParam.TOP);
+        leftPos = (int) root.getValue(GeoParam.LEFT);
+        imageWidth = (int) root.getValue(GeoParam.WIDTH);
+        imageHeight = (int) root.getValue(GeoParam.HEIGHT);
+
         modularGui.setVanillaSlotRendering(false);
         if (modularGui.renderBackground()) {
             renderBackground(graphics);
@@ -132,11 +138,6 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     @Override
     protected void containerTick() {
         modularGui.tick();
-        GuiElement<?> root = modularGui.getRoot();
-        topPos = (int) root.getValue(GeoParam.TOP);
-        leftPos = (int) root.getValue(GeoParam.LEFT);
-        imageWidth = (int) root.getValue(GeoParam.WIDTH);
-        imageHeight = (int) root.getValue(GeoParam.HEIGHT);
     }
 
     @Override

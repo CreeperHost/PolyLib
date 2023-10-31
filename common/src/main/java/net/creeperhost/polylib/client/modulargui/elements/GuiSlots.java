@@ -77,6 +77,8 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             Slot slot = slots.getSlot(index + firstSlot);
             getModularGui().setSlotHandler(slot, this);
         }
+
+        updateSlots(parent.getModularGui().getRoot());
     }
 
     //=== Slots Setup ===//

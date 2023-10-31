@@ -180,9 +180,9 @@ public class GuiList<E> extends GuiElement<GuiList<E>> {
     private void updateVisible() {
         visible.forEach(this::removeChild);
         visible.clear();
+        contentHeight = 0;
         if (listContent.isEmpty()) return;
 
-        contentHeight = 0;
         for (GuiElement<?> item : elementMap.values()) {
             contentHeight += item.ySize() + itemSpacing;
         }
