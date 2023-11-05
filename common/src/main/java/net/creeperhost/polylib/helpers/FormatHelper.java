@@ -13,9 +13,9 @@ public class FormatHelper {
 
     public static String formatNumber(double value) {
         if (Math.abs(value) < 1000D) return String.valueOf(value);
-        else if (Math.abs(value) < 1000000D) return addCommas((int) value); //I mean whats the ploint of displaying 1.235K instead of 1,235?
+        else if (Math.abs(value) < 1000000D) return addCommas((int) value); //I mean whats the point of displaying 1.235K instead of 1,235?
         else if (Math.abs(value) < 1000000000D) return Math.round(value / 1000D) / 1000D + "M";
-        else if (Math.abs(value) < 1000000000000D) return Math.round(value / 1000000D) / 1000D + "B";
+        else if (Math.abs(value) < 1000000000000D) return Math.round(value / 1000000D) / 1000D + "G";
         else return Math.round(value / 1000000000D) / 1000D + "T";
     }
 

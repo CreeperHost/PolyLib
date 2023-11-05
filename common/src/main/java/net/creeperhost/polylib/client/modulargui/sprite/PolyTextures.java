@@ -1,11 +1,9 @@
 package net.creeperhost.polylib.client.modulargui.sprite;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static net.creeperhost.polylib.PolyLib.MOD_ID;
@@ -27,10 +25,6 @@ public class PolyTextures {
     //Must be registered as a resource reload listener!
     public static SpriteUploader getUploader() {
         return SPRITE_UPLOADER;
-    }
-
-    public static void register(Map<ResourceLocation, Consumer<TextureAtlasSprite>> register, String location) {
-        register.put(new ResourceLocation(MOD_ID, location), null);
     }
 
     public static Material get(String location) {

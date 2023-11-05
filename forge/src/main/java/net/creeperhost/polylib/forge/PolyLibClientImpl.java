@@ -33,7 +33,7 @@ public class PolyLibClientImpl {
     }
 
     public static List<ClientTooltipComponent> postGatherTooltipComponents(ItemStack stack, List<? extends FormattedText> textElements, Optional<TooltipComponent> itemComponent, int mouseX, int screenWidth, int screenHeight, Font fallbackFont) {
-        return net.minecraftforge.client.ForgeHooksClient.gatherTooltipComponents(stack, textElements, itemComponent, mouseX, screenWidth, screenHeight, null, fallbackFont);
+        return ForgeHooksClient.gatherTooltipComponents(stack, textElements, itemComponent, mouseX, screenWidth, screenHeight, null, fallbackFont);
     }
 
     public static void onItemDecorate(Font font, ItemStack stack, int xOffset, int yOffset) {
