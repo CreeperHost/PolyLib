@@ -6,6 +6,11 @@ import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.polylib.fabric.client.ResourceReloadListenerWrapper;
+import net.creeperhost.polylib.fabric.inventory.energy.FabricBlockEnergyContainer;
+import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyContainer;
+import net.creeperhost.polylib.inventory.energy.PolyEnergyBlock;
+import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
+import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -13,6 +18,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import team.reborn.energy.api.EnergyStorage;
 
 public class PolyLibFabric implements ModInitializer
 {
