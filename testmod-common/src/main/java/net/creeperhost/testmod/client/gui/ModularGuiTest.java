@@ -43,7 +43,14 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
 
     @Override
     public GuiElement<?> createRootElement(ModularGui gui) {
-        return new GuiTexture(gui, TestModTextures.get(BACKGROUND_TEXTURE));
+        GuiManipulable root = new GuiManipulable(gui)
+                .addResizeHandles(4, false)
+                .addMoveHandle(10);
+        root.enableCursors(true);
+        GuiTexture bg = new GuiTexture(root.getContentElement(), TestModTextures.get(BACKGROUND_TEXTURE)).dynamicTexture();
+        Constraints.bind(bg, root.getContentElement());
+        return root;
+//        return new GuiTexture(gui, TestModTextures.get(BACKGROUND_TEXTURE));
     }
 
     @Override

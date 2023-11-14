@@ -46,8 +46,8 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
 
         //This is just something I did for fun, Take a look at ModularGuiTest to see an example of how the root element should be setup.
         GuiDVD dvd = (GuiDVD) gui.getRoot();
-        GuiTexture root = new GuiTexture(dvd.movingElement(), TestModTextures.get(backgroundTexture));
-        Constraints.bind(root, dvd.movingElement());
+        GuiTexture root = new GuiTexture(dvd.getContentElement(), TestModTextures.get(backgroundTexture));
+        Constraints.bind(root, dvd.getContentElement());
         dvd.onBounce(bounce -> root.setColour(0xFF000000 | ChatFormatting.getById(1 + (bounce % 15)).getColor()));
 
         //Ok. no more memes beyond this point.

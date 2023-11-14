@@ -1,9 +1,7 @@
 package net.creeperhost.polylib.client.modulargui;
 
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
-import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
-import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
-import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
@@ -13,6 +11,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,6 +55,7 @@ public class ModularGui implements GuiParent<ModularGui> {
 
     private Component guiTitle = Component.empty();
     private GuiElement<?> focused;
+    private ResourceLocation newCursor = null;
 
     private final Map<Slot, GuiElement<?>> slotHandlers = new HashMap<>();
     private final List<Runnable> tickListeners = new ArrayList<>();
@@ -138,9 +138,13 @@ public class ModularGui implements GuiParent<ModularGui> {
     }
 
     /**
-     * @return the root element.
+     * @return the root element to which content elements should be added.
      */
     public GuiElement<?> getRoot() {
+        return root instanceof ContentElement ? ((ContentElement<?>) root).getContentElement() : root;
+    }
+
+    public GuiElement<?> getDirectRoot() {
         return root;
     }
 
@@ -245,11 +249,13 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Primary update / tick method. Must be called from the tick method of the implementing screen.
      */
     public void tick() {
+        newCursor = null;
         double mouseX = computeMouseX();
         double mouseY = computeMouseY();
         root.updateMouseOver(mouseX, mouseY, false);
         tickListeners.forEach(Runnable::run);
         root.tick(mouseX, mouseY);
+        CursorHelper.setCursor(newCursor);
     }
 
     /**
@@ -347,6 +353,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Must be called by the screen when this gui is closed.
      */
     public void onGuiClose() {
+        CursorHelper.resetCursor();
         closeListeners.forEach(Runnable::run);
     }
 
@@ -513,6 +520,10 @@ public class ModularGui implements GuiParent<ModularGui> {
      */
     public GuiElement<?> getSlotHandler(Slot slot) {
         return slotHandlers.get(slot);
+    }
+
+    public void setCursor(ResourceLocation cursor) {
+        this.newCursor = cursor;
     }
 
     /**

@@ -1,13 +1,12 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import net.creeperhost.polylib.client.modulargui.lib.ContentElement;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
-import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.helpers.MathUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
 
 import java.util.Random;
@@ -19,7 +18,7 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  * Just for fun!
  * Created by brandon3055 on 10/09/2023
  */
-public class GuiDVD extends GuiElement<GuiDVD> {
+public class GuiDVD extends GuiElement<GuiDVD> implements ContentElement<GuiElement<?>> {
     private static final Random randy = new Random();
 
     private final GuiElement<?> movingElement;
@@ -38,7 +37,8 @@ public class GuiDVD extends GuiElement<GuiDVD> {
                 .constrain(HEIGHT, Constraint.match(get(HEIGHT)));
     }
 
-    public GuiElement<?> movingElement() {
+    @Override
+    public GuiElement<?> getContentElement() {
         return movingElement;
     }
 
