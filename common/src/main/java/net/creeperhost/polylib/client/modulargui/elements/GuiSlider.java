@@ -209,7 +209,7 @@ public class GuiSlider extends GuiElement<GuiSlider> {
 
     private void handleDrag(double mouseX, double mouseY) {
         Position mousePos = Position.create(mouseX, mouseY);
-        Rectangle rect = dragging ? getRectangle() : scrollableElement.getRectangle();
+        Rectangle rect = dragging || scrollableElement == null ? getRectangle() : scrollableElement.getRectangle();
 
         if (dragging && outOfBoundsDist >= -1 && rect.distance(axis.opposite(), mousePos) > outOfBoundsDist) {
             state.setPos(slideStartPos);
