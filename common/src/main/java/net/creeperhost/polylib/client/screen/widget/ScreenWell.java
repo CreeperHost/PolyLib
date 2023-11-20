@@ -1,10 +1,8 @@
 package net.creeperhost.polylib.client.screen.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 
 import java.util.List;
@@ -43,8 +41,7 @@ public class ScreenWell
         int titleWidth = fontRenderer.width(title);
         guiGraphics.fill(left, top, right, bottom, 0x66000000);
 
-        //TODO
-//        fontRenderer.drawShadow(poseStack, title, this.left + ((this.right - this.left) / 2) - (titleWidth / 2), this.top + 2, 0xFFFFFF);
+        guiGraphics.drawString(fontRenderer, title, this.left + ((this.right - this.left) / 2) - (titleWidth / 2), this.top + 2, 0xFFFFFF, true);
 
         int topStart = this.top + 15;
 
@@ -53,12 +50,10 @@ public class ScreenWell
             if (centeredF)
             {
                 int stringWidth = fontRenderer.width(line);
-                //TODO
-//                fontRenderer.drawShadow(poseStack, I18n.get(line), this.left + ((this.right - this.left) / 2) - (stringWidth / 2), topStart, 0xFFFFFF);
+                guiGraphics.drawString(fontRenderer, I18n.get(line), this.left + ((this.right - this.left) / 2) - (stringWidth / 2), topStart, 0xFFFFFF, true);
             } else
             {
-                //TODO
-//                fontRenderer.drawShadow(poseStack, I18n.get(line), this.left, topStart, 0xFFFFFF);
+                guiGraphics.drawString(fontRenderer, I18n.get(line), this.left, topStart, 0xFFFFFF, true);
             }
             topStart += 10;
         }

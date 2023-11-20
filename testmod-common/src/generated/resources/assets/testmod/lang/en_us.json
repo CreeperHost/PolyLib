@@ -2,5 +2,6 @@
   "block.testmod.creative_energy_block": "Creative Power source",
   "block.testmod.inventory_test_block": "Inventory Test Block",
   "block.testmod.machine_test_block": "Test Machine",
+  "block.testmod.mgui_test_block": "Modular Gui Test Block",
   "block.testmod.multiblock_test_block": "Test Multiblock block"
 }

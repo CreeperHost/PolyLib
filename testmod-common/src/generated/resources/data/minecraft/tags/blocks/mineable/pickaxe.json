@@ -4,6 +4,7 @@
     "testmod:inventory_test_block",
     "testmod:multiblock_test_block",
     "testmod:machine_test_block",
+    "testmod:mgui_test_block",
     "testmod:creative_energy_block"
   ]
 }
