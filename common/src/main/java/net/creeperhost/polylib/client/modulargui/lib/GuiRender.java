@@ -1330,9 +1330,16 @@ public class GuiRender {
                 height += line.getHeight();
             }
 
-
             int xPos = event.getX() + 12;
             int yPos = Math.max(event.getY() - 12, 3); //Default positioner allows negative y-pos for some reason...
+
+            if (xPos + width > guiWidth()) {
+                xPos -= 28 + width;
+            }
+
+            if (yPos + height + 6 > guiHeight()) {
+                yPos = guiHeight() - height - 6;
+            }
 
             PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, pose(), xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
             toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
