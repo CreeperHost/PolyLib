@@ -19,6 +19,10 @@
       "net.creeperhost.polylib.fabric.PolyLibFabric"
     ]
   },
+  "mixins": [
+    "polylib.mixins.json",
+    "polylib-fabric.mixins.json"
+  ],
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.18",

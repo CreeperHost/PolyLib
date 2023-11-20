@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.creeperhost.polylib.fabric.mixins",
+  "minVersion": "0.7.11",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+  ],
+  "client": [
+    "AbstractContainerScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
