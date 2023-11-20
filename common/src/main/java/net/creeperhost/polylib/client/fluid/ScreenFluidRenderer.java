@@ -10,8 +10,7 @@ import dev.architectury.hooks.fluid.FluidStackHooks;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.material.Fluid;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class ScreenFluidRenderer
 {
@@ -33,13 +32,13 @@ public class ScreenFluidRenderer
         this.minHeight = minHeight;
     }
 
-    public void render(final int xPosition, final int yPosition, @Nonnull FluidStack fluidStack)
+    public void render(final int xPosition, final int yPosition, @NotNull FluidStack fluidStack)
     {
         drawFluid(xPosition, yPosition, fluidStack);
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
-    private void drawFluid(final int xPosition, final int yPosition, @Nonnull FluidStack fluidStack)
+    private void drawFluid(final int xPosition, final int yPosition, @NotNull FluidStack fluidStack)
     {
         if (fluidStack.isEmpty())
         {

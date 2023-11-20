@@ -1,0 +1,4 @@
+// 1.19.2	2023-10-23T08:07:41.133038076	dynamic-textures:testmod
+1a1123238112d31d941a4d5190faafe8789ffdc8 assets/testmod/textures/gui/mgui_test_block.png
+afc630a39912fbec90383c0607f2017df2580638 assets/testmod/textures/gui/test_dynamic_texture.png
+afc630a39912fbec90383c0607f2017df2580638 assets/testmod/textures/gui/test_gui.png
