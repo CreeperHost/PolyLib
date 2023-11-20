@@ -220,8 +220,8 @@ public class GuiButton extends GuiElement<GuiButton> {
         if (onClick == null && onPress == null) return consumed;
         hoverTime = 1;
 
-        if (!isDisabled()) {
-            if (!consumed && pressed && onPress != null) {
+        if (!isDisabled() && isMouseOver()) {
+            if (pressed && onPress != null) {
                 onPress.run();
                 consumed = true;
             }
@@ -232,7 +232,6 @@ public class GuiButton extends GuiElement<GuiButton> {
         pressed = false;
         return consumed;
     }
-
 
     /**
      * Creates a new gui button that looks and acts exactly like a standard vanilla button.

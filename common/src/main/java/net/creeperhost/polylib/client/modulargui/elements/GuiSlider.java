@@ -194,9 +194,9 @@ public class GuiSlider extends GuiElement<GuiSlider> {
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(double mouseX, double mouseY, int button, boolean consumed) {
         dragging = scrollableDragging = false;
-        return false;
+        return super.mouseReleased(mouseX, mouseY, button, consumed);
     }
 
     @Override
