@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[46,)"
 issueTrackerURL = "https://github.com/CreeperHost/PolyLib/issues"
-license = "Insert License Here"
+license = "BSD 4-Clause License"
 
 [[mods]]
 modId = "polylib"

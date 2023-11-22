@@ -11,7 +11,7 @@
     "homepage": "https://github.com/CreeperHost/PolyLib/issues",
     "sources": "https://github.com/CreeperHost/PolyLib/issues"
   },
-  "license": "Insert License Here",
+  "license": "BSD 4-Clause License",
   "icon": "assets/examplemod/icon.png",
   "environment": "*",
   "entrypoints": {
