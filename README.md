@@ -8,7 +8,6 @@
     <a href="https://github.com/CreeperHost/PolyLib/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/CreeperHost/PolyLib"></a>
     <a href="https://github.com/CreeperHost/PolyLib/commits/master"><img alt="activity" src="https://img.shields.io/github/last-commit/CreeperHost/PolyLib" ></a>
 </p>
-https://github.com/CreeperHost/PolyLib/tree/dev/1.20.2
 
 # Maven
 ```gradle
