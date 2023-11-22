@@ -1,5 +1,3 @@
-# PolyLib
-
 <p align="left">
     <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/polylib.svg" /></a>
     <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/versions/polylib.svg" /></a>
@@ -8,6 +6,13 @@
     <a href="https://github.com/CreeperHost/PolyLib/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/CreeperHost/PolyLib"></a>
     <a href="https://github.com/CreeperHost/PolyLib/commits/master"><img alt="activity" src="https://img.shields.io/github/last-commit/CreeperHost/PolyLib" ></a>
 </p>
+
+
+# PolyLib
+
+"PolyLib," developed by CreeperHost Ltd.,
+is a compact Minecraft library mod focused on providing a collection of helper classes.
+These classes are designed to simplify various aspects of mod development, offering tools for easier GUI creation and other development enhancements to improve efficiency and user experience.
 
 # Maven
 ```gradle
