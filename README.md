@@ -1,8 +1,8 @@
 # PolyLib
 
 <p align="left">
-    <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/full_576589_downloads.svg" /></a>
-    <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/versions/576589.svg" /></a>
+    <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/polylib.svg" /></a>
+    <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/versions/polylib.svg" /></a>
     <a href="https://github.com/CreeperHost/PolyLib/blob/master/LICENSE.md"><img alt="GitHub license" src="https://img.shields.io/github/license/CreeperHost/PolyLib"></a>
     <a href="https://github.com/CreeperHost/PolyLib/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/CreeperHost/PolyLib"></a>
     <a href="https://github.com/CreeperHost/PolyLib/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/CreeperHost/PolyLib"></a>
