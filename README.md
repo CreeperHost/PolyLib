@@ -32,7 +32,7 @@ dependencies {
 
 // Forge
 dependencies {
-    modRuntimeOnly "net.creeperhost:polylib-fabric:VERSION"
+    modRuntimeOnly "net.creeperhost:polylib-forge:VERSION"
 }
 ```
 
