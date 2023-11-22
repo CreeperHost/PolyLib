@@ -52,7 +52,7 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float f, int mouseX, int mouseY)
     {
         int progress = getMenu().getContainerData().get(0);
-        renderBackground(guiGraphics);
+//        renderBackground(guiGraphics, mouseX, mouseY, f);
         screenBuilder.drawDefaultBackground(guiGraphics, leftPos, topPos, imageWidth, imageHeight, 256, 256);
         screenBuilder.drawPlayerSlots(guiGraphics, leftPos + imageWidth / 2, topPos + 131, true, 256, 256);
 

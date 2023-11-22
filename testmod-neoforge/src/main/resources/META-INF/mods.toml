@@ -1,0 +1,12 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+issueTrackerURL = "https://github.com/CreeperHost/PolyLib/issues"
+license = "Insert License Here"
+
+[[mods]]
+modId = "testmod"
+version = "1.0.0"
+displayName = "TestMod"
+authors = "CreeperHost"
+description = '''
+'''

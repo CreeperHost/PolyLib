@@ -1,3 +1,16 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+    id "maven-publish"
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/polylib.accesswidener")
+}
+
+configurations {
+    shadowCommon
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
@@ -12,11 +25,7 @@ dependencies {
 }
 
 architectury {
-    common(rootProject.platforms.split(","))
-}
-
-loom {
-    accessWidenerPath = file("src/main/resources/polylib.accesswidener")
+    common("fabric", "forge", "neoforge")
 }
 
 publishing {

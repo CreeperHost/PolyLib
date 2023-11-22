@@ -22,10 +22,6 @@
       "net.creeperhost.testmod.fabric.TestModDataGen"
     ]
   },
-  "mixins": [
-    "polylib.mixins.json",
-    "polylib-fabric.mixins.json"
-  ],
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.20",

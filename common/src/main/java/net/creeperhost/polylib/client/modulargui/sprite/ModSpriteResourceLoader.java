@@ -9,6 +9,7 @@ import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.SpriteContents;
+import net.minecraft.client.renderer.texture.atlas.SpriteResourceLoader;
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.resources.FileToIdConverter;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -38,7 +40,7 @@ public class ModSpriteResourceLoader {
         this.modid = modid;
     }
 
-    public List<Supplier<SpriteContents>> list(ResourceManager arg) {
+    public List<Function<SpriteResourceLoader, SpriteContents>> list(ResourceManager arg) {
         final Map<ResourceLocation, SpriteSource.SpriteSupplier> map = new HashMap();
         SpriteSource.Output output = new SpriteSource.Output() {
             public void add(ResourceLocation location, SpriteSource.SpriteSupplier arg2) {
@@ -65,8 +67,10 @@ public class ModSpriteResourceLoader {
         };
         this.sources.forEach((arg3) -> arg3.run(arg, output));
 
-        ImmutableList.Builder<Supplier<SpriteContents>> builder = ImmutableList.builder();
-        builder.add(MissingTextureAtlasSprite::create);
+        ImmutableList.Builder<Function<SpriteResourceLoader, SpriteContents>> builder = ImmutableList.builder();
+        builder.add((spriteResourceLoader) -> {
+            return MissingTextureAtlasSprite.create();
+        });
         builder.addAll(map.values());
         return builder.build();
     }

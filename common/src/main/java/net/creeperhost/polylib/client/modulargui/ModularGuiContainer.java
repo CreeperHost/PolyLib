@@ -72,7 +72,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
 
         modularGui.setVanillaSlotRendering(false);
         if (modularGui.renderBackground()) {
-            renderBackground(graphics);
+            renderBackground(graphics, mouseX, mouseY, partialTicks);
         }
         GuiRender render = modularGui.createRender(graphics.bufferSource());
         modularGui.render(render, partialTicks);
@@ -164,9 +164,10 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         return modularGui.mouseReleased(mouseX, mouseY, button) || super.mouseReleased(mouseX, mouseY, button);
     }
 
+    //TODO find out what G is
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-        return modularGui.mouseScrolled(mouseX, mouseY, scroll) || super.mouseScrolled(mouseX, mouseY, scroll);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scroll, double g) {
+        return modularGui.mouseScrolled(mouseX, mouseY, scroll) || super.mouseScrolled(mouseX, mouseY, scroll, g);
     }
 
     @Override

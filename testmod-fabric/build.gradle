@@ -53,8 +53,8 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
 
-    modLocalRuntime 'RebornCore:RebornCore-1.20:5.8.0'
-    modLocalRuntime 'TechReborn:TechReborn-1.20:5.8.0'
+//    modLocalRuntime 'RebornCore:RebornCore-1.20:5.8.0'
+//    modLocalRuntime 'TechReborn:TechReborn-1.20:5.8.0'
 }
 
 publishing {

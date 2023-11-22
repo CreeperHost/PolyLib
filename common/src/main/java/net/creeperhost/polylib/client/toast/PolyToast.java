@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PolyToast implements Toast
 {
+    public static final ResourceLocation TEXTURE = new ResourceLocation("toast/system");
+
     @Override
     public Visibility render(GuiGraphics guiGraphics, ToastComponent toastComponent, long l)
     {

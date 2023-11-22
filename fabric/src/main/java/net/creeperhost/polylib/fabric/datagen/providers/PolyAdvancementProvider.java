@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.CachedOutput;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
 public class PolyAdvancementProvider extends FabricAdvancementProvider
 {
     private final ModuleType moduleType;
-    private List<Advancement> values = new ArrayList<>();
+    private List<AdvancementHolder> values = new ArrayList<>();
 
     public PolyAdvancementProvider(FabricDataOutput fabricDataOutput, ModuleType moduleType)
     {
@@ -28,16 +29,16 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     }
 
     @Override
-    public void generateAdvancement(Consumer<Advancement> consumer)
+    public void generateAdvancement(Consumer<AdvancementHolder> consumer)
     {
         values.forEach(advancement ->
         {
-            PolyLib.LOGGER.info("Running data gen for advancement " + advancement.getId() + " " + output.getOutputFolder());
+            PolyLib.LOGGER.info("Running data gen for advancement " + advancement.id() + " " + output.getOutputFolder());
             consumer.accept(advancement);
         });
     }
 
-    public void add(Advancement advancement, ModuleType moduleType)
+    public void add(AdvancementHolder advancement, ModuleType moduleType)
     {
         if (this.moduleType == moduleType) values.add(advancement);
     }

@@ -14,7 +14,7 @@ public class SentryRegistry
             options.setDsn(dsn);
             options.setTracesSampleRate(Platform.isDevelopmentEnvironment() ? 1.0 : 0.025);
             options.setEnvironment(Platform.getMinecraftVersion());
-            options.setTag("modloader", Platform.isForge() ? "Forge" : "Fabric");
+            options.setTag("modloader", Platform.isMinecraftForge() ? "Forge" : "Fabric");
             options.setTag("ram", String.valueOf(((Runtime.getRuntime().maxMemory() / 1024) / 1024)));
             options.setDist(System.getProperty("os.arch"));
             options.setServerName(Platform.getEnv() == EnvType.CLIENT ? "integrated" : "dedicated");

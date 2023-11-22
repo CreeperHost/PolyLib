@@ -40,7 +40,8 @@ public class GuiButtonLarge extends PolyButton
         Minecraft mc = Minecraft.getInstance();
         int k = getYImage(isHovered);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+        //TODO
+//        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         ScreenHelper.drawContinuousTexturedBox(graphics.pose(), getX(), getY(), 0, 46 + k * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
         int color = 14737632;
 

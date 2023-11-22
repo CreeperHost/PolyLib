@@ -2,6 +2,7 @@ package net.creeperhost.polylib.client.modulargui.sprite;
 
 import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.atlas.SpriteResourceLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
@@ -27,10 +28,13 @@ public class ModSpriteLoader extends SpriteLoader {
 
     @Override
     public CompletableFuture<Preparations> loadAndStitch(ResourceManager resourceManager, ResourceLocation resourceLocation, int i, Executor executor) {
+        //TODO check if this is ok or if we need to make our own
+        SpriteResourceLoader spriteResourceLoader = SpriteResourceLoader.create(DEFAULT_METADATA_SECTIONS);
+
         return CompletableFuture.supplyAsync(() -> {
             return ModSpriteResourceLoader.load(resourceManager, resourceLocation, modid).list(resourceManager);
         }, executor).thenCompose((list) -> {
-            return runSpriteSuppliers(list, executor);
+            return runSpriteSuppliers(spriteResourceLoader, list, executor);
         }).thenApply((list) -> {
             return this.stitch(list, i, executor);
         });

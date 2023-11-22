@@ -1,0 +1,40 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+issueTrackerURL = "https://github.com/CreeperHost/PolyLib/issues"
+license = "Insert License Here"
+
+[[mods]]
+modId = "polylib"
+version = "${version}"
+displayName = "PolyLib"
+authors = "CreeperHost"
+description = '''
+'''
+#logoFile = ""
+
+[[dependencies.polylib]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[20,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.polylib]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.polylib]]
+modId = "architectury"
+mandatory = true
+versionRange = "[7.1.78,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "polylib-forge.mixins.json"
+
+[[mixins]]
+config = "polylib.mixins.json"

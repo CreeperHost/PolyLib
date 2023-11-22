@@ -53,7 +53,6 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
         {
             int drawY = getY();
             Font fontrenderer = minecraft.font;
-            RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             this.isHovered = mouseX >= this.getX() && mouseY >= drawY && mouseX < this.getX() + this.width && mouseY < drawY + this.height;
             int i = this.getHoverState(this.isHovered);
@@ -62,8 +61,11 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             if (drawHeader)
             {
-                guiGraphics.blit(WIDGETS_LOCATION, this.getX(), drawY, 0, 46 + i * 20, this.width / 2, this.height);
-                guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+//                guiGraphics.blitSprite(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
+                //TODO check this out
+                guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), drawY, 0, 46 + i * 20, this.width / 2, this.height);
+                guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
                 int j = 14737632;
 
                 if (!this.active)
@@ -94,11 +96,10 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
 
                     int subHovered = ourHovered ? 2 : 0;
 
-                    RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                     // TODO: Fix rendering being dodgy, but it is "good enough" to avoid spending too much time on right now
-                    guiGraphics.blit(WIDGETS_LOCATION, this.getX(), drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
-                    guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
+                    guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
+                    guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
 
                     String name = I18n.get(e.getTranslate(selected, true));
                     int textColour = 14737632;

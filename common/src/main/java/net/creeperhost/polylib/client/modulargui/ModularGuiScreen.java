@@ -65,7 +65,7 @@ public class ModularGuiScreen extends Screen {
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (modularGui.renderBackground()) {
-            renderBackground(graphics);
+            renderBackground(graphics, mouseX, mouseY, partialTicks);
         }
         GuiRender render = modularGui.createRender(graphics.bufferSource());
         modularGui.render(render, partialTicks);
@@ -101,9 +101,10 @@ public class ModularGuiScreen extends Screen {
         return modularGui.mouseReleased(mouseX, mouseY, button) || super.mouseReleased(mouseX, mouseY, button);
     }
 
+    //TODO find out what this extra value is
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-        return modularGui.mouseScrolled(mouseX, mouseY, scroll) || super.mouseScrolled(mouseX, mouseY, scroll);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scroll, double g) {
+        return modularGui.mouseScrolled(mouseX, mouseY, scroll) || super.mouseScrolled(mouseX, mouseY, scroll, g);
     }
 
     @Override

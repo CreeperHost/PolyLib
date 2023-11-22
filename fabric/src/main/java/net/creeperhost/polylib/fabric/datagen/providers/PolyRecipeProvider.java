@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 
 import java.nio.file.Path;
@@ -41,7 +42,7 @@ public class PolyRecipeProvider extends FabricRecipeProvider
     }
 
     @Override
-    public void buildRecipes(Consumer<FinishedRecipe> exporter)
+    public void buildRecipes(RecipeOutput exporter)
     {
         values.forEach((resourceLocation, recipeBuilder) -> recipeBuilder.save(exporter, resourceLocation));
     }
