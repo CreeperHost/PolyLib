@@ -8,7 +8,9 @@ modId = "polylib"
 version = "${version}"
 displayName = "PolyLib"
 authors = "CreeperHost"
-description = '''
+description = '''"PolyLib," developed by CreeperHost Ltd.,
+is a compact Minecraft library mod focused on providing a collection of helper classes.
+These classes are designed to simplify various aspects of mod development, offering tools for easier GUI creation and other development enhancements to improve efficiency and user experience.
 '''
 logoFile="polylib_logo.png"
 

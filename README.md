@@ -34,6 +34,11 @@ dependencies {
 dependencies {
     modRuntimeOnly "net.creeperhost:polylib-forge:VERSION"
 }
+
+// NeoForge
+dependencies {
+    modRuntimeOnly "net.creeperhost:polylib-neoforge:VERSION"
+}
 ```
 
 ### Important note for resource packs developers
