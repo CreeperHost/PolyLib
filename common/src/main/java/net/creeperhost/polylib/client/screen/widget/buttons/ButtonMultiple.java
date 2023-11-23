@@ -30,7 +30,6 @@ public class ButtonMultiple extends PolyButton
     {
         if (this.visible)
         {
-            RenderSystem.setShaderTexture(0, resourceLocation);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             guiGraphics.blit(resourceLocation, getX(), getY(), index * 20, getY(), this.width, this.height);
         }
