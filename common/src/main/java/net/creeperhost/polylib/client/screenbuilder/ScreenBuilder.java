@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated(forRemoval = true)
 public class ScreenBuilder
 {
     public static final ResourceLocation DEFAULT_RESOURCE_LOCATION = new ResourceLocation(PolyLib.MOD_ID,
