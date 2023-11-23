@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.forge.inventory.energy;
+package net.creeperhost.polylib.neoforge.inventory.energy;
 
 import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
 import net.creeperhost.polylib.inventory.item.ItemStackHolder;

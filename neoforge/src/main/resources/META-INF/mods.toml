@@ -37,7 +37,7 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[mixins]]
-config = "polylib-forge.mixins.json"
+config = "polylib-neoforge.mixins.json"
 
 [[mixins]]
 config = "polylib.mixins.json"

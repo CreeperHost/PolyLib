@@ -1,8 +1,8 @@
-package net.creeperhost.polylib.forge;
+package net.creeperhost.polylib.neoforge;
 
 import net.creeperhost.polylib.PolyLibPlatform;
-import net.creeperhost.polylib.forge.inventory.energy.NeoForgeEnergyManager;
-import net.creeperhost.polylib.forge.inventory.energy.NeoForgeItemEnergyManager;
+import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyManager;
+import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyManager;
 import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
 import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
 import net.minecraft.core.Direction;

@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.forge;
+package net.creeperhost.polylib.neoforge;
 
 import net.creeperhost.polylib.PolyLibClient;
 import net.minecraft.client.gui.Font;

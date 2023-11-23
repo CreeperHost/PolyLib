@@ -9,10 +9,12 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class NeoForgeClientEvents
 {
     public static void init() {
+        NeoForge.EVENT_BUS.addListener(NeoForgeClientEvents::registerClientCommands);
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(NeoForgeClientEvents::registerReloadListeners);
     }

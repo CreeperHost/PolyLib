@@ -1,10 +1,10 @@
-package net.creeperhost.polylib.forge;
+package net.creeperhost.polylib.neoforge;
 
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.events.ChunkEvents;
-import net.creeperhost.polylib.forge.inventory.energy.NeoForgeEnergyContainer;
-import net.creeperhost.polylib.forge.inventory.energy.NeoForgeItemEnergyContainer;
-import net.creeperhost.polylib.forge.inventory.item.ItemContainerWrapper;
+import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyContainer;
+import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyContainer;
+import net.creeperhost.polylib.neoforge.inventory.item.ItemContainerWrapper;
 import net.creeperhost.polylib.inventory.energy.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
