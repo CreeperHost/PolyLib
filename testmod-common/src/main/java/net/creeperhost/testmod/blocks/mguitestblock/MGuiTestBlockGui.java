@@ -45,32 +45,33 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
         gui.setGuiTitle(menu.blockEntity.getDisplayName());
 
         //This is just something I did for fun, Take a look at ModularGuiTest to see an example of how the root element should be setup.
-        GuiDVD dvd = (GuiDVD) gui.getRoot();
-        GuiTexture root = new GuiTexture(dvd.getContentElement(), TestModTextures.get(backgroundTexture));
-        Constraints.bind(root, dvd.getContentElement());
-        dvd.onBounce(bounce -> root.setColour(0xFF000000 | ChatFormatting.getById(1 + (bounce % 15)).getColor()));
+        GuiElement<?> root = gui.getRoot();
+        GuiTexture background = new GuiTexture(root, TestModTextures.get(backgroundTexture));
+        Constraints.bind(background, root);
+        GuiDVD dvd = (GuiDVD) gui.getDirectRoot();
+        dvd.onBounce(bounce -> background.setColour(0xFF000000 | ChatFormatting.getById(1 + (bounce % 15)).getColor()));
 
         //Ok. no more memes beyond this point.
 
         //Setup Gui Title element
-        GuiText title = new GuiText(root, gui.getGuiTitle())
+        GuiText title = new GuiText(background, gui.getGuiTitle())
                 .setTextColour(0x404040)
                 .setShadow(false)
-                .constrain(TOP, relative(root.get(TOP), 5))
+                .constrain(TOP, relative(background.get(TOP), 5))
                 .constrain(HEIGHT, Constraint.literal(8))
-                .constrain(LEFT, relative(root.get(LEFT), 5))
-                .constrain(RIGHT, relative(root.get(RIGHT), -5));
+                .constrain(LEFT, relative(background.get(LEFT), 5))
+                .constrain(RIGHT, relative(background.get(RIGHT), -5));
 
         //Setup Player Inventory element, This controls the rendering of inventory slots AND the stacks in those slots. It also handles positioning the slots.
-        var inventory = GuiSlots.playerAllSlots(root, screenAccess, menu.main, menu.hotBar, menu.armor, menu.offhand);
+        var inventory = GuiSlots.playerAllSlots(background, screenAccess, menu.main, menu.hotBar, menu.armor, menu.offhand);
         inventory.container
                 .constrain(WIDTH, null)
-                .constrain(LEFT, match(root.get(LEFT)))
-                .constrain(RIGHT, match(root.get(RIGHT)))
-                .constrain(BOTTOM, relative(root.get(BOTTOM), -6));
+                .constrain(LEFT, match(background.get(LEFT)))
+                .constrain(RIGHT, match(background.get(RIGHT)))
+                .constrain(BOTTOM, relative(background.get(BOTTOM), -6));
 
         //Player inventory label (TODO, Add an option to include this in GuiSlots creation methods)
-        GuiText invLabel = new GuiText(root, Component.translatable("container.inventory"))
+        GuiText invLabel = new GuiText(background, Component.translatable("container.inventory"))
                 .setTextColour(0x404040)
                 .setShadow(false)
                 .setAlignment(Align.LEFT)
@@ -82,14 +83,14 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
         //Add Machine input slots
         int inputSpacing = 8;
         Material[] inputIcons = new Material[]{PolyTextures.get("slots/dust"), PolyTextures.get("slots/bucket"), PolyTextures.get("slots/bucket")};
-        GuiSlots inputSlots = new GuiSlots(root, screenAccess, menu.machineInputs, 3)
+        GuiSlots inputSlots = new GuiSlots(background, screenAccess, menu.machineInputs, 3)
                 .setXSlotSpacing(inputSpacing)
                 .setEmptyIcon(slot -> inputIcons[slot])
                 .constrain(LEFT, match(invLabel.get(LEFT)))
                 .constrain(BOTTOM, relative(invLabel.get(TOP), -4));
 
         //Add Energy Bar
-        var energyBar = GuiEnergyBar.simpleBar(root);
+        var energyBar = GuiEnergyBar.simpleBar(background);
         energyBar.container
                 .constrain(LEFT, match(inputSlots.get(LEFT)))
                 .constrain(BOTTOM, relative(inputSlots.get(TOP), -2))
@@ -100,7 +101,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .setEnergy(() -> (long) menu.energy.get());
 
         //Add Tanks
-        var lavaTank = GuiFluidTank.simpleTank(root);
+        var lavaTank = GuiFluidTank.simpleTank(background);
         lavaTank.container
                 .constrain(BOTTOM, match(energyBar.container.get(BOTTOM)))
                 .constrain(LEFT, relative(energyBar.container.get(RIGHT), inputSpacing))
@@ -110,7 +111,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .setCapacity(() -> (long) menu.tankCap.get())
                 .setFluidStack(menu.lavaTank::get);
 
-        var waterTank = GuiFluidTank.simpleTank(root);
+        var waterTank = GuiFluidTank.simpleTank(background);
         waterTank.container
                 .constrain(BOTTOM, match(lavaTank.container.get(BOTTOM)))
                 .constrain(LEFT, relative(lavaTank.container.get(RIGHT), inputSpacing))
@@ -121,19 +122,19 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .setFluidStack(menu.waterTank::get);
 
         //Add Progress Icon
-        GuiProgressIcon progress = new GuiProgressIcon(root)
+        GuiProgressIcon progress = new GuiProgressIcon(background)
                 .setBackground(PolyTextures.get("widgets/progress_arrow_empty"))
                 .setAnimated(PolyTextures.get("widgets/progress_arrow_full"))
                 .setProgress(() -> menu.progressSync.get() / 100D)
                 .setTooltipSingle(() -> Component.literal(menu.progressSync.get() + "%"))
                 .setTooltipDelay(0)
                 .constrain(TOP, midPoint(waterTank.container.get(TOP), inputSlots.get(BOTTOM), -8))
-                .constrain(LEFT, midPoint(root.get(LEFT), root.get(RIGHT), -11))
+                .constrain(LEFT, midPoint(background.get(LEFT), background.get(RIGHT), -11))
                 .constrain(WIDTH, literal(22))
                 .constrain(HEIGHT, literal(16));
 
         //Add Output Scrolling Window
-        var scrollWindow = GuiScrolling.simpleScrollWindow(root, true, false);
+        var scrollWindow = GuiScrolling.simpleScrollWindow(background, true, false);
         scrollWindow.container
                 .constrain(TOP, match(waterTank.container.get(TOP)))
                 .constrain(RIGHT, match(inventory.getPart(2).get(RIGHT)))
@@ -147,7 +148,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .constrain(LEFT, match(content.get(LEFT)));
 
         //Ok
-        GuiButton dvdButton = GuiButton.vanillaAnimated(root, Component.literal("DVD"))
+        GuiButton dvdButton = GuiButton.vanillaAnimated(background, Component.literal("DVD"))
                 .onPress(dvd::start)
                 .constrain(LEFT, relative(inputSlots.get(RIGHT), 8))
                 .constrain(RIGHT, relative(scrollWindow.container.get(LEFT), -8))
