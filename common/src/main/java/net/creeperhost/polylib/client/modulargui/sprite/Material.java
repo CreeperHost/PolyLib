@@ -114,13 +114,13 @@ public class Material {
         @Override
         public float getU(float u)
         {
-            return (float) u / 16;
+            return u / 16;
         }
 
         @Override
         public float getV(float v)
         {
-            return (float) v / 16;
+            return v / 16;
         }
     }
 }
