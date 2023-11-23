@@ -1,78 +1,113 @@
 package net.creeperhost.testmod.blocks.inventorytestblock;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.fluid.FluidStack;
-import net.creeperhost.polylib.client.screen.widget.LoadingSpinnerWidget;
-import net.creeperhost.polylib.client.screen.widget.buttons.ButtonInfoTab;
-import net.creeperhost.polylib.client.screen.widget.buttons.ButtonItemStack;
-import net.creeperhost.polylib.client.screen.widget.buttons.ButtonRedstoneControl;
-import net.creeperhost.polylib.client.screenbuilder.ScreenBuilder;
-import net.creeperhost.polylib.data.EnumRedstoneState;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.creeperhost.polylib.PolyLib;
+import net.creeperhost.polylib.client.modulargui.ModularGui;
+import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
+import net.creeperhost.polylib.client.modulargui.elements.*;
+import net.creeperhost.polylib.client.modulargui.lib.Constraints;
+import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
+import net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvider;
+import net.creeperhost.polylib.client.modulargui.lib.container.ContainerScreenAccess;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Align;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
+import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
+import net.creeperhost.testmod.TestMod;
+import net.creeperhost.testmod.client.gui.TestModTextures;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import org.jetbrains.annotations.NotNull;
 
-public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerInventoryTestBlock>
+import java.util.function.Function;
+
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.*;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.RIGHT;
+
+public class ScreenInventoryTestBlock extends ContainerGuiProvider<ContainerInventoryTestBlock> implements DynamicTextures
 {
-    ScreenBuilder screenBuilder = new ScreenBuilder();
+    private String BACKGROUND_TEXTURE;
 
-    public ScreenInventoryTestBlock(ContainerInventoryTestBlock abstractContainerMenu, Inventory inventory, Component component)
+    @Override
+    public void makeTextures(Function<DynamicTexture, String> textures)
     {
-        super(abstractContainerMenu, inventory, component);
-        this.imageWidth = 190;
-        this.imageHeight = 220;
-        this.inventoryLabelY = 118;
+        BACKGROUND_TEXTURE = dynamicTexture(textures, new ResourceLocation(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"),
+                new ResourceLocation(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
     }
 
     @Override
-    protected void init()
+    public GuiElement<?> createRootElement(ModularGui gui)
     {
-        super.init();
-        addRenderableWidget(new ButtonRedstoneControl(this, leftPos + imageWidth - 29, topPos + 10, 20, 20, EnumRedstoneState.IGNORED, button ->
-        {
-
-        }));
-
-        addRenderableWidget(new ButtonInfoTab(this, leftPos - 20, topPos, 20, 20, Component.literal("i"), button ->
-        {
-
-        }));
-
-        addRenderableWidget(new LoadingSpinnerWidget(leftPos + 80, topPos + 20, 18, 18,  Component.literal("test"), new ItemStack(Items.COOKED_BEEF), () -> true));
+        GuiManipulable root = new GuiManipulable(gui)
+                .addResizeHandles(4, false)
+                .addMoveHandle(10);
+        root.enableCursors(true);
+        GuiTexture bg = new GuiTexture(root.getContentElement(), TestModTextures.get(BACKGROUND_TEXTURE)).dynamicTexture();
+        Constraints.bind(bg, root.getContentElement());
+        return root;
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics guiGraphics, float f, int mouseX, int mouseY)
+    public void buildGui(ModularGui gui, ContainerScreenAccess<ContainerInventoryTestBlock> screenAccess)
     {
-        int progress = getMenu().getContainerData().get(0);
-//        renderBackground(guiGraphics, mouseX, mouseY, f);
-        screenBuilder.drawDefaultBackground(guiGraphics, leftPos, topPos, imageWidth, imageHeight, 256, 256);
-        screenBuilder.drawPlayerSlots(guiGraphics, leftPos + imageWidth / 2, topPos + 131, true, 256, 256);
+        ContainerInventoryTestBlock menu = screenAccess.getMenu();
+        gui.initStandardGui(226, 220);
+        gui.setGuiTitle(Component.literal("Test Machine"));
 
-        screenBuilder.drawSlot(guiGraphics, leftPos + 40, topPos + 60, 256, 256);
-        screenBuilder.drawSlot(guiGraphics, leftPos + 120, topPos + 60, 256, 256);
+        GuiElement<?> root = gui.getRoot();
+        GuiTexture background = new GuiTexture(root, TestModTextures.get(BACKGROUND_TEXTURE));
+        Constraints.bind(background, root);
 
-        screenBuilder.drawProgressBar(guiGraphics, progress, 100, leftPos + 80, topPos + 60, mouseX, mouseY);
-        FluidStack fluidStack = FluidStack.create(Fluids.WATER, progress * 10);
-        screenBuilder.drawTankWithOverlay(guiGraphics, fluidStack, 1000, leftPos + imageWidth - 30, topPos + 40, 49, mouseX, mouseY);
+        GuiText title = new GuiText(background, gui.getGuiTitle())
+                .setTextColour(0x404040)
+                .setShadow(false)
+                .constrain(TOP, relative(background.get(TOP), 5))
+                .constrain(HEIGHT, Constraint.literal(8))
+                .constrain(LEFT, relative(background.get(LEFT), 5))
+                .constrain(RIGHT, relative(background.get(RIGHT), -5));
 
-        int energy = getMenu().getContainerData().get(1);
-        int maxEnergy = getMenu().getContainerData().get(2);
-        screenBuilder.drawBar(guiGraphics, leftPos + 10, topPos + 20, 80, energy, maxEnergy, mouseX, mouseY, Component.literal(energy + " FE"));
+        var inventory = GuiSlots.playerAllSlots(background, screenAccess, menu.main, menu.hotBar, menu.armor, menu.offhand);
+        inventory.container
+                .constrain(WIDTH, null)
+                .constrain(LEFT, match(background.get(LEFT)))
+                .constrain(RIGHT, match(background.get(RIGHT)))
+                .constrain(BOTTOM, relative(background.get(BOTTOM), -6));
+
+        GuiText invLabel = new GuiText(background, Component.translatable("container.inventory"))
+                .setTextColour(0x404040)
+                .setShadow(false)
+                .setAlignment(Align.LEFT)
+                .constrain(HEIGHT, Constraint.literal(8))
+                .constrain(BOTTOM, relative(inventory.container.get(TOP), -3))
+                .constrain(LEFT, relative(inventory.getPart(1).get(LEFT), 0))
+                .constrain(RIGHT, relative(inventory.primary.get(RIGHT), 0));
+
+        int inputSpacing = 8;
+        GuiSlots inputSlots = new GuiSlots(background, screenAccess, menu.machineInputs, 1)
+                .setXSlotSpacing(inputSpacing)
+                .setEmptyIcon(slot -> PolyTextures.get("slots/dust"))
+                .constrain(LEFT, match(inventory.primary.get(LEFT)))
+                .constrain(BOTTOM, midPoint(title.get(TOP), invLabel.get(TOP)));
+
+        GuiSlots outSlots = new GuiSlots(background, screenAccess, menu.machineOutputs, 1)
+                .setXSlotSpacing(inputSpacing)
+                .setEmptyIcon(slot -> PolyTextures.get("slots/dust"))
+                .constrain(RIGHT, match(inventory.primary.get(RIGHT)))
+                .constrain(BOTTOM, midPoint(title.get(TOP), invLabel.get(TOP)));
+
+        GuiProgressIcon progress = new GuiProgressIcon(background)
+                .setBackground(PolyTextures.get("widgets/progress_arrow_empty"))
+                .setAnimated(PolyTextures.get("widgets/progress_arrow_full"))
+                .setProgress(() -> menu.progressSync.get() / 100D)
+                .setTooltipSingle(() -> Component.literal(menu.progressSync.get() + "%"))
+                .setTooltipDelay(0)
+                .constrain(TOP, midPoint(inputSlots.get(TOP), inputSlots.get(BOTTOM), -8))
+                .constrain(LEFT, midPoint(background.get(LEFT), background.get(RIGHT), -11))
+                .constrain(WIDTH, literal(22))
+                .constrain(HEIGHT, literal(16));
     }
 
-    @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
+    public static ModularGuiContainer<ContainerInventoryTestBlock> create(ContainerInventoryTestBlock menu, Inventory inventory, Component component)
     {
-        super.render(guiGraphics, i, j, f);
-
-        renderTooltip(guiGraphics, i, j);
+        return new ModularGuiContainer<>(menu, inventory, new ScreenInventoryTestBlock());
     }
 }

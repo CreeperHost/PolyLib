@@ -25,33 +25,10 @@ import org.jetbrains.annotations.Nullable;
 public class InventoryTestBlockEntity extends BlockEntity implements PolyEnergyBlock<WrappedBlockEnergyContainer>, ItemInventoryBlock, MenuProvider
 {
     int progress = 0;
-    private SimpleContainerData containerData = new SimpleContainerData(3)
-    {
-        @Override
-        public int get(int id)
-        {
-            return switch (id)
-            {
-                case 0 -> progress;
-                case 1 -> (int) getEnergyStorage().getStoredEnergy();
-                case 2 -> (int) getEnergyStorage().getMaxCapacity();
-                default -> throw new IllegalArgumentException("Invalid id " + id);
-            };
-        }
 
-        @Override
-        public void set(int i, int j)
-        {
-            throw new IllegalStateException("Cannot set values through IIntArray");
-        }
-
-        @Override
-        public int getCount()
-        {
-            return 3;
-        }
-    };
     private SimpleItemInventory simpleItemInventory;
+    private SimpleItemInventory outputInv = new SimpleItemInventory(this, 1);
+
     private WrappedBlockEnergyContainer energyContainer;
 
     public InventoryTestBlockEntity(BlockPos blockPos, BlockState blockState)
@@ -67,7 +44,7 @@ public class InventoryTestBlockEntity extends BlockEntity implements PolyEnergyB
             if(progress >= 100)
             {
                 progress = 0;
-                getContainer().setItem(1, new ItemStack(Items.DIAMOND));
+                getOutputContainer().setItem(0, new ItemStack(Items.DIAMOND));
             }
         }
     }
@@ -75,7 +52,12 @@ public class InventoryTestBlockEntity extends BlockEntity implements PolyEnergyB
     @Override
     public SerializableContainer getContainer()
     {
-        return simpleItemInventory == null ? this.simpleItemInventory = new SimpleItemInventory(this, 2) : this.simpleItemInventory;
+        return simpleItemInventory == null ? this.simpleItemInventory = new SimpleItemInventory(this, 1) : this.simpleItemInventory;
+    }
+
+    public SerializableContainer getOutputContainer()
+    {
+        return outputInv == null ? this.outputInv = new SimpleItemInventory(this, 1) : this.outputInv;
     }
 
     @Override
@@ -94,14 +76,6 @@ public class InventoryTestBlockEntity extends BlockEntity implements PolyEnergyB
     @Override
     public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player)
     {
-        return new ContainerInventoryTestBlock(id, inventory, this, containerData);
+        return new ContainerInventoryTestBlock(id, inventory, this);
     }
-
-//    @Override
-//    public CompoundTag getUpdateTag()
-//    {
-//        CompoundTag tag = new CompoundTag();
-//        this.saveAdditional(tag);
-//        return tag;
-//    }
 }

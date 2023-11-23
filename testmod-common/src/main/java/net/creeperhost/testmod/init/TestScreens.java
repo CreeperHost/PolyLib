@@ -12,7 +12,7 @@ public class TestScreens
 {
     public static void init()
     {
-        MenuRegistry.registerScreenFactory(TestContainers.TEST_INVENTORY_CONTAINER.get(), ScreenInventoryTestBlock::new);
+        MenuRegistry.registerScreenFactory(TestContainers.TEST_INVENTORY_CONTAINER.get(), ScreenInventoryTestBlock::create);
         MenuRegistry.registerScreenFactory(TestContainers.MGUI_TEST_BLOCK_CONTAINER.get(), MGuiTestBlockGui::create);
     }
 }
