@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
-@Deprecated //Most if not all of these methods now exist in GuiGraphics.
+@Deprecated(forRemoval = true) //Most if not all of these methods now exist in GuiGraphics.
 public class ScreenHelper
 {
     public void renderHead(GuiGraphics guiGraphics, int x, int y)

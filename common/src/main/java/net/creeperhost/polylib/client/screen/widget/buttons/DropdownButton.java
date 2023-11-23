@@ -45,6 +45,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
 
     public boolean flipped = false;
 
+    //TODO, This could do with a rewrite
     @SuppressWarnings("Duplicates")
     @Override
     public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
@@ -61,8 +62,6 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             if (drawHeader)
             {
-//                guiGraphics.blitSprite(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
-
                 //TODO check this out
                 guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), drawY, 0, 46 + i * 20, this.width / 2, this.height);
                 guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
