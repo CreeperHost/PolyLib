@@ -345,8 +345,8 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @param scroll Scroll direction and amount
      * @return true if this event has been consumed.
      */
-    public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-        return root.mouseScrolled(mouseX, mouseY, scroll, false);
+    public boolean mouseScrolled(double mouseX, double mouseY, double leftRightScroll, double scroll) {
+        return root.mouseScrolled(mouseX, mouseY, leftRightScroll, scroll, false);
     }
 
     /**

@@ -101,10 +101,9 @@ public class ModularGuiScreen extends Screen {
         return modularGui.mouseReleased(mouseX, mouseY, button) || super.mouseReleased(mouseX, mouseY, button);
     }
 
-    //TODO find out what this extra value is
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scroll, double g) {
-        return modularGui.mouseScrolled(mouseX, mouseY, scroll) || super.mouseScrolled(mouseX, mouseY, scroll, g);
+    public boolean mouseScrolled(double mouseX, double mouseY, double left_right_scroll, double scroll) {
+        return modularGui.mouseScrolled(mouseX, mouseY, left_right_scroll, scroll) || super.mouseScrolled(mouseX, mouseY, left_right_scroll, scroll);
     }
 
     @Override

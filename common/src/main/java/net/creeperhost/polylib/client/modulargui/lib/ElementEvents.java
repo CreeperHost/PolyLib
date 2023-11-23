@@ -142,10 +142,10 @@ public interface ElementEvents {
      * @param consumed Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    default boolean mouseScrolled(double mouseX, double mouseY, double scroll, boolean consumed) {
+    default boolean mouseScrolled(double mouseX, double mouseY, double leftRightScroll, double scroll, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
-                consumed |= child.mouseScrolled(mouseX, mouseY, scroll, consumed);
+                consumed |= child.mouseScrolled(mouseX, mouseY, leftRightScroll, scroll, consumed);
             }
         }
         return consumed || mouseScrolled(mouseX, mouseY, scroll) || blockMouseEvents();
