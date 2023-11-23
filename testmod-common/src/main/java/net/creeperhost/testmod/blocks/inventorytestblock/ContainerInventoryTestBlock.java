@@ -6,6 +6,7 @@ import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.containers.PolyContainer;
 import net.creeperhost.polylib.containers.slots.PolySlot;
 import net.creeperhost.polylib.data.serializable.ByteData;
+import net.creeperhost.polylib.data.serializable.IntData;
 import net.creeperhost.testmod.init.TestContainers;
 import net.creeperhost.testmod.network.TestNetwork;
 import net.minecraft.client.Minecraft;
@@ -30,6 +31,8 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu
     public final SlotGroup machineOutputs = createSlotGroup(3, 1, 0, 2);
 
     public final DataSync<Byte> progressSync;
+    public final DataSync<Integer> energy;
+    public final DataSync<Integer> maxEnergy;
 
     public ContainerInventoryTestBlock(int id, Inventory playerInv, FriendlyByteBuf extraData)
     {
@@ -44,6 +47,8 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu
         setClientToServerPacketHandler(TestNetwork::sendContainerPacketToServer);
 
         progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
+        energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.getEnergyStorage().getStoredEnergy());
+        maxEnergy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.getEnergyStorage().getMaxCapacity());
 
         main.addPlayerMain(inventory);
         hotBar.addPlayerBar(inventory);
