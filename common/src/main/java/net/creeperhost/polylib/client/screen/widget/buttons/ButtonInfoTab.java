@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated(forRemoval = true)
 public class ButtonInfoTab extends PolyButton
 {
     boolean isOpen = false;
