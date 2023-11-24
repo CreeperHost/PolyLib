@@ -56,15 +56,13 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
             Font fontrenderer = minecraft.font;
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             this.isHovered = mouseX >= this.getX() && mouseY >= drawY && mouseX < this.getX() + this.width && mouseY < drawY + this.height;
-            int i = this.getHoverState(this.isHovered);
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             if (drawHeader)
             {
-                //TODO check this out
-                guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), drawY, 0, 46 + i * 20, this.width / 2, this.height);
-                guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+                guiGraphics.blitSprite(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
                 int j = 14737632;
 
                 if (!this.active)
@@ -75,7 +73,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
                     j = 16777120;
                 }
 
-                guiGraphics.drawCenteredString(fontrenderer, this.baseButtonText, this.getX() + this.width / 2, this.getX() + (this.height - 8) / 2, j);
+                guiGraphics.drawCenteredString(fontrenderer, this.baseButtonText, this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j);
             }
 
             if (dropdownOpen)
@@ -93,13 +91,8 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
                     drawY += yOffset;
                     boolean ourHovered = mouseX >= this.getX() && mouseY >= drawY && mouseX < this.getX() + this.width && mouseY < drawY + this.height - 2;
 
-                    int subHovered = ourHovered ? 2 : 0;
-
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                    // TODO: Fix rendering being dodgy, but it is "good enough" to avoid spending too much time on right now
-                    guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), drawY, 0, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
-                    guiGraphics.blit(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX() + this.width / 2, drawY, 200 - this.width / 2, 46 + subHovered * 20 + 1, this.width / 2, this.height - 1);
-
+                    guiGraphics.blitSprite(SPRITES.get(this.active, ourHovered), this.getX(), drawY, this.getWidth(), this.getHeight());
                     String name = I18n.get(e.getTranslate(selected, true));
                     int textColour = 14737632;
 
