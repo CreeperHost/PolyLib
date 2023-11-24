@@ -52,3 +52,6 @@ mutable field net/minecraft/world/inventory/Slot x I
 mutable field net/minecraft/world/inventory/Slot y I
 
 accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (Lnet/minecraft/world/inventory/Slot;)Lnet/minecraft/world/inventory/Slot;
+
+accessible field net/minecraft/client/renderer/MultiBufferSource$BufferSource fixedBuffers Ljava/util/Map;
+accessible field net/minecraft/client/renderer/MultiBufferSource$BufferSource builder Lcom/mojang/blaze3d/vertex/BufferBuilder;

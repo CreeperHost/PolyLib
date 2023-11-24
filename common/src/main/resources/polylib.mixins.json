@@ -1,14 +1,12 @@
 {
   "required": true,
   "package": "net.creeperhost.polylib.mixins",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "minVersion": "0.7.11",
   "client": [
-    "AccessorMultiBufferSource",
     "MixinClientLevelData"
   ],
   "mixins": [
-    "InvokerSpawnPlacements",
     "MixinLevelSettings"
   ],
   "injectors": {
