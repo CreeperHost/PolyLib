@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.creeperhost.polylib.client.render.rendertypes.GhostRenderType;
-import net.creeperhost.polylib.mixins.AccessorMultiBufferSource;
+//import net.creeperhost.polylib.mixins.AccessorMultiBufferSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -32,8 +32,8 @@ public class GhostBlockRenderer
 
     public static MultiBufferSource.BufferSource initBuffers(MultiBufferSource.BufferSource original)
     {
-        BufferBuilder fallback = ((AccessorMultiBufferSource) original).getFallbackBuffer();
-        Map<RenderType, BufferBuilder> layerBuffers = ((AccessorMultiBufferSource) original).getFixedBuffers();
+        BufferBuilder fallback = original.builder;
+        Map<RenderType, BufferBuilder> layerBuffers = original.fixedBuffers;
         Map<RenderType, BufferBuilder> remapped = new Object2ObjectLinkedOpenHashMap<>();
         for (Map.Entry<RenderType, BufferBuilder> e : layerBuffers.entrySet())
         {
