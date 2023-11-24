@@ -15,7 +15,7 @@ mutable field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Pat
 accessible field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 mutable field net/minecraft/data/recipes/RecipeProvider recipePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 
-accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I
+#accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I
 
 accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
 accessible method net/minecraft/client/gui/components/AbstractSelectionList$Entry <init> ()V
