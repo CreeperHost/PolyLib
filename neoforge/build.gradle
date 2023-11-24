@@ -6,7 +6,9 @@ def ENV = System.getenv()
 
 architectury {
     platformSetupLoomIde()
-    neoForge()
+    neoForge {
+        platformPackage = "forge"
+    }
 }
 
 configurations {
@@ -67,6 +69,7 @@ remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier = null
+    atAccessWideners.add('polylib.accesswidener')
 }
 
 jar {
