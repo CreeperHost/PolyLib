@@ -9,15 +9,6 @@ architectury {
     neoForge()
 }
 
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    neoForge {
-//        convertAccessWideners = true
-//        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-    }
-}
-
 configurations {
     common
     shadowLib
