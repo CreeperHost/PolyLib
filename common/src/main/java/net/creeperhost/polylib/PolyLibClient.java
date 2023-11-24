@@ -28,7 +28,6 @@ public class PolyLibClient
         {
             DevelopmentTools.initClient();
         }
-
     }
 
     @ExpectPlatform
