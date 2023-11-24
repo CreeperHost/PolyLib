@@ -102,8 +102,8 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double left_right_scroll, double scroll) {
-        return modularGui.mouseScrolled(mouseX, mouseY, left_right_scroll, scroll) || super.mouseScrolled(mouseX, mouseY, left_right_scroll, scroll);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        return modularGui.mouseScrolled(mouseX, mouseY, scrollX, scrollY) || super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
     @Override

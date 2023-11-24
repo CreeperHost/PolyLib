@@ -289,8 +289,7 @@ public class GuiButton extends GuiElement<GuiButton> {
     public static GuiButton vanillaAnimated(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label) {
         GuiButton button = new GuiButton(parent);
         GuiTexture texture = new GuiTexture(button, PolyTextures.getter(() -> button.toggleState() || button.isPressed() ? "dynamic/button_pressed" : "dynamic/button_vanilla"));
-        //TODO, Disable button dynamicTexture until @Brandon gets a chance to look at it
-//        texture.dynamicTexture();
+        texture.dynamicTexture();
         GuiRectangle highlight = new GuiRectangle(button).border(() -> button.isMouseOver() ? 0xFFFFFFFF : 0);
 
         Constraints.bind(texture, button);

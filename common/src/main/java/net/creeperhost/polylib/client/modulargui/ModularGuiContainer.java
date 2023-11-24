@@ -72,8 +72,10 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
 
         modularGui.setVanillaSlotRendering(false);
         if (modularGui.renderBackground()) {
+            renderingBackground = true;
             renderBackground(graphics, mouseX, mouseY, partialTicks);
         }
+        renderingBackground = false;
         GuiRender render = modularGui.createRender(graphics.bufferSource());
         modularGui.render(render, partialTicks);
 
@@ -82,6 +84,12 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         if (!handleFloatingItemRender(render, mouseX, mouseY) && !renderHoveredStackToolTip(render, mouseX, mouseY)) {
             modularGui.renderOverlay(render, partialTicks);
         }
+    }
+
+    private boolean renderingBackground = false;
+    @Override
+    public void renderBackground(GuiGraphics guiGraphics, int i, int j, float f) {
+        if (renderingBackground) super.renderBackground(guiGraphics, i, j, f);
     }
 
     protected boolean handleFloatingItemRender(GuiRender render, int mouseX, int mouseY) {
@@ -165,8 +173,8 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double leftRightScroll, double scroll) {
-        return modularGui.mouseScrolled(mouseX, mouseY, leftRightScroll, scroll) || super.mouseScrolled(mouseX, mouseY, leftRightScroll, scroll);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        return modularGui.mouseScrolled(mouseX, mouseY, scrollX, scrollY) || super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
     @Override

@@ -1130,10 +1130,10 @@ public class GuiRender extends LegacyRender {
         int w = tex.contents().width();
         int h = tex.contents().height();
         //@formatter:off
-        builder.vertex(mat, x,         y + height, 0).color(red, green, blue, alpha).uv(tex.getU((textureX / w) * 16F),          tex.getV(((textureY + height) / h) * 16)).endVertex();
-        builder.vertex(mat, x + width, y + height, 0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w) * 16), tex.getV(((textureY + height) / h) * 16)).endVertex();
-        builder.vertex(mat, x + width, y,          0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w) * 16), tex.getV(((textureY) / h) * 16)).endVertex();
-        builder.vertex(mat, x,         y,          0).color(red, green, blue, alpha).uv(tex.getU((textureX / w) * 16),           tex.getV(((textureY) / h) * 16)).endVertex();
+        builder.vertex(mat, x,         y + height, 0).color(red, green, blue, alpha).uv(tex.getU((textureX / w)),           tex.getV(((textureY + height) / h))).endVertex();
+        builder.vertex(mat, x + width, y + height, 0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w)), tex.getV(((textureY + height) / h))).endVertex();
+        builder.vertex(mat, x + width, y,          0).color(red, green, blue, alpha).uv(tex.getU(((textureX + width) / w)), tex.getV(((textureY) / h))).endVertex();
+        builder.vertex(mat, x,         y,          0).color(red, green, blue, alpha).uv(tex.getU((textureX / w)),           tex.getV(((textureY) / h))).endVertex();
         //@formatter:on
     }
 

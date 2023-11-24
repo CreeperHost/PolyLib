@@ -117,38 +117,42 @@ public interface ElementEvents {
     /**
      * Override this method to implement handling for the mouseScrolled event.
      * This event propagates through the entire gui element stack from top to bottom, If eny element consumes the event it will not propagate any further.
-     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #mouseScrolled(double, double, double, boolean)}
+     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #mouseScrolled(double, double, double, double, boolean)}
      * <p>
      * Note: You do not need to call super when overriding this interface method.
      *
      * @param mouseX Mouse X position
      * @param mouseY Mouse Y position
-     * @param scroll Scroll direction and amount
+     * @param scrollX Scroll offset on x-axis.
+     *                Not really used, most likely requires an input device that supports scrolling in the x-axis.
+     * @param scrollY Scroll offset on y-axis.
      * @return true to consume event.
      */
-    default boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
+    default boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         return false;
     }
 
     /**
      * Root handler for mouseScrolled event. This method will always be called for all elements even if the event has already been consumed.
-     * There are a few uses for this method, but the fast majority of mouseScrolled handling should be implemented via {@link #mouseScrolled(double, double, double)}
+     * There are a few uses for this method, but the fast majority of mouseScrolled handling should be implemented via {@link #mouseScrolled(double, double, double, double)}
      * <p>
      * Note: If overriding this method, do so with caution, You must either return true (if you wish to consume the event) or you must return the result of the super call.
      *
      * @param mouseX   Mouse X position
      * @param mouseY   Mouse Y position
-     * @param scroll   Scroll direction and amount
+     * @param scrollX Scroll offset on x-axis.
+     *                Not really used, most likely requires an input device that supports scrolling in the x-axis.
+     * @param scrollY Scroll offset on y-axis.
      * @param consumed Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    default boolean mouseScrolled(double mouseX, double mouseY, double leftRightScroll, double scroll, boolean consumed) {
+    default boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
-                consumed |= child.mouseScrolled(mouseX, mouseY, leftRightScroll, scroll, consumed);
+                consumed |= child.mouseScrolled(mouseX, mouseY, scrollX, scrollY, consumed);
             }
         }
-        return consumed || mouseScrolled(mouseX, mouseY, scroll) || blockMouseEvents();
+        return consumed || mouseScrolled(mouseX, mouseY, scrollX, scrollY) || blockMouseEvents();
     }
 
     /**

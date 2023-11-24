@@ -342,11 +342,13 @@ public class ModularGui implements GuiParent<ModularGui> {
      *
      * @param mouseX Mouse X position
      * @param mouseY Mouse Y position
-     * @param scroll Scroll direction and amount
+     * @param scrollX Scroll offset on x-axis.
+     *                Not really used, most likely requires an input device that supports scrolling in the x-axis.
+     * @param scrollY Scroll offset on y-axis.
      * @return true if this event has been consumed.
      */
-    public boolean mouseScrolled(double mouseX, double mouseY, double leftRightScroll, double scroll) {
-        return root.mouseScrolled(mouseX, mouseY, leftRightScroll, scroll, false);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        return root.mouseScrolled(mouseX, mouseY, scrollX, scrollY, false);
     }
 
     /**
