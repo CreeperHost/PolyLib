@@ -1,20 +1,20 @@
 package net.creeperhost.polylib.client.modulargui.sprite;
 
+import net.minecraft.ResourceLocationException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.TextureAtlasHolder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
-import org.apache.commons.lang3.NotImplementedException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 /**
  * Created by brandon3055 on 21/10/2023
  */
 public class SpriteUploader extends TextureAtlasHolder {
+    private static final Logger LOGGER = LogManager.getLogger();
     private final String prefix;
     private final ResourceLocation textureSource;
 
@@ -31,10 +31,16 @@ public class SpriteUploader extends TextureAtlasHolder {
     @Override
     protected Stream<ResourceLocation> getResourcesToLoad() {
         Minecraft mc = Minecraft.getInstance();
-        return mc.getResourceManager().listResources(textureSource.getPath(), s -> s.endsWith(".png"))
-                .stream()
-                .filter(e -> e.getNamespace().equals(textureSource.getNamespace()))
-                .map(e -> new ResourceLocation(e.getNamespace(), e.getPath().replace(".png", "").replace("textures/" + prefix + "/", "")));
+        try {
+            return mc.getResourceManager().listResources(textureSource.getPath(), s -> s.endsWith(".png") && ResourceLocation.isValidResourceLocation(s))
+                    .stream()
+                    .filter(e -> e.getNamespace().equals(textureSource.getNamespace()))
+                    .map(e -> new ResourceLocation(e.getNamespace(), e.getPath().replace(".png", "").replace("textures/" + prefix + "/", "")));
+        } catch (ResourceLocationException e) {
+            LOGGER.error("An error occurred while attempting to find mod resources.");
+            LOGGER.error("This may be caused by a mod including an invalid file in their resources.", e);
+            return Stream.empty();
+        }
     }
 
     @Override
