@@ -1,9 +1,10 @@
 package net.creeperhost.polylib;
 
-import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
+import net.fabricmc.api.EnvType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +15,10 @@ public class PolyLib
 
     public static void init()
     {
-        ClientLifecycleEvent.CLIENT_SETUP.register(instance -> PolyLibClient.init());
+        if(Platform.getEnv() == EnvType.CLIENT)
+        {
+            PolyLibClient.init();
+        }
 
         TickEvent.SERVER_LEVEL_PRE.register(MultiblockRegistry::tickStart);
         ChunkEvents.CHUNK_LOAD_EVENT.register(MultiblockRegistry::onChunkLoaded);
