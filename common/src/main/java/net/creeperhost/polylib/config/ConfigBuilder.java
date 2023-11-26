@@ -50,7 +50,7 @@ public class ConfigBuilder
     public ConfigBuilder(@NotNull String configName, @NotNull Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
-        this.CONFIG_PATH = Platform.getConfigFolder().resolve(configName + ".json");
+        this.CONFIG_PATH = Platform.getConfigFolder().resolve(configName + ".json5");
         this.CONFIG_DATA_CLASS = clazz;
         if (CONFIG_PATH.toFile().exists())
         {
