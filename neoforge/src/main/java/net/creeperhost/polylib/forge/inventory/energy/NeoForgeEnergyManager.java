@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.neoforge.inventory.energy;
+package net.creeperhost.polylib.forge.inventory.energy;
 
 import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
 import net.minecraft.core.Direction;

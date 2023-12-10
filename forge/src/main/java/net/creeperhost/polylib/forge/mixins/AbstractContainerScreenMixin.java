@@ -17,13 +17,7 @@ public class AbstractContainerScreenMixin {
         return (AbstractContainerScreen) (Object) this;
     }
 
-    @Redirect (
-            method = "render",
-            at = @At (
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V"
-            )
-    )
+    @Redirect (method = "render", at = @At (value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V"))
     private void redirectHighlight(GuiGraphics guiGraphics, int i, int j, int k, int c) {
         if (!(getThis() instanceof ModularGuiContainer screen) || screen.modularGui.vanillaSlotRendering()) {
             AbstractContainerScreen.renderSlotHighlight(guiGraphics, i, j, k);

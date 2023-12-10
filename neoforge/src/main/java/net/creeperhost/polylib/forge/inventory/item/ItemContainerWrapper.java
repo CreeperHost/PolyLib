@@ -1,7 +1,7 @@
-package net.creeperhost.polylib.neoforge.inventory.item;
+package net.creeperhost.polylib.forge.inventory.item;
 
 import net.creeperhost.polylib.Serializable;
-import net.creeperhost.polylib.neoforge.AutoSerializable;
+import net.creeperhost.polylib.forge.AutoSerializable;
 import net.creeperhost.polylib.inventory.item.SerializableContainer;
 import net.minecraft.core.Direction;
 import net.neoforged.neoforge.common.capabilities.Capabilities;

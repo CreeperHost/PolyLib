@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.neoforge;
+package net.creeperhost.polylib.forge;
 
 import net.creeperhost.polylib.Serializable;
 import net.minecraft.nbt.CompoundTag;

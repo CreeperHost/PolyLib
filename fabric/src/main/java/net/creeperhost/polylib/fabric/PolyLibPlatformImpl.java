@@ -1,9 +1,11 @@
 package net.creeperhost.polylib.fabric;
 
+import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.fabric.inventory.energy.FabricEnergyManager;
 import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyManager;
 import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
 import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +20,11 @@ public class PolyLibPlatformImpl
     public static Path getConfigDirectory()
     {
         return FabricLoader.getInstance().getConfigDir();
+    }
+
+    public static boolean isClientSide()
+    {
+        return Platform.getEnv() == EnvType.CLIENT;
     }
 
     public static PlatformItemEnergyManager getItemEnergyManager(ItemStack stack)

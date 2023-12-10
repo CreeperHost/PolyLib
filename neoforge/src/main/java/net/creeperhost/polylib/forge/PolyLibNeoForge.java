@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.neoforge;
+package net.creeperhost.polylib.forge;
 
 import net.creeperhost.polylib.PolyLib;
 import net.neoforged.api.distmarker.Dist;
