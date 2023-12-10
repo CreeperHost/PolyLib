@@ -4,9 +4,11 @@
   "minVersion": "0.7.11",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "MixinLevelSettings"
   ],
   "client": [
-    "AbstractContainerScreenMixin"
+    "AbstractContainerScreenMixin",
+    "MixinClientLevelData"
   ],
   "injectors": {
     "defaultRequire": 1
