@@ -40,7 +40,7 @@ allprojects {
 
     repositories {
         maven { url 'https://maven.creeperhost.net' }
-        maven { url = "https://maven.msrandom.net/repository/root/"}
+        maven { url "https://maven.architectury.dev/" }
     }
 
     tasks.withType(JavaCompile) {

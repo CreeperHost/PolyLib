@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
@@ -21,6 +22,14 @@ public class PolyLibPlatformImpl
     public static Path getConfigDirectory()
     {
         return FMLPaths.CONFIGDIR.get();
+    }
+
+    /**
+     * This is our actual method to {@link PolyLibPlatform#isClientSide()}.
+     */
+    public static boolean isClientSide()
+    {
+        return FMLEnvironment.dist.isClient();
     }
 
     public static PlatformItemEnergyManager getItemEnergyManager(ItemStack stack)

@@ -1,7 +1,7 @@
 package net.creeperhost.testmod.forge.datagen;
 
 import net.creeperhost.polylib.PolyLib;
-import net.creeperhost.polylib.neoforge.datagen.providers.DynamicTextureProvider;
+import net.creeperhost.polylib.forge.datagen.providers.DynamicTextureProvider;
 import net.creeperhost.testmod.TestMod;
 import net.creeperhost.testmod.blocks.mguitestblock.MGuiTestBlockGui;
 import net.creeperhost.testmod.client.gui.ModularGuiTest;

@@ -20,6 +20,12 @@ public class PolyLibPlatform
     }
 
     @ExpectPlatform
+    public static boolean isClientSide()
+    {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
     public static boolean isEnergyContainer(BlockEntity stack, @Nullable Direction direction)
     {
         throw new NotImplementedException("Energy item check not Implemented");

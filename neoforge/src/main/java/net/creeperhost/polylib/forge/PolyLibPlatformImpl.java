@@ -1,13 +1,14 @@
-package net.creeperhost.polylib.neoforge;
+package net.creeperhost.polylib.forge;
 
 import net.creeperhost.polylib.PolyLibPlatform;
-import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyManager;
-import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyManager;
+import net.creeperhost.polylib.forge.inventory.energy.NeoForgeEnergyManager;
+import net.creeperhost.polylib.forge.inventory.energy.NeoForgeItemEnergyManager;
 import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
 import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
 
@@ -21,6 +22,14 @@ public class PolyLibPlatformImpl
     public static Path getConfigDirectory()
     {
         return FMLPaths.CONFIGDIR.get();
+    }
+
+    /**
+     * This is our actual method to {@link PolyLibPlatform#isClientSide()}.
+     */
+    public static boolean isClientSide()
+    {
+        return FMLEnvironment.dist.isClient();
     }
 
     public static PlatformItemEnergyManager getItemEnergyManager(ItemStack stack)
