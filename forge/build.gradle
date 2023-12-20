@@ -1,5 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "me.shedaniel.unified-publishing"
 }
 
 def ENV = System.getenv()
@@ -118,6 +119,31 @@ publishing {
                     username = "githubci"
                     password = "${ENV.CREEPERHOST_MAVEN_TOKEN}"
                 }
+            }
+        }
+    }
+}
+
+unifiedPublishing {
+    project {
+        displayName = "$rootProject.mod_version [Forge]"
+        releaseType = "$rootProject.artifact_type"
+        changelog = ""
+        gameVersions = []
+        gameLoaders = ["forge"]
+        mainPublication tasks.remapJar
+        relations {
+            depends {
+                curseforge = "architectury-api"
+            }
+        }
+
+        var CURSE_API_KEY = project.findProperty("CURSE_API_KEY") ?: System.getenv("CURSE_API_KEY")
+        if (CURSE_API_KEY != null) {
+            curseforge {
+                token = CURSE_API_KEY
+                id = rootProject.curseforge_id
+                gameVersions.addAll rootProject.minecraft_version
             }
         }
     }
