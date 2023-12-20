@@ -83,7 +83,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    archiveClassifier = null
+    archiveClassifier = "forge"
 }
 
 jar {
@@ -126,7 +126,7 @@ publishing {
 
 unifiedPublishing {
     project {
-        displayName = "$rootProject.mod_version [Forge]"
+        displayName = "$rootProject.curseforge_version.${ENV.GITHUB_RUN_NUMBER} [Forge]"
         releaseType = "$rootProject.artifact_type"
         changelog = ""
         gameVersions = []
