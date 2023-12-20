@@ -110,7 +110,7 @@ publishing {
 
 unifiedPublishing {
     project {
-        displayName = "$rootProject.curseforge_version.${ENV.GITHUB_RUN_NUMBER} [Forge]"
+        displayName = "$rootProject.curseforge_version.${ENV.GITHUB_RUN_NUMBER} [Fabric]"
         releaseType = "$rootProject.artifact_type"
         changelog = ""
         gameVersions = []

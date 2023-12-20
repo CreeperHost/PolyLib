@@ -114,7 +114,7 @@ publishing {
 
 unifiedPublishing {
     project {
-        displayName = "$rootProject.curseforge_version.${ENV.GITHUB_RUN_NUMBER} [Forge]"
+        displayName = "$rootProject.curseforge_version.${ENV.GITHUB_RUN_NUMBER} [NeoForge]"
         releaseType = "$rootProject.artifact_type"
         changelog = ""
         gameVersions = []
