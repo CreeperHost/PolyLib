@@ -22,6 +22,8 @@ dependencies {
     {
         exclude group: 'com.google', module: 'gson'
     }
+
+    modApi "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
 }
 
 architectury {

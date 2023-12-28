@@ -265,17 +265,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return (T) this;
     }
 
-    //TODO
-//    @Override
-//    public void setFocused(@Nullable GuiElement<?> element) {
-//        getParent().setFocused(element);
-//    }
-//
-//    @Override
-//    public @Nullable GuiElement<?> getFocused() {
-//        return getParent().getFocused();
-//    }
-
     /**
      * @return the amount of time the cursor has spent inside this element's bounds,
      * resets to zero when the cursor leaves this element's bounds.
@@ -297,6 +286,24 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return getClass().getSimpleName() + "{" +
                 "geometry=" + getRectangle() +
                 '}';
+    }
+
+    /**
+     * Add this element to the list of jei exclusions.
+     * Use this for any elements that render outside the normal gui bounds.
+     * This will ensure JEI does not try to render on top of these elements.
+     */
+    public T jeiExclude() {
+        getModularGui().jeiExclude(this);
+        return (T) this;
+    }
+
+    /**
+     * Remove this element from the list of jei exclusions.
+     */
+    public T removeJEIExclude() {
+        getModularGui().removeJEIExclude(this);
+        return (T) this;
     }
 
     //=== Render / Update ===//

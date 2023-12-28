@@ -125,4 +125,21 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     public static GuiRectangle planeButton(@NotNull GuiParent<?> parent) {
         return new GuiRectangle(parent).shadedRect(0xFFaaaaaa, 0xFF545454, 0xFF6f6f6f);
     }
+
+    public static GuiRectangle toolTipBackground(@NotNull GuiParent<?> parent) {
+        return toolTipBackground(parent, 0xF0100010, 0x505000FF, 0x5028007f);
+    }
+
+    public static GuiRectangle toolTipBackground(@NotNull GuiParent<?> parent, int backgroundColour, int borderColourTop, int borderColourBottom) {
+        return toolTipBackground(parent, backgroundColour, backgroundColour, borderColourTop, borderColourBottom);
+    }
+
+    public static GuiRectangle toolTipBackground(@NotNull GuiParent<?> parent, int backgroundColourTop, int backgroundColourBottom, int borderColourTop, int borderColourBottom) {
+        return new GuiRectangle(parent) {
+            @Override
+            public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
+                render.toolTipBackground(xMin(), yMin(), xSize(), ySize(), backgroundColourTop, backgroundColourBottom, borderColourTop, borderColourBottom, false);
+            }
+        };
+    }
 }

@@ -1,5 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.lib.geometry;
 
+import net.minecraft.client.renderer.Rect2i;
+
 import java.util.function.Supplier;
 
 /**
@@ -55,6 +57,10 @@ public interface Rectangle {
      */
     default Rectangle offsetSize(double xAmount, double yAmount) {
         return create(x(), y(), width() + xAmount, height() + yAmount);
+    }
+
+    default Rect2i toRect2i() {
+        return new Rect2i((int) x(), (int) y(), (int) width(), (int) height());
     }
 
     default boolean intersects(double x, double y, double w, double h) {
