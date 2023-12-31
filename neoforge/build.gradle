@@ -36,7 +36,7 @@ dependencies {
     }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
     shadowCommon("io.sentry:sentry:5.7.2") { transitive false }
 
     implementation "blue.endless:jankson:1.2.1"
