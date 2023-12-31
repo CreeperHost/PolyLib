@@ -66,8 +66,8 @@ public class MGuiTestBlockContainerMenu extends ModularGuiContainerMenu {
                 .setValidator(stack ->
                         switch (index) {
                             case 0 -> stack.is(Items.REDSTONE);
-                            case 1 -> stack.is(Items.WATER_BUCKET);
-                            default -> stack.is(Items.LAVA_BUCKET);
+                            case 1 -> stack.is(Items.LAVA_BUCKET);
+                            default -> stack.is(Items.WATER_BUCKET);
                         }
                 ));
         machineOutputs.addAllSlots(blockEntity.outputInv, (container, integer) -> new PolySlot(container, integer).output());

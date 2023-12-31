@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * The modular gui system is built around "Gui Elements" but those elements need to be rendered by a base parent element. That's what this class is.
@@ -66,6 +67,7 @@ public class ModularGui implements GuiParent<ModularGui> {
     private final List<TriConsumer<Integer, Integer, Integer>> preKeyPressListeners = new ArrayList<>();
     private final List<TriConsumer<Integer, Integer, Integer>> postKeyPressListeners = new ArrayList<>();
 
+    private final List<GuiElement<?>> jeiExclusions = new ArrayList<>();
     /**
      * @param provider The gui builder that will be used to construct this modular gui when the screen is initialized.
      */
@@ -524,6 +526,28 @@ public class ModularGui implements GuiParent<ModularGui> {
 
     public void setCursor(ResourceLocation cursor) {
         this.newCursor = cursor;
+    }
+
+    /**
+     * Add an element to the list of jei exclusions.
+     * Use this for any elements that render outside the normal gui bounds.
+     * This will ensure JEI does not try to render on top of these elements.
+     */
+    public void jeiExclude(GuiElement<?> element) {
+        if (!jeiExclusions.contains(element)) {
+            jeiExclusions.add(element);
+        }
+    }
+
+    /**
+     * Remove an element from the list of jei exclusions.
+     */
+    public void removeJEIExclude(GuiElement<?> element) {
+        jeiExclusions.remove(element);
+    }
+
+    public Stream<GuiElement<?>> getJeiExclusions() {
+        return jeiExclusions.stream().filter(GuiElement::isEnabled);
     }
 
     /**
