@@ -18,7 +18,7 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
     private Supplier<Integer> fill = null;
     private Supplier<Integer> border = null;
 
-    private Supplier<Integer> borderWidth = () -> 1;
+    private Supplier<Double> borderWidth = () -> 1D;
 
     private Supplier<Integer> shadeTopLeft;
     private Supplier<Integer> shadeBottomRight;
@@ -79,16 +79,16 @@ public class GuiRectangle extends GuiElement<GuiRectangle> implements Background
         return this;
     }
 
-    public GuiRectangle borderWidth(int borderWidth) {
+    public GuiRectangle borderWidth(double borderWidth) {
         return borderWidth(() -> borderWidth);
     }
 
-    public GuiRectangle borderWidth(Supplier<Integer> borderWidth) {
+    public GuiRectangle borderWidth(Supplier<Double> borderWidth) {
         this.borderWidth = borderWidth;
         return this;
     }
 
-    public int getBorderWidth() {
+    public double getBorderWidth() {
         return borderWidth.get();
     }
 
