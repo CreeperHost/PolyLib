@@ -1,16 +1,18 @@
-package net.creeperhost.polylib.forge.inventory.energy;
+package net.creeperhost.polylib.neoforge.inventory.energy;
 
 import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
 import net.minecraft.core.Direction;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.CapabilityProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.capabilities.Capabilities;
+//import net.neoforged.neoforge.common.capabilities.CapabilityProvider;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public record NeoForgeEnergyManager(IEnergyStorage energy) implements PlatformEnergyManager
 {
-    public NeoForgeEnergyManager(CapabilityProvider<?> energyItem, Direction direction)
+    public NeoForgeEnergyManager(BlockEntity energyItem, Direction direction)
     {
-        this(energyItem.getCapability(Capabilities.ENERGY, direction).orElseThrow(IllegalArgumentException::new));
+        this(energyItem.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, energyItem.getBlockPos(), direction));
     }
 
     @Override

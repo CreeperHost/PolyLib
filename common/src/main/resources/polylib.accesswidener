@@ -55,3 +55,6 @@ accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (L
 
 accessible field net/minecraft/client/renderer/MultiBufferSource$BufferSource fixedBuffers Ljava/util/Map;
 accessible field net/minecraft/client/renderer/MultiBufferSource$BufferSource builder Lcom/mojang/blaze3d/vertex/BufferBuilder;
+
+accessible field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I
+mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I

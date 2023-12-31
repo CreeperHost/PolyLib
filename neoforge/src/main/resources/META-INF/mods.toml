@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[1,)"
+loaderVersion = "[2,)"
 issueTrackerURL = "https://github.com/CreeperHost/PolyLib/issues"
 license = "BSD 4-Clause License"
 
@@ -17,22 +17,22 @@ logoFile="polylib_logo.png"
 
 [[dependencies.polylib]]
 modId = "neoforge"
-mandatory = true
+type="required"
 versionRange = "[20,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.polylib]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20,)"
+type="required"
+versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.polylib]]
 modId = "architectury"
-mandatory = true
-versionRange = "[7.1.78,)"
+type="required"
+versionRange = "[11.0.9,)"
 ordering = "AFTER"
 side = "BOTH"
 

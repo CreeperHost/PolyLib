@@ -2,6 +2,7 @@ package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import dev.architectury.registry.menu.MenuRegistry;
 import net.creeperhost.polylib.blocks.BlockFacing;
+import net.creeperhost.polylib.inventory.energy.EnergyHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -27,6 +28,13 @@ public class InventoryTestBlock extends BlockFacing
     @Override
     public InteractionResult use(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult)
     {
+        if(!level.isClientSide() && player.isShiftKeyDown())
+        {
+            boolean isEnergyBlock = EnergyHooks.isEnergyContainer(level.getBlockEntity(blockPos), blockHitResult.getDirection());
+            var power = EnergyHooks.getBlockEnergyManager(level.getBlockEntity(blockPos), blockHitResult.getDirection());
+            System.out.println("isEnergyBlock " + isEnergyBlock + " Stored " + power.getStoredEnergy() + " Max " + power.getCapacity());
+            return InteractionResult.SUCCESS;
+        }
         if (!level.isClientSide)
         {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);

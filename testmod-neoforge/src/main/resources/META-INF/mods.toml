@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[1,)"
+loaderVersion = "[2,)"
 issueTrackerURL = "https://github.com/CreeperHost/PolyLib/issues"
 license = "Insert License Here"
 

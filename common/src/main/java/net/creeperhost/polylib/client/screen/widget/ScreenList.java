@@ -15,20 +15,22 @@ public class ScreenList<T extends ScreenListEntry> extends AbstractSelectionList
 
     public ScreenList(Screen screen, Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn)
     {
-        super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
+        super(mcIn, widthIn, heightIn, topIn, bottomIn);
         this.screen = screen;
         this.width = widthIn;
         this.height = heightIn;
         this.rowWidth = 220;
+        this.itemHeight = slotHeightIn;
     }
 
     public ScreenList(Screen screen, Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn, int rowWidth)
     {
-        super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
+        super(mcIn, widthIn, heightIn, topIn, bottomIn);
         this.screen = screen;
         this.width = widthIn;
         this.height = heightIn;
         this.rowWidth = rowWidth;
+        this.itemHeight = slotHeightIn;
     }
 
     @Override
@@ -68,8 +70,9 @@ public class ScreenList<T extends ScreenListEntry> extends AbstractSelectionList
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
     {
+
     }
 
     public void setScrollBarPosition(int value)

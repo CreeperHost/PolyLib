@@ -1,14 +1,11 @@
-package net.creeperhost.polylib.forge.inventory.energy;
+package net.creeperhost.polylib.neoforge.inventory.energy;
 
 import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
 import net.creeperhost.polylib.util.Updatable;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,13 +13,13 @@ import javax.annotation.Nullable;
 
 public record NeoForgeItemEnergyContainer<T extends PolyEnergyContainer & Updatable<ItemStack>>(T container, ItemStack entity) implements IEnergyStorage, ICapabilityProvider
 {
-    @Override
-    @NotNull
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg)
-    {
-        LazyOptional<IEnergyStorage> of = LazyOptional.of(container.getContainer(arg) != null ? () -> this : null);
-        return capability.orEmpty(Capabilities.ENERGY, of.cast()).cast();
-    }
+//    @Override
+//    @NotNull
+//    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg)
+//    {
+//        LazyOptional<IEnergyStorage> of = LazyOptional.of(container.getContainer(arg) != null ? () -> this : null);
+//        return capability.orEmpty(Capabilities.ENERGY, of.cast()).cast();
+//    }
 
     @Override
     public int receiveEnergy(int maxAmount, boolean bl)
@@ -65,5 +62,12 @@ public record NeoForgeItemEnergyContainer<T extends PolyEnergyContainer & Updata
     public boolean canReceive()
     {
         return container.allowsInsertion();
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public Object getCapability(Object object, Object object2)
+    {
+        return null;
     }
 }

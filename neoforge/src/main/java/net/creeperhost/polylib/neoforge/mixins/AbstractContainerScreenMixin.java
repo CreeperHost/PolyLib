@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.forge.mixins;
+package net.creeperhost.polylib.neoforge.mixins;
 
 import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
 import net.minecraft.client.gui.GuiGraphics;

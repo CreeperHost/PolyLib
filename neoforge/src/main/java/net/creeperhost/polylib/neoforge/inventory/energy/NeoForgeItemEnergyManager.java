@@ -1,16 +1,16 @@
-package net.creeperhost.polylib.forge.inventory.energy;
+package net.creeperhost.polylib.neoforge.inventory.energy;
 
 import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
 import net.creeperhost.polylib.inventory.item.ItemStackHolder;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.CapabilityProvider;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public record NeoForgeItemEnergyManager(IEnergyStorage energy) implements PlatformItemEnergyManager
 {
-    public NeoForgeItemEnergyManager(CapabilityProvider<?> energyItem)
+    public NeoForgeItemEnergyManager(ItemStack energyItem)
     {
-        this(energyItem.getCapability(Capabilities.ENERGY).orElseThrow(IllegalArgumentException::new));
+        this(energyItem.getCapability(Capabilities.EnergyStorage.ITEM));
     }
 
     @Override

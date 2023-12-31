@@ -25,8 +25,8 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.20.2",
-    "architectury": ">=10.0.16",
+    "minecraft": ">=1.20.4",
+    "architectury": ">=11.0.9",
     "team_reborn_energy": ">=2.2.0"
   },
   "suggests": {

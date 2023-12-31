@@ -1,8 +1,10 @@
 package net.creeperhost.polylib;
 
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
+import net.fabricmc.api.EnvType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +12,8 @@ public class PolyLib
 {
     public static final String MOD_ID = "polylib";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static boolean isClientSide() { return PolyLibPlatform.isClientSide(); }
+    public static boolean isClientSide() { return Platform.getEnv() == EnvType.CLIENT;
+    }
 
     public static void init()
     {

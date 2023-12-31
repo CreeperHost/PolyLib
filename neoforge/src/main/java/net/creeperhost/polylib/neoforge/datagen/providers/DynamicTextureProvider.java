@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.forge.datagen.providers;
+package net.creeperhost.polylib.neoforge.datagen.providers;
 
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;

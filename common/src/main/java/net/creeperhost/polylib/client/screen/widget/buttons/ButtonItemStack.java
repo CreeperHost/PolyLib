@@ -17,9 +17,9 @@ public class ButtonItemStack extends Button
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
+    public void renderWidget(@NotNull GuiGraphics guiGraphics, int i, int j, float f)
     {
-        super.render(guiGraphics, i, j, f);
+        super.renderWidget(guiGraphics, i, j, f);
         guiGraphics.renderItem(itemStack, getX() + 2, getY() + 1);
     }
 }

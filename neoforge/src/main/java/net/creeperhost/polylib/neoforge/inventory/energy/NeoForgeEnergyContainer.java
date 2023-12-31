@@ -1,29 +1,29 @@
-package net.creeperhost.polylib.forge.inventory.energy;
+package net.creeperhost.polylib.neoforge.inventory.energy;
 
 import net.creeperhost.polylib.Serializable;
-import net.creeperhost.polylib.forge.AutoSerializable;
+import net.creeperhost.polylib.neoforge.AutoSerializable;
 import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
 import net.creeperhost.polylib.util.Updatable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.common.util.LazyOptional;
+//import net.neoforged.neoforge.common.capabilities.Capabilities;
+//import net.neoforged.neoforge.common.capabilities.Capability;
+//import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
+//import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-
-public record NeoForgeEnergyContainer<T extends PolyEnergyContainer & Updatable<BlockEntity>>(T container, BlockEntity entity) implements IEnergyStorage, AutoSerializable, ICapabilityProvider
+public record NeoForgeEnergyContainer<T extends PolyEnergyContainer & Updatable<BlockEntity>>(T container, BlockEntity entity) implements IEnergyStorage, AutoSerializable//, ICapabilityProvider
 {
-    @Override
-    @NotNull
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg)
-    {
-        LazyOptional<IEnergyStorage> of = LazyOptional.of(container.getContainer(arg) != null ? () -> this : null);
-        return capability.orEmpty(Capabilities.ENERGY, of.cast()).cast();
-    }
+//    @Override
+//    @NotNull
+//    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg)
+//    {
+//        LazyOptional<IEnergyStorage> of = LazyOptional.of(container.getContainer(arg) != null ? () -> this : null);
+//        return capability.orEmpty(Capabilities.ENERGY, of.cast()).cast();
+//    }
 
     @Override
     public int receiveEnergy(int maxAmount, boolean bl)
@@ -72,4 +72,5 @@ public record NeoForgeEnergyContainer<T extends PolyEnergyContainer & Updatable<
     {
         return container;
     }
+
 }
