@@ -1,9 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
-import net.creeperhost.polylib.client.modulargui.lib.Assembly;
-import net.creeperhost.polylib.client.modulargui.lib.Constraints;
-import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
-import net.creeperhost.polylib.client.modulargui.lib.SliderState;
+import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
@@ -33,7 +30,7 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  * <p>
  * Created by brandon3055 on 01/09/2023
  */
-public class GuiScrolling extends GuiElement<GuiScrolling> {
+public class GuiScrolling extends GuiElement<GuiScrolling> implements ContentElement<GuiElement<?>> {
 
     /**
      * This is made available primarily for debugging purposes where it can be useful to see what's going on behind the scenes.
@@ -74,6 +71,7 @@ public class GuiScrolling extends GuiElement<GuiScrolling> {
      *
      * @return The content element.
      */
+    @Override
     public GuiElement<?> getContentElement() {
         return contentElement;
     }

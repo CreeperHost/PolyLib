@@ -6,6 +6,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.hooks.client.screen.ScreenHooks;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
+import net.creeperhost.polylib.client.modulargui.lib.CursorHelper;
 import net.creeperhost.polylib.client.screen.screencreator.ScreenCreationSetup;
 import net.creeperhost.polylib.development.DevelopmentTools;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
@@ -29,6 +30,7 @@ public class PolyLibClient
     public static void init()
     {
         ClientTickEvent.CLIENT_PRE.register(instance -> MultiblockRegistry.tickStart(instance.level));
+        CursorHelper.init();
         if (Platform.isDevelopmentEnvironment())
         {
             DevelopmentTools.initClient();
