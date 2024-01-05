@@ -38,7 +38,7 @@ public class InventoryTestBlockEntity extends BlockEntity implements ItemInvento
             if(progress >= 100)
             {
                 progress = 0;
-                simpleItemInventory.setItem(1, new ItemStack(Items.DIAMOND));
+                getContainer().setItem(1, new ItemStack(Items.DIAMOND));
             }
         }
         containerData.set(0, progress);
