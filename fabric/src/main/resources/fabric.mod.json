@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "net.creeperhost.polylib.fabric.PolyLibFabric"
+    ],
+    "jei_mod_plugin": [
+      "net.creeperhost.polylib.compat.jei.PolyJEIPlugin"
     ]
   },
   "mixins": [

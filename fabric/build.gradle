@@ -33,9 +33,8 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
     shadowCommon("io.sentry:sentry:5.7.2") { transitive false }
 
-//    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
-//    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
-    modApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
 }
 
 processResources {
