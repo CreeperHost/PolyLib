@@ -254,6 +254,17 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
         return (T) this;
     }
 
+    /**
+     * Clear any configured constraints and reset this element to default unconstrained state.
+     * Convenient when reconfiguring an elements constraints or applying constraints to an element
+     * with an existing, unknown constraint configuration.
+     */
+    public T clearConstraints() {
+        xMin = xMax = xSize = yMin = yMax = ySize = null;
+        xAxis = yAxis = AxisConfig.NONE;
+        return (T) this;
+    }
+
     private void constrainX(GeoParam param, @Nullable Constraint constraint) {
         if (param == GeoParam.LEFT) {
             xMin = constraint;

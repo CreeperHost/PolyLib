@@ -1,6 +1,7 @@
 package net.creeperhost.polylib;
 
 import dev.architectury.platform.Platform;
+import net.creeperhost.polylib.client.modulargui.lib.CursorHelper;
 import net.creeperhost.polylib.mulitblock.multiblockevents.MultiblockClientTickHandler;
 import net.creeperhost.polylib.mulitblock.multiblockevents.MultiblockServerTickHandler;
 import net.fabricmc.api.EnvType;
@@ -17,6 +18,7 @@ public class PolyLib
         if(Platform.getEnv() == EnvType.CLIENT)
         {
             MultiblockClientTickHandler.onClientTick();
+            CursorHelper.init();
         }
         MultiblockServerTickHandler.onWorldTick();
     }

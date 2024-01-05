@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.*;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 
+
 /**
  * This class contains a bunch of static helper methods that can be used to quickly apply common constraints.
  * The plan is to keep adding common constraints to this class as they pop up.
@@ -39,7 +40,7 @@ public class Constraints {
 
     /**
      * Bind an elements geometry to a reference element with border offsets. (Border offsets may be positive or negative)
-     * 
+     *
      * @param element   The element to be bound.
      * @param reference The element to be bound to.
      */

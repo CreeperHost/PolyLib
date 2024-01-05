@@ -1,7 +1,6 @@
 package net.creeperhost.polylib.client.modulargui;
 
 import net.creeperhost.polylib.PolyLib;
-import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.elements.*;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
@@ -11,10 +10,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Direction;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -43,7 +39,13 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
 
     @Override
     public GuiElement<?> createRootElement(ModularGui gui) {
-        return new GuiTexture(gui, PolyTextures.get(BACKGROUND_TEXTURE));
+        GuiManipulable root = new GuiManipulable(gui)
+                .addResizeHandles(4, false)
+                .addMoveHandle(10);
+        root.enableCursors(true);
+        GuiTexture bg = new GuiTexture(root.getContentElement(), PolyTextures.get(BACKGROUND_TEXTURE)).dynamicTexture();
+        Constraints.bind(bg, root.getContentElement());
+        return root;
     }
 
     @Override

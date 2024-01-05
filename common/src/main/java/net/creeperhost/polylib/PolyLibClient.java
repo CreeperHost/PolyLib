@@ -2,6 +2,7 @@ package net.creeperhost.polylib;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.creeperhost.polylib.client.modulargui.lib.CursorHelper;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.FormattedText;
