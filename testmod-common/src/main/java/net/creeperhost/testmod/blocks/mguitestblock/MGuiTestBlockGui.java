@@ -155,6 +155,14 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .constrain(BOTTOM, match(inputSlots.get(BOTTOM)))
                 .constrain(HEIGHT, literal(18));
 
+        //JEI Exclusion Test
+        GuiRectangle widgetBg = GuiRectangle.toolTipBackground(root)
+                .jeiExclude()
+                .constrain(BOTTOM, relative(root.get(BOTTOM), () -> Math.abs(Math.sin((System.currentTimeMillis() % 1000000) / 500F)) * -(root.ySize() - 100)))
+                .constrain(LEFT, relative(root.get(RIGHT), 0))
+                .constrain(WIDTH, literal(50))
+                .constrain(HEIGHT, literal(100));
+
     }
 
     public static ModularGuiContainer<MGuiTestBlockContainerMenu> create(MGuiTestBlockContainerMenu menu, Inventory inventory, Component component) {
