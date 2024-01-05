@@ -34,6 +34,5 @@ public class PolyJEIPlugin implements IModPlugin {
                 return containerScreen.getModularGui().getJeiExclusions().map(e -> e.getRectangle().toRect2i()).toList();
             }
         });
-
     }
 }
