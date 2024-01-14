@@ -9,7 +9,6 @@ import net.creeperhost.polylib.data.serializable.ByteData;
 import net.creeperhost.polylib.data.serializable.FluidData;
 import net.creeperhost.polylib.data.serializable.IntData;
 import net.creeperhost.testmod.init.TestContainers;
-import net.creeperhost.testmod.network.TestNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,9 +41,6 @@ public class MGuiTestBlockContainerMenu extends ModularGuiContainerMenu {
     public MGuiTestBlockContainerMenu(int containerId, Inventory inventory, MGuiTestBlockEntity blockEntity) {
         super(TestContainers.MGUI_TEST_BLOCK_CONTAINER.get(), containerId, inventory);
         this.blockEntity = blockEntity;
-
-        setServerToClientPacketHandler(TestNetwork::sendContainerPacketToClient);
-        setClientToServerPacketHandler(TestNetwork::sendContainerPacketToServer);
 
         progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
         energy = new DataSync<>(this, new IntData(), () -> blockEntity.energy);
