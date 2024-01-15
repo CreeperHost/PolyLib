@@ -10,6 +10,8 @@ import net.creeperhost.polylib.client.modulargui.lib.CursorHelper;
 import net.creeperhost.polylib.client.screen.screencreator.ScreenCreationSetup;
 import net.creeperhost.polylib.development.DevelopmentTools;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
+import net.fabricmc.api.EnvType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
@@ -17,6 +19,7 @@ import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +48,17 @@ public class PolyLibClient
             });
         }
 
+    }
+
+    public static Player getClientPlayer() {
+        if (Platform.getEnv() == EnvType.CLIENT) {
+            return _getClientPlayer();
+        }
+        return null;
+    }
+
+    private static Player _getClientPlayer() {
+        return Minecraft.getInstance().player;
     }
 
     @ExpectPlatform

@@ -3,16 +3,15 @@ package net.creeperhost.testmod.blocks.inventorytestblock;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.fluid.FluidStack;
 import net.creeperhost.polylib.client.screen.widget.buttons.ButtonInfoTab;
-import net.creeperhost.polylib.client.screen.widget.buttons.ButtonItemStack;
 import net.creeperhost.polylib.client.screen.widget.buttons.ButtonRedstoneControl;
 import net.creeperhost.polylib.client.screenbuilder.ScreenBuilder;
 import net.creeperhost.polylib.data.EnumRedstoneState;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +40,15 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
         {
 
         }));
+        addRenderableWidget(new Button(10, 20, 100, 20, Component.literal("Send Test Packet"), button ->
+        {
+            getMenu().getBlockEntity().sendPacketToServer(0, buf -> {});
+        }));
+        addRenderableWidget(new Button(10, 40, 100, 20, Component.literal("Test Value += 5"), button ->
+        {
+            InventoryTestBlockEntity tile = getMenu().getBlockEntity();
+            tile.sendDataValueToServer(tile.testSyncedIntField, tile.testSyncedIntField.get() + 5);
+        }));
     }
 
     @Override
@@ -58,6 +66,9 @@ public class ScreenInventoryTestBlock extends AbstractContainerScreen<ContainerI
         FluidStack fluidStack = FluidStack.create(Fluids.WATER, progress * 10);
         screenBuilder.drawTankWithOverlay(this, poseStack, fluidStack, 1000, leftPos + imageWidth - 30, topPos + 40, 49, mouseX, mouseY);
         screenBuilder.drawBar(this, poseStack, leftPos + 10, topPos + 20, 80, progress, 100, mouseX, mouseY, Component.literal(progress + " FE"));
+
+        InventoryTestBlockEntity tile = getMenu().getBlockEntity();
+        drawString(poseStack, font, "Test Data Value: " + tile.testSyncedIntField.get(), 10, 10, 0xFFFFFF);
     }
 
     @Override
