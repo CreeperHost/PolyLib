@@ -26,7 +26,7 @@ public class DataSync<T> {
     }
 
     public T get() {
-        return dataStore.getValue();
+        return dataStore.get();
     }
 
     /**
@@ -36,7 +36,7 @@ public class DataSync<T> {
         if (dataStore.isSameValue(valueGetter.get())) {
             return;
         }
-        dataStore.setValue(valueGetter.get());
+        dataStore.set(valueGetter.get());
         containerMenu.sendPacketToClient(255, buf -> {
             buf.writeByte((byte) containerMenu.dataSyncs.indexOf(this));
             dataStore.toBytes(buf);
