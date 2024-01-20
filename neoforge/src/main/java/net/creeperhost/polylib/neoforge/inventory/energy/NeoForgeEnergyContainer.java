@@ -15,16 +15,8 @@ import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
-public record NeoForgeEnergyContainer<T extends PolyEnergyContainer & Updatable<BlockEntity>>(T container, BlockEntity entity) implements IEnergyStorage, AutoSerializable//, ICapabilityProvider
+public record NeoForgeEnergyContainer<T extends PolyEnergyContainer & Updatable<BlockEntity>>(T container, BlockEntity entity) implements IEnergyStorage, AutoSerializable
 {
-//    @Override
-//    @NotNull
-//    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg)
-//    {
-//        LazyOptional<IEnergyStorage> of = LazyOptional.of(container.getContainer(arg) != null ? () -> this : null);
-//        return capability.orEmpty(Capabilities.ENERGY, of.cast()).cast();
-//    }
-
     @Override
     public int receiveEnergy(int maxAmount, boolean bl)
     {

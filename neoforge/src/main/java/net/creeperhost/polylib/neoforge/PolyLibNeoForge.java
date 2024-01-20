@@ -51,15 +51,16 @@ public class PolyLibNeoForge
         {
             try
             {
+                //This is terrible... There has to be a better way!
                 BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
                 if (blockEntity == null) continue;
-                if (blockEntity instanceof PolyEnergyBlock<?> polyEnergyBlock)
+                if (blockEntity instanceof PolyEnergyBlock)
                 {
-                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (object, object2) -> new NeoForgeEnergyContainer<>(polyEnergyBlock.getEnergyStorage(), object));
+                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new NeoForgeEnergyContainer<>(((PolyEnergyBlock<?>)entity).getEnergyStorage(), entity));
                 }
-                if (blockEntity instanceof ItemInventoryBlock itemInventoryBlock)
+                if (blockEntity instanceof ItemInventoryBlock)
                 {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (object, object2) -> new ItemContainerWrapper(itemInventoryBlock.getContainer()));
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new ItemContainerWrapper(((ItemInventoryBlock)entity).getContainer()));
                 }
             } catch (Exception ignored) {}
         }

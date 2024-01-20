@@ -11,7 +11,7 @@ import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
-public class ItemContainerWrapper extends InvWrapper implements ICapabilityProvider, AutoSerializable
+public class ItemContainerWrapper extends InvWrapper implements AutoSerializable
 {
     private final SerializableContainer serializable;
 
@@ -21,22 +21,9 @@ public class ItemContainerWrapper extends InvWrapper implements ICapabilityProvi
         this.serializable = inv;
     }
 
-//    @Override
-//    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg)
-//    {
-//        return capability == Capabilities.ITEM_HANDLER ? LazyOptional.of(() -> this).cast() : LazyOptional.empty();
-//    }
-
     @Override
     public Serializable getSerializable()
     {
         return serializable;
-    }
-
-    @Nullable
-    @Override
-    public Object getCapability(Object object, Object object2)
-    {
-        return null;
     }
 }
