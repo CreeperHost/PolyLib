@@ -15,6 +15,7 @@ public class SimpleItemInventory implements SerializableContainer
     private final NonNullList<ItemStack> items;
     private final BlockEntity blockEntity;
     private final Predicate<Player> canUse;
+    private int maxStackSize = 64;
 
     public SimpleItemInventory(BlockEntity blockEntity, int size, Predicate<Player> canUse)
     {
@@ -26,6 +27,11 @@ public class SimpleItemInventory implements SerializableContainer
     public SimpleItemInventory(BlockEntity blockEntity, int size)
     {
         this(blockEntity, size, player -> blockEntity.getBlockPos().distSqr(player.blockPosition()) <= 64);
+    }
+
+    public SimpleItemInventory setMaxStackSize(int maxStackSize) {
+        this.maxStackSize = maxStackSize;
+        return this;
     }
 
     @Override
@@ -47,9 +53,12 @@ public class SimpleItemInventory implements SerializableContainer
     }
 
     @Override
-    public @NotNull ItemStack removeItem(int i, int j)
-    {
-        return ContainerHelper.removeItem(items, i, j);
+    public ItemStack removeItem(int index, int count) {
+        ItemStack itemstack = ContainerHelper.removeItem(items, index, count);
+        if (!itemstack.isEmpty()) {
+            this.setChanged();
+        }
+        return itemstack;
     }
 
     @Override
@@ -59,9 +68,12 @@ public class SimpleItemInventory implements SerializableContainer
     }
 
     @Override
-    public void setItem(int i, @NotNull ItemStack itemStack)
-    {
-        items.set(i, itemStack);
+    public void setItem(int index, @NotNull ItemStack stack) {
+        items.set(index, stack);
+        if (stack.getCount() > this.getMaxStackSize()) {
+            stack.setCount(this.getMaxStackSize());
+        }
+        this.setChanged();
     }
 
     @Override
@@ -92,5 +104,10 @@ public class SimpleItemInventory implements SerializableContainer
     public CompoundTag serialize(CompoundTag compoundTag)
     {
         return ContainerHelper.saveAllItems(compoundTag, items);
+    }
+
+    @Override
+    public int getMaxStackSize() {
+        return maxStackSize;
     }
 }
