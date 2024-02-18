@@ -2,14 +2,14 @@ package net.creeperhost.polylib.forge;
 
 import net.creeperhost.polylib.PolyLibPlatform;
 import net.creeperhost.polylib.forge.inventory.fluid.ForgeFluidManager;
-import net.creeperhost.polylib.inventory.fluid.PlatformFluidManager;
+import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
 public class PolyLibPlatformImpl
 {
-    private static final PlatformFluidManager FLUID_MANAGER = new ForgeFluidManager();
+    private static final FluidManager FLUID_MANAGER = new ForgeFluidManager();
 
     /**
      * This is our actual method to {@link PolyLibPlatform#getConfigDirectory()}.
@@ -19,7 +19,7 @@ public class PolyLibPlatformImpl
         return FMLPaths.CONFIGDIR.get();
     }
 
-    public static PlatformFluidManager getFluidManager()
+    public static FluidManager getFluidManager()
     {
         return FLUID_MANAGER;
     }

@@ -59,6 +59,7 @@ public class PolyLibFabric implements ModInitializer
             }
             return null;
         });
+
         ItemStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
             if (blockEntity instanceof ItemInventoryBlock invBlock) {
                 return InventoryStorageImpl.of(invBlock.getContainer(context), context);

@@ -30,7 +30,7 @@ public class ForgePolyFluidWrapper implements PolyFluidHandler {
 
     @Override
     public long getTankCapacity(int tank) {
-        return Math.min(Integer.MAX_VALUE, handler.getTankCapacity(tank));
+        return handler.getTankCapacity(tank);
     }
 
     @Override

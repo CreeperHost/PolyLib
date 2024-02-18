@@ -87,11 +87,9 @@ public class FabricPolyFluidWrapper implements PolyFluidHandler {
             long extracted = storage.extract(variant, amount, transaction);
             if (!simulate) {
                 transaction.commit();
-                return FluidStack.create(variant.getFluid(), extracted);
             }
+            return extracted > 0 ? FluidStack.create(variant.getFluid(), extracted) : FluidStack.empty();
         }
-
-        return FluidStack.empty();
     }
 
     @Override

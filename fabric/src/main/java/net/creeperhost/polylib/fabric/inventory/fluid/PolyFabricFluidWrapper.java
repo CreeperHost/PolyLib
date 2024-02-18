@@ -12,7 +12,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 /**
  * Created by brandon3055 on 15/02/2024
  */
-
 @SuppressWarnings ("UnstableApiUsage")
 public class PolyFabricFluidWrapper extends SnapshotParticipant<ResourceAmount<FluidVariant>> implements SingleSlotStorage<FluidVariant> {
     private final PolyFluidHandler handler;

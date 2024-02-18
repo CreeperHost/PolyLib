@@ -16,17 +16,17 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler {
     protected Runnable dirtyListener;
     @NotNull
     protected FluidStack fluid = FluidStack.empty();
-    protected int capacity;
+    protected long capacity;
 
-    public PolyTank(int capacity) {
+    public PolyTank(long capacity) {
         this(capacity, e -> true, null);
     }
 
-    public PolyTank(int capacity, Predicate<FluidStack> validator) {
+    public PolyTank(long capacity, Predicate<FluidStack> validator) {
         this(capacity, validator, null);
     }
 
-    public PolyTank(int capacity, Predicate<FluidStack> validator, @Nullable Runnable dirtyListener) {
+    public PolyTank(long capacity, Predicate<FluidStack> validator, @Nullable Runnable dirtyListener) {
         this.capacity = capacity;
         this.validator = validator;
         this.dirtyListener = dirtyListener;
