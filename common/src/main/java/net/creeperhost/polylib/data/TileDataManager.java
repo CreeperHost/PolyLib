@@ -110,6 +110,22 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
         });
     }
 
+    public void loadFromItem(CompoundTag tag) {
+        dataStoreMap.forEach((name, data) -> {
+            if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0 && tag.contains(name)) {
+                data.fromTag(tag.get(name));
+            }
+        });
+    }
+
+    public void saveToItem(CompoundTag tag) {
+        dataStoreMap.forEach((name, data) -> {
+            if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0) {
+                tag.put(name, data.toTag());
+            }
+        });
+    }
+
     //### Internal Functions ###
 
     protected void sendToClient(AbstractDataStore<?> data) {
