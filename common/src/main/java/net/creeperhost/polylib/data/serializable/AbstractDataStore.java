@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * The base class of a simple general purpose serializable data system.
- *
+ * <p>
  * Created by brandon3055 on 08/09/2023
  */
 public abstract class AbstractDataStore<T> {
@@ -32,14 +32,15 @@ public abstract class AbstractDataStore<T> {
         set(value);
     }
 
-    public void set(T value) {
+    public T set(T value) {
         if (!Objects.equals(value, this.value)) {
             this.value = value;
             markDirty();
         }
+        return this.value;
     }
 
-    public void markDirty(){
+    public void markDirty() {
         isDirty = true;
     }
 

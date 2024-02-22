@@ -64,6 +64,7 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
      */
     public void tick() {
         tick++;
+        dataManager.tick();
     }
 
     //=== Container ===
@@ -113,6 +114,11 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
 
     public void setCustomName(@Nullable Component customName) {
         this.customName = customName;
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Nameable.super.getDisplayName();
     }
 
     //=== Network ===

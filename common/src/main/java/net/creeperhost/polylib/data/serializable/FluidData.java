@@ -1,9 +1,7 @@
 package net.creeperhost.polylib.data.serializable;
 
 import dev.architectury.fluid.FluidStack;
-import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -23,11 +21,12 @@ public class FluidData extends AbstractDataStore<FluidStack> {
     }
 
     @Override
-    public void set(FluidStack value) {
+    public FluidStack set(FluidStack value) {
         if (!Objects.equals(value, this.value)) {
             this.value = value.copy();
             markDirty();
         }
+        return this.value;
     }
 
     @Override

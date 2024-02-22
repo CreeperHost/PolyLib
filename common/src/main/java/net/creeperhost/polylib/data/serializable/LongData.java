@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.data.serializable;
 
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.Tag;
@@ -37,5 +36,86 @@ public class LongData extends AbstractDataStore<Long> {
     @Override
     public void fromTag(Tag tag) {
         value = ((NumericTag) tag).getAsLong();
+    }
+
+    //=============== Helpers ===============
+
+    /**
+     * Add to the current value then return the result.
+     * New value is automatically stored in this data object.
+     * <br>
+     * Equivalent to: 'data.value += v'
+     *
+     * @param add The value to add.
+     * @return The new value stored in this data object.
+     */
+    public long add(long add) {
+        return set(get() + add);
+    }
+
+    /**
+     * Subtract to the current value then return the result.
+     * New value is automatically stored in this data object.
+     * <br>
+     * Equivalent to: 'data.value -= v'
+     *
+     * @param subtract The value to subtract.
+     * @return The new value stored in this data object.
+     */
+    public long subtract(long subtract) {
+        return set(get() - subtract);
+    }
+
+    /**
+     * Multiply to the current value by this amount then return the result.
+     * New value is automatically stored in this data object.
+     * <br>
+     * Equivalent to: 'data.value *= v'
+     *
+     * @param multiplyBy The value to multiply by.
+     * @return The new value stored in this data object.
+     */
+    public long multiply(long multiplyBy) {
+        return set(get() * multiplyBy);
+    }
+
+    /**
+     * Divide to the current value by this amount then return the result.
+     * New value is automatically stored in this data object.
+     * <br>
+     * Equivalent to: 'data.value /= v'
+     *
+     * @param divideBy The value to divide by.
+     * @return The new value stored in this data object.
+     */
+    public long divide(long divideBy) {
+        return set(get() / divideBy);
+    }
+
+    /**
+     * Reset this data to zero.
+     *
+     * @return zero.
+     */
+    public long zero() {
+        return set(0L);
+    }
+
+    /**
+     * Increment by 1;
+     *
+     * @return The new value stored in this data object.
+     */
+    public long inc() {
+        return add(1);
+    }
+
+    /**
+     * Decrement by 1;
+     *
+     * @return The new value stored in this data object.
+     */
+    public long dec() {
+        return subtract(1);
     }
 }

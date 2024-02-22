@@ -2,8 +2,6 @@ package net.creeperhost.polylib.data.serializable;
 
 import net.creeperhost.polylib.helpers.MathUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NumericTag;
-import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
@@ -72,5 +70,13 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
                 value = indexToValue.get(MathUtil.clamp(nbt.getByte("value") & 0xFF, 0, indexToValue.size() - 1));
             }
         }
+    }
+
+    public boolean isNull() {
+        return value == null;
+    }
+
+    public boolean notNull() {
+        return value != null;
     }
 }
