@@ -25,7 +25,7 @@ public class FloatData extends AbstractDataStore<Float> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readFloat();
+        value = validValue(buf.readFloat(), value);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class FloatData extends AbstractDataStore<Float> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsFloat();
+        value = validValue(((NumericTag) tag).getAsFloat(), value);
     }
 
     //=============== Helpers ===============

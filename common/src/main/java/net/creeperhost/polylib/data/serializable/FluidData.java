@@ -22,7 +22,7 @@ public class FluidData extends AbstractDataStore<FluidStack> {
 
     @Override
     public FluidStack set(FluidStack value) {
-        if (!Objects.equals(value, this.value)) {
+        if (!Objects.equals(value, this.value) && validator.test(value)) {
             this.value = value.copy();
             markDirty();
         }
@@ -36,7 +36,7 @@ public class FluidData extends AbstractDataStore<FluidStack> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = FluidStack.read(buf);
+        value = validValue(FluidStack.read(buf), value);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FluidData extends AbstractDataStore<FluidStack> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = FluidStack.read((CompoundTag) tag);
+        value = validValue(FluidStack.read((CompoundTag) tag), value);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class IntData extends AbstractDataStore<Integer> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readVarInt();
+        value = validValue(buf.readVarInt(), value);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class IntData extends AbstractDataStore<Integer> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsInt();
+        value = validValue(((NumericTag) tag).getAsInt(), value);
     }
 
     //=============== Helpers ===============

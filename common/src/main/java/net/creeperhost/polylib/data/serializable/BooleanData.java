@@ -25,7 +25,7 @@ public class BooleanData extends AbstractDataStore<Boolean> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readBoolean();
+        value = validValue(buf.readBoolean(), value);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class BooleanData extends AbstractDataStore<Boolean> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsByte() != 0;
+        value = validValue(((NumericTag) tag).getAsByte() != 0, value);
     }
 
     /**

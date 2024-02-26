@@ -25,7 +25,7 @@ public class ShortData extends AbstractDataStore<Short> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readShort();
+        value = validValue(buf.readShort(), value);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ShortData extends AbstractDataStore<Short> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsShort();
+        value = validValue(((NumericTag) tag).getAsShort(), value);
     }
 
     //=============== Helpers ===============

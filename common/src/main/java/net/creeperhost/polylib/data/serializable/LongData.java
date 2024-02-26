@@ -25,7 +25,7 @@ public class LongData extends AbstractDataStore<Long> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readVarLong();
+        value = validValue(buf.readVarLong(), value);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LongData extends AbstractDataStore<Long> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsLong();
+        value = validValue(((NumericTag) tag).getAsLong(), value);
     }
 
     //=============== Helpers ===============

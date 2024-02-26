@@ -25,7 +25,7 @@ public class ByteData extends AbstractDataStore<Byte> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readByte();
+        value = validValue(buf.readByte(), value);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ByteData extends AbstractDataStore<Byte> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsByte();
+        value = validValue(((NumericTag) tag).getAsByte(), value);
     }
 
     //=============== Helpers ===============

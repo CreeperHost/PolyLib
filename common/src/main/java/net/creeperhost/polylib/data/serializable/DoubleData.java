@@ -25,7 +25,7 @@ public class DoubleData extends AbstractDataStore<Double> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readDouble();
+        value = validValue(buf.readDouble(), value);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class DoubleData extends AbstractDataStore<Double> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsDouble();
+        value = validValue(((NumericTag) tag).getAsDouble(), value);
     }
 
     //=============== Helpers ===============

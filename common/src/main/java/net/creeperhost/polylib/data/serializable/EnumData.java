@@ -46,7 +46,7 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
         if (!buf.readBoolean()) {
-            value = buf.readEnum(enumClass);
+            value = validValue(buf.readEnum(enumClass), value);
         }
     }
 
@@ -67,7 +67,7 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
             if (nbt.contains("null")) {
                 value = null;
             } else {
-                value = indexToValue.get(MathUtil.clamp(nbt.getByte("value") & 0xFF, 0, indexToValue.size() - 1));
+                value = validValue(indexToValue.get(MathUtil.clamp(nbt.getByte("value") & 0xFF, 0, indexToValue.size() - 1)), value);
             }
         }
     }

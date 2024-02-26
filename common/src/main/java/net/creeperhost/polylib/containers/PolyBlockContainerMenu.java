@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.containers;
 
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
+import net.creeperhost.polylib.data.DataManagerBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by brandon3055 on 19/02/2024
  */
-public abstract class PolyBlockContainerMenu<T extends PolyBlockEntity> extends ModularGuiContainerMenu {
+public abstract class PolyBlockContainerMenu<T extends PolyBlockEntity> extends ModularGuiContainerMenu implements DataManagerContainer {
 
     public T tile;
     public Player player;
@@ -47,5 +48,10 @@ public abstract class PolyBlockContainerMenu<T extends PolyBlockEntity> extends 
         } else {
             return player.distanceToSqr((double) tile.getBlockPos().getX() + 0.5D, (double) tile.getBlockPos().getY() + 0.5D, (double) tile.getBlockPos().getZ() + 0.5D) <= tile.getAccessDistanceSq();
         }
+    }
+
+    @Override
+    public <T extends BlockEntity & DataManagerBlock> T getBlockEntity() {
+        return (T) tile;
     }
 }
