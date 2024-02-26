@@ -50,6 +50,4 @@ public interface PolyFluidStorage {
      */
     @NotNull
     FluidStack drain(FluidStack resource, boolean simulate);
-
-    void markDirty();
 }

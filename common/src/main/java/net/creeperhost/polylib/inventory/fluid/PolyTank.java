@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.inventory.fluid;
 
 import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.Serializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import java.util.function.Predicate;
 /**
  * Created by brandon3055 on 16/02/2024
  */
-public class PolyTank implements PolyFluidStorage, PolyFluidHandler {
+public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializable {
     protected Predicate<FluidStack> validator;
     protected Runnable dirtyListener;
     @NotNull
@@ -149,7 +150,6 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler {
         fluid = fluidStack;
     }
 
-    @Override
     public void markDirty() {
         if (dirtyListener != null) dirtyListener.run();
     }
@@ -158,11 +158,13 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler {
         return fluid.isEmpty();
     }
 
-    public void readFromNBT(CompoundTag nbt) {
+    @Override
+    public void deserialize(CompoundTag nbt) {
         fluid = FluidStack.read(nbt);
     }
 
-    public CompoundTag writeToNBT(CompoundTag nbt) {
+    @Override
+    public CompoundTag serialize(CompoundTag nbt) {
         fluid.write(nbt);
         return nbt;
     }

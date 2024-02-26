@@ -137,25 +137,43 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
     //=== Data ===
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag) {
-        super.saveAdditional(compoundTag);
-        dataManager.save(compoundTag);
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        dataManager.save(nbt);
+        writeExtraData(nbt);
     }
 
     @Override
-    public void load(CompoundTag compoundTag) {
-        super.load(compoundTag);
-        dataManager.load(compoundTag);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
+        dataManager.load(nbt);
+        readExtraData(nbt);
     }
 
     @Override
     public void writeToItemStack(CompoundTag nbt, boolean willHarvest) {
         dataManager.saveToItem(nbt);
+        writeExtraData(nbt);
     }
 
     @Override
     public void readFromItemStack(CompoundTag nbt) {
         dataManager.loadFromItem(nbt);
+        readExtraData(nbt);
+    }
+
+    /**
+     * Convenience method for writing extra data to both the tile NBT, and item NBT when harvested.
+     */
+    public void writeExtraData(CompoundTag nbt) {
+
+    }
+
+    /**
+     * Convenience method for reading extra data from both the tile NBT, and item NBT.
+     */
+    public void readExtraData(CompoundTag nbt) {
+
     }
 
     //=== Misc ===
