@@ -1,12 +1,15 @@
 package net.creeperhost.polylib.network;
 
 import dev.architectury.networking.NetworkManager;
+import dev.architectury.platform.Platform;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.PolyLibPlatform;
 import net.creeperhost.polylib.containers.DataManagerContainer;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.data.DataManagerBlock;
+import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -38,12 +41,27 @@ public class PolyLibNetwork {
 
     public static void init() {
         if (PolyLibPlatform.isClientSide()) {
-            NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_VALUE_TO_CLIENT, (buf, context) -> context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), buf)));
-            NetworkManager.registerReceiver(NetworkManager.Side.S2C, TILE_DATA_VALUE_TO_CLIENT, (buf, context) -> context.queue(() -> handleTileDataValueFromServer(context.getPlayer(), buf)));
+            NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_VALUE_TO_CLIENT, (buf, context) -> {
+                ByteBuf copy = buf.copy();
+                context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), new FriendlyByteBuf(copy)));
+            });
+            NetworkManager.registerReceiver(NetworkManager.Side.S2C, TILE_DATA_VALUE_TO_CLIENT, (buf, context) -> {
+                ByteBuf copy = buf.copy();
+                context.queue(() -> handleTileDataValueFromServer(context.getPlayer(), new FriendlyByteBuf(copy)));
+            });
         }
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_VALUE_TO_SERVER, (buf, context) -> context.queue(() -> ModularGuiContainerMenu.handlePacketFromClient(context.getPlayer(), buf)));
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, TILE_DATA_VALUE_TO_SERVER, (buf, context) -> context.queue(() -> handleTileDataValueFromClient(context.getPlayer(), buf)));
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> context.queue(() -> handleTilePacketFromClient(context.getPlayer(), buf)));
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_VALUE_TO_SERVER, (buf, context) -> {
+            ByteBuf copy = buf.copy();
+            context.queue(() -> ModularGuiContainerMenu.handlePacketFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
+        });
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, TILE_DATA_VALUE_TO_SERVER, (buf, context) -> {
+            ByteBuf copy = buf.copy();
+            context.queue(() -> handleTileDataValueFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
+        });
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> {
+            ByteBuf copy = buf.copy();
+            context.queue(() -> handleTilePacketFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
+        });
     }
 
     // Client to server messages
