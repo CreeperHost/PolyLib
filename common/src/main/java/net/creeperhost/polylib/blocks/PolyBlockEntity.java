@@ -209,7 +209,11 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
         if (!(this instanceof RedstoneActivatedBlock)) {
             throw new IllegalStateException("Tile does not implement IRSSwitchable");
         }
-        redstoneMode.set(mode);
+        if (level.isClientSide){
+            sendDataValueToServer(redstoneMode, mode);
+        }else {
+            redstoneMode.set(mode);
+        }
     }
 
     public void cycleRSMode(boolean reverse) {

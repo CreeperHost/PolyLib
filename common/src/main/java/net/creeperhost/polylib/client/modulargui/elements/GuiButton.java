@@ -1,9 +1,11 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import net.creeperhost.polylib.blocks.RedstoneActivatedBlock;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -13,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -332,4 +335,25 @@ public class GuiButton extends GuiElement<GuiButton> {
 
         return button;
     }
+
+    public static GuiButton redstoneButton(@NotNull GuiParent<?> parent, RedstoneActivatedBlock redstoneBlock) {
+        GuiButton button = new GuiButton(parent)
+                .setTooltipDelay(0)
+                .setTooltipSingle(() -> Component.translatable("rs_mode.polylib." + redstoneBlock.getRSMode().name().toLowerCase(Locale.ENGLISH)))
+                .onPress(() -> redstoneBlock.setRSMode(redstoneBlock.getRSMode().next(net.minecraft.client.gui.screens.Screen.hasShiftDown())), GuiButton.LEFT_CLICK)
+                .onPress(() -> redstoneBlock.setRSMode(redstoneBlock.getRSMode().next(true)), GuiButton.RIGHT_CLICK);
+        Constraints.size(button, 12, 12);
+        Constraints.bind(new GuiRectangle(button).fill(() -> button.isMouseOver() ? 0xFFFFFFFF : 0x00FFFFFF), button);
+        GuiTexture icon = new GuiTexture(button, () -> PolyTextures.get("redstone/" + redstoneBlock.getRSMode().name().toLowerCase(Locale.ENGLISH)));
+        Constraints.bind(icon, button);
+        return button;
+    }
+
+//    private final RedstoneActivatedBlock redstoneBlock;
+//
+//    public RedstoneButton(@NotNull GuiParent<?> parent, RedstoneActivatedBlock redstoneBlock) {
+//        super(parent);
+//        this.redstoneBlock = redstoneBlock;
+//        Constraints
+//    }
 }
