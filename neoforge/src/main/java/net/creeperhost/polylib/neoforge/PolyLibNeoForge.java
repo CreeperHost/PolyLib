@@ -1,12 +1,15 @@
 package net.creeperhost.polylib.neoforge;
 
 import net.creeperhost.polylib.PolyLib;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
+import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyContainer;
 import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyContainer;
+import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
 import net.creeperhost.polylib.neoforge.inventory.item.ItemContainerWrapper;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
@@ -54,13 +57,19 @@ public class PolyLibNeoForge
                 //This is terrible... There has to be a better way!
                 BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
                 if (blockEntity == null) continue;
-                if (blockEntity instanceof PolyEnergyBlock)
+                if (blockEntity instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?>)
                 {
-                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new NeoForgeEnergyContainer<>(((PolyEnergyBlock<?>)entity).getEnergyStorage(), entity));
+                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new NeoForgeEnergyContainer<>(((net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?>)entity).getEnergyStorage(), entity));
                 }
                 if (blockEntity instanceof ItemInventoryBlock)
                 {
                     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new ItemContainerWrapper(((ItemInventoryBlock)entity).getContainer()));
+                }
+                if (blockEntity instanceof PolyEnergyBlock) {
+                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new PolyNeoEnergyWrapper(((PolyEnergyBlock)entity).getEnergyStorage(side)));
+                }
+                if (blockEntity instanceof PolyFluidBlock) {
+                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> new PolyNeoFluidWrapper(((PolyFluidBlock)entity).getFluidHandler(side)));
                 }
             } catch (Exception ignored) {}
         }
