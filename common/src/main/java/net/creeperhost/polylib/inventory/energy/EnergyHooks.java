@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+@Deprecated
 public class EnergyHooks
 {
     public static PlatformItemEnergyManager getItemEnergyManager(ItemStack stack)
