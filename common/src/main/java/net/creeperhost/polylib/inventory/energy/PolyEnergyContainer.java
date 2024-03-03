@@ -4,6 +4,7 @@ import net.creeperhost.polylib.Serializable;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Clearable;
 
+@Deprecated
 public interface PolyEnergyContainer extends Serializable, Clearable
 {
     default PolyEnergyContainer getContainer(Direction direction)

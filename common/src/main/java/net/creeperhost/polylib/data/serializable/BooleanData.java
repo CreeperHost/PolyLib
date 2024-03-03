@@ -1,7 +1,6 @@
 package net.creeperhost.polylib.data.serializable;
 
 import net.minecraft.nbt.ByteTag;
-import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -26,7 +25,7 @@ public class BooleanData extends AbstractDataStore<Boolean> {
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        value = buf.readBoolean();
+        value = validValue(buf.readBoolean(), value);
     }
 
     @Override
@@ -36,6 +35,15 @@ public class BooleanData extends AbstractDataStore<Boolean> {
 
     @Override
     public void fromTag(Tag tag) {
-        value = ((NumericTag) tag).getAsByte() != 0;
+        value = validValue(((NumericTag) tag).getAsByte() != 0, value);
+    }
+
+    /**
+     * Invert the value stored in this {@link BooleanData} and return the result.
+     *
+     * @return the nwe stored value.
+     */
+    public boolean invert() {
+        return set(!value);
     }
 }

@@ -34,6 +34,16 @@ public interface DataManagerBlock {
      */
     int CLIENT_CONTROL = 0b0010;
 
+    /**
+     * Save this data to item when the block is harvested.
+     */
+    int SAVE_TO_ITEM = 0b0001;
+
+    /**
+     * Save data value to tile NBT and to item when block is harvested.
+     */
+    int SAVE_BOTH = SAVE | SAVE_TO_ITEM;
+
     TileDataManager<?> getDataManager();
 
     /**
