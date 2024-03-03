@@ -1,7 +1,9 @@
 package net.creeperhost.testmod;
 
+import dev.architectury.event.Event;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.testmod.client.PlacementRenderer;
@@ -35,6 +37,7 @@ public class TestMod
         TestItems.CREATIVE_MODE_TABS.register();
         TestItems.ITEMS.register();
         TestContainers.CONTAINERS.register();
+
         if(Platform.getEnv() == EnvType.CLIENT)
         {
             ClientLifecycleEvent.CLIENT_SETUP.register(instance -> TestScreens.init());
@@ -56,6 +59,7 @@ public class TestMod
                     titleScreen.renderables.add(debugScreen);
                     children.add(debugScreen);
                 }
+                TestItems.addCustomStacksToTab();
             });
         }
     }

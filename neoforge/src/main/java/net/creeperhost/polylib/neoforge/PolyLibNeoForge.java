@@ -3,11 +3,11 @@ package net.creeperhost.polylib.neoforge;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
+import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyContainer;
 import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyContainer;
 import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
 import net.creeperhost.polylib.neoforge.inventory.item.ItemContainerWrapper;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
@@ -42,11 +42,17 @@ public class PolyLibNeoForge
 
         for (Item item : BuiltInRegistries.ITEM)
         {
-            if(item instanceof PolyEnergyItem<?> polyEnergyItem)
+            if(item instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyItem<?> polyEnergyItem)
             {
                 PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getDescription().getString());
 
                 event.registerItem(Capabilities.EnergyStorage.ITEM, (object, object2) -> new NeoForgeItemEnergyContainer<>(polyEnergyItem.getEnergyStorage(object), object), item);
+            }
+            if(item instanceof PolyEnergyItem polyEnergyItem)
+            {
+                PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getDescription().getString());
+
+                event.registerItem(Capabilities.EnergyStorage.ITEM, (object, object2) -> new PolyNeoEnergyWrapper(polyEnergyItem.getEnergyStorage(object)), item);
             }
         }
 

@@ -4,13 +4,14 @@ import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.forge.inventory.energy.ForgeEnergyContainer;
 import net.creeperhost.polylib.forge.inventory.energy.ForgeItemEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
 import net.creeperhost.polylib.forge.inventory.fluid.FluidCapProvider;
 import net.creeperhost.polylib.forge.inventory.item.ItemCapProvider;
 import net.creeperhost.polylib.forge.inventory.power.EnergyCapProvider;
+import net.creeperhost.polylib.forge.inventory.power.PolyForgeEnergyWrapper;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
+import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -53,16 +54,19 @@ public class ForgeEvents
             event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "fluid"), new FluidCapProvider(fluidBlock));
         }
         if (event.getObject() instanceof PolyEnergyBlock energyBlock) {
-            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "energy"), new EnergyCapProvider(energyBlock));
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "power"), new EnergyCapProvider(energyBlock));
         }
     }
 
     @SubscribeEvent
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
     {
-        if (event.getObject().getItem() instanceof PolyEnergyItem<?> energyItem)
-        {
-            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "energy"), new ForgeItemEnergyContainer<>(energyItem.getEnergyStorage(event.getObject()), event.getObject()));
+        ItemStack stack = event.getObject();
+        if (stack.getItem() instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyItem<?> energyItem) {
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "energy"), new ForgeItemEnergyContainer<>(energyItem.getEnergyStorage(stack), stack));
+        }
+        if (stack.getItem() instanceof PolyEnergyItem energyItem) {
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "power"), new EnergyCapProvider(energyItem, stack));
         }
     }
 }
