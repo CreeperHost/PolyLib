@@ -11,6 +11,8 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FastColor;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +20,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -66,6 +69,9 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private Supplier<Boolean> enableToolTip = () -> true;
     private Supplier<List<Component>> toolTip = null;
     private Rectangle renderCull = Rectangle.create(Position.create(0, 0), () -> (double) screenWidth, () -> (double) screenHeight);
+
+    private Consumer<ItemStack> jeiDropConsumer = null;
+    private boolean isJeiExcluded = false;
 
     /**
      * @param parent parent {@link GuiParent}.
@@ -227,6 +233,10 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return (T) this;
     }
 
+    public boolean isTooltipEnabled() {
+        return enableToolTip.get();
+    }
+
     @Override
     public boolean blockMouseOver(GuiElement<?> element, double mouseX, double mouseY) {
         return getParent().blockMouseOver(element, mouseX, mouseY);
@@ -286,24 +296,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return getClass().getSimpleName() + "{" +
                 "geometry=" + getRectangle() +
                 '}';
-    }
-
-    /**
-     * Add this element to the list of jei exclusions.
-     * Use this for any elements that render outside the normal gui bounds.
-     * This will ensure JEI does not try to render on top of these elements.
-     */
-    public T jeiExclude() {
-        getModularGui().jeiExclude(this);
-        return (T) this;
-    }
-
-    /**
-     * Remove this element from the list of jei exclusions.
-     */
-    public T removeJEIExclude() {
-        getModularGui().removeJEIExclude(this);
-        return (T) this;
     }
 
     //=== Render / Update ===//
@@ -445,8 +437,12 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         return consumed || (showToolTip() && renderTooltip(render, mouseX, mouseY));
     }
 
-    private boolean showToolTip() {
-        return isMouseOver() && enableToolTip.get() && hoverTime() >= getTooltipDelay();
+    /**
+     * @return true if all conditions are bet for this element to be rendering its tool tip.
+     * Meaning mouse is over the element, hover time has elapsed and tooltip is enabled.
+     */
+    public boolean showToolTip() {
+        return isMouseOver() && isTooltipEnabled() && hoverTime() >= getTooltipDelay();
     }
 
     /**
@@ -510,5 +506,73 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     public T setTooltip(@Nullable Supplier<List<Component>> tooltip) {
         this.toolTip = tooltip;
         return (T) this;
+    }
+
+    //=== JEI Integration ===//
+
+    /**
+     * Add this element to the list of jei exclusions.
+     * Use this for any elements that render outside the normal gui bounds.
+     * This will ensure JEI does not try to render on top of these elements.
+     */
+    public T jeiExclude() {
+        isJeiExcluded = true;
+        return (T) this;
+    }
+
+    public T setJeiExcluded(boolean jeiExcluded) {
+        isJeiExcluded = jeiExcluded;
+        return (T) this;
+    }
+
+    public boolean isJeiExcluded() {
+        return isJeiExcluded;
+    }
+
+    /**
+     * Allows you get notified when a player drags and drops an ItemStack from jai onto this element.
+     * If using the standard highlight then you should call this after adding any other required child elements to ensure the highlight is on top.
+     */
+    public T setJeiDropTarget(Consumer<ItemStack> onDrop, boolean installStandardHighlight) {
+        jeiDropConsumer = onDrop;
+        if (installStandardHighlight) {
+            GuiRectangle highlight = new GuiRectangle(this)
+                    .setEnabled(() -> getModularGui().getJeiHighlightTime() > 0)
+                    .fill(() -> FastColor.ARGB32.color(Math.min(getModularGui().getJeiHighlightTime() * 2, 0x50), 0, 0xFF, 0));
+            Constraints.bind(highlight, this);
+        }
+        return (T) this;
+    }
+
+    public Consumer<ItemStack> getJeiDropConsumer() {
+        return jeiDropConsumer;
+    }
+
+    public boolean isJeiDropTarget() {
+        return jeiDropConsumer != null;
+    }
+
+    public List<GuiElement<?>> addJeiExclusions(List<GuiElement<?>> list) {
+        if (isJeiExcluded()) {
+            list.add(this);
+        }
+        for (GuiElement<?> child : childElements) {
+            if (child.isEnabled()) {
+                child.addJeiExclusions(list);
+            }
+        }
+        return list;
+    }
+
+    public List<GuiElement<?>> addJeiDropTargets(List<GuiElement<?>> list) {
+        if (isJeiDropTarget()) {
+            list.add(this);
+        }
+        for (GuiElement<?> child : childElements) {
+            if (child.isEnabled()) {
+                child.addJeiDropTargets(list);
+            }
+        }
+        return list;
     }
 }
