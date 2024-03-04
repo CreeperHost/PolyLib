@@ -67,7 +67,7 @@ public class ModularGuiScreen extends Screen {
         if (modularGui.renderBackground()) {
             renderBackground(poseStack);
         }
-        GuiRender render = modularGui.createRender(minecraft.renderBuffers().bufferSource());
+        GuiRender render = new GuiRender(minecraft, poseStack, minecraft.renderBuffers().bufferSource());
         modularGui.render(render, partialTicks);
         modularGui.renderOverlay(render, partialTicks);
     }

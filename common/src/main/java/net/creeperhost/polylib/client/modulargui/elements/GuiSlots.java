@@ -69,9 +69,9 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
         if (firstSlot + slotCount > slots.size()) {
             throw new IllegalStateException("Specified slot range is out of bounds, Last slot in group is at index " + (slots.size() - 1) + " Specified range is from index " + firstSlot + " to " + (firstSlot + slotCount - 1));
         }
-        int columns = Math.min(gridColumns, slots.size());
+        int columns = Math.min(gridColumns, slotCount);
         this.constrain(WIDTH, Constraint.dynamic(() -> (double) (columns * 18) + ((columns - 1) * xSlotSpacing)));
-        int rows = Math.max(1, slots.size() / gridColumns);
+        int rows = Math.max(1, slotCount / gridColumns);
         this.constrain(GeoParam.HEIGHT, Constraint.dynamic(() -> (double) (rows * 18) + ((rows - 1) * ySlotSpacing)));
         for (int index = 0; index < slotCount; index++) {
             Slot slot = slots.getSlot(index + firstSlot);
@@ -150,8 +150,8 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
     }
 
     private void updateSlots(GuiElement<?> root) {
-        int columns = Math.min(this.columns, slots.size());
-        int rows = Math.max(1, slots.size() / columns);
+        int columns = Math.min(this.columns, slotCount);
+        int rows = Math.max(1, slotCount / columns);
         double width = (columns * 18) + (columns - 1) * xSlotSpacing;
         double height = (rows * 18) + (rows - 1) * ySlotSpacing;
         int top = (int) (yCenter() - (height / 2) - root.yMin());
@@ -197,7 +197,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             }
 
             screenAccess.renderSlot(render, slot);
-            if (GuiRender.isInRect(slot.x + root.xMin(), slot.y + root.yMin(), 16, 16, mouseX, mouseY) && !blockMouseOver(this, mouseX, mouseY)) {
+            if (GuiRender.isInRect(slot.x + root.xMin(), slot.y + root.yMin(), 16, 16, mouseX, mouseY) && !blockMouseOver(this, mouseX, mouseY) && isMouseOver()) {
                 highlightSlot = slot;
             }
         }
