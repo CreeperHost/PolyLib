@@ -45,7 +45,8 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
     public void buildGui(ModularGui gui, ContainerScreenAccess<MGuiTestBlockContainerMenu> screenAccess) {
         MGuiTestBlockContainerMenu menu = screenAccess.getMenu();
         gui.initStandardGui(226, 220);
-        gui.setGuiTitle(menu.blockEntity.getDisplayName());
+        gui.setGuiTitle(menu.getBlockEntity().getDisplayName());
+        MGuiTestBlockEntity tile = menu.tile;
 
         //This is just something I did for fun, Take a look at ModularGuiTest to see an example of how the root element should be setup.
         GuiElement<?> root = gui.getRoot();
@@ -100,8 +101,8 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .constrain(WIDTH, literal(18))
                 .constrain(TOP, relative(title.get(BOTTOM), 8));
         energyBar.primary
-                .setCapacity(() -> (long) menu.maxEnergy.get())
-                .setEnergy(() -> (long) menu.energy.get());
+                .setCapacity(tile.energy::getMaxEnergyStored)
+                .setEnergy(menu.energy::get);
 
         //Add Tanks
         var lavaTank = GuiFluidTank.simpleTank(background);
@@ -111,7 +112,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .constrain(WIDTH, literal(18))
                 .constrain(TOP, match(energyBar.container.get(TOP)));
         lavaTank.primary
-                .setCapacity(() -> (long) menu.tankCap.get())
+                .setCapacity(() -> (long) tile.tankCapacity)
                 .setFluidStack(menu.lavaTank::get);
 
         var waterTank = GuiFluidTank.simpleTank(background);
@@ -121,7 +122,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                 .constrain(WIDTH, literal(18))
                 .constrain(TOP, match(lavaTank.container.get(TOP)));
         waterTank.primary
-                .setCapacity(() -> (long) menu.tankCap.get())
+                .setCapacity(() -> (long) tile.tankCapacity)
                 .setFluidStack(menu.waterTank::get);
 
         //Add Progress Icon
@@ -215,6 +216,23 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                     )
                     .setResultCallback(s -> textDialogTest.getLabel().setText(Component.literal(s)));
         });
+
+        GuiSlots chargeSlot = GuiSlots.singleSlot(root, screenAccess, menu.chargeSlots, 0)
+                .setEmptyIcon(PolyTextures.get("slots/energy"))
+                .setTooltip(Component.literal("Charge Item"));
+        Constraints.placeOutside(chargeSlot, waterTank.container, Constraints.LayoutPos.TOP_RIGHT, 5, 18);
+
+        GuiSlots disChargeSlot = GuiSlots.singleSlot(root, screenAccess, menu.chargeSlots, 1)
+                .setEmptyIcon(PolyTextures.get("slots/energy"))
+                .setTooltip(Component.literal("Discharge Item"));
+        Constraints.placeOutside(disChargeSlot, chargeSlot, Constraints.LayoutPos.MIDDLE_RIGHT, 5, 0);
+
+
+        for (Constraints.LayoutPos pos : Constraints.LayoutPos.values()) {
+//            Constraints.placeOutside(new GuiRectangle(root).fill(0xFFFF0000).constrain(WIDTH, literal(10)).constrain(HEIGHT, literal(10)), dvdButton, pos, 0, 0);
+//            Constraints.placeInside(new GuiRectangle(root).fill(0xFF00FF00).constrain(WIDTH, literal(4)).constrain(HEIGHT, literal(4)), dvdButton, pos, 0, 0);
+        }
+
 
     }
 

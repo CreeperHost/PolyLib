@@ -1,6 +1,7 @@
 package net.creeperhost.testmod;
 
 import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.testmod.client.PlacementRenderer;
@@ -25,10 +26,14 @@ public class TestMod
         TestItems.CREATIVE_MODE_TABS.register();
         TestItems.ITEMS.register();
         TestContainers.CONTAINERS.register();
+
         if(Platform.getEnv() == EnvType.CLIENT)
         {
             ClientLifecycleEvent.CLIENT_SETUP.register(instance -> TestScreens.init());
             ClientRenderEvents.LAST.register(PlacementRenderer::render);
+            ClientLifecycleEvent.CLIENT_STARTED.register(instance -> {
+                TestItems.addCustomStacksToTab();
+            });
         }
     }
 }

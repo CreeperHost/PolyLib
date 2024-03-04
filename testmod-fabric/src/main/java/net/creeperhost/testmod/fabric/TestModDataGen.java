@@ -34,6 +34,7 @@ public class TestModDataGen implements DataGeneratorEntrypoint
             languageProvider.add(TestItems.INVENTORY_TEST_ITEMBLOCK.get(), "inventory Test Block", ModuleType.COMMON);
             languageProvider.add(TestItems.MGUI_TEST_ITEMBLOCK.get(), "Modular Gui Test Block", ModuleType.COMMON);
             languageProvider.add(TestItems.CREATIVE_ENERGY_BLOCK.get(), "Creative Power source", ModuleType.COMMON);
+            languageProvider.add(TestItems.TEST_ENERGY_ITEM.get(), "Test Energy Item", ModuleType.COMMON);
 
             return languageProvider;
         });
@@ -81,6 +82,8 @@ public class TestModDataGen implements DataGeneratorEntrypoint
            modelProvider.addSimpleBlockModel(TestBlocks.MULTIBLOCK_TEST_BLOCK.get(), new ResourceLocation("minecraft", "block/stone"), ModuleType.COMMON);
            modelProvider.addSimpleBlockModel(TestBlocks.MGUI_TEST_BLOCK.get(), new ResourceLocation("minecraft", "block/stone_bricks"), ModuleType.COMMON);
            modelProvider.addSimpleBlockModel(TestBlocks.CREATIVE_ENERGY_BLOCK.get(), new ResourceLocation("minecraft", "block/stone"), ModuleType.COMMON);
+
+           modelProvider.addSimpleItemModel(TestItems.TEST_ENERGY_ITEM.get(), ModuleType.COMMON);
            return modelProvider;
         });
     }

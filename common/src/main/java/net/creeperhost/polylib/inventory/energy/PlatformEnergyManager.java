@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.inventory.energy;
 
+@Deprecated
 public interface PlatformEnergyManager
 {
     long getStoredEnergy();
