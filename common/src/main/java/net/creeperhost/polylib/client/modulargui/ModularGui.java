@@ -67,7 +67,8 @@ public class ModularGui implements GuiParent<ModularGui> {
     private final List<TriConsumer<Integer, Integer, Integer>> preKeyPressListeners = new ArrayList<>();
     private final List<TriConsumer<Integer, Integer, Integer>> postKeyPressListeners = new ArrayList<>();
 
-    private final List<GuiElement<?>> jeiExclusions = new ArrayList<>();
+    private int jeiHighlightTime = 0;
+
     /**
      * @param provider The gui builder that will be used to construct this modular gui when the screen is initialized.
      */
@@ -206,6 +207,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @param buffers BufferSource can be retried from {@link net.minecraft.client.gui.GuiGraphics}
      * @return A new {@link GuiRender} for the current render call.
      */
+    @Deprecated //If you have the GuiGraphics, use GuiRender#convert to ensure the underlying PoseStack is carried over. That will ensure things like the JEI overlay will be rendered at a
     public GuiRender createRender(MultiBufferSource.BufferSource buffers) {
         return new GuiRender(mc, buffers);
     }
@@ -214,7 +216,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Primary render method for ModularGui. The screen implementing ModularGui must call this in its render method.
      * Followed by the {@link #renderOverlay(GuiRender, float)} method to handle overlay rendering.
      *
-     * @param render A new gui render call should be constructed for each frame via {@link #createRender(MultiBufferSource.BufferSource)}
+     * @param render GuiRender instance converted from Minecraft's {@link GuiGraphics} via {@link GuiRender#convert(GuiGraphics)}
      */
     public void render(GuiRender render, float partialTicks) {
         root.clearGeometryCache();
@@ -258,6 +260,7 @@ public class ModularGui implements GuiParent<ModularGui> {
         tickListeners.forEach(Runnable::run);
         root.tick(mouseX, mouseY);
         CursorHelper.setCursor(newCursor);
+        if (jeiHighlightTime > 0) jeiHighlightTime--;
     }
 
     /**
@@ -528,26 +531,20 @@ public class ModularGui implements GuiParent<ModularGui> {
         this.newCursor = cursor;
     }
 
-    /**
-     * Add an element to the list of jei exclusions.
-     * Use this for any elements that render outside the normal gui bounds.
-     * This will ensure JEI does not try to render on top of these elements.
-     */
-    public void jeiExclude(GuiElement<?> element) {
-        if (!jeiExclusions.contains(element)) {
-            jeiExclusions.add(element);
-        }
+    public List<GuiElement<?>> getJeiExclusions() {
+        return root.addJeiExclusions(new ArrayList<>());
     }
 
-    /**
-     * Remove an element from the list of jei exclusions.
-     */
-    public void removeJEIExclude(GuiElement<?> element) {
-        jeiExclusions.remove(element);
+    public List<GuiElement<?>> getJeiDropTargets() {
+        return root.addJeiDropTargets(new ArrayList<>());
     }
 
-    public Stream<GuiElement<?>> getJeiExclusions() {
-        return jeiExclusions.stream().filter(GuiElement::isEnabled);
+    public void setJeiHighlightTime(int jeiHighlightTime) {
+        this.jeiHighlightTime = jeiHighlightTime;
+    }
+
+    public int getJeiHighlightTime() {
+        return jeiHighlightTime;
     }
 
     /**

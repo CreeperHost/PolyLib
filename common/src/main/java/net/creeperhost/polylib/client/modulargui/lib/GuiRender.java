@@ -85,6 +85,10 @@ public class GuiRender extends LegacyRender {
         this(mc, new PoseStack(), buffers);
     }
 
+    public static GuiRender convert(GuiGraphics graphics) {
+        return new GuiRender(Minecraft.getInstance(), graphics.pose(), graphics.bufferSource());
+    }
+
     @Override
     public PoseStack pose() {
         return pose;
