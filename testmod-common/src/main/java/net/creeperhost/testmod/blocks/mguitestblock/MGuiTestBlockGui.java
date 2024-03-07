@@ -19,6 +19,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -233,6 +234,25 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
 //            Constraints.placeInside(new GuiRectangle(root).fill(0xFF00FF00).constrain(WIDTH, literal(4)).constrain(HEIGHT, literal(4)), dvdButton, pos, 0, 0);
         }
 
+        //Ghost slot example with support or JEI drag and drop.
+        GuiRectangle slot = GuiRectangle.vanillaSlot(root)
+                .setTooltip(Component.literal("Drop stack here to set filter"), Component.literal("Can also drag and drop an item from JEI!"));
+        Constraints.size(slot, 18, 18);
+        Constraints.placeOutside(slot, chargeSlot, Constraints.LayoutPos.BOTTOM_CENTER, 0, 2);
+
+        GuiItemStack stack = new GuiItemStack(slot)
+                .setStack(menu.ghostItem::get);
+        Constraints.bind(stack, slot, 1);
+
+        GuiButton setStack = new GuiButton(slot)
+                .onPress(() -> tile.sendDataValueToServer(tile.ghostStack, ItemStack.EMPTY), GuiButton.RIGHT_CLICK)
+                .onPress(() -> {
+                    if (gui.getScreen() instanceof ModularGuiContainer<?> screen) {
+                        tile.sendDataValueToServer(tile.ghostStack, screen.getMenu().getCarried());
+                    }
+                });
+        Constraints.bind(setStack, slot);
+        slot.setJeiDropTarget(dropped -> tile.sendDataValueToServer(tile.ghostStack, dropped), true);
 
     }
 

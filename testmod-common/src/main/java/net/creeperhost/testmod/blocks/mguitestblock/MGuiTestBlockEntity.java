@@ -2,6 +2,8 @@ package net.creeperhost.testmod.blocks.mguitestblock;
 
 import dev.architectury.fluid.FluidStack;
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
+import net.creeperhost.polylib.data.serializable.IntData;
+import net.creeperhost.polylib.data.serializable.StackData;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.fluid.PolyBlockTank;
 import net.creeperhost.polylib.inventory.item.SimpleItemInventory;
@@ -39,6 +41,8 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
     public int tankCapacity = 16000;
     public FluidStack lavaStorage = FluidStack.create(Fluids.LAVA, 0);
     public FluidStack waterStorage = FluidStack.create(Fluids.WATER, 0);
+
+    public StackData ghostStack = register("ghost", new StackData(), SAVE_BOTH, CLIENT_CONTROL);
 
     public MGuiTestBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TestBlocks.MGUI_TEST_BLOCK_ENTITY.get(), blockPos, blockState);
