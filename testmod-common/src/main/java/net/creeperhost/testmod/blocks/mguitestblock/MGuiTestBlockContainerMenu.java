@@ -6,15 +6,13 @@ import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.containers.PolyBlockContainerMenu;
 import net.creeperhost.polylib.containers.slots.PolySlot;
-import net.creeperhost.polylib.data.serializable.ByteData;
-import net.creeperhost.polylib.data.serializable.FluidData;
-import net.creeperhost.polylib.data.serializable.IntData;
-import net.creeperhost.polylib.data.serializable.LongData;
+import net.creeperhost.polylib.data.serializable.*;
 import net.creeperhost.testmod.init.TestContainers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +21,7 @@ public class MGuiTestBlockContainerMenu extends PolyBlockContainerMenu<MGuiTestB
     public final DataSync<Long> energy;
     public final DataSync<FluidStack> waterTank;
     public final DataSync<FluidStack> lavaTank;
+    public final DataSync<ItemStack> ghostItem;
 
     public final SlotGroup main = createSlotGroup(0, 1, 3, 4); //zone id is 0, Quick move to zone 1, then 3
     public final SlotGroup hotBar = createSlotGroup(0, 1, 3, 4);
@@ -46,6 +45,7 @@ public class MGuiTestBlockContainerMenu extends PolyBlockContainerMenu<MGuiTestB
         energy = new DataSync<>(this, new LongData(), () -> blockEntity.energy.getEnergyStored());
         waterTank = new DataSync<>(this, new FluidData(), () -> blockEntity.waterStorage);
         lavaTank = new DataSync<>(this, new FluidData(), () -> blockEntity.lavaStorage);
+        ghostItem = new DataSync<>(this, new StackData(), () -> blockEntity.ghostStack.get());
 
         //When shift-clicking to player inventory, groups are processed in the order they are added.
         //So in this case we will try to move to main slots first, then hotBar.
