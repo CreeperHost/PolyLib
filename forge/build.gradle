@@ -43,6 +43,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
     forgeRuntimeLibrary('blue.endless:jankson:1.2.1')
+    forgeRuntimeLibrary('io.sentry:sentry:5.7.2')
 
     implementation('io.sentry:sentry:5.7.2')
     {

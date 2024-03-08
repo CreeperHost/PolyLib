@@ -1,9 +1,12 @@
 package net.creeperhost.polylib;
 
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.platform.Platform;
+import io.sentry.Sentry;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
 import net.creeperhost.polylib.network.PolyLibNetwork;
+import net.creeperhost.polylib.sentry.SentryRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +22,9 @@ public class PolyLib
         {
             PolyLibClient.init();
         }
+
+        String version = Platform.getMod(MOD_ID).getVersion();
+        SentryRegistry.registerSentryHandler(Constants.DSN, version, Constants.PACKAGE_PATH);
 
         PolyLibNetwork.init();
         TickEvent.SERVER_LEVEL_PRE.register(MultiblockRegistry::tickStart);
