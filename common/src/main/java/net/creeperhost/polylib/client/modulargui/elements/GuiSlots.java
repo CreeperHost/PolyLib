@@ -8,9 +8,11 @@ import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.creeperhost.polylib.client.modulargui.lib.geometry.Position;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.minecraft.world.inventory.Slot;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -39,9 +41,10 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
     private final SlotGroup slots;
     private final ContainerScreenAccess<?> screenAccess;
 
-    private Material slotTexture = PolyTextures.getUncached("widgets/slot");
-    private Function<Integer, Material> slotIcons = slot -> null;
-    private Function<Integer, Integer> highlightColour = slot -> 0x80ffffff;
+    private Function<Slot, Material> slotTexture = slot -> PolyTextures.getUncached("widgets/slot");
+    private Function<Slot, Material> slotIcons = slot -> null;
+    private Function<Slot, Integer> highlightColour = slot -> 0x80ffffff;
+    private TriConsumer<Slot, Position, GuiRender> slotOverlay = null;
     private int xSlotSpacing = 0;
     private int ySlotSpacing = 0;
 
@@ -87,7 +90,25 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
      * Allows you to use a custom slot texture, The default is the standard vanilla slot.
      */
     public GuiSlots setSlotTexture(Material slotTexture) {
+        this.slotTexture = e -> slotTexture;
+        return this;
+    }
+
+    /**
+     * Allows you to use a custom per-slot slot textures, The default is the standard vanilla texture for all slots.
+     */
+    public GuiSlots setSlotTextureS(Function<Slot, Material> slotTexture) {
         this.slotTexture = slotTexture;
+        return this;
+    }
+
+    /**
+     * Allows you to use a custom per-slot slot textures, The default is the standard vanilla texture for all slots.
+     * <p>
+     * Similar to {@link #setSlotTextureS(Function)} except you are given the index of the slot within the {@link GuiSlots} element.
+     */
+    public GuiSlots setSlotTexture(Function<Integer, Material> slotTexture) {
+        this.slotTexture = slot -> slotTexture.apply(slots.indexOf(slot) - firstSlot);
         return this;
     }
 
@@ -95,15 +116,26 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
      * Sets a custom slot highlight colour (The highlight you get when your cursor is over a slot.)
      */
     public GuiSlots setHighlightColour(int highlightColour) {
-        return setHighlightColour(slot -> highlightColour);
+        return setHighlightColourS(slot -> highlightColour);
     }
 
     /**
      * Allows you to set per-slot highlight colours, The integer passed to the function is the
      * index of the slot within the {@link SlotGroup}
      */
-    public GuiSlots setHighlightColour(Function<Integer, Integer> highlightColour) {
+    public GuiSlots setHighlightColourS(Function<Slot, Integer> highlightColour) {
         this.highlightColour = highlightColour;
+        return this;
+    }
+
+    /**
+     * Allows you to set per-slot highlight colours, The integer passed to the function is the
+     * index of the slot within the {@link SlotGroup}
+     * <p>
+     * Similar to {@link #setHighlightColourS(Function)} except you are given the index of the slot within the {@link GuiSlots} element.
+     */
+    public GuiSlots setHighlightColour(Function<Integer, Integer> highlightColour) {
+        this.highlightColour = slot -> highlightColour.apply(slots.indexOf(slot) - firstSlot);
         return this;
     }
 
@@ -112,7 +144,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
      * Recommended texture size is 16x16
      */
     public GuiSlots setEmptyIcon(Material texture) {
-        return setEmptyIcon(index -> texture);
+        return setEmptyIconS(index -> texture);
     }
 
     /**
@@ -121,8 +153,45 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
      *
      * @param slotIcons A function that is given the slot index within the {@link SlotGroup}, and should return a material or null.
      */
-    public GuiSlots setEmptyIcon(Function<Integer, Material> slotIcons) {
+    public GuiSlots setEmptyIconS(Function<Slot, Material> slotIcons) {
         this.slotIcons = slotIcons;
+        return this;
+    }
+
+    /**
+     * Allows you to provide a texture to be rendered in each slot when the slot is empty.
+     * Recommended texture size is 16x16
+     * <p>
+     * Similar to {@link #setEmptyIconS(Function)} except you are given the index of the slot within the {@link GuiSlots} element.
+     *
+     * @param slotIcons A function that is given the slot index within the {@link SlotGroup}, and should return a material or null.
+     */
+    public GuiSlots setEmptyIcon(Function<Integer, Material> slotIcons) {
+        this.slotIcons = slot -> slotIcons.apply(slots.indexOf(slot) - firstSlot);
+        return this;
+    }
+
+    /**
+     * Allows you to attach an overlay renderer that will get called for each slot, after all slots have been rendered.
+     * This can be used to render pretty much anything you want to overtop the slot.
+     *
+     * @param slotOverlay Render callback providing the slot, screen position of the slot (top-left corner) and the active GuiRender.
+     */
+    public GuiSlots setSlotOverlayS(TriConsumer<Slot, Position, GuiRender> slotOverlay) {
+        this.slotOverlay = slotOverlay;
+        return this;
+    }
+
+    /**
+     * Allows you to attach an overlay renderer that will get called for each slot, after all slots have been rendered.
+     * This can be used to render pretty much anything you want to overtop the slot.
+     * <p>
+     * Similar to {@link #setSlotOverlayS(TriConsumer)} except you are given the index of the slot within the {@link GuiSlots} element.
+     *
+     * @param slotOverlay Render callback providing the slot, screen position of the slot (top-left corner) and the active GuiRender.
+     */
+    public GuiSlots setSlotOverlay(TriConsumer<Integer, Position, GuiRender> slotOverlay) {
+        this.slotOverlay = (slot, position, render) -> slotOverlay.accept(slots.indexOf(slot) - firstSlot, position, render);
         return this;
     }
 
@@ -181,7 +250,10 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
 
         for (int index = 0; index < slotCount; index++) {
             Slot slot = slots.getSlot(index + firstSlot);
-            render.texRect(slotTexture, slot.x + root.xMin() - 1, slot.y + root.yMin() - 1, 18, 18);
+            Material tex = slotTexture.apply(slot);
+            if (tex != null) {
+                render.texRect(tex, slot.x + root.xMin() - 1, slot.y + root.yMin() - 1, 18, 18);
+            }
         }
 
         render.pose().translate(0, 0, 0.4);
@@ -190,7 +262,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             Slot slot = slots.getSlot(index + firstSlot);
             if (!slot.isActive()) continue;
             if (!slot.hasItem()) {
-                Material icon = slotIcons.apply(index + firstSlot);
+                Material icon = slotIcons.apply(slot);
                 if (icon != null) {
                     render.texRect(icon, slot.x + root.xMin(), slot.y + root.yMin(), 16, 16);
                 }
@@ -202,9 +274,18 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             }
         }
 
+        render.pose().translate(0, 0, getBackgroundDepth() - 0.8);
+
+        if (slotOverlay != null) {
+            for (int index = 0; index < slotCount; index++) {
+                Slot slot = slots.getSlot(index + firstSlot);
+                if (!slot.isActive()) continue;
+                slotOverlay.accept(slot, Position.create(slot.x + root.xMin(), slot.y + root.yMin()), render);
+            }
+        }
+
         if (highlightSlot != null) {
-            render.pose().translate(0, 0, getBackgroundDepth() - 0.8);
-            render.rect(highlightSlot.x + root.xMin(), highlightSlot.y + root.yMin(), 16, 16, highlightColour.apply(slots.indexOf(highlightSlot)));
+            render.rect(highlightSlot.x + root.xMin(), highlightSlot.y + root.yMin(), 16, 16, highlightColour.apply(highlightSlot));
         }
 
         render.pose().popPose();
