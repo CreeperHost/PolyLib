@@ -110,17 +110,17 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
         if (!fluid.isFluidEqual(resource)) {
             return 0;
         }
-        long filled = capacity - fluid.getAmount();
-        if (resource.getAmount() < filled) {
+        long space = capacity - fluid.getAmount();
+        if (resource.getAmount() < space) {
             fluid.grow(resource.getAmount());
-            filled = resource.getAmount();
+            space = resource.getAmount();
         } else {
             fluid.setAmount(capacity);
         }
-        if (filled > 0) {
+        if (space > 0) {
             markDirty();
         }
-        return filled;
+        return space;
     }
 
     @Override
