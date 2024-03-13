@@ -95,7 +95,15 @@ public interface FluidManager {
 
     static FluidStack transferFluid(@Nullable PolyFluidHandler source, @Nullable PolyFluidHandler target) {
         if (source == null || target == null) return FluidStack.empty();
+        //TODO, This is a little nasty. But we need to know what can be extracted,
+        // Then we need to check how much of that can actually be inserted,
+        // THEN... we need to make sure the 'insertable amount' can be extracted,
+        // Because you cant extract less than a full bucket from a bucket.
+        // There may be a better way to do this. But I cant think of one right now.
         FluidStack maxDrain = source.drain(Integer.MAX_VALUE, true);
+        long maxFill = target.fill(maxDrain.copy(), true);
+        maxDrain.setAmount(maxFill);
+        maxDrain = source.drain(maxDrain, true);
         if (maxDrain.isEmpty()) return FluidStack.empty();
         return source.drain(target.fill(maxDrain, false), false);
     }
