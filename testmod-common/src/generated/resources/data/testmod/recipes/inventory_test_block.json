@@ -12,6 +12,5 @@
   "result": {
     "count": 6,
     "item": "testmod:inventory_test_block"
-  },
-  "show_notification": true
+  }
 }

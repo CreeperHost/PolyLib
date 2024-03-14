@@ -2,24 +2,21 @@ package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import net.creeperhost.polylib.client.modulargui.lib.container.DataSync;
 import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
+import net.creeperhost.polylib.containers.DataManagerContainer;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
-import net.creeperhost.polylib.containers.PolyContainer;
 import net.creeperhost.polylib.containers.slots.PolySlot;
+import net.creeperhost.polylib.data.DataManagerBlock;
 import net.creeperhost.polylib.data.serializable.ByteData;
 import net.creeperhost.polylib.data.serializable.IntData;
 import net.creeperhost.testmod.init.TestContainers;
-import net.creeperhost.testmod.network.TestNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
-public class ContainerInventoryTestBlock extends ModularGuiContainerMenu
+public class ContainerInventoryTestBlock extends ModularGuiContainerMenu implements DataManagerContainer
 {
     public final InventoryTestBlockEntity blockEntity;
     public final SlotGroup main = createSlotGroup(0, 1, 3); //zone id is 0, Quick move to zone 1, then 3
@@ -43,8 +40,6 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu
     {
         super(TestContainers.TEST_INVENTORY_CONTAINER.get(), id, playerInv);
         this.blockEntity = inventoryTestBlock;
-        setServerToClientPacketHandler(TestNetwork::sendContainerPacketToClient);
-        setClientToServerPacketHandler(TestNetwork::sendContainerPacketToServer);
 
         progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
         energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.getEnergyStorage().getStoredEnergy());
@@ -64,5 +59,11 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu
     public boolean stillValid(@NotNull Player player)
     {
         return true;
+    }
+
+    @SuppressWarnings ("unchecked")
+    @Override
+    public <T extends BlockEntity & DataManagerBlock> T getBlockEntity() {
+        return (T) blockEntity;
     }
 }

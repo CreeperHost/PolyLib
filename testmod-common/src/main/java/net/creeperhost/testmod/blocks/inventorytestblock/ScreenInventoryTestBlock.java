@@ -114,6 +114,41 @@ public class ScreenInventoryTestBlock extends ContainerGuiProvider<ContainerInve
         energyBar.primary
                 .setCapacity(() -> (long) menu.maxEnergy.get())
                 .setEnergy(() -> (long) menu.energy.get());
+
+
+        //net.creeperhost.polylib.data.DataManagedBlock Test
+
+        InventoryTestBlockEntity blockEntity = menu.blockEntity;
+        GuiButton clientToServerPacketTest = GuiButton.vanilla(root, Component.literal("Send Test Packet"))
+                .onPress(() -> blockEntity.sendPacketToServer(0, buf -> {}))
+                .constrain(TOP, literal(10))
+                .constrain(LEFT, literal(10))
+                .constrain(WIDTH, literal(100))
+                .constrain(HEIGHT, literal(15));
+
+        GuiText tileDataSyncTest = new GuiText(root, () -> Component.literal("Test Data Sync Value: " + blockEntity.testSyncedIntField.getValue()))
+                .setScroll(false)
+                .setAlignment(Align.MIN)
+                .constrain(TOP, relative(clientToServerPacketTest.get(BOTTOM), 2))
+                .constrain(LEFT, literal(10))
+                .constrain(WIDTH, literal(100))
+                .constrain(HEIGHT, literal(8));
+
+        GuiButton setValueFromClientTest = GuiButton.vanilla(root, Component.literal("Test Set Value"))
+                .onPress(() -> {
+                    TextInputDialog.simpleDialog(root, Component.literal("Enter Number"), String.valueOf(blockEntity.testSyncedIntField.getValue()))
+                            .setResultCallback(s -> {
+                                try {
+                                    blockEntity.sendDataValueToServer(blockEntity.testSyncedIntField, Integer.parseInt(s));
+                                } catch (Throwable ignored) {}
+                            });
+                })
+                .constrain(TOP, relative(tileDataSyncTest.get(BOTTOM), 2))
+                .constrain(LEFT, literal(10))
+                .constrain(WIDTH, literal(100))
+                .constrain(HEIGHT, literal(15));
+
+
     }
 
     public static ModularGuiContainer<ContainerInventoryTestBlock> create(ContainerInventoryTestBlock menu, Inventory inventory, Component component)

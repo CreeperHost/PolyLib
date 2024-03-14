@@ -1,7 +1,9 @@
 package net.creeperhost.testmod;
 
+import dev.architectury.event.Event;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.testmod.client.PlacementRenderer;
@@ -10,7 +12,6 @@ import net.creeperhost.testmod.init.TestBlocks;
 import net.creeperhost.testmod.init.TestContainers;
 import net.creeperhost.testmod.init.TestItems;
 import net.creeperhost.testmod.init.TestScreens;
-import net.creeperhost.testmod.network.TestNetwork;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -36,7 +37,7 @@ public class TestMod
         TestItems.CREATIVE_MODE_TABS.register();
         TestItems.ITEMS.register();
         TestContainers.CONTAINERS.register();
-        TestNetwork.init();
+
         if(Platform.getEnv() == EnvType.CLIENT)
         {
             ClientLifecycleEvent.CLIENT_SETUP.register(instance -> TestScreens.init());
@@ -58,6 +59,7 @@ public class TestMod
                     titleScreen.renderables.add(debugScreen);
                     children.add(debugScreen);
                 }
+                TestItems.addCustomStacksToTab();
             });
         }
     }

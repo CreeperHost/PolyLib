@@ -1,7 +1,13 @@
 package net.creeperhost.testmod.blocks.mguitestblock;
 
 import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.blocks.PolyBlockEntity;
+import net.creeperhost.polylib.inventory.fluid.FluidManager;
+import net.creeperhost.polylib.inventory.fluid.PolyBlockTank;
 import net.creeperhost.polylib.inventory.item.SimpleItemInventory;
+import net.creeperhost.polylib.inventory.power.EnergyManager;
+import net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage;
+import net.creeperhost.polylib.inventory.power.PolyEnergyStorage;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -19,15 +25,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class MGuiTestBlockEntity extends BlockEntity implements MenuProvider {
+public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider {
     private static Random randy = new Random();
     public int progress = 0;
     public final SimpleItemInventory inventory = new SimpleItemInventory(this, 3);
     public final SimpleItemInventory outputInv = new SimpleItemInventory(this, 3 * 16);
+    public final SimpleItemInventory energyItemInv = new SimpleItemInventory(this, 2)
+            .setStackValidator(EnergyManager::isEnergyItem);
+
+//    public PolyBlockTank tank = new PolyBlockTank(this, 16 * FluidManager.BUCKET); //TODO add bucket fill / drain example
+    public PolyEnergyStorage energy = new PolyBlockEnergyStorage(this, 128000);
 
     public int tankCapacity = 16000;
-    public int energy = 0;
-    public int maxEnergy = 32000;
     public FluidStack lavaStorage = FluidStack.create(Fluids.LAVA, 0);
     public FluidStack waterStorage = FluidStack.create(Fluids.WATER, 0);
 
@@ -36,43 +45,49 @@ public class MGuiTestBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void tick() {
-        if (level != null && !level.isClientSide) {
-            if (progress == 0) {
-                if (lavaStorage.isEmpty()) {
-                    lavaStorage = FluidStack.create(Fluids.LAVA, 1000 + (randy.nextInt(tankCapacity/1000) * 1000));
-                }
-                if (waterStorage.isEmpty()) {
-                    waterStorage = FluidStack.create(Fluids.WATER, 1000 + (randy.nextInt(tankCapacity/1000) * 1000));
-                }
+        if (level.isClientSide) return;
 
-                if (energy < 1000) {
-                    energy += 1000 + randy.nextInt(maxEnergy - 2000);
-                }
+        if (progress == 0) {
+            if (lavaStorage.isEmpty()) {
+                lavaStorage = FluidStack.create(Fluids.LAVA, 1000 + (randy.nextInt(16000 / 1000) * 1000));
             }
-
-            progress += 10;
-            if (progress >= 100) {
-                progress = 0;
-
-                ItemStack output = new ItemStack(Items.COBBLESTONE);
-                for (int i = 0; i < outputInv.getContainerSize(); i++) {
-                    ItemStack stack = outputInv.getItem(i);
-                    if (stack.isEmpty()) {
-                        outputInv.setItem(i, output);
-                    } else if (ItemStack.isSameItem(stack, output) && stack.getCount() < stack.getMaxStackSize()) {
-                        stack.grow(1);
-                    } else {
-                        continue;
-                    }
-                    break;
-                }
-                lavaStorage.setAmount(lavaStorage.getAmount() - 1000);
-                waterStorage.setAmount(waterStorage.getAmount() - 1000);
-                energy -= 426;
+            if (waterStorage.isEmpty()) {
+                waterStorage = FluidStack.create(Fluids.WATER, 1000 + (randy.nextInt(16000 / 1000) * 1000));
             }
+//
+//            if (energy < 1000) {
+//                energy += 1000 + randy.nextInt(maxEnergy - 2000);
+//            }
+
+
         }
-    }
 
+        progress += 10;
+        if (progress >= 100) {
+            progress = 0;
+
+            ItemStack output = new ItemStack(Items.COBBLESTONE);
+            for (int i = 0; i < outputInv.getContainerSize(); i++) {
+                ItemStack stack = outputInv.getItem(i);
+                if (stack.isEmpty()) {
+                    outputInv.setItem(i, output);
+                } else if (ItemStack.isSameItem(stack, output) && stack.getCount() < stack.getMaxStackSize()) {
+                    stack.grow(1);
+                } else {
+                    continue;
+                }
+                break;
+            }
+            lavaStorage.setAmount(lavaStorage.getAmount() - 1000);
+            waterStorage.setAmount(waterStorage.getAmount() - 1000);
+        }
+
+        ItemStack chargeSlot = energyItemInv.getItem(0);
+        ItemStack dischargeSlot = energyItemInv.getItem(1);
+
+        EnergyManager.transferEnergy(energy, chargeSlot);
+        EnergyManager.transferEnergy(dischargeSlot, energy);
+    }
 
     @Override
     public @NotNull Component getDisplayName() {

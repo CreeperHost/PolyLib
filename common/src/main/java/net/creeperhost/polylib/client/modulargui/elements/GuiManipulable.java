@@ -75,11 +75,11 @@ public class GuiManipulable extends GuiElement<GuiManipulable> implements Conten
         }
     };
 
-    private GuiElement<?> moveHandle = null;
-    private GuiElement<?> leftHandle = null;
-    private GuiElement<?> rightHandle = null;
-    private GuiElement<?> topHandle = null;
-    private GuiElement<?> bottomHandle = null;
+    private GuiElement<?> moveHandle;
+    private GuiElement<?> leftHandle;
+    private GuiElement<?> rightHandle;
+    private GuiElement<?> topHandle;
+    private GuiElement<?> bottomHandle;
 
     public GuiManipulable(@NotNull GuiParent<?> parent) {
         super(parent);
@@ -88,6 +88,11 @@ public class GuiManipulable extends GuiElement<GuiManipulable> implements Conten
                 .constrain(RIGHT, Constraint.dynamic(() -> xMax))
                 .constrain(TOP, Constraint.dynamic(() -> yMin))
                 .constrain(BOTTOM, Constraint.dynamic(() -> yMax));
+        moveHandle = new GuiRectangle(contentElement);
+        leftHandle = new GuiRectangle(contentElement);
+        rightHandle = new GuiRectangle(contentElement);
+        topHandle = new GuiRectangle(contentElement);
+        bottomHandle = new GuiRectangle(contentElement);
     }
 
     public GuiManipulable resetBounds() {
@@ -123,38 +128,49 @@ public class GuiManipulable extends GuiElement<GuiManipulable> implements Conten
     }
 
     public GuiManipulable addTopHandle(int handleSize) {
-        if (topHandle != null) throw new IllegalStateException("Top handle already exists!");
-        this.topHandle = new GuiRectangle(contentElement)
+        this.topHandle
                 .constrain(TOP, match(contentElement.get(TOP)))
                 .constrain(LEFT, match(contentElement.get(LEFT)))
                 .constrain(RIGHT, match(contentElement.get(RIGHT)))
                 .constrain(HEIGHT, literal(handleSize));
+        return this;
+    }
+
+    public GuiManipulable setTopHandle(GuiElement<?> topHandle) {
+        this.topHandle = topHandle;
         return this;
     }
 
     public GuiManipulable addBottomHandle(int handleSize) {
-        if (bottomHandle != null) throw new IllegalStateException("Bottom handle already exists!");
-        this.bottomHandle = new GuiRectangle(contentElement)
+        this.bottomHandle
                 .constrain(BOTTOM, match(contentElement.get(BOTTOM)))
                 .constrain(LEFT, match(contentElement.get(LEFT)))
                 .constrain(RIGHT, match(contentElement.get(RIGHT)))
                 .constrain(HEIGHT, literal(handleSize));
+        return this;
+    }
+
+    public GuiManipulable setBottomHandle(GuiElement<?> bottomHandle) {
+        this.bottomHandle = bottomHandle;
         return this;
     }
 
     public GuiManipulable addLeftHandle(int handleSize) {
-        if (leftHandle != null) throw new IllegalStateException("Left handle already exists!");
-        this.leftHandle = new GuiRectangle(contentElement)
+        this.leftHandle
                 .constrain(LEFT, match(contentElement.get(LEFT)))
                 .constrain(TOP, match(contentElement.get(TOP)))
                 .constrain(BOTTOM, match(contentElement.get(BOTTOM)))
                 .constrain(WIDTH, literal(handleSize));
+        return this;
+    }
+
+    public GuiManipulable setLeftHandle(GuiElement<?> leftHandle) {
+        this.leftHandle = leftHandle;
         return this;
     }
 
     public GuiManipulable addRightHandle(int handleSize) {
-        if (rightHandle != null) throw new IllegalStateException("Left handle already exists!");
-        this.rightHandle = new GuiRectangle(contentElement)
+        this.rightHandle
                 .constrain(RIGHT, match(contentElement.get(RIGHT)))
                 .constrain(TOP, match(contentElement.get(TOP)))
                 .constrain(BOTTOM, match(contentElement.get(BOTTOM)))
@@ -162,13 +178,22 @@ public class GuiManipulable extends GuiElement<GuiManipulable> implements Conten
         return this;
     }
 
+    public GuiManipulable setRightHandle(GuiElement<?> rightHandle) {
+        this.rightHandle = rightHandle;
+        return this;
+    }
+
     public GuiManipulable addMoveHandle(int handleSize) {
-        if (moveHandle != null) throw new IllegalStateException("Move handle already exists!");
-        this.moveHandle = new GuiRectangle(contentElement)
+        this.moveHandle
                 .constrain(TOP, match(contentElement.get(TOP)))
                 .constrain(LEFT, match(contentElement.get(LEFT)))
                 .constrain(RIGHT, match(contentElement.get(RIGHT)))
                 .constrain(HEIGHT, literal(handleSize));
+        return this;
+    }
+
+    public GuiManipulable setMoveHandle(GuiElement<?> moveHandle) {
+        this.moveHandle = moveHandle;
         return this;
     }
 

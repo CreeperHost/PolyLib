@@ -12,6 +12,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated (forRemoval = true)
 public class ItemContainerWrapper extends InvWrapper implements ICapabilityProvider, AutoSerializable
 {
     private final SerializableContainer serializable;

@@ -7,16 +7,29 @@ import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.polylib.fabric.client.ResourceReloadListenerWrapper;
 import net.creeperhost.polylib.fabric.inventory.energy.FabricBlockEnergyContainer;
 import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyBlock;
+import net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper;
+import net.creeperhost.polylib.fabric.inventory.power.PolyFabricEnergyWrapper;
 import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
+import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
+import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
+import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
+import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import team.reborn.energy.api.EnergyStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PolyLibFabric implements ModInitializer
 {
@@ -35,16 +48,56 @@ public class PolyLibFabric implements ModInitializer
             ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(PolyTextures::getAtlasHolder, new ResourceLocation(PolyLib.MOD_ID, "gui_atlas_reload")));
         }
 
+        //TODO Deprecated
         EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
-            if (blockEntity instanceof PolyEnergyBlock<?> attachment) {
+            if (blockEntity instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?> attachment) {
                 PolyEnergyContainer container = attachment.getEnergyStorage().getContainer(context);
                 return container == null ? null : new FabricBlockEnergyContainer(container, attachment.getEnergyStorage(), blockEntity);
             }
             return null;
         });
         EnergyStorage.ITEM.registerFallback((itemStack, context) -> {
-            if (itemStack.getItem() instanceof PolyEnergyItem<?> attachment) {
+            if (itemStack.getItem() instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyItem<?> attachment) {
                 return new FabricItemEnergyContainer(context, attachment.getEnergyStorage(itemStack));
+            }
+            return null;
+        });
+        EnergyStorage.ITEM.registerFallback((itemStack, context) -> {
+        if (itemStack.getItem() instanceof PolyEnergyItem item) {
+            return new PolyFabricEnergyWrapper(item.getEnergyStorage(itemStack));
+        }
+        return null;
+    });
+
+        FluidStorage.SIDED.registerFallback((world, pos, state, blockEntity, direction) -> {
+            if (blockEntity instanceof PolyFluidBlock fluidBlock) {
+                PolyFluidHandler handler = fluidBlock.getFluidHandler(direction);
+                if (handler == null) {
+                    return null;
+                }
+                if (handler.getTanks() == 1) {
+                    return new PolyFabricFluidWrapper(handler, 0);
+                }
+                List<PolyFabricFluidWrapper> tanks = new ArrayList<>();
+                for (int i = 0; i < handler.getTanks(); i++) {
+                    tanks.add(new PolyFabricFluidWrapper(handler, i));
+                }
+                return new CombinedStorage<>(tanks);
+            }
+            return null;
+        });
+
+        ItemStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
+            if (blockEntity instanceof ItemInventoryBlock invBlock) {
+                return InventoryStorageImpl.of(invBlock.getContainer(context), context);
+            }
+            return null;
+        });
+
+        EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
+            if (blockEntity instanceof PolyEnergyBlock energyBlock) {
+                IPolyEnergyStorage storage = energyBlock.getEnergyStorage(context);
+                return storage == null ? null : new PolyFabricEnergyWrapper(storage);
             }
             return null;
         });
