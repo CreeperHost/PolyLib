@@ -55,6 +55,6 @@ public class ForgePolyFluidWrapper implements PolyFluidHandler {
 
     @Override
     public @NotNull FluidStack drain(long amount, boolean simulate) {
-        return FluidStackHooksForge.fromForge(handler.drain((int) Math.max(amount, Integer.MAX_VALUE), simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE));
+        return FluidStackHooksForge.fromForge(handler.drain((int) Math.min(amount, Integer.MAX_VALUE), simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE));
     }
 }
