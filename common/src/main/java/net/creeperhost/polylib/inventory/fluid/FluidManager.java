@@ -94,18 +94,37 @@ public interface FluidManager {
     //=== Transfer first available fluid ===
 
     static FluidStack transferFluid(@Nullable PolyFluidHandler source, @Nullable PolyFluidHandler target) {
-        if (source == null || target == null) return FluidStack.empty();
-        //TODO, This is a little nasty. But we need to know what can be extracted,
-        // Then we need to check how much of that can actually be inserted,
-        // THEN... we need to make sure the 'insertable amount' can be extracted,
-        // Because you cant extract less than a full bucket from a bucket.
-        // There may be a better way to do this. But I cant think of one right now.
-        FluidStack maxDrain = source.drain(Integer.MAX_VALUE, true);
-        long maxFill = target.fill(maxDrain.copy(), true);
-        maxDrain.setAmount(maxFill);
-        maxDrain = source.drain(maxDrain, true);
-        if (maxDrain.isEmpty()) return FluidStack.empty();
-        return source.drain(target.fill(maxDrain, false), false);
+        if (source == null || target == null) {
+            return FluidStack.empty();
+        }
+        //This logic is a little convoluted,
+        //but it needs to be to account for things like buckets that can only fill or drain specific amounts of fluid.
+
+        //Figure out whats available.
+        FluidStack available = source.drain(Integer.MAX_VALUE, true);
+        if (available.isEmpty()) {
+            return FluidStack.empty();
+        }
+
+        //Figure out how much can be inserted
+        long canFill = target.fill(available, true);
+        if (canFill <= 0) {
+            return FluidStack.empty();
+        }
+
+        //Make sure the insertable amount can be drained
+        FluidStack canDrain = source.drain(canFill, true);
+        if (canDrain.isEmpty()) {
+            return FluidStack.empty();
+        }
+
+        //Finally make sure the drainable amount is insertable.
+        if (canDrain.getAmount() != target.fill(canDrain, true)) {
+            return FluidStack.empty();
+        }
+
+        //Do the transfer
+        return source.drain(target.fill(canDrain, false), false);
     }
 
     static FluidStack transferFluid(BlockEntity source, Direction sourceSide, @Nullable PolyFluidHandler target) {
