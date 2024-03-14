@@ -1,6 +1,8 @@
 package net.creeperhost.testmod.blocks.mguitestblock;
 
 import dev.architectury.registry.menu.MenuRegistry;
+import net.creeperhost.polylib.blocks.PolyEntityBlock;
+import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -18,9 +20,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MGuiTestBlock extends BaseEntityBlock {
+public class MGuiTestBlock extends PolyEntityBlock
+{
     public MGuiTestBlock() {
         super(Properties.of());
+        setBlockEntity(TestBlocks.MGUI_TEST_BLOCK_ENTITY::get, true);
     }
 
     @Override
@@ -31,27 +35,5 @@ public class MGuiTestBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.SUCCESS;
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
-        return (level1, blockPos, blockState1, blockEntity) ->
-        {
-            if (blockEntity instanceof MGuiTestBlockEntity inventoryTestBlock) {
-                inventoryTestBlock.tick();
-            }
-        };
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        return new MGuiTestBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
-        return RenderShape.MODEL;
     }
 }
