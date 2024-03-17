@@ -67,6 +67,14 @@ public interface FluidManager {
 
     //###### Fluid Utilities ######
 
+    //TODO, work around for bug in architectury
+    static FluidStack copyWithAmount(FluidStack stack, long amount) {
+        if (stack.isEmpty()) return FluidStack.empty();
+        stack = stack.copy();
+        stack.setAmount(amount);
+        return stack;
+    }
+
     //=== Get Handler ===
 
     static PolyFluidHandler getHandler(BlockEntity tile, @Nullable Direction side) {

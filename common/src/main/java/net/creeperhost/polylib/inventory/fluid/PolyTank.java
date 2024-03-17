@@ -103,7 +103,7 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
             return Math.min(capacity - fluid.getAmount(), resource.getAmount());
         }
         if (fluid.isEmpty()) {
-            fluid = FluidStack.create(resource, Math.min(capacity, resource.getAmount()));
+            fluid = FluidManager.copyWithAmount(resource, Math.min(capacity, resource.getAmount()));
             markDirty();
             return fluid.getAmount();
         }
@@ -129,7 +129,7 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
         if (fluid.getAmount() < drained) {
             drained = fluid.getAmount();
         }
-        FluidStack stack = FluidStack.create(fluid, drained);
+        FluidStack stack = FluidManager.copyWithAmount(fluid, drained);
         if (!simulate && drained > 0) {
             fluid.shrink(drained);
             markDirty();
