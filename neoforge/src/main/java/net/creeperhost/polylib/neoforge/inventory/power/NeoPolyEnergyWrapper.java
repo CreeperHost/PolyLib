@@ -1,16 +1,29 @@
 package net.creeperhost.polylib.neoforge.inventory.power;
 
-import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by brandon3055 on 26/02/2024
  */
-public class NeoPolyEnergyWrapper implements IPolyEnergyStorage {
+public class NeoPolyEnergyWrapper implements IPolyEnergyStorageItem {
     private final IEnergyStorage storage;
+    private ItemStack container = ItemStack.EMPTY;
 
     public NeoPolyEnergyWrapper(IEnergyStorage storage) {
         this.storage = storage;
+    }
+
+    public NeoPolyEnergyWrapper(IEnergyStorage storage, ItemStack container) {
+        this.storage = storage;
+        this.container = container;
+    }
+
+    @Override
+    public @NotNull ItemStack getContainer() {
+        return container;
     }
 
     @Override

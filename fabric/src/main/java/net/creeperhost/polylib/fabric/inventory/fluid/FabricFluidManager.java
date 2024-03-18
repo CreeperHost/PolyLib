@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.fabric.inventory.fluid;
 
+import net.creeperhost.polylib.fabric.inventory.InitialContentsContainerItemContext;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandlerItem;
@@ -26,7 +27,7 @@ public class FabricFluidManager implements FluidManager {
 
     @Override
     public @Nullable PolyFluidHandlerItem getItemFluidHandler(ItemStack stack) {
-        ContainerItemContext context = ContainerItemContext.withConstant(stack);
+        ContainerItemContext context = new InitialContentsContainerItemContext(stack);
         Storage<FluidVariant> storage =  FluidStorage.ITEM.find(stack, context);
         if (storage == null) return null;
         return new FabricPolyFluidIemWrapper(context, storage);
