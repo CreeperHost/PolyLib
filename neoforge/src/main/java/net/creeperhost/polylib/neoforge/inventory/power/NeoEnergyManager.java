@@ -2,6 +2,7 @@ package net.creeperhost.polylib.neoforge.inventory.power;
 
 import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -24,10 +25,10 @@ public class NeoEnergyManager implements EnergyManager {
     }
 
     @Override
-    public @Nullable IPolyEnergyStorage getItemEnergyStorage(ItemStack stack) {
+    public @Nullable IPolyEnergyStorageItem getItemEnergyStorage(ItemStack stack) {
         IEnergyStorage storage = Capabilities.EnergyStorage.ITEM.getCapability(stack, null);
         if (storage != null) {
-            return new NeoPolyEnergyWrapper(storage);
+            return new NeoPolyEnergyWrapper(storage, stack);
         }
         return null;
     }

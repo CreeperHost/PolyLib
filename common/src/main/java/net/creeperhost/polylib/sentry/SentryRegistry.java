@@ -3,6 +3,7 @@ package net.creeperhost.polylib.sentry;
 import dev.architectury.platform.Platform;
 import io.sentry.Sentry;
 import io.sentry.SentryOptions;
+import io.sentry.protocol.SentryException;
 import net.fabricmc.api.EnvType;
 
 public class SentryRegistry
@@ -37,6 +38,16 @@ public class SentryRegistry
             options.setServerName(Platform.getEnv() == EnvType.CLIENT ? "integrated" : "dedicated");
             options.setDebug(Platform.isDevelopmentEnvironment());
             options.addInAppInclude(packagePath);
+            options.setBeforeSend((event, hint) ->
+            {
+                if(event.getExceptions() == null) return null;
+                for (SentryException exception : event.getExceptions())
+                {
+                    if(exception.getStacktrace() == null) continue;
+                    if(exception.getStacktrace().toString().contains("net.creeperhost")) return event;
+                }
+                return null;
+            });
         });
     }
 }

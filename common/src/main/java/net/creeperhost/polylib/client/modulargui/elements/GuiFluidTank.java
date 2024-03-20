@@ -2,6 +2,7 @@ package net.creeperhost.polylib.client.modulargui.elements;
 
 import dev.architectury.fluid.FluidStack;
 import dev.architectury.hooks.fluid.FluidStackHooks;
+import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.client.modulargui.lib.Assembly;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
@@ -10,6 +11,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.helpers.FormatHelper;
+import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
@@ -193,7 +195,7 @@ public class GuiFluidTank extends GuiElement<GuiFluidTank> implements Background
             tooltip.add(Component.translatable("fluid_tank.polylib.capacity")
                     .withStyle(GOLD)
                     .append(" ")
-                    .append(Component.literal(FormatHelper.addCommas(capacity))
+                    .append(Component.literal(FormatHelper.addCommas(capacity / FluidManager.MILLIBUCKET))
                             .withStyle(GRAY)
                             .append(" ")
                             .append(Component.translatable("fluid_tank.polylib.mb")
@@ -204,7 +206,7 @@ public class GuiFluidTank extends GuiElement<GuiFluidTank> implements Background
             tooltip.add(Component.translatable("fluid_tank.polylib.stored")
                     .withStyle(GOLD)
                     .append(" ")
-                    .append(Component.literal(FormatHelper.addCommas(fluidStack.getAmount()))
+                    .append(Component.literal(FormatHelper.addCommas(fluidStack.getAmount() / FluidManager.MILLIBUCKET))
                             .withStyle(GRAY)
                     )
                     .append(" ")
