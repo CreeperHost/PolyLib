@@ -2,6 +2,7 @@ package net.creeperhost.polylib.fabric.inventory.power;
 
 import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -22,10 +23,10 @@ public class FabricEnergyManager implements EnergyManager {
     }
 
     @Override
-    public @Nullable IPolyEnergyStorage getItemEnergyStorage(ItemStack stack) {
-        ContainerItemContext context = ContainerItemContext.withConstant(stack);
+    public @Nullable IPolyEnergyStorageItem getItemEnergyStorage(ItemStack stack) {
+        ContainerItemContext context = ContainerItemContext.withInitial(stack);
         EnergyStorage storage = EnergyStorage.ITEM.find(stack, context);
         if (storage == null) return null;
-        return new FabricPolyEnergyWrapper(storage);
+        return new FabricPolyEnergyItemWrapper(storage, context);
     }
 }

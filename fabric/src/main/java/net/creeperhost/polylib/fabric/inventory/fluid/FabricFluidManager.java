@@ -26,7 +26,7 @@ public class FabricFluidManager implements FluidManager {
 
     @Override
     public @Nullable PolyFluidHandlerItem getItemFluidHandler(ItemStack stack) {
-        ContainerItemContext context = ContainerItemContext.withConstant(stack);
+        ContainerItemContext context = ContainerItemContext.withInitial(stack);
         Storage<FluidVariant> storage =  FluidStorage.ITEM.find(stack, context);
         if (storage == null) return null;
         return new FabricPolyFluidIemWrapper(context, storage);

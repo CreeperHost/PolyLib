@@ -20,10 +20,12 @@ public interface EnergyManager {
     IPolyEnergyStorage getBlockEnergyStorage(BlockEntity block, @Nullable Direction side);
 
     /**
-     * @return a new {@link IPolyEnergyStorage} instance for the specified stack, or null if the stack does not support energy handling.
+     * @return a new {@link IPolyEnergyStorageItem} instance for the specified stack, or null if the stack does not support energy handling.
+     * After modifying the energy stored in this handler, you must pull the newly modified ItemStack via {@link IPolyEnergyStorageItem#getContainer()}
+     * The reference you previously had will be invalid on fabric.
      */
     @Nullable
-    IPolyEnergyStorage getItemEnergyStorage(ItemStack stack);
+    IPolyEnergyStorageItem getItemEnergyStorage(ItemStack stack);
 
     //###### Energy Utilities ######
 
@@ -33,7 +35,7 @@ public interface EnergyManager {
         return PolyLibPlatform.getEnergyManager().getBlockEnergyStorage(tile, side);
     }
 
-    static IPolyEnergyStorage getHandler(ItemStack stack) {
+    static IPolyEnergyStorageItem getHandler(ItemStack stack) {
         return stack.isEmpty() ? null : PolyLibPlatform.getEnergyManager().getItemEnergyStorage(stack);
     }
     
@@ -65,13 +67,13 @@ public interface EnergyManager {
         return 0;
     }
 
-    static long extractEnergy(ItemStack stack, long energy, boolean simulate) {
-        IPolyEnergyStorage storage = getHandler(stack);
-        if (storage != null && storage.canExtract()) {
-            return storage.extractEnergy(energy, simulate);
-        }
-        return 0;
-    }
+//    static long extractEnergy(ItemStack stack, long energy, boolean simulate) {
+//        IPolyEnergyStorage storage = getHandler(stack);
+//        if (storage != null && storage.canExtract()) {
+//            return storage.extractEnergy(energy, simulate);
+//        }
+//        return 0;
+//    }
 
     // ================= Transfer =================
 
@@ -89,25 +91,25 @@ public interface EnergyManager {
         return storage == null ? 0 : transferEnergy(source, storage);
     }
 
-    static long transferEnergy(ItemStack source, IPolyEnergyStorage target) {
-        IPolyEnergyStorage storage = getHandler(source);
-        return storage == null ? 0 : transferEnergy(storage, target);
-    }
+//    static long transferEnergy(ItemStack source, IPolyEnergyStorage target) {
+//        IPolyEnergyStorage storage = getHandler(source);
+//        return storage == null ? 0 : transferEnergy(storage, target);
+//    }
 
-    static long transferEnergy(IPolyEnergyStorage source, ItemStack target) {
-        IPolyEnergyStorage storage = getHandler(target);
-        return storage == null ? 0 : transferEnergy(source, storage);
-    }
+//    static long transferEnergy(IPolyEnergyStorage source, ItemStack target) {
+//        IPolyEnergyStorage storage = getHandler(target);
+//        return storage == null ? 0 : transferEnergy(source, storage);
+//    }
 
     static long transferEnergy(ItemStack source, BlockEntity target, Direction targetSide) {
         IPolyEnergyStorage storage = getHandler(source);
         return storage == null ? 0 : transferEnergy(storage, target, targetSide);
     }
 
-    static long transferEnergy(BlockEntity source, Direction sourceSide, ItemStack target) {
-        IPolyEnergyStorage storage = getHandler(target);
-        return storage == null ? 0 : transferEnergy(source, sourceSide, storage);
-    }
+//    static long transferEnergy(BlockEntity source, Direction sourceSide, ItemStack target) {
+//        IPolyEnergyStorage storage = getHandler(target);
+//        return storage == null ? 0 : transferEnergy(source, sourceSide, storage);
+//    }
 
     static long transferEnergy(BlockEntity source, Direction sourceSide, BlockEntity target, Direction targetSide) {
         IPolyEnergyStorage sourceStorage = getHandler(source, sourceSide);
