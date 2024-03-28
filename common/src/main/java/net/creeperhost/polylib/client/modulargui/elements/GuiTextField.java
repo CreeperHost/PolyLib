@@ -143,9 +143,9 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     /**
      * Set the colour of the suggestion text.
      */
-    public GuiTextField setSuggestionColour(Supplier<Integer> suggestionColour) {
+    //TODO, Change return type to GuiTextField in next MC version
+    public void setSuggestionColour(Supplier<Integer> suggestionColour) {
         this.suggestionColour = suggestionColour;
-        return this;
     }
 
     public GuiTextField setSuggestionColour(int suggestionColour) {
