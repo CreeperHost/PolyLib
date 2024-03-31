@@ -8,6 +8,7 @@ import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.fluid.PolyBlockTank;
 import net.creeperhost.polylib.inventory.item.SimpleItemInventory;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
 import net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyEnergyStorage;
 import net.creeperhost.testmod.init.TestBlocks;
@@ -86,11 +87,15 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
             waterStorage.setAmount(waterStorage.getAmount() - 1000);
         }
 
-        ItemStack chargeSlot = energyItemInv.getItem(0);
-        ItemStack dischargeSlot = energyItemInv.getItem(1);
+        IPolyEnergyStorageItem chargeHandler = EnergyManager.getHandler(energyItemInv.getItem(0));
+        if (chargeHandler != null && EnergyManager.transferEnergy(energy, chargeHandler) > 0) {
+            energyItemInv.setItem(0, chargeHandler.getContainer());
+        }
 
-        EnergyManager.transferEnergy(energy, chargeSlot);
-        EnergyManager.transferEnergy(dischargeSlot, energy);
+        IPolyEnergyStorageItem dischargeHandler = EnergyManager.getHandler(energyItemInv.getItem(1));
+        if (dischargeHandler != null && EnergyManager.transferEnergy(energy, dischargeHandler) > 0) {
+            energyItemInv.setItem(1, dischargeHandler.getContainer());
+        }
     }
 
     @Override

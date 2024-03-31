@@ -23,8 +23,10 @@ public class PolyLib
             PolyLibClient.init();
         }
 
-        String version = Platform.getMod(MOD_ID).getVersion();
-        SentryRegistry.registerSentryHandler(Constants.DSN, version, Constants.PACKAGE_PATH);
+        if (!Platform.isDevelopmentEnvironment()) {
+            String version = Platform.getMod(MOD_ID).getVersion();
+            SentryRegistry.registerSentryHandler(Constants.DSN, version, Constants.PACKAGE_PATH);
+        }
 
         PolyLibNetwork.init();
         TickEvent.SERVER_LEVEL_PRE.register(MultiblockRegistry::tickStart);

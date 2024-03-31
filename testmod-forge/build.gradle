@@ -66,9 +66,13 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
 
-
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
     modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
+
+    forgeRuntimeLibrary('io.sentry:sentry:5.7.2')
+    implementation('io.sentry:sentry:5.7.2') {
+        exclude group: 'com.google', module: 'gson'
+    }
 }
 
 
