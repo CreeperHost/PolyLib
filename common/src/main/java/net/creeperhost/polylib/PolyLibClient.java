@@ -3,6 +3,7 @@ package net.creeperhost.polylib;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
+import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
 import net.creeperhost.polylib.client.modulargui.lib.CursorHelper;
 import net.creeperhost.polylib.development.DevelopmentTools;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
@@ -27,6 +28,7 @@ public class PolyLibClient
     {
         ClientTickEvent.CLIENT_PRE.register(instance -> MultiblockRegistry.tickStart(instance.level));
         CursorHelper.init();
+        ModularGuiInjector.init();
         if (Platform.isDevelopmentEnvironment())
         {
             DevelopmentTools.initClient();
