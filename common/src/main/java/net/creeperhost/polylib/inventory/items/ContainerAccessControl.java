@@ -1,8 +1,7 @@
-package net.creeperhost.polylib.inventory.item;
+package net.creeperhost.polylib.inventory.items;
 
 import io.netty.util.collection.IntObjectHashMap;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -14,15 +13,14 @@ import java.util.function.Predicate;
 
 /**
  * Used to provide control over what slots allow insert / extract / under what conditions etc.
- * Designed for use with {@link ItemInventoryBlock} but will work with anything that accepts a {@link WorldlyContainer}
+ * Designed for use with {@link PolyInventoryBlock} but will work with anything that accepts a {@link WorldlyContainer}
  * <p>
  * When implementing you can return a single instance for all faces,
  * or you can return different instances for different faces if you need custom per-face configurations.
  * <p>
  * Created by brandon3055 on 08/03/2024
  */
-@Deprecated //Moved to items package
-public class ContainerAccessControl implements SerializableContainer, WorldlyContainer {
+public class ContainerAccessControl implements Container, WorldlyContainer {
     private final IntObjectHashMap<Predicate<ItemStack>> slotInsertChecks = new IntObjectHashMap<>();
     private final IntObjectHashMap<Predicate<ItemStack>> slotRemoveChecks = new IntObjectHashMap<>();
     private BiPredicate<Integer, ItemStack> containerInsertCheck = (slot, stack) -> true;
@@ -37,7 +35,7 @@ public class ContainerAccessControl implements SerializableContainer, WorldlyCon
 
     /**
      * @param firstSlot First slot index (inclusive)
-     * @param lastSlot Last slot index (exclusive)
+     * @param lastSlot  Last slot index (exclusive)
      */
     public ContainerAccessControl(Container wrapped, int firstSlot, int lastSlot) {
         this.wrapped = wrapped;
@@ -132,7 +130,5 @@ public class ContainerAccessControl implements SerializableContainer, WorldlyCon
     @Override public void setChanged() { wrapped.setChanged(); }
     @Override public boolean stillValid(Player player) { return wrapped.stillValid(player); }
     @Override public void clearContent() { wrapped.clearContent(); }
-    @Override public void deserialize(CompoundTag nbt) { }
-    @Override public CompoundTag serialize(CompoundTag nbt) { return nbt; }
     //@formatter:on
 }
