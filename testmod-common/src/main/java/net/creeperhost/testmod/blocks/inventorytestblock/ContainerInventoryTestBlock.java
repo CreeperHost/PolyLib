@@ -42,8 +42,8 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu impleme
         this.blockEntity = inventoryTestBlock;
 
         progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
-        energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.getEnergyStorage().getStoredEnergy());
-        maxEnergy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.getEnergyStorage().getMaxCapacity());
+        energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getEnergyStored());
+        maxEnergy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getMaxEnergyStored());
 
         main.addPlayerMain(inventory);
         hotBar.addPlayerBar(inventory);
@@ -51,7 +51,7 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu impleme
         armor.addPlayerArmor(inventory);
         offhand.addPlayerOffhand(inventory);
 
-        machineInputs.addSlots(1, 0, index -> new PolySlot(blockEntity.getContainer(), index));
+        machineInputs.addSlots(1, 0, index -> new PolySlot(blockEntity.simpleItemInventory, index));
         machineOutputs.addAllSlots(blockEntity.getOutputContainer(), (container, integer) -> new PolySlot(container, integer).output());
     }
 

@@ -5,6 +5,7 @@ import net.creeperhost.polylib.blocks.PolyBlockEntity;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.fluid.PolyBlockTank;
 import net.creeperhost.polylib.inventory.item.SimpleItemInventory;
+import net.creeperhost.polylib.inventory.items.BlockInventory;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
 import net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage;
@@ -29,9 +30,9 @@ import java.util.Random;
 public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider {
     private static Random randy = new Random();
     public int progress = 0;
-    public final SimpleItemInventory inventory = new SimpleItemInventory(this, 3);
-    public final SimpleItemInventory outputInv = new SimpleItemInventory(this, 3 * 16);
-    public final SimpleItemInventory energyItemInv = new SimpleItemInventory(this, 2)
+    public final BlockInventory inventory = new BlockInventory(this, 3);
+    public final BlockInventory outputInv = new BlockInventory(this, 3 * 16);
+    public final BlockInventory energyItemInv = new BlockInventory(this, 2)
             .setStackValidator(EnergyManager::isEnergyItem);
 
 //    public PolyBlockTank tank = new PolyBlockTank(this, 16 * FluidManager.BUCKET); //TODO add bucket fill / drain example
@@ -46,6 +47,7 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
     }
 
     public void tick() {
+        super.tick();
         if (level.isClientSide) return;
 
         if (progress == 0) {
