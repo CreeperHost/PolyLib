@@ -1,7 +1,9 @@
-package net.creeperhost.polylib.inventory.item;
+package net.creeperhost.polylib.inventory.items;
 
+import net.creeperhost.polylib.Serializable;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,63 +15,60 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-@Deprecated //Use BlockInventory
-public class SimpleItemInventory implements SerializableContainer
-{
+/**
+ * Created by brandon3055 on 04/04/2024
+ */
+public class BlockInventory implements Container, Serializable, ContainerHelpers {
+
+    private final BlockEntity blockEntity;
+
+    private final Predicate<Player> canPlayerUse = player -> getBlockEntity().getBlockPos().distSqr(player.blockPosition()) <= 64;
     private BiPredicate<Integer, ItemStack> stackValidator = null;
     private Map<Integer, Predicate<ItemStack>> slotValidators = new HashMap<>();
     private final NonNullList<ItemStack> items;
-    private final BlockEntity blockEntity;
-    private final Predicate<Player> canUse;
     private int maxStackSize = 64;
 
-    public SimpleItemInventory(BlockEntity blockEntity, int size, Predicate<Player> canUse)
-    {
+    public BlockInventory(BlockEntity blockEntity, int size) {
         this.items = NonNullList.withSize(size, ItemStack.EMPTY);
         this.blockEntity = blockEntity;
-        this.canUse = canUse;
     }
 
-    public SimpleItemInventory(BlockEntity blockEntity, int size)
-    {
-        this(blockEntity, size, player -> blockEntity.getBlockPos().distSqr(player.blockPosition()) <= 64);
-    }
-
-    public SimpleItemInventory setMaxStackSize(int maxStackSize) {
+    public BlockInventory setMaxStackSize(int maxStackSize) {
         this.maxStackSize = maxStackSize;
         return this;
     }
 
-    public SimpleItemInventory setStackValidator(BiPredicate<Integer, ItemStack> stackValidator) {
+    public BlockInventory setStackValidator(BiPredicate<Integer, ItemStack> stackValidator) {
         this.stackValidator = stackValidator;
         return this;
     }
 
-    public SimpleItemInventory setStackValidator(Predicate<ItemStack> stackValidator) {
+    public BlockInventory setStackValidator(Predicate<ItemStack> stackValidator) {
         this.stackValidator = (integer, stack) -> stackValidator.test(stack);
         return this;
     }
 
-    public SimpleItemInventory setSlotValidator(int slot, Predicate<ItemStack> validator) {
+    public BlockInventory setSlotValidator(int slot, Predicate<ItemStack> validator) {
         slotValidators.put(slot, validator);
         return this;
     }
 
+    public BlockEntity getBlockEntity() {
+        return blockEntity;
+    }
+
     @Override
-    public int getContainerSize()
-    {
+    public int getContainerSize() {
         return items.size();
     }
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return items.stream().allMatch(ItemStack::isEmpty);
     }
 
     @Override
-    public @NotNull ItemStack getItem(int i)
-    {
+    public @NotNull ItemStack getItem(int i) {
         return items.get(i);
     }
 
@@ -83,8 +82,7 @@ public class SimpleItemInventory implements SerializableContainer
     }
 
     @Override
-    public @NotNull ItemStack removeItemNoUpdate(int i)
-    {
+    public @NotNull ItemStack removeItemNoUpdate(int i) {
         return ContainerHelper.takeItem(items, i);
     }
 
@@ -98,32 +96,27 @@ public class SimpleItemInventory implements SerializableContainer
     }
 
     @Override
-    public void setChanged()
-    {
+    public void setChanged() {
         blockEntity.setChanged();
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player)
-    {
-        return canUse.test(player);
+    public boolean stillValid(@NotNull Player player) {
+        return canPlayerUse.test(player);
     }
 
     @Override
-    public void clearContent()
-    {
+    public void clearContent() {
         items.clear();
     }
 
     @Override
-    public void deserialize(CompoundTag compoundTag)
-    {
+    public void deserialize(CompoundTag compoundTag) {
         ContainerHelper.loadAllItems(compoundTag, items);
     }
 
     @Override
-    public CompoundTag serialize(CompoundTag compoundTag)
-    {
+    public CompoundTag serialize(CompoundTag compoundTag) {
         return ContainerHelper.saveAllItems(compoundTag, items);
     }
 

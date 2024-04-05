@@ -2,9 +2,13 @@ package net.creeperhost.testmod.blocks.machinetest;
 
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
 import net.creeperhost.polylib.inventory.item.SerializableContainer;
+import net.creeperhost.polylib.inventory.items.BlockInventory;
+import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,17 +18,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MachineTestBlockEntity extends BlockEntity implements ItemInventoryBlock, MenuProvider
+public class MachineTestBlockEntity extends BlockEntity implements PolyInventoryBlock, MenuProvider
 {
+    private final BlockInventory inventory = new BlockInventory(this, 1);
+
     public MachineTestBlockEntity(BlockPos blockPos, BlockState blockState)
     {
         super(TestBlocks.MACHINE_TEST_TILE.get(), blockPos, blockState);
     }
 
     @Override
-    public SerializableContainer getContainer()
-    {
-        return null;
+    public Container getContainer(@Nullable Direction side) {
+        return inventory;
     }
 
     @Override
