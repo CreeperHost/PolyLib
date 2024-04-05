@@ -2,6 +2,7 @@ package net.creeperhost.polylib.inventory.item;
 
 import net.minecraft.world.item.ItemStack;
 
+@Deprecated
 public class ItemStackHolder
 {
     private ItemStack stack;

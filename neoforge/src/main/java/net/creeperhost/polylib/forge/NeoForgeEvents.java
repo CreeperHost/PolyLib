@@ -5,12 +5,14 @@ import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.forge.inventory.energy.NeoForgeEnergyContainer;
 import net.creeperhost.polylib.forge.inventory.energy.NeoForgeItemEnergyContainer;
 import net.creeperhost.polylib.forge.inventory.fluid.FluidCapProvider;
+import net.creeperhost.polylib.forge.inventory.item.ItemCapProvider;
 import net.creeperhost.polylib.forge.inventory.item.ItemContainerWrapper;
 import net.creeperhost.polylib.forge.inventory.power.EnergyCapProvider;
 import net.creeperhost.polylib.inventory.energy.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.energy.PolyEnergyItem;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -47,7 +49,13 @@ public class NeoForgeEvents
         {
             String name = event.getObject().getBlockState().getBlock().getDescriptionId();
             PolyLib.LOGGER.log(org.apache.logging.log4j.Level.INFO, "Adding item cap to " + name);
-            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemContainerWrapper(itemInventoryBlock.getContainer()));
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock::getContainer));
+        }
+        if(event.getObject() instanceof PolyInventoryBlock itemInventoryBlock)
+        {
+            String name = event.getObject().getBlockState().getBlock().getDescriptionId();
+            PolyLib.LOGGER.log(org.apache.logging.log4j.Level.INFO, "Adding item cap to " + name);
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock::getContainer));
         }
         if (event.getObject() instanceof PolyFluidBlock fluidBlock) {
             event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "fluid"), new FluidCapProvider(fluidBlock));
