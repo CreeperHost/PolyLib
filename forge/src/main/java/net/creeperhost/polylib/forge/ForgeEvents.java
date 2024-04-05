@@ -10,6 +10,7 @@ import net.creeperhost.polylib.forge.inventory.power.EnergyCapProvider;
 import net.creeperhost.polylib.forge.inventory.power.PolyForgeEnergyWrapper;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.minecraft.resources.ResourceLocation;
@@ -48,7 +49,13 @@ public class ForgeEvents
         {
             String name = event.getObject().getBlockState().getBlock().getDescriptionId();
             PolyLib.LOGGER.log(org.apache.logging.log4j.Level.INFO, "Adding item cap to " + name);
-            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock));
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock::getContainer));
+        }
+        if(event.getObject() instanceof PolyInventoryBlock itemInventoryBlock)
+        {
+            String name = event.getObject().getBlockState().getBlock().getDescriptionId();
+            PolyLib.LOGGER.log(org.apache.logging.log4j.Level.INFO, "Adding item cap to " + name);
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock::getContainer));
         }
         if (event.getObject() instanceof PolyFluidBlock fluidBlock) {
             event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "fluid"), new FluidCapProvider(fluidBlock));

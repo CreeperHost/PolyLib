@@ -16,6 +16,7 @@ import net.fabricmc.api.EnvType;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.fabricmc.api.ModInitializer;
@@ -65,11 +66,11 @@ public class PolyLibFabric implements ModInitializer
             return null;
         });
         EnergyStorage.ITEM.registerFallback((itemStack, context) -> {
-        if (itemStack.getItem() instanceof PolyEnergyItem item) {
-            return new PolyFabricEnergyWrapper(item.getEnergyStorage(itemStack));
-        }
-        return null;
-    });
+            if (itemStack.getItem() instanceof PolyEnergyItem item) {
+                return new PolyFabricEnergyWrapper(item.getEnergyStorage(itemStack));
+            }
+            return null;
+        });
 
         FluidStorage.SIDED.registerFallback((world, pos, state, blockEntity, direction) -> {
             if (blockEntity instanceof PolyFluidBlock fluidBlock) {
@@ -91,6 +92,9 @@ public class PolyLibFabric implements ModInitializer
 
         ItemStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
             if (blockEntity instanceof ItemInventoryBlock invBlock) {
+                return InventoryStorageImpl.of(invBlock.getContainer(context), context);
+            }
+            else if (blockEntity instanceof PolyInventoryBlock invBlock) {
                 return InventoryStorageImpl.of(invBlock.getContainer(context), context);
             }
             return null;
