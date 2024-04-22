@@ -1,7 +1,6 @@
 package net.creeperhost.polylib.network;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.platform.Platform;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.creeperhost.polylib.PolyLib;
@@ -9,7 +8,6 @@ import net.creeperhost.polylib.PolyLibPlatform;
 import net.creeperhost.polylib.containers.DataManagerContainer;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.data.DataManagerBlock;
-import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -31,17 +29,17 @@ public class PolyLibNetwork {
     private static final Logger LOGGER = LogManager.getLogger();
 
     //Server To Client
-    private static final ResourceLocation CONTAINER_VALUE_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "container_to_client");
-    private static final ResourceLocation TILE_DATA_VALUE_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "tile_to_client");
+    private static final ResourceLocation CONTAINER_PACKET_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "container_client");
+    private static final ResourceLocation TILE_DATA_VALUE_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "tile_client");
 
     //Client to server
-    private static final ResourceLocation CONTAINER_VALUE_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "container_to_server");
-    private static final ResourceLocation TILE_DATA_VALUE_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_to_server");
-    private static final ResourceLocation CONTAINER_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "container_to_server");
+    private static final ResourceLocation CONTAINER_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "container_packet_server");
+    private static final ResourceLocation TILE_DATA_VALUE_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_data_server");
+    private static final ResourceLocation TILE_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_packet_server");
 
     public static void init() {
         if (PolyLibPlatform.isClientSide()) {
-            NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_VALUE_TO_CLIENT, (buf, context) -> {
+            NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_PACKET_TO_CLIENT, (buf, context) -> {
                 ByteBuf copy = buf.copy();
                 context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), new FriendlyByteBuf(copy)));
             });
@@ -50,7 +48,7 @@ public class PolyLibNetwork {
                 context.queue(() -> handleTileDataValueFromServer(context.getPlayer(), new FriendlyByteBuf(copy)));
             });
         }
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_VALUE_TO_SERVER, (buf, context) -> {
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> {
             ByteBuf copy = buf.copy();
             context.queue(() -> ModularGuiContainerMenu.handlePacketFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
         });
@@ -58,7 +56,7 @@ public class PolyLibNetwork {
             ByteBuf copy = buf.copy();
             context.queue(() -> handleTileDataValueFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
         });
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> {
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, TILE_PACKET_TO_SERVER, (buf, context) -> {
             ByteBuf copy = buf.copy();
             context.queue(() -> handleTilePacketFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
         });
@@ -69,7 +67,7 @@ public class PolyLibNetwork {
     public static void sendContainerPacketToServer(Consumer<FriendlyByteBuf> packetWriter) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         packetWriter.accept(buf);
-        NetworkManager.sendToServer(CONTAINER_VALUE_TO_SERVER, buf);
+        NetworkManager.sendToServer(CONTAINER_PACKET_TO_SERVER, buf);
     }
 
     public static void sendDataValueToServerTile(Consumer<FriendlyByteBuf> packetWriter) {
@@ -81,7 +79,7 @@ public class PolyLibNetwork {
     public static void sendPacketToServerTile(Consumer<FriendlyByteBuf> packetWriter) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         packetWriter.accept(buf);
-        NetworkManager.sendToServer(CONTAINER_PACKET_TO_SERVER, buf);
+        NetworkManager.sendToServer(TILE_PACKET_TO_SERVER, buf);
     }
 
     // Server to client messages
@@ -89,7 +87,7 @@ public class PolyLibNetwork {
     public static void sendContainerPacketToClient(ServerPlayer player, Consumer<FriendlyByteBuf> packetWriter) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         packetWriter.accept(buf);
-        NetworkManager.sendToPlayer(player, CONTAINER_VALUE_TO_CLIENT, buf);
+        NetworkManager.sendToPlayer(player, CONTAINER_PACKET_TO_CLIENT, buf);
     }
 
     public static void sendTileDataValueToClients(Level level, BlockPos pos, Consumer<FriendlyByteBuf> packetWriter) {
