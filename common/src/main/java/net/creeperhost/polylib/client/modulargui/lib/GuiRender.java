@@ -1468,7 +1468,7 @@ public class GuiRender extends LegacyRender {
             pose.pushPose();
             pose.translate(x + (size / 2D), y + (size / 2D), size);
             try {
-                pose.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
+                pose.mulPose((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
                 pose.scale((float) size, (float) size, (float) size);
                 boolean flag = !bakedmodel.usesBlockLight();
                 if (flag) Lighting.setupForFlatItems();

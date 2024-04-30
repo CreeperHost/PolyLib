@@ -25,14 +25,14 @@ side = "BOTH"
 [[dependencies.polylib]]
 modId = "minecraft"
 type="required"
-versionRange = "[1.20.4,)"
+versionRange = "[1.20.6,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.polylib]]
 modId = "architectury"
 type="required"
-versionRange = "[11.0.9,)"
+versionRange = "[12.0.27,)"
 ordering = "AFTER"
 side = "BOTH"
 

@@ -6,8 +6,7 @@ import net.creeperhost.polylib.util.Updatable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-public record WrappedItemEnergyContainer(ItemStack stack,
-                                         PolyEnergyContainer container) implements PolyEnergyContainer, Updatable<ItemStack>
+public record WrappedItemEnergyContainer(ItemStack stack, PolyEnergyContainer container) implements PolyEnergyContainer, Updatable<ItemStack>
 {
     public WrappedItemEnergyContainer
     {

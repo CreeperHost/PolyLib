@@ -3,6 +3,7 @@ package net.creeperhost.polylib.mulitblock;
 import net.creeperhost.polylib.PolyLib;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -89,9 +90,9 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     }
 
     @Override
-    public void load(@NotNull CompoundTag compoundTag)
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
     {
-        super.load(compoundTag);
+        super.loadAdditional(compoundTag, provider);
         // We can't directly initialize a multiblock controller yet, so we cache
         // the data here until
         // we receive a validate() call, which creates the controller and hands
@@ -100,13 +101,12 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
         {
             this.cachedMultiblockData = compoundTag.getCompound("multiblockData");
         }
-
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag compoundTag)
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(compoundTag);
+        super.saveAdditional(compoundTag, provider);
         if (isMultiblockSaveDelegate() && isConnected())
         {
             CompoundTag multiblockData = new CompoundTag();

@@ -8,6 +8,7 @@ import net.creeperhost.polylib.data.serializable.AbstractDataStore;
 import net.creeperhost.polylib.data.serializable.BooleanData;
 import net.creeperhost.polylib.data.serializable.EnumData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -130,25 +131,30 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider)
+    {
+        return saveWithoutMetadata(provider);
     }
 
     //=== Data ===
 
+
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
-        dataManager.save(nbt);
-        writeExtraData(nbt);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
+    {
+        super.saveAdditional(compoundTag, provider);
+        dataManager.save(compoundTag);
+        writeExtraData(compoundTag);
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        dataManager.load(nbt);
-        readExtraData(nbt);
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
+    {
+        super.loadAdditional(compoundTag, provider);
+        dataManager.load(compoundTag);
+        readExtraData(compoundTag);
     }
+
 
     @Override
     public void writeToItemStack(CompoundTag nbt, boolean willHarvest) {

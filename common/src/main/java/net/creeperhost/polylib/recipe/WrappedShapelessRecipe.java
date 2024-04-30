@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.recipe;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -33,9 +34,9 @@ public abstract class WrappedShapelessRecipe implements CraftingRecipe
         return internal.category();
     }
 
-    @NotNull
     @Override
-    public abstract ItemStack assemble(@NotNull CraftingContainer inv, @NotNull RegistryAccess registryAccess);
+    public abstract @NotNull ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider);
+
 
     @Override
     public boolean matches(@NotNull CraftingContainer inv, @NotNull Level world)
@@ -49,11 +50,10 @@ public abstract class WrappedShapelessRecipe implements CraftingRecipe
         return internal.canCraftInDimensions(width, height);
     }
 
-    @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess)
+    public ItemStack getResultItem(HolderLookup.Provider provider)
     {
-        return internal.getResultItem(registryAccess);
+        return internal.getResultItem(provider);
     }
 
     @NotNull

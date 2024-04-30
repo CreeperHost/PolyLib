@@ -2,7 +2,7 @@ name: Java CI
 
 on:
   push:
-    branches: [ release/1.20.4 ]
+    branches: [ release/1.20.6 ]
   workflow_dispatch:
     inputs:
       norelease:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
       - name: Build with Gradle
         env:
           CREEPERHOST_MAVEN_TOKEN: ${{ secrets.CREEPERHOST_MAVEN_TOKEN}}

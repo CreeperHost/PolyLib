@@ -3,6 +3,8 @@ package net.creeperhost.polylib.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +31,7 @@ public class WrappedShapelessRecipeSerializer<RECIPE extends WrappedShapelessRec
         }
         return codec;
     }
+
 
     @NotNull
     @Override

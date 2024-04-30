@@ -68,7 +68,7 @@ public class ContainerUtil {
     }
 
     public static boolean canCombine(ItemStack stack, ItemStack combineWith, int maxStackSize) {
-        return !stack.isEmpty() && ItemStack.isSameItemSameTags(stack, combineWith) && stack.isStackable() && combineWith.getCount() < combineWith.getMaxStackSize() && combineWith.getCount() < maxStackSize;
+        return !stack.isEmpty() && ItemStack.isSameItemSameComponents(stack, combineWith) && stack.isStackable() && combineWith.getCount() < combineWith.getMaxStackSize() && combineWith.getCount() < maxStackSize;
     }
 
     //The following methods are adapted from Forge's InvWrapper

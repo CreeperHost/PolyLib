@@ -247,7 +247,7 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
 
                 slot = targets.get(position);
                 itemStack2 = slot.getItem();
-                if (!itemStack2.isEmpty() && ItemStack.isSameItemSameTags(stack, itemStack2)) {
+                if (!itemStack2.isEmpty() && ItemStack.isSameItemSameComponents(stack, itemStack2)) {
                     int l = itemStack2.getCount() + stack.getCount();
                     if (l <= Math.min(stack.getMaxStackSize(), slot.getMaxStackSize(stack))) {
                         stack.setCount(0);
