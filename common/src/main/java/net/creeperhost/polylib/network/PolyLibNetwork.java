@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.network;
 
 import dev.architectury.networking.NetworkManager;
+import dev.architectury.platform.Platform;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.creeperhost.polylib.PolyLib;
@@ -8,6 +9,7 @@ import net.creeperhost.polylib.PolyLibPlatform;
 import net.creeperhost.polylib.containers.DataManagerContainer;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.data.DataManagerBlock;
+import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -38,7 +40,7 @@ public class PolyLibNetwork {
     private static final ResourceLocation TILE_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_packet_server");
 
     public static void init() {
-        if (PolyLibPlatform.isClientSide()) {
+        if (Platform.getEnv() == EnvType.CLIENT) {
             NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_PACKET_TO_CLIENT, (buf, context) -> {
                 ByteBuf copy = buf.copy();
                 context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), new FriendlyByteBuf(copy)));

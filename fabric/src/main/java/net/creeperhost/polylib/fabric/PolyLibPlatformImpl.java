@@ -26,26 +26,6 @@ public class PolyLibPlatformImpl
         return FabricLoader.getInstance().getConfigDir();
     }
 
-    public static boolean isClientSide()
-    {
-        return Platform.getEnv() == EnvType.CLIENT;
-    }
-
-    public static PlatformItemEnergyManager getItemEnergyManager(ItemStack stack)
-    {
-        return new FabricItemEnergyManager(stack);
-    }
-
-    public static boolean isEnergyItem(ItemStack stack)
-    {
-        return EnergyStorageUtil.isEnergyStorage(stack);
-    }
-
-    public static PlatformEnergyManager getBlockEnergyManager(BlockEntity entity, Direction direction)
-    {
-        return new net.creeperhost.polylib.fabric.inventory.energy.FabricEnergyManager(entity, direction);
-    }
-
     public static boolean isEnergyContainer(BlockEntity block, Direction direction)
     {
         return EnergyStorage.SIDED.find(block.getLevel(), block.getBlockPos(), direction) != null;
