@@ -1,9 +1,12 @@
 package net.creeperhost.polylib.blocks;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
@@ -17,7 +20,7 @@ public interface InteractableBlock {
     /**
      * Called when the host block is used (right clicked)
      */
-    default InteractionResult onBlockUse(Player player, InteractionHand hand, BlockHitResult hit) {
+    default InteractionResult onBlockUse(BlockState blockState, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         return InteractionResult.PASS;
     }
 

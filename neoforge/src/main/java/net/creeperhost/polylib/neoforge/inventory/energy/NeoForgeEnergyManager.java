@@ -1,8 +1,6 @@
 package net.creeperhost.polylib.neoforge.inventory.energy;
 
-import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 //import net.neoforged.neoforge.common.capabilities.CapabilityProvider;

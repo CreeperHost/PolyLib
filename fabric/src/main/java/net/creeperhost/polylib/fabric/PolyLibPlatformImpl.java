@@ -3,8 +3,6 @@ package net.creeperhost.polylib.fabric;
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyManager;
 import net.creeperhost.polylib.fabric.inventory.power.FabricEnergyManager;
-import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
-import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
 import net.fabricmc.api.EnvType;
 import net.creeperhost.polylib.fabric.inventory.fluid.FabricFluidManager;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;

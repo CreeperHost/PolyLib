@@ -84,11 +84,12 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult)
+    {
         if (level.getBlockEntity(pos) instanceof InteractableBlock interactable) {
-            return interactable.onBlockUse(player, hand, hit);
+            return interactable.onBlockUse(blockState, level, pos, player, blockHitResult);
         }
-        return super.use(state, level, pos, player, hand, hit);
+        return super.useWithoutItem(blockState, level, pos, player, blockHitResult);
     }
 
     @Override

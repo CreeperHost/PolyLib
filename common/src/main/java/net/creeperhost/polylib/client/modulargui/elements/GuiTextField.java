@@ -20,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -283,7 +284,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
         int selectStart = Math.min(cursorPos, highlightPos);
         int selectEnd = Math.max(cursorPos, highlightPos);
         int freeSpace = maxLength - value.length() - (selectStart - selectEnd);
-        String toInsert = SharedConstants.filterText(text);
+        String toInsert = StringUtil.filterText(text);
         int insertLen = toInsert.length();
         if (freeSpace < insertLen) {
             toInsert = toInsert.substring(0, freeSpace);
@@ -548,7 +549,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     public boolean charTyped(char charTyped, int charCode) {
         if (!canConsumeInput()) {
             return false;
-        } else if (SharedConstants.isAllowedChatCharacter(charTyped)) {
+        } else if (StringUtil.isAllowedChatCharacter(charTyped)) {
             if (isEditable()) {
                 insertText(Character.toString(charTyped));
             }

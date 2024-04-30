@@ -2,18 +2,13 @@ package net.creeperhost.polylib.neoforge.inventory.energy;
 
 import net.creeperhost.polylib.Serializable;
 import net.creeperhost.polylib.neoforge.AutoSerializable;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
 import net.creeperhost.polylib.util.Updatable;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 //import net.neoforged.neoforge.common.capabilities.Capabilities;
 //import net.neoforged.neoforge.common.capabilities.Capability;
 //import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 //import net.neoforged.neoforge.common.util.LazyOptional;
-import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.Nullable;
 
 public record NeoForgeEnergyContainer<T extends PolyEnergyContainer & Updatable<BlockEntity>>(T container, BlockEntity entity) implements IEnergyStorage, AutoSerializable
 {

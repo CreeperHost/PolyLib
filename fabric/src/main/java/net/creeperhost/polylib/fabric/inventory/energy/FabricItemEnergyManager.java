@@ -1,8 +1,6 @@
 package net.creeperhost.polylib.fabric.inventory.energy;
 
 import net.creeperhost.polylib.fabric.inventory.ItemStackStorage;
-import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
-import net.creeperhost.polylib.inventory.item.ItemStackHolder;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.world.item.ItemStack;

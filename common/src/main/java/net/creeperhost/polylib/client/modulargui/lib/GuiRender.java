@@ -1481,7 +1481,8 @@ public class GuiRender extends LegacyRender {
                 crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
                 crashreportcategory.setDetail("Item Stack", () -> String.valueOf(stack.getItem()));
                 crashreportcategory.setDetail("Item Damage", () -> String.valueOf(stack.getDamageValue()));
-                crashreportcategory.setDetail("Item NBT", () -> String.valueOf(stack.getTag()));
+                //TODO
+//                crashreportcategory.setDetail("Item NBT", () -> String.valueOf(stack.getTag()));
                 crashreportcategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));
                 throw new ReportedException(crashreport);
             }

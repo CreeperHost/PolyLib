@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.fabric.inventory.energy;
 
-import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;

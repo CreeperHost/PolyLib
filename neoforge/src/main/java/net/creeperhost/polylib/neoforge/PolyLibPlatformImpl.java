@@ -5,8 +5,6 @@ import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyManager;
 import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyManager;
-import net.creeperhost.polylib.inventory.energy.PlatformEnergyManager;
-import net.creeperhost.polylib.inventory.energy.PlatformItemEnergyManager;
 import net.creeperhost.polylib.neoforge.inventory.fluid.NeoFluidManager;
 import net.creeperhost.polylib.neoforge.inventory.power.NeoEnergyManager;
 import net.minecraft.core.Direction;

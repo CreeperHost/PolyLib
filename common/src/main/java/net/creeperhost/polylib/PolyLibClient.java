@@ -7,6 +7,7 @@ import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
 import net.creeperhost.polylib.client.modulargui.lib.CursorHelper;
 import net.creeperhost.polylib.development.DevelopmentTools;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
+import net.fabricmc.api.EnvType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -35,7 +36,7 @@ public class PolyLibClient
     }
 
     public static Player getClientPlayer() {
-        if (PolyLibPlatform.isClientSide()) {
+        if (Platform.getEnv() == EnvType.CLIENT) {
             return _getClientPlayer();
         }
         return null;

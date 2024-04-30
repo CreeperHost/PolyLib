@@ -9,7 +9,6 @@ import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyContainer
 import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyContainer;
 import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
 import net.creeperhost.polylib.neoforge.inventory.item.ItemContainerWrapper;
-import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;

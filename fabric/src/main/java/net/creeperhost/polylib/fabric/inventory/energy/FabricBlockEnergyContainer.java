@@ -1,7 +1,5 @@
 package net.creeperhost.polylib.fabric.inventory.energy;
 
-import net.creeperhost.polylib.inventory.energy.EnergySnapshot;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
 import net.creeperhost.polylib.util.Updatable;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;

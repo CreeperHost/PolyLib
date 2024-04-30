@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.neoforge.inventory.energy;
 
-import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
 import net.creeperhost.polylib.util.Updatable;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.energy.IEnergyStorage;

@@ -9,10 +9,8 @@ import net.creeperhost.polylib.fabric.inventory.energy.FabricBlockEnergyContaine
 import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyContainer;
 import net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper;
 import net.creeperhost.polylib.fabric.inventory.power.PolyFabricEnergyWrapper;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyContainer;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
-import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
