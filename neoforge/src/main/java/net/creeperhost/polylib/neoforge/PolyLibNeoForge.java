@@ -63,25 +63,24 @@ public class PolyLibNeoForge
             try
             {
                 //This is terrible... There has to be a better way!
-                BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
-                if (blockEntity == null) continue;
-                if (blockEntity instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?>)
+                BlockEntity dummy = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
+                if (dummy == null) continue;
+                if (dummy instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?>)
                 {
                     event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new NeoForgeEnergyContainer<>(((net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?>)entity).getEnergyStorage(), entity));
                 }
-                if (blockEntity instanceof ItemInventoryBlock invBlock)
+                if (dummy instanceof ItemInventoryBlock)
                 {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new ItemContainerWrapper(invBlock.getContainer(side)));
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new ItemContainerWrapper(((ItemInventoryBlock)entity).getContainer(side)));
                 }
-                if (blockEntity instanceof PolyInventoryBlock invBlock)
-                {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new InvWrapper(invBlock.getContainer(side)));
+                if (dummy instanceof PolyInventoryBlock) {
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new InvWrapper(((PolyInventoryBlock) entity).getContainer(side)));
                 }
-                if (blockEntity instanceof PolyEnergyBlock) {
-                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new PolyNeoEnergyWrapper(((PolyEnergyBlock)entity).getEnergyStorage(side)));
+                if (dummy instanceof PolyEnergyBlock) {
+                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new PolyNeoEnergyWrapper(((PolyEnergyBlock) entity).getEnergyStorage(side)));
                 }
-                if (blockEntity instanceof PolyFluidBlock) {
-                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> new PolyNeoFluidWrapper(((PolyFluidBlock)entity).getFluidHandler(side)));
+                if (dummy instanceof PolyFluidBlock) {
+                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> new PolyNeoFluidWrapper(((PolyFluidBlock) entity).getFluidHandler(side)));
                 }
             } catch (Exception ignored) {}
         }
