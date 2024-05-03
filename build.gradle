@@ -38,6 +38,8 @@ allprojects {
     group = rootProject.maven_group
     archivesBaseName = rootProject.archives_base_name
 
+    sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = 21
+
 
     repositories {
         maven { url 'https://maven.creeperhost.net' }

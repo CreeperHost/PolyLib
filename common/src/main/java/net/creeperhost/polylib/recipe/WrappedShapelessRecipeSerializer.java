@@ -21,28 +21,41 @@ public class WrappedShapelessRecipeSerializer<RECIPE extends WrappedShapelessRec
         this.wrapper = wrapper;
     }
 
-    @NotNull
+//    @NotNull
+//    @Override
+//    public Codec<RECIPE> codec()
+//    {
+//        if (codec == null)
+//        {
+//            codec = ((MapCodec.MapCodecCodec<ShapelessRecipe>) RecipeSerializer.SHAPELESS_RECIPE.codec()).codec().xmap(wrapper, WrappedShapelessRecipe::getInternal).codec();
+//        }
+//        return codec;
+//    }
+
+    //TODO
     @Override
-    public Codec<RECIPE> codec()
+    public MapCodec<RECIPE> codec()
     {
-        if (codec == null)
-        {
-            codec = ((MapCodec.MapCodecCodec<ShapelessRecipe>) RecipeSerializer.SHAPELESS_RECIPE.codec()).codec().xmap(wrapper, WrappedShapelessRecipe::getInternal).codec();
-        }
-        return codec;
+        return null;
+    }
+
+    @Override
+    public StreamCodec<RegistryFriendlyByteBuf, RECIPE> streamCodec()
+    {
+        return null;
     }
 
 
-    @NotNull
-    @Override
-    public RECIPE fromNetwork(@NotNull FriendlyByteBuf buffer)
-    {
-        return wrapper.apply(RecipeSerializer.SHAPELESS_RECIPE.fromNetwork(buffer));
-    }
-
-    @Override
-    public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull RECIPE recipe)
-    {
-        RecipeSerializer.SHAPELESS_RECIPE.toNetwork(buffer, recipe.getInternal());
-    }
+//    @NotNull
+//    @Override
+//    public RECIPE fromNetwork(@NotNull FriendlyByteBuf buffer)
+//    {
+//        return wrapper.apply(RecipeSerializer.SHAPELESS_RECIPE.fromNetwork(buffer));
+//    }
+//
+//    @Override
+//    public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull RECIPE recipe)
+//    {
+//        RecipeSerializer.SHAPELESS_RECIPE.toNetwork(buffer, recipe.getInternal());
+//    }
 }

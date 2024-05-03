@@ -14,10 +14,14 @@ architectury {
 
 configurations {
     common
+    shadowLib
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    shadowCommon.extendsFrom shadowLib
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
+    implementation.extendsFrom shadowLib
+    forgeRuntimeLibrary.extendsFrom shadowLib
 }
 
 dependencies {
@@ -48,7 +52,7 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching("META-INF/neoforge.mods.toml") {
         expand "version": project.version
     }
 }
@@ -69,7 +73,7 @@ shadowJar {
 }
 
 remapJar {
-    input.set shadowJar.archiveFile
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier = null
     atAccessWideners.add('polylib.accesswidener')
@@ -90,6 +94,22 @@ components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
     }
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "PolyLib",
+                "Specification-Vendor"    : "CreeperHost",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : "PolyLib",
+                "Implementation-Version"  : version,
+                "Implementation-Vendor"   : "CreeperHost",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    setArchiveClassifier("dev")
 }
 
 publishing {
