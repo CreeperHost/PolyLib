@@ -2,8 +2,10 @@ package net.creeperhost.polylib.inventory.fluid;
 
 import dev.architectury.fluid.FluidStack;
 import net.creeperhost.polylib.Serializable;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -159,21 +161,21 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
     }
 
     @Override
-    public void deserialize(CompoundTag nbt) {
-        fluid = FluidStack.read(nbt);
+    public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
+        fluid = FluidStack.read(provider, nbt).orElse(FluidStack.empty());
     }
 
     @Override
-    public CompoundTag serialize(CompoundTag nbt) {
-        fluid.write(nbt);
+    public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt) {
+        fluid.write(provider, nbt);
         return nbt;
     }
 
-    public void readFromBuf(FriendlyByteBuf buf) {
+    public void readFromBuf(RegistryFriendlyByteBuf buf) {
         fluid.write(buf);
     }
 
-    public void writeToBuf(FriendlyByteBuf buf) {
+    public void writeToBuf(RegistryFriendlyByteBuf buf) {
         fluid = FluidStack.read(buf);
     }
 }

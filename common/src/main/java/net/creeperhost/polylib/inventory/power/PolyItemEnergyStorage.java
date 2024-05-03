@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.inventory.power;
 
+import net.creeperhost.polylib.init.DataComps;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -32,7 +33,6 @@ public class PolyItemEnergyStorage extends PolyEnergyStorage {
         loadEnergy();
     }
 
-
     @Override
     public void markDirty() {
         super.markDirty();
@@ -40,12 +40,10 @@ public class PolyItemEnergyStorage extends PolyEnergyStorage {
     }
 
     private void loadEnergy() {
-        if (stack.hasTag()) {
-            energy = stack.getOrCreateTag().getLong("item_energy");
-        }
+        energy = stack.getOrDefault(DataComps.ITEM_ENERGY.get(), 0L);
     }
 
     private void saveEnergy() {
-        stack.getOrCreateTag().putLong("item_energy", energy);
+        stack.set(DataComps.ITEM_ENERGY.get(), energy);
     }
 }

@@ -4,6 +4,7 @@ import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -20,9 +21,9 @@ public class PolyRecipeProvider extends FabricRecipeProvider
     private final ModuleType moduleType;
     private final Map<ResourceLocation, RecipeBuilder> values = new HashMap<>();
 
-    public PolyRecipeProvider(FabricDataOutput dataOutput, ModuleType moduleType)
+    public PolyRecipeProvider(FabricDataOutput dataOutput, ModuleType moduleType, CompletableFuture<HolderLookup.Provider> registryLookup)
     {
-        super(dataOutput);
+        super(dataOutput, registryLookup);
         this.moduleType = moduleType;
     }
 
@@ -44,8 +45,7 @@ public class PolyRecipeProvider extends FabricRecipeProvider
     }
 
     @Override
-    public CompletableFuture<?> run(CachedOutput writer)
-    {
+    public CompletableFuture<?> run(CachedOutput writer, HolderLookup.Provider wrapperLookup) {
         //If values is empty don't generate an empty array json file
         if (values.isEmpty()) return null;
         recipePathProvider.root = appendPath(moduleType);

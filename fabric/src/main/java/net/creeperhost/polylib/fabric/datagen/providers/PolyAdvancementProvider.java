@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 
 import java.io.IOException;
@@ -22,14 +23,14 @@ public class PolyAdvancementProvider extends FabricAdvancementProvider
     private final ModuleType moduleType;
     private List<AdvancementHolder> values = new ArrayList<>();
 
-    public PolyAdvancementProvider(FabricDataOutput fabricDataOutput, ModuleType moduleType)
+    public PolyAdvancementProvider(FabricDataOutput fabricDataOutput, ModuleType moduleType, CompletableFuture<HolderLookup.Provider> registryLookup)
     {
-        super(fabricDataOutput);
+        super(fabricDataOutput, registryLookup);
         this.moduleType = moduleType;
     }
 
     @Override
-    public void generateAdvancement(Consumer<AdvancementHolder> consumer)
+    public void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer)
     {
         values.forEach(advancement ->
         {

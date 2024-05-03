@@ -13,7 +13,7 @@ public class ItemTagTooltipHandler
 {
     public static void init()
     {
-        ClientTooltipEvent.ITEM.register((stack, lines, flag) ->
+        ClientTooltipEvent.ITEM.register((stack, lines, context, flag) ->
         {
             if (flag.isAdvanced())
             {

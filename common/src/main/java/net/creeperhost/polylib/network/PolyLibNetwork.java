@@ -11,7 +11,9 @@ import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.data.DataManagerBlock;
 import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,58 +45,58 @@ public class PolyLibNetwork {
         if (Platform.getEnv() == EnvType.CLIENT) {
             NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_PACKET_TO_CLIENT, (buf, context) -> {
                 ByteBuf copy = buf.copy();
-                context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), new FriendlyByteBuf(copy)));
+                context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), new RegistryFriendlyByteBuf(copy, buf.registryAccess())));
             });
             NetworkManager.registerReceiver(NetworkManager.Side.S2C, TILE_DATA_VALUE_TO_CLIENT, (buf, context) -> {
                 ByteBuf copy = buf.copy();
-                context.queue(() -> handleTileDataValueFromServer(context.getPlayer(), new FriendlyByteBuf(copy)));
+                context.queue(() -> handleTileDataValueFromServer(context.getPlayer(), new RegistryFriendlyByteBuf(copy, buf.registryAccess())));
             });
         }
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> {
             ByteBuf copy = buf.copy();
-            context.queue(() -> ModularGuiContainerMenu.handlePacketFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
+            context.queue(() -> ModularGuiContainerMenu.handlePacketFromClient(context.getPlayer(), new RegistryFriendlyByteBuf(copy, buf.registryAccess())));
         });
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, TILE_DATA_VALUE_TO_SERVER, (buf, context) -> {
             ByteBuf copy = buf.copy();
-            context.queue(() -> handleTileDataValueFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
+            context.queue(() -> handleTileDataValueFromClient(context.getPlayer(), new RegistryFriendlyByteBuf(copy, buf.registryAccess())));
         });
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, TILE_PACKET_TO_SERVER, (buf, context) -> {
             ByteBuf copy = buf.copy();
-            context.queue(() -> handleTilePacketFromClient(context.getPlayer(), new FriendlyByteBuf(copy)));
+            context.queue(() -> handleTilePacketFromClient(context.getPlayer(), new RegistryFriendlyByteBuf(copy, buf.registryAccess())));
         });
     }
 
     // Client to server messages
 
-    public static void sendContainerPacketToServer(Consumer<FriendlyByteBuf> packetWriter) {
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+    public static void sendContainerPacketToServer(RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> packetWriter) {
+        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), registryAccess);
         packetWriter.accept(buf);
         NetworkManager.sendToServer(CONTAINER_PACKET_TO_SERVER, buf);
     }
 
-    public static void sendDataValueToServerTile(Consumer<FriendlyByteBuf> packetWriter) {
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+    public static void sendDataValueToServerTile(RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> packetWriter) {
+        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), registryAccess);
         packetWriter.accept(buf);
         NetworkManager.sendToServer(TILE_DATA_VALUE_TO_SERVER, buf);
     }
 
-    public static void sendPacketToServerTile(Consumer<FriendlyByteBuf> packetWriter) {
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+    public static void sendPacketToServerTile(RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> packetWriter) {
+        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), registryAccess);
         packetWriter.accept(buf);
         NetworkManager.sendToServer(TILE_PACKET_TO_SERVER, buf);
     }
 
     // Server to client messages
 
-    public static void sendContainerPacketToClient(ServerPlayer player, Consumer<FriendlyByteBuf> packetWriter) {
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+    public static void sendContainerPacketToClient(ServerPlayer player, Consumer<RegistryFriendlyByteBuf> packetWriter) {
+        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), player.registryAccess());
         packetWriter.accept(buf);
         NetworkManager.sendToPlayer(player, CONTAINER_PACKET_TO_CLIENT, buf);
     }
 
-    public static void sendTileDataValueToClients(Level level, BlockPos pos, Consumer<FriendlyByteBuf> packetWriter) {
+    public static void sendTileDataValueToClients(Level level, BlockPos pos, Consumer<RegistryFriendlyByteBuf> packetWriter) {
         if (level instanceof ServerLevel serverLevel) {
-            FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+            RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), level.registryAccess());
             packetWriter.accept(buf);
             List<ServerPlayer> players = serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
             NetworkManager.sendToPlayers(players, TILE_DATA_VALUE_TO_CLIENT, buf);
@@ -103,7 +105,7 @@ public class PolyLibNetwork {
 
     // Packet Handling
 
-    private static void handleTileDataValueFromClient(Player player, FriendlyByteBuf packet) {
+    private static void handleTileDataValueFromClient(Player player, RegistryFriendlyByteBuf packet) {
         try {
             if (player.containerMenu instanceof DataManagerContainer menu && player instanceof ServerPlayer serverPlayer) {
                 menu.handleDataValueFromClient(serverPlayer, packet);
@@ -113,7 +115,7 @@ public class PolyLibNetwork {
         }
     }
 
-    public static void handleTileDataValueFromServer(Player player, FriendlyByteBuf packet) {
+    public static void handleTileDataValueFromServer(Player player, RegistryFriendlyByteBuf packet) {
         BlockPos pos = packet.readBlockPos();
         try {
             if (player.level().getBlockEntity(pos) instanceof DataManagerBlock tile) {
@@ -124,7 +126,7 @@ public class PolyLibNetwork {
         }
     }
 
-    private static void handleTilePacketFromClient(Player player, FriendlyByteBuf packet) {
+    private static void handleTilePacketFromClient(Player player, RegistryFriendlyByteBuf packet) {
         try {
             if (player.containerMenu instanceof DataManagerContainer menu && player instanceof ServerPlayer serverPlayer) {
                 menu.handlePacketFromClient(serverPlayer, packet);

@@ -55,7 +55,7 @@ public class PlacementRenderer
                     BlockState blockState = verticalSlabBlock.getStateForPlacement(new BlockPlaceContext(mc.player, InteractionHand.MAIN_HAND, mc.player.getMainHandItem(), blockHitResult));
                     if (blockState != null)
                     {
-                        if (verticalSlabBlock.canSurvive(blockState, mc.level, checkPos))
+                        if (blockState.canSurvive(mc.level, checkPos))
                         {
                             GhostBlockRenderer.renderBlock(blockState, checkPos, poseStack, buffer);
                         }

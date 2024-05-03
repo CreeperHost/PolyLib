@@ -1,14 +1,7 @@
 package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
-import net.creeperhost.polylib.data.TileDataManager;
-import net.creeperhost.polylib.data.DataManagerBlock;
 import net.creeperhost.polylib.data.serializable.IntData;
-import net.creeperhost.polylib.inventory.energy.impl.SimpleEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.impl.WrappedBlockEnergyContainer;
-import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
-import net.creeperhost.polylib.inventory.item.SerializableContainer;
-import net.creeperhost.polylib.inventory.item.SimpleItemInventory;
 import net.creeperhost.polylib.inventory.items.BlockInventory;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
@@ -19,6 +12,7 @@ import net.creeperhost.testmod.TestMod;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -33,7 +27,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -103,21 +96,22 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 
     @Override
-    public void writeExtraData(CompoundTag nbt) {
-        simpleItemInventory.serialize(nbt);
-        nbt.put("out_inv", outputInv.serialize(new CompoundTag()));
+    public void writeExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
+        simpleItemInventory.serialize(provider, nbt);
+        nbt.put("out_inv", outputInv.serialize(provider, new CompoundTag()));
     }
 
     @Override
-    public void readExtraData(CompoundTag nbt) {
-        simpleItemInventory.deserialize(nbt);
-        outputInv.deserialize(nbt.getCompound("out_inv"));
+    public void readExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
+        simpleItemInventory.deserialize(provider, nbt);
+        outputInv.deserialize(provider, nbt.getCompound("out_inv"));
     }
+
 
     @Override
     public void handlePacketFromClient(ServerPlayer player, int id, FriendlyByteBuf buf) {

@@ -8,13 +8,14 @@ import net.creeperhost.testmod.client.gui.ModularGuiTest;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 /**
  * Created by brandon3055 on 07/09/2023
  */
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber (bus = EventBusSubscriber.Bus.MOD)
 public class DataGenEventHandler {
 
     @SubscribeEvent

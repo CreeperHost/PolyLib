@@ -5,10 +5,7 @@ import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
-import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyContainer;
-import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyContainer;
 import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
-import net.creeperhost.polylib.neoforge.inventory.item.ItemContainerWrapper;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -33,6 +30,7 @@ public class PolyLibNeoForge
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> NeoForgeClientEvents::init);
 
         PolyLib.init();
+        NeoForgeEvents.init();
 
         modEventBus.addListener(EventPriority.LOWEST, this::registerCapabilities);
     }
@@ -43,12 +41,6 @@ public class PolyLibNeoForge
 
         for (Item item : BuiltInRegistries.ITEM)
         {
-            if(item instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyItem<?> polyEnergyItem)
-            {
-                PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getDescription().getString());
-
-                event.registerItem(Capabilities.EnergyStorage.ITEM, (object, object2) -> new NeoForgeItemEnergyContainer<>(polyEnergyItem.getEnergyStorage(object), object), item);
-            }
             if(item instanceof PolyEnergyItem polyEnergyItem)
             {
                 PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getDescription().getString());
@@ -64,14 +56,6 @@ public class PolyLibNeoForge
                 //This is terrible... There has to be a better way!
                 BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
                 if (blockEntity == null) continue;
-                if (blockEntity instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?>)
-                {
-                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new NeoForgeEnergyContainer<>(((net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?>)entity).getEnergyStorage(), entity));
-                }
-                if (blockEntity instanceof ItemInventoryBlock invBlock)
-                {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new ItemContainerWrapper(invBlock.getContainer(side)));
-                }
                 if (blockEntity instanceof PolyInventoryBlock invBlock)
                 {
                     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new InvWrapper(invBlock.getContainer(side)));

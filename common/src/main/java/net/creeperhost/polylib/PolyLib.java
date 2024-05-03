@@ -4,6 +4,7 @@ import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
 import io.sentry.Sentry;
 import net.creeperhost.polylib.events.ChunkEvents;
+import net.creeperhost.polylib.init.DataComps;
 import net.creeperhost.polylib.mulitblock.MultiblockRegistry;
 import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.creeperhost.polylib.sentry.SentryRegistry;
@@ -28,6 +29,7 @@ public class PolyLib
         }
 
         PolyLibNetwork.init();
+        DataComps.DATA.register();
         TickEvent.SERVER_LEVEL_PRE.register(MultiblockRegistry::tickStart);
         ChunkEvents.CHUNK_LOAD_EVENT.register(MultiblockRegistry::onChunkLoaded);
         ChunkEvents.CHUNK_UNLOAD_EVENT.register((level, chunk) -> MultiblockRegistry.onWorldUnloaded(level));

@@ -1,9 +1,10 @@
 package net.creeperhost.polylib.data.serializable;
 
 import net.creeperhost.polylib.helpers.MathUtil;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,7 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBoolean(value == null);
         if (value != null) {
             buf.writeEnum(value);
@@ -44,14 +45,14 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf buf) {
+    public void fromBytes(RegistryFriendlyByteBuf buf) {
         if (!buf.readBoolean()) {
             value = validValue(buf.readEnum(enumClass), value);
         }
     }
 
     @Override
-    public Tag toTag() {
+    public Tag toTag(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         if (value == null) {
             nbt.putBoolean("null", true);
@@ -62,7 +63,7 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
     }
 
     @Override
-    public void fromTag(Tag tag) {
+    public void fromTag(HolderLookup.Provider provider, Tag tag) {
         if (tag instanceof CompoundTag nbt) {
             if (nbt.contains("null")) {
                 value = null;

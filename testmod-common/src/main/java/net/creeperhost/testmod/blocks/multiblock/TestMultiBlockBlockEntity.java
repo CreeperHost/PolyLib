@@ -7,6 +7,7 @@ import net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockTileE
 import net.creeperhost.testmod.MultiBlockTest;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -125,17 +126,5 @@ public class TestMultiBlockBlockEntity extends RectangularMultiblockTileEntityBa
     public AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player)
     {
         return null;
-    }
-
-    @Override
-    public void load(@NotNull CompoundTag compoundTag)
-    {
-        super.load(compoundTag);
-    }
-
-    @Override
-    protected void saveAdditional(@NotNull CompoundTag compoundTag)
-    {
-        super.saveAdditional(compoundTag);
     }
 }

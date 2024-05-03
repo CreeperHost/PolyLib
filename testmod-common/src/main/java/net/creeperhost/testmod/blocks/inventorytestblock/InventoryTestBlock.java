@@ -2,10 +2,9 @@ package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import dev.architectury.registry.menu.MenuRegistry;
 import net.creeperhost.polylib.blocks.BlockFacing;
-import net.creeperhost.polylib.inventory.energy.EnergyHooks;
+import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -26,13 +25,12 @@ public class InventoryTestBlock extends BlockFacing
     }
 
     @Override
-    public InteractionResult use(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult)
-    {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if(!level.isClientSide() && player.isShiftKeyDown())
         {
-            boolean isEnergyBlock = EnergyHooks.isEnergyContainer(level.getBlockEntity(blockPos), blockHitResult.getDirection());
-            var power = EnergyHooks.getBlockEnergyManager(level.getBlockEntity(blockPos), blockHitResult.getDirection());
-            System.out.println("isEnergyBlock " + isEnergyBlock + " Stored " + power.getStoredEnergy() + " Max " + power.getCapacity());
+            boolean isEnergyBlock = EnergyManager.isEnergyBlock(level.getBlockEntity(blockPos), blockHitResult.getDirection());
+            var power = EnergyManager.getHandler(level.getBlockEntity(blockPos), blockHitResult.getDirection());
+            System.out.println("isEnergyBlock " + isEnergyBlock + " Stored " + power.getEnergyStored() + " Max " + power.getMaxEnergyStored());
             return InteractionResult.SUCCESS;
         }
         if (!level.isClientSide)

@@ -1,9 +1,11 @@
 package net.creeperhost.polylib.data.serializable;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 /**
  * Created by brandon3055 on 09/09/2023
@@ -19,22 +21,22 @@ public class BooleanData extends AbstractDataStore<Boolean> {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBoolean(value);
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf buf) {
+    public void fromBytes(RegistryFriendlyByteBuf buf) {
         value = validValue(buf.readBoolean(), value);
     }
 
     @Override
-    public Tag toTag() {
+    public Tag toTag(HolderLookup.Provider provider) {
         return ByteTag.valueOf(value);
     }
 
     @Override
-    public void fromTag(Tag tag) {
+    public void fromTag(HolderLookup.Provider provider, Tag tag) {
         value = validValue(((NumericTag) tag).getAsByte() != 0, value);
     }
 

@@ -61,7 +61,7 @@ public interface DataManagerBlock {
         Player player = PolyLibClient.getClientPlayer();
         if (player == null) return;
         AbstractContainerMenu container = player.containerMenu;
-        PolyLibNetwork.sendPacketToServerTile(buf -> {
+        PolyLibNetwork.sendPacketToServerTile(player.registryAccess(), buf -> {
             buf.writeVarInt(container.containerId);
             buf.writeVarInt(id);
             packetWriter.accept(buf);
@@ -85,7 +85,7 @@ public interface DataManagerBlock {
         if (player == null) return;
 
         int index = manager.dataOrder.indexOf(data);
-        PolyLibNetwork.sendDataValueToServerTile(buf -> {
+        PolyLibNetwork.sendDataValueToServerTile(player.registryAccess(), buf -> {
             buf.writeVarInt(player.containerMenu.containerId);
             T prev = data.get();
             data.set(value);

@@ -3,8 +3,10 @@ package net.creeperhost.polylib.data;
 import net.creeperhost.polylib.data.serializable.AbstractDataStore;
 import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -91,10 +93,10 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
     /**
      * Call from tiles load method.
      */
-    public void load(CompoundTag tag) {
+    public void load(HolderLookup.Provider provider, CompoundTag tag) {
         dataStoreMap.forEach((name, data) -> {
             if ((dataFlags.get(data) & SAVE) > 0 && tag.contains(name)) {
-                data.fromTag(tag.get(name));
+                data.fromTag(provider, tag.get(name));
             }
         });
     }
@@ -102,26 +104,26 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
     /**
      * Call from tiles save method.
      */
-    public void save(CompoundTag tag) {
+    public void save(HolderLookup.Provider provider, CompoundTag tag) {
         dataStoreMap.forEach((name, data) -> {
             if ((dataFlags.get(data) & SAVE) > 0) {
-                tag.put(name, data.toTag());
+                tag.put(name, data.toTag(provider));
             }
         });
     }
 
-    public void loadFromItem(CompoundTag tag) {
+    public void loadFromItem(HolderLookup.Provider provider, CompoundTag tag) {
         dataStoreMap.forEach((name, data) -> {
             if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0 && tag.contains(name)) {
-                data.fromTag(tag.get(name));
+                data.fromTag(provider, tag.get(name));
             }
         });
     }
 
-    public void saveToItem(CompoundTag tag) {
+    public void saveToItem(HolderLookup.Provider provider, CompoundTag tag) {
         dataStoreMap.forEach((name, data) -> {
             if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0) {
-                tag.put(name, data.toTag());
+                tag.put(name, data.toTag(provider));
             }
         });
     }
@@ -139,12 +141,12 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
         });
     }
 
-    public void handleSyncFromServer(Player player, FriendlyByteBuf packet) {
+    public void handleSyncFromServer(Player player, RegistryFriendlyByteBuf packet) {
         int index = packet.readVarInt();
         dataOrder.get(index).fromBytes(packet);
     }
 
-    public void handleSyncFromClient(ServerPlayer player, FriendlyByteBuf packet) {
+    public void handleSyncFromClient(ServerPlayer player, RegistryFriendlyByteBuf packet) {
         int index = packet.readVarInt();
         AbstractDataStore<?> data = dataOrder.get(index);
         if ((dataFlags.get(data) & CLIENT_CONTROL) > 0) {

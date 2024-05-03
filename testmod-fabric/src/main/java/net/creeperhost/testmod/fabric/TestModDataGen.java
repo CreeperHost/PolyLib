@@ -28,7 +28,7 @@ public class TestModDataGen implements DataGeneratorEntrypoint
         var pack = fabricDataGenerator.createPack();
 
         pack.addProvider((output, registriesFuture) -> {
-            PolyLanguageProvider languageProvider = new PolyLanguageProvider(output, ModuleType.COMMON);
+            PolyLanguageProvider languageProvider = new PolyLanguageProvider(output, ModuleType.COMMON, registriesFuture);
             languageProvider.add(TestItems.MACHINE_TEST_ITEMBLOCK.get(), "Test Machine", ModuleType.COMMON);
             languageProvider.add(TestItems.MULTIBLOCK_TEST_ITEMBLOCK.get(), "Test Multiblock block", ModuleType.COMMON);
             languageProvider.add(TestItems.INVENTORY_TEST_ITEMBLOCK.get(), "inventory Test Block", ModuleType.COMMON);
@@ -40,7 +40,7 @@ public class TestModDataGen implements DataGeneratorEntrypoint
         });
 
         pack.addProvider((output, registriesFuture) -> {
-           PolyBlockLootProvider blockLootProvider = new PolyBlockLootProvider(output, ModuleType.COMMON);
+           PolyBlockLootProvider blockLootProvider = new PolyBlockLootProvider(output, ModuleType.COMMON, registriesFuture);
            TestBlocks.BLOCKS.forEach(blockRegistrySupplier -> blockLootProvider.addSelfDrop(blockRegistrySupplier.get(), ModuleType.COMMON));
            return blockLootProvider;
         });
@@ -52,7 +52,7 @@ public class TestModDataGen implements DataGeneratorEntrypoint
         });
 
         pack.addProvider((output, registriesFuture) -> {
-           PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON);
+           PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON, registriesFuture);
 
            recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
                    TestBlocks.INVENTORY_TEST_BLOCK.get(),

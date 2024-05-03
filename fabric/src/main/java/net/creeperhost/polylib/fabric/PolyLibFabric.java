@@ -6,8 +6,6 @@ import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.polylib.fabric.client.ResourceReloadListenerWrapper;
-import net.creeperhost.polylib.fabric.inventory.energy.FabricBlockEnergyContainer;
-import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyContainer;
 import net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper;
 import net.creeperhost.polylib.fabric.inventory.power.PolyFabricEnergyWrapper;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
@@ -49,20 +47,6 @@ public class PolyLibFabric implements ModInitializer
             ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(PolyTextures::getAtlasHolder, new ResourceLocation(PolyLib.MOD_ID, "gui_atlas_reload")));
         }
 
-        //TODO Deprecated
-        EnergyStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
-            if (blockEntity instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyBlock<?> attachment) {
-                PolyEnergyContainer container = attachment.getEnergyStorage().getContainer(context);
-                return container == null ? null : new FabricBlockEnergyContainer(container, attachment.getEnergyStorage(), blockEntity);
-            }
-            return null;
-        });
-        EnergyStorage.ITEM.registerFallback((itemStack, context) -> {
-            if (itemStack.getItem() instanceof net.creeperhost.polylib.inventory.energy.PolyEnergyItem<?> attachment) {
-                return new FabricItemEnergyContainer(context, attachment.getEnergyStorage(itemStack));
-            }
-            return null;
-        });
         EnergyStorage.ITEM.registerFallback((itemStack, context) -> {
             if (itemStack.getItem() instanceof PolyEnergyItem item) {
                 return new PolyFabricEnergyWrapper(item.getEnergyStorage(itemStack));
@@ -89,10 +73,7 @@ public class PolyLibFabric implements ModInitializer
         });
 
         ItemStorage.SIDED.registerFallback((world, pos, state, blockEntity, context) -> {
-            if (blockEntity instanceof ItemInventoryBlock invBlock) {
-                return InventoryStorageImpl.of(invBlock.getContainer(context), context);
-            }
-            else if (blockEntity instanceof PolyInventoryBlock invBlock) {
+            if (blockEntity instanceof PolyInventoryBlock invBlock) {
                 return InventoryStorageImpl.of(invBlock.getContainer(context), context);
             }
             return null;

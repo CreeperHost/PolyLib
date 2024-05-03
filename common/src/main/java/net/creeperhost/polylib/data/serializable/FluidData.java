@@ -1,9 +1,11 @@
 package net.creeperhost.polylib.data.serializable;
 
 import dev.architectury.fluid.FluidStack;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 import java.util.Objects;
 
@@ -30,23 +32,23 @@ public class FluidData extends AbstractDataStore<FluidStack> {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         value.write(buf);
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf buf) {
+    public void fromBytes(RegistryFriendlyByteBuf buf) {
         value = validValue(FluidStack.read(buf), value);
     }
 
     @Override
-    public Tag toTag() {
-        return value.write(new CompoundTag());
+    public Tag toTag(Provider provider) {
+        return value.write(provider, new CompoundTag());
     }
 
     @Override
-    public void fromTag(Tag tag) {
-        value = validValue(FluidStack.read((CompoundTag) tag), value);
+    public void fromTag(Provider provider, Tag tag) {
+        value = validValue(FluidStack.read(provider, tag).orElse(FluidStack.empty()), value);
     }
 
     @Override

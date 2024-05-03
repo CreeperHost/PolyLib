@@ -1,7 +1,5 @@
 package net.creeperhost.testmod.item;
 
-import net.creeperhost.polylib.inventory.energy.impl.SimpleEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.impl.WrappedItemEnergyContainer;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.creeperhost.polylib.inventory.power.PolyItemEnergyStorage;
@@ -52,7 +50,7 @@ public class TestEnergyItem extends Item implements PolyEnergyItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         IPolyEnergyStorage energy = getEnergyStorage(itemStack);
 
         list.add(Component.literal("Energy"));

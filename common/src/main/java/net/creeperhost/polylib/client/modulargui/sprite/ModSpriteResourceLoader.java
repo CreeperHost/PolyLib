@@ -88,7 +88,7 @@ public class ModSpriteResourceLoader {
                     DataResult<List<SpriteSource>> var10001 = SpriteSources.FILE_CODEC.parse(dynamic);
                     Logger var10003 = LOGGER;
                     Objects.requireNonNull(var10003);
-                    list.addAll(var10001.getOrThrow(false, var10003::error));
+                    list.addAll(var10001.getOrThrow());
                 } catch (Throwable var10) {
                     if (bufferedReader != null) {
                         try {

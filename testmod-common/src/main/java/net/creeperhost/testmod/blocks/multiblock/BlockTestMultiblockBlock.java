@@ -31,8 +31,7 @@ public class BlockTestMultiblockBlock extends Block implements EntityBlock
     }
 
     @Override
-    public InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult)
-    {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if(level.getBlockEntity(blockPos) == null) return InteractionResult.FAIL;
         TestMultiBlockBlockEntity testMultiBlockBlockEntity = (TestMultiBlockBlockEntity) level.getBlockEntity(blockPos);
         if(testMultiBlockBlockEntity.getMultiblockController() != null)

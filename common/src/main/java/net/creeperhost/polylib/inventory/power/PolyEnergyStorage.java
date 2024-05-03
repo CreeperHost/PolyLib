@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.inventory.power;
 
 import net.creeperhost.polylib.Serializable;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -152,13 +153,13 @@ public class PolyEnergyStorage implements IPolyEnergyStorage, Serializable {
     }
 
     @Override
-    public CompoundTag serialize(CompoundTag nbt) {
+    public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt) {
         nbt.putLong("energy", energy);
         return nbt;
     }
 
     @Override
-    public void deserialize(CompoundTag nbt) {
+    public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
         energy = nbt.getLong("energy");
     }
 

@@ -143,42 +143,42 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
     protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
     {
         super.saveAdditional(compoundTag, provider);
-        dataManager.save(compoundTag);
-        writeExtraData(compoundTag);
+        dataManager.save(provider, compoundTag);
+        writeExtraData(provider, compoundTag);
     }
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
     {
         super.loadAdditional(compoundTag, provider);
-        dataManager.load(compoundTag);
-        readExtraData(compoundTag);
+        dataManager.load(provider, compoundTag);
+        readExtraData(provider, compoundTag);
     }
 
 
     @Override
-    public void writeToItemStack(CompoundTag nbt, boolean willHarvest) {
-        dataManager.saveToItem(nbt);
-        writeExtraData(nbt);
+    public void writeToItemStack(HolderLookup.Provider provider, CompoundTag nbt, boolean willHarvest) {
+        dataManager.saveToItem(provider, nbt);
+        writeExtraData(provider, nbt);
     }
 
     @Override
-    public void readFromItemStack(CompoundTag nbt) {
-        dataManager.loadFromItem(nbt);
-        readExtraData(nbt);
+    public void readFromItemStack(HolderLookup.Provider provider, CompoundTag nbt) {
+        dataManager.loadFromItem(provider, nbt);
+        readExtraData(provider, nbt);
     }
 
     /**
      * Convenience method for writing extra data to both the tile NBT, and item NBT when harvested.
      */
-    public void writeExtraData(CompoundTag nbt) {
+    public void writeExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
 
     }
 
     /**
      * Convenience method for reading extra data from both the tile NBT, and item NBT.
      */
-    public void readExtraData(CompoundTag nbt) {
+    public void readExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
 
     }
 

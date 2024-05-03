@@ -3,8 +3,6 @@ package net.creeperhost.polylib.neoforge;
 import net.creeperhost.polylib.PolyLibPlatform;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
-import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeEnergyManager;
-import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyManager;
 import net.creeperhost.polylib.neoforge.inventory.fluid.NeoFluidManager;
 import net.creeperhost.polylib.neoforge.inventory.power.NeoEnergyManager;
 import net.minecraft.core.Direction;
@@ -35,16 +33,6 @@ public class PolyLibPlatformImpl
     public static boolean isClientSide()
     {
         return FMLEnvironment.dist.isClient();
-    }
-
-    public static PlatformItemEnergyManager getItemEnergyManager(ItemStack stack)
-    {
-        return new NeoForgeItemEnergyManager(stack);
-    }
-
-    public static PlatformEnergyManager getBlockEnergyManager(BlockEntity entity, Direction direction)
-    {
-        return new NeoForgeEnergyManager(entity, direction);
     }
 
     public static boolean isEnergyItem(ItemStack stack)

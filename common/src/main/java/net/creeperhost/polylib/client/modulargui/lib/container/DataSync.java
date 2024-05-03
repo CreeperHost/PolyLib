@@ -3,6 +3,7 @@ package net.creeperhost.polylib.client.modulargui.lib.container;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.data.serializable.AbstractDataStore;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -43,7 +44,7 @@ public class DataSync<T> {
         });
     }
 
-    public void handleSyncPacket(FriendlyByteBuf buf) {
+    public void handleSyncPacket(RegistryFriendlyByteBuf buf) {
         dataStore.fromBytes(buf);
     }
 }

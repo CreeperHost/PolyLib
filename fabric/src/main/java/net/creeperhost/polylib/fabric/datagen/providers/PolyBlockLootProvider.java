@@ -7,6 +7,7 @@ import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
@@ -25,9 +26,9 @@ public class PolyBlockLootProvider extends FabricBlockLootTableProvider
     private final Map<Block, LootTable.Builder> values = Maps.newHashMap();
     private final FabricDataOutput fabricDataOutput;
 
-    public PolyBlockLootProvider(FabricDataOutput dataOutput, ModuleType moduleType)
+    public PolyBlockLootProvider(FabricDataOutput dataOutput, ModuleType moduleType, CompletableFuture<HolderLookup.Provider> registryLookup)
     {
-        super(dataOutput);
+        super(dataOutput, registryLookup);
         this.moduleType = moduleType;
         this.fabricDataOutput = dataOutput;
     }

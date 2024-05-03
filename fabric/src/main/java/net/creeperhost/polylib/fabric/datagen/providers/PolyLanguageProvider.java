@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -23,9 +24,9 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     ModuleType moduleType;
     Map<String, String> values = new HashMap<>();
 
-    public PolyLanguageProvider(FabricDataOutput dataOutput, ModuleType moduleType)
+    public PolyLanguageProvider(FabricDataOutput dataOutput, ModuleType moduleType, CompletableFuture<HolderLookup.Provider> registryLookup)
     {
-        super(dataOutput, "en_us");
+        super(dataOutput, "en_us", registryLookup);
         this.moduleType = moduleType;
 
         PolyLib.LOGGER.info("PolyLanguageProvider created for " + dataOutput.getModId() + " " + moduleType.name());
@@ -61,8 +62,7 @@ public class PolyLanguageProvider extends FabricLanguageProvider
     }
 
     @Override
-    public void generateTranslations(TranslationBuilder translationBuilder)
-    {
+    public void generateTranslations(HolderLookup.Provider registryLookup, TranslationBuilder translationBuilder) {
         this.values.forEach((s, s2) ->
         {
             PolyLib.LOGGER.info("Running data gen for key " + s + " " + dataOutput.getOutputFolder());

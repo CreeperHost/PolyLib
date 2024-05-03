@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.blocks;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -17,13 +18,13 @@ public interface DataRetainingBlock {
      * @param willHarvest This will be true if the block is actually about to be harvested.
      *                    vs for example, using pick-block to copy the block.
      */
-    void writeToItemStack(CompoundTag nbt, boolean willHarvest);
+    void writeToItemStack(HolderLookup.Provider provider, CompoundTag nbt, boolean willHarvest);
 
     /**
      * @param nbt Will contain all data written in {@link #writeToItemStack(CompoundTag, boolean)}.
      *            Use this to restore the block ewntity state.
      */
-    void readFromItemStack(CompoundTag nbt);
+    void readFromItemStack(HolderLookup.Provider provider, CompoundTag nbt);
 
     /**
      * @return false to completely disable tile data saving and restore default harvest logic. Needed because IDataRetainingTile is now implemented on {@link PolyBlockEntity} by default.

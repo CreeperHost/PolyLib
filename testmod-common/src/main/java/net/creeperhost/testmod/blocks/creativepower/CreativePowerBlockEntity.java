@@ -1,31 +1,64 @@
 package net.creeperhost.testmod.blocks.creativepower;
 
-import net.creeperhost.polylib.inventory.energy.EnergyHooks;
-import net.creeperhost.polylib.inventory.energy.PolyEnergyBlock;
-import net.creeperhost.polylib.inventory.energy.impl.CreativeEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.impl.WrappedBlockEnergyContainer;
+import net.creeperhost.polylib.blocks.PolyBlockEntity;
+import net.creeperhost.polylib.inventory.power.EnergyManager;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
+import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-public class CreativePowerBlockEntity extends BlockEntity implements PolyEnergyBlock<WrappedBlockEnergyContainer>
-{
-    private WrappedBlockEnergyContainer energyContainer;
+public class CreativePowerBlockEntity extends PolyBlockEntity implements PolyEnergyBlock {
+    private IPolyEnergyStorage creativeStorage = new IPolyEnergyStorage() {
+        @Override
+        public long receiveEnergy(long maxReceive, boolean simulate) {
+            return maxReceive;
+        }
 
-    public CreativePowerBlockEntity(BlockPos blockPos, BlockState blockState)
-    {
+        @Override
+        public long extractEnergy(long maxExtract, boolean simulate) {
+            return maxExtract;
+        }
+
+        @Override
+        public long getEnergyStored() {
+            return Long.MAX_VALUE / 2;
+        }
+
+        @Override
+        public long getMaxEnergyStored() {
+            return Long.MAX_VALUE;
+        }
+
+        @Override
+        public boolean canExtract() {
+            return true;
+        }
+
+        @Override
+        public boolean canReceive() {
+            return true;
+        }
+
+        @Override
+        public long modifyEnergyStored(long amount) {
+            return amount;
+        }
+    };
+
+    public CreativePowerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TestBlocks.CREATIVE_ENERGY_BLOCK_TILE.get(), blockPos, blockState);
     }
 
-    @Override
-    public WrappedBlockEnergyContainer getEnergyStorage()
-    {
-        return energyContainer == null ? this.energyContainer = new WrappedBlockEnergyContainer(this, new CreativeEnergyContainer(1000000)) : this.energyContainer;
+
+    public void tick() {
+        EnergyManager.distributeEnergyNearby(this);
     }
 
-    public void tick()
-    {
-        EnergyHooks.distributeEnergyNearby(this);
+    @Override
+    public IPolyEnergyStorage getEnergyStorage(@Nullable Direction side) {
+        return null;
     }
 }

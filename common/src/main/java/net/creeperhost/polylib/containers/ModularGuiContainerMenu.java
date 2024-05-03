@@ -6,7 +6,7 @@ import net.creeperhost.polylib.client.modulargui.lib.container.DataSync;
 import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.network.PolyLibNetwork;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -92,11 +92,11 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
     //=== Network ===//
 
     @Deprecated (forRemoval = true) //Networking is now handled by PolyLib.
-    public void setServerToClientPacketHandler(BiConsumer<ServerPlayer, Consumer<FriendlyByteBuf>> serverToClientPacketHandler) {
+    public void setServerToClientPacketHandler(BiConsumer<ServerPlayer, Consumer<RegistryFriendlyByteBuf>> serverToClientPacketHandler) {
     }
 
     @Deprecated (forRemoval = true) //Networking is now handled by PolyLib.
-    public void setClientToServerPacketHandler(Consumer<Consumer<FriendlyByteBuf>> clientToServerPacketHandler) {
+    public void setClientToServerPacketHandler(Consumer<Consumer<RegistryFriendlyByteBuf>> clientToServerPacketHandler) {
     }
 
     /**
@@ -106,7 +106,7 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * @param packetId     message id, Can be any value from 0 to 254, 255 is used by the {@link DataSync} system.
      * @param packetWriter Use this callback to write your data to the packet.
      */
-    public void sendPacketToClient(int packetId, Consumer<FriendlyByteBuf> packetWriter) {
+    public void sendPacketToClient(int packetId, Consumer<RegistryFriendlyByteBuf> packetWriter) {
         if (inventory.player instanceof ServerPlayer serverPlayer) {
             PolyLibNetwork.sendContainerPacketToClient(serverPlayer, buf -> {
                 buf.writeByte(containerId);
@@ -123,15 +123,15 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * @param packetId     message id, Can be any value from 0 to 255
      * @param packetWriter Use this callback to write your data to the packet.
      */
-    public void sendPacketToServer(int packetId, Consumer<FriendlyByteBuf> packetWriter) {
-        PolyLibNetwork.sendContainerPacketToServer(buf -> {
+    public void sendPacketToServer(int packetId, Consumer<RegistryFriendlyByteBuf> packetWriter) {
+        PolyLibNetwork.sendContainerPacketToServer(inventory.player.registryAccess(), buf -> {
             buf.writeByte(containerId);
             buf.writeByte((byte) packetId);
             packetWriter.accept(buf);
         });
     }
 
-    public static void handlePacketFromClient(Player player, FriendlyByteBuf packet) {
+    public static void handlePacketFromClient(Player player, RegistryFriendlyByteBuf packet) {
         int containerId = packet.readByte();
         int packetId = packet.readByte() & 0xFF;
         if (player.containerMenu instanceof ModularGuiContainerMenu menu && menu.containerId == containerId) {
@@ -143,11 +143,11 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * Override this in your container menu implementation in order to receive packets sent via {@link #sendPacketToServer(int, Consumer)}
      * Requires a client to server packet handler to be installed via {@link #setClientToServerPacketHandler(Consumer)}
      */
-    public void handlePacketFromClient(Player player, int packetId, FriendlyByteBuf packet) {
+    public void handlePacketFromClient(Player player, int packetId, RegistryFriendlyByteBuf packet) {
 
     }
 
-    public static void handlePacketFromServer(Player player, FriendlyByteBuf packet) {
+    public static void handlePacketFromServer(Player player, RegistryFriendlyByteBuf packet) {
         int containerId = packet.readByte();
         int packetId = packet.readByte() & 0xFF;
         if (player.containerMenu instanceof ModularGuiContainerMenu menu && menu.containerId == containerId) {
@@ -161,7 +161,7 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * <p>
      * Don't forget to call super if you plan on using the {@link DataSync} system.
      */
-    public void handlePacketFromServer(Player player, int packetId, FriendlyByteBuf packet) {
+    public void handlePacketFromServer(Player player, int packetId, RegistryFriendlyByteBuf packet) {
         if (packetId == 255) {
             int index = packet.readByte() & 0xFF;
             if (dataSyncs.size() > index) {

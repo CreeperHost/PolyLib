@@ -1,9 +1,7 @@
 package net.creeperhost.testmod;
 
-import dev.architectury.event.Event;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.testmod.client.PlacementRenderer;
@@ -15,7 +13,6 @@ import net.creeperhost.testmod.init.TestScreens;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.LockIconButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;

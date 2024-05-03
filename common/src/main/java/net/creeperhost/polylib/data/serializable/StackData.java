@@ -1,8 +1,10 @@
 package net.creeperhost.polylib.data.serializable;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -28,23 +30,23 @@ public class StackData extends AbstractDataStore<ItemStack> {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeItem(value);
+    public void toBytes(RegistryFriendlyByteBuf buf) {
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, value);
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf buf) {
-        value = validValue(buf.readItem(), value);
+    public void fromBytes(RegistryFriendlyByteBuf buf) {
+        value = validValue(ItemStack.OPTIONAL_STREAM_CODEC.decode(buf), value);
     }
 
     @Override
-    public Tag toTag() {
-        return value.save(new CompoundTag());
+    public Tag toTag(HolderLookup.Provider provider) {
+        return value.saveOptional(provider);
     }
 
     @Override
-    public void fromTag(Tag tag) {
-        value = validValue(ItemStack.of((CompoundTag) tag), value);
+    public void fromTag(HolderLookup.Provider provider, Tag tag) {
+        value = validValue(ItemStack.parseOptional(provider, (CompoundTag) tag), value);
     }
 
     @Override

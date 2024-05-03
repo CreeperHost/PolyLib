@@ -1,7 +1,5 @@
 package net.creeperhost.testmod.blocks.machinetest;
 
-import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
-import net.creeperhost.polylib.inventory.item.SerializableContainer;
 import net.creeperhost.polylib.inventory.items.BlockInventory;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.testmod.init.TestBlocks;

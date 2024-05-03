@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.inventory.items;
 
 import net.creeperhost.polylib.Serializable;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
@@ -111,13 +112,13 @@ public class BlockInventory implements Container, Serializable, ContainerHelpers
     }
 
     @Override
-    public void deserialize(CompoundTag compoundTag) {
-        ContainerHelper.loadAllItems(compoundTag, items);
+    public void deserialize(HolderLookup.Provider provider, CompoundTag compoundTag) {
+        ContainerHelper.loadAllItems(compoundTag, items, provider);
     }
 
     @Override
-    public CompoundTag serialize(CompoundTag compoundTag) {
-        return ContainerHelper.saveAllItems(compoundTag, items);
+    public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag compoundTag) {
+        return ContainerHelper.saveAllItems(compoundTag, items, provider);
     }
 
     @Override

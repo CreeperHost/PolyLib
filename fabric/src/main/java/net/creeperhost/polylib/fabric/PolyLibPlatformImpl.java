@@ -1,18 +1,13 @@
 package net.creeperhost.polylib.fabric;
 
-import dev.architectury.platform.Platform;
-import net.creeperhost.polylib.fabric.inventory.energy.FabricItemEnergyManager;
-import net.creeperhost.polylib.fabric.inventory.power.FabricEnergyManager;
-import net.fabricmc.api.EnvType;
 import net.creeperhost.polylib.fabric.inventory.fluid.FabricFluidManager;
+import net.creeperhost.polylib.fabric.inventory.power.FabricEnergyManager;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.EnergyStorageUtil;
 
 import java.nio.file.Path;
 
