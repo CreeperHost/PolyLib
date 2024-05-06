@@ -56,15 +56,15 @@ public class PolyLibNeoForge
                 //This is terrible... There has to be a better way!
                 BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
                 if (blockEntity == null) continue;
-                if (blockEntity instanceof PolyInventoryBlock invBlock)
+                if (blockEntity instanceof PolyInventoryBlock)
                 {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new InvWrapper(invBlock.getContainer(side)));
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> ((PolyInventoryBlock) entity).getContainer(side) == null ? null : new InvWrapper(((PolyInventoryBlock) entity).getContainer(side)));
                 }
                 if (blockEntity instanceof PolyEnergyBlock) {
-                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new PolyNeoEnergyWrapper(((PolyEnergyBlock)entity).getEnergyStorage(side)));
+                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> ((PolyEnergyBlock)entity).getEnergyStorage(side) == null ? null :  new PolyNeoEnergyWrapper(((PolyEnergyBlock)entity).getEnergyStorage(side)));
                 }
                 if (blockEntity instanceof PolyFluidBlock) {
-                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> new PolyNeoFluidWrapper(((PolyFluidBlock)entity).getFluidHandler(side)));
+                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> ((PolyFluidBlock)entity).getFluidHandler(side) == null ? null : new PolyNeoFluidWrapper(((PolyFluidBlock)entity).getFluidHandler(side)));
                 }
             } catch (Exception ignored) {}
         }

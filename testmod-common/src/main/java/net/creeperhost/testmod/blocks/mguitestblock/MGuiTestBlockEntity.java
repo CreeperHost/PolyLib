@@ -4,12 +4,10 @@ import dev.architectury.fluid.FluidStack;
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
 import net.creeperhost.polylib.data.serializable.StackData;
 import net.creeperhost.polylib.inventory.items.BlockInventory;
-import net.creeperhost.polylib.inventory.power.EnergyManager;
-import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
-import net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage;
-import net.creeperhost.polylib.inventory.power.PolyEnergyStorage;
+import net.creeperhost.polylib.inventory.power.*;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider {
+public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider, PolyEnergyBlock {
     private static Random randy = new Random();
     public int progress = 0;
     public final BlockInventory inventory = new BlockInventory(this, 3);
@@ -33,7 +31,7 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
             .setStackValidator(EnergyManager::isEnergyItem);
 
 //    public PolyBlockTank tank = new PolyBlockTank(this, 16 * FluidManager.BUCKET); //TODO add bucket fill / drain example
-    public PolyEnergyStorage energy = new PolyBlockEnergyStorage(this, 128000);
+    public PolyEnergyStorage energy = new PolyBlockEnergyStorage(this, 128000, 512);
 
     public int tankCapacity = 16000;
     public FluidStack lavaStorage = FluidStack.create(Fluids.LAVA, 0);
@@ -90,7 +88,7 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
         }
 
         IPolyEnergyStorageItem dischargeHandler = EnergyManager.getHandler(energyItemInv.getItem(1));
-        if (dischargeHandler != null && EnergyManager.transferEnergy(energy, dischargeHandler) > 0) {
+        if (dischargeHandler != null && EnergyManager.transferEnergy(dischargeHandler, energy) > 0) {
             energyItemInv.setItem(1, dischargeHandler.getContainer());
         }
     }
@@ -104,5 +102,10 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
     @Override
     public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player) {
         return new MGuiTestBlockContainerMenu(id, inventory, this);
+    }
+
+    @Override
+    public IPolyEnergyStorage getEnergyStorage(@Nullable Direction side) {
+        return energy;
     }
 }

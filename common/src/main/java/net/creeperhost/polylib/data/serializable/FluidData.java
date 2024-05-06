@@ -33,12 +33,19 @@ public class FluidData extends AbstractDataStore<FluidStack> {
 
     @Override
     public void toBytes(RegistryFriendlyByteBuf buf) {
-        value.write(buf);
+        buf.writeBoolean(!value.isEmpty());
+        if (!value.isEmpty()) {
+            value.write(buf);
+        }
     }
 
     @Override
     public void fromBytes(RegistryFriendlyByteBuf buf) {
-        value = validValue(FluidStack.read(buf), value);
+        if (buf.readBoolean()){
+            value = validValue(FluidStack.read(buf), value);
+        } else {
+            value = FluidStack.empty();
+        }
     }
 
     @Override

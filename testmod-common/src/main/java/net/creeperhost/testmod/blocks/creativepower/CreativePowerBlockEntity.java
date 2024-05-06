@@ -59,6 +59,6 @@ public class CreativePowerBlockEntity extends PolyBlockEntity implements PolyEne
 
     @Override
     public IPolyEnergyStorage getEnergyStorage(@Nullable Direction side) {
-        return null;
+        return creativeStorage;
     }
 }
