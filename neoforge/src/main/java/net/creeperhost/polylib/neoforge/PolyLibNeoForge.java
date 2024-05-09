@@ -13,6 +13,7 @@ import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -21,6 +22,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.DistExecutor;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -62,6 +66,12 @@ public class PolyLibNeoForge
         {
             try
             {
+                ResourceLocation reg = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntityType);
+                ModContainer mod = ModList.get().getModContainerById(reg.getNamespace()).orElse(null);
+                if (mod == null || mod.getModInfo().getDependencies().stream().noneMatch(e -> e.getModId().equals(PolyLib.MOD_ID))) {
+                    continue;
+                }
+
                 //This is terrible... There has to be a better way!
                 BlockEntity dummy = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
                 if (dummy == null) continue;
@@ -82,7 +92,7 @@ public class PolyLibNeoForge
                 if (dummy instanceof PolyFluidBlock) {
                     event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> new PolyNeoFluidWrapper(((PolyFluidBlock) entity).getFluidHandler(side)));
                 }
-            } catch (Exception ignored) {}
+            } catch (Throwable ignored) {}
         }
     }
 }
