@@ -10,3 +10,11 @@ displayName = "TestMod"
 authors = "CreeperHost"
 description = '''
 '''
+
+[[dependencies.testmod]]
+modId="polylib"
+type="required"
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
