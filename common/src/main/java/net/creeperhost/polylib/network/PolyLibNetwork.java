@@ -28,22 +28,22 @@ public class PolyLibNetwork {
     private static final Logger LOGGER = LogManager.getLogger();
 
     //Server To Client
-    private static final ResourceLocation CONTAINER_VALUE_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "container_to_client");
+    private static final ResourceLocation CONTAINER_PACKET_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "container_to_client");
     private static final ResourceLocation TILE_DATA_VALUE_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "tile_to_client");
 
     //Client to server
-    private static final ResourceLocation CONTAINER_VALUE_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "container_to_server");
-    private static final ResourceLocation TILE_DATA_VALUE_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_to_server");
-    private static final ResourceLocation CONTAINER_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "container_to_server");
+    private static final ResourceLocation CONTAINER_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "container_packet_server");
+    private static final ResourceLocation TILE_DATA_VALUE_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_data_server");
+    private static final ResourceLocation TILE_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_packet_server");
 
     public static void init() {
         if (PolyLibPlatform.isClientSide()) {
-            NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_VALUE_TO_CLIENT, (buf, context) -> context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), buf)));
+            NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_PACKET_TO_CLIENT, (buf, context) -> context.queue(() -> ModularGuiContainerMenu.handlePacketFromServer(context.getPlayer(), buf)));
             NetworkManager.registerReceiver(NetworkManager.Side.S2C, TILE_DATA_VALUE_TO_CLIENT, (buf, context) -> context.queue(() -> handleTileDataValueFromServer(context.getPlayer(), buf)));
         }
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_VALUE_TO_SERVER, (buf, context) -> context.queue(() -> ModularGuiContainerMenu.handlePacketFromClient(context.getPlayer(), buf)));
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> context.queue(() -> ModularGuiContainerMenu.handlePacketFromClient(context.getPlayer(), buf)));
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, TILE_DATA_VALUE_TO_SERVER, (buf, context) -> context.queue(() -> handleTileDataValueFromClient(context.getPlayer(), buf)));
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> context.queue(() -> handleTilePacketFromClient(context.getPlayer(), buf)));
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, TILE_PACKET_TO_SERVER, (buf, context) -> context.queue(() -> handleTilePacketFromClient(context.getPlayer(), buf)));
     }
 
     // Client to server messages
@@ -51,7 +51,7 @@ public class PolyLibNetwork {
     public static void sendContainerPacketToServer(Consumer<FriendlyByteBuf> packetWriter) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         packetWriter.accept(buf);
-        NetworkManager.sendToServer(CONTAINER_VALUE_TO_SERVER, buf);
+        NetworkManager.sendToServer(CONTAINER_PACKET_TO_SERVER, buf);
     }
 
     public static void sendDataValueToServerTile(Consumer<FriendlyByteBuf> packetWriter) {
@@ -63,7 +63,7 @@ public class PolyLibNetwork {
     public static void sendPacketToServerTile(Consumer<FriendlyByteBuf> packetWriter) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         packetWriter.accept(buf);
-        NetworkManager.sendToServer(CONTAINER_PACKET_TO_SERVER, buf);
+        NetworkManager.sendToServer(TILE_PACKET_TO_SERVER, buf);
     }
 
     // Server to client messages
@@ -71,7 +71,7 @@ public class PolyLibNetwork {
     public static void sendContainerPacketToClient(ServerPlayer player, Consumer<FriendlyByteBuf> packetWriter) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         packetWriter.accept(buf);
-        NetworkManager.sendToPlayer(player, CONTAINER_VALUE_TO_CLIENT, buf);
+        NetworkManager.sendToPlayer(player, CONTAINER_PACKET_TO_CLIENT, buf);
     }
 
     public static void sendTileDataValueToClients(Level level, BlockPos pos, Consumer<FriendlyByteBuf> packetWriter) {

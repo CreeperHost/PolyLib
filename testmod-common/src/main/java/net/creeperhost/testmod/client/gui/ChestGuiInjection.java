@@ -31,12 +31,39 @@ public class ChestGuiInjection implements GuiProvider {
         Constraints.size(testButton, 100, 20);
         Constraints.placeInside(testButton, root, Constraints.LayoutPos.TOP_LEFT, 10, 10);
 
+        GuiEntityRenderer player = new GuiEntityRenderer(root)
+                .setEntity(gui.mc().player);
+        Constraints.size(player, 64, 64);
+        Constraints.placeInside(player, root, Constraints.LayoutPos.MIDDLE_LEFT, 0, -36);
+
+        GuiEntityRenderer player2 = new GuiEntityRenderer(root)
+                .setEntity(gui.mc().player)
+                .setDrawName(true)
+                .setTrackMouse(true);
+        Constraints.size(player2, 64, 64);
+        Constraints.placeInside(player2, root, Constraints.LayoutPos.MIDDLE_LEFT, 0, 36);
+
+        GuiEntityRenderer creeper = new GuiEntityRenderer(root)
+                .jeiExclude()
+                .setEntity(new ResourceLocation("creeper"))
+                .setDrawName(true)
+                .setTrackMouse(true);
+        Constraints.size(creeper, 64, 64);
+        Constraints.placeInside(creeper, root, Constraints.LayoutPos.MIDDLE_RIGHT, 0, 0);
+
+        GuiEntityRenderer chicken = new GuiEntityRenderer(root)
+                .jeiExclude()
+                .setRotationSpeed(2)
+                .setEntity(new ResourceLocation("chicken"));
+        Constraints.size(chicken, 32, 32);
+        Constraints.placeInside(chicken, root, Constraints.LayoutPos.BOTTOM_CENTER, 0, 0);
+
         GuiManipulable draggable = new GuiManipulable(root)
                 .addMoveHandle(20)
                 .enableCursors(true);
         draggable.getContentElement().jeiExclude();
         Constraints.size(draggable, 100, 20);
-        Constraints.placeInside(draggable, root, Constraints.LayoutPos.TOP_RIGHT, -10, 100);
+        Constraints.placeInside(draggable, root, Constraints.LayoutPos.TOP_CENTER, 0, 10);
 
         Constraints.bind(GuiRectangle.toolTipBackground(draggable.getContentElement()), draggable.getContentElement());
         Constraints.bind(new GuiText(draggable.getContentElement(), Component.literal("Drag Me!")), draggable.getContentElement());
