@@ -5,9 +5,7 @@ import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -348,12 +346,4 @@ public class GuiButton extends GuiElement<GuiButton> {
         Constraints.bind(icon, button);
         return button;
     }
-
-//    private final RedstoneActivatedBlock redstoneBlock;
-//
-//    public RedstoneButton(@NotNull GuiParent<?> parent, RedstoneActivatedBlock redstoneBlock) {
-//        super(parent);
-//        this.redstoneBlock = redstoneBlock;
-//        Constraints
-//    }
 }

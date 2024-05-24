@@ -42,6 +42,12 @@ public class TestModDataGen implements DataGeneratorEntrypoint
             languageProvider.add("itemGroup.testmod.creative_tab", "FABRIC", ModuleType.FABRIC);
             languageProvider.add("itemGroup.testmod.creative_tab", "COMMON", ModuleType.COMMON);
 
+            languageProvider.add(TestItems.MULTIBLOCK_TEST_ITEMBLOCK.get(), "Test Multiblock block", ModuleType.COMMON);
+            languageProvider.add(TestItems.INVENTORY_TEST_ITEMBLOCK.get(), "inventory Test Block", ModuleType.COMMON);
+            languageProvider.add(TestItems.MGUI_TEST_ITEMBLOCK.get(), "Modular Gui Test Block", ModuleType.COMMON);
+            languageProvider.add(TestItems.CREATIVE_ENERGY_BLOCK.get(), "Creative Power source", ModuleType.COMMON);
+            languageProvider.add(TestItems.TEST_ENERGY_ITEM.get(), "Test Energy Item", ModuleType.COMMON);
+
             TestBlocks.BLOCKS.forEach(blockRegistrySupplier ->
             {
                 blockLootProvider.addSelfDrop(blockRegistrySupplier.get(), value);

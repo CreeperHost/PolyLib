@@ -1,10 +1,11 @@
 package net.creeperhost.polylib.inventory.power;
 
+import com.mojang.datafixers.util.Pair;
 import net.creeperhost.polylib.PolyLibPlatform;
-import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
-import net.creeperhost.polylib.inventory.fluid.PolyFluidHandlerItem;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -118,6 +119,22 @@ public interface EnergyManager {
         }
         IPolyEnergyStorage targetHandler = getHandler(target, targetSide);
         return targetHandler == null ? 0 : transferEnergy(sourceStorage, targetHandler);
+    }
+
+    static void distributeEnergyNearby(BlockEntity source, long amount) {
+        BlockPos blockPos = source.getBlockPos();
+        Level level = source.getLevel();
+        if (level == null || amount == 0) return;
+        Direction.stream()
+                .map(direction -> Pair.of(direction, level.getBlockEntity(blockPos.relative(direction))))
+                .filter(pair -> pair.getSecond() != null)
+                .map(pair -> Pair.of(getHandler(pair.getSecond(), pair.getFirst().getOpposite()), pair.getFirst()))
+                .filter(pair -> pair.getFirst() != null)
+                .forEach(pair -> transferEnergy(source, pair.getSecond(), pair.getFirst()));
+    }
+
+    static void distributeEnergyNearby(BlockEntity energyBlock) {
+        distributeEnergyNearby(energyBlock, Long.MAX_VALUE);
     }
 
     // ================= Checks =================

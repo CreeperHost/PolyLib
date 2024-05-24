@@ -51,7 +51,7 @@ public abstract class PolyBlockContainerMenu<T extends PolyBlockEntity> extends 
     }
 
     @Override
-    public <T extends BlockEntity & DataManagerBlock> T getBlockEntity() {
+    public T getBlockEntity() {
         return (T) tile;
     }
 }

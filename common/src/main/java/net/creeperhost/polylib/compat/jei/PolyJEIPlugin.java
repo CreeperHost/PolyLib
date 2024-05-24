@@ -10,7 +10,11 @@ import mezz.jei.api.registration.IGuiHandlerRegistration;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
+import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
@@ -41,6 +45,13 @@ public class PolyJEIPlugin implements IModPlugin {
             @Override
             public List<Rect2i> getGuiExtraAreas(ModularGuiContainer containerScreen) {
                 return containerScreen.getModularGui().getJeiExclusions().stream().map(e -> e.getRectangle().toRect2i()).toList();
+            }
+        });
+        registration.addGuiContainerHandler(AbstractContainerScreen.class, new IGuiContainerHandler<>() {
+            @Override
+            public List<Rect2i> getGuiExtraAreas(AbstractContainerScreen containerScreen) {
+                ModularGui gui = ModularGuiInjector.getActiveGui();
+                return gui == null ? Collections.emptyList() : gui.getJeiExclusions().stream().map(e -> e.getRectangle().toRect2i()).toList();
             }
         });
         registration.addGhostIngredientHandler(ModularGuiContainer.class, new IngredientDropHandler());

@@ -11,8 +11,10 @@ import net.creeperhost.polylib.fabric.inventory.power.PolyFabricEnergyWrapper;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
+import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -68,6 +70,9 @@ public class PolyLibFabric implements ModInitializer
             if (blockEntity instanceof ItemInventoryBlock invBlock) {
                 return InventoryStorageImpl.of(invBlock.getContainer(context), context);
             }
+            else if (blockEntity instanceof PolyInventoryBlock invBlock) {
+                return InventoryStorageImpl.of(invBlock.getContainer(context), context);
+            }
             return null;
         });
 
@@ -75,6 +80,12 @@ public class PolyLibFabric implements ModInitializer
             if (blockEntity instanceof PolyEnergyBlock energyBlock) {
                 IPolyEnergyStorage storage = energyBlock.getEnergyStorage(context);
                 return storage == null ? null : new PolyFabricEnergyWrapper(storage);
+            }
+            return null;
+        });
+        EnergyStorage.ITEM.registerFallback((itemStack, context) -> {
+            if (itemStack.getItem() instanceof PolyEnergyItem item) {
+                return new PolyFabricEnergyWrapper(item.getEnergyStorage(itemStack));
             }
             return null;
         });

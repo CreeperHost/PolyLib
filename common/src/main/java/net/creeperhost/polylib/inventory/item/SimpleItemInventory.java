@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+@Deprecated //Use BlockInventory
 public class SimpleItemInventory implements SerializableContainer
 {
     private BiPredicate<Integer, ItemStack> stackValidator = null;

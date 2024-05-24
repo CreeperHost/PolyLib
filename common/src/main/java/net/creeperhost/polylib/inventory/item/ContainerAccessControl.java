@@ -21,6 +21,7 @@ import java.util.function.Predicate;
  * <p>
  * Created by brandon3055 on 08/03/2024
  */
+@Deprecated //Moved to items package
 public class ContainerAccessControl implements SerializableContainer, WorldlyContainer {
     private final IntObjectHashMap<Predicate<ItemStack>> slotInsertChecks = new IntObjectHashMap<>();
     private final IntObjectHashMap<Predicate<ItemStack>> slotRemoveChecks = new IntObjectHashMap<>();

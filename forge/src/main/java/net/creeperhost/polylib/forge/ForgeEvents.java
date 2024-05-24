@@ -7,8 +7,11 @@ import net.creeperhost.polylib.forge.inventory.item.ItemCapProvider;
 import net.creeperhost.polylib.forge.inventory.power.EnergyCapProvider;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
+import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -39,13 +42,28 @@ public class ForgeEvents
         {
             String name = event.getObject().getBlockState().getBlock().getDescriptionId();
             PolyLib.LOGGER.log(org.apache.logging.log4j.Level.INFO, "Adding item cap to " + name);
-            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock));
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock::getContainer));
+        }
+        if(event.getObject() instanceof PolyInventoryBlock itemInventoryBlock)
+        {
+            String name = event.getObject().getBlockState().getBlock().getDescriptionId();
+            PolyLib.LOGGER.log(org.apache.logging.log4j.Level.INFO, "Adding item cap to " + name);
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "item"), new ItemCapProvider(itemInventoryBlock::getContainer));
         }
         if (event.getObject() instanceof PolyFluidBlock fluidBlock) {
             event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "fluid"), new FluidCapProvider(fluidBlock));
         }
         if (event.getObject() instanceof PolyEnergyBlock energyBlock) {
             event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "energy"), new EnergyCapProvider(energyBlock));
+        }
+    }
+
+    @SubscribeEvent
+    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
+    {
+        ItemStack stack = event.getObject();
+        if (stack.getItem() instanceof PolyEnergyItem energyItem) {
+            event.addCapability(new ResourceLocation(PolyLib.MOD_ID, "power"), new EnergyCapProvider(energyItem, stack));
         }
     }
 }
