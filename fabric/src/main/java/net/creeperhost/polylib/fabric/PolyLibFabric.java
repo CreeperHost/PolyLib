@@ -7,14 +7,12 @@ import net.creeperhost.polylib.events.ChunkEvents;
 import net.creeperhost.polylib.events.ClientRenderEvents;
 import net.creeperhost.polylib.fabric.client.ResourceReloadListenerWrapper;
 import net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper;
+import net.creeperhost.polylib.fabric.inventory.power.PolyFabricEnergyItemWrapper;
 import net.creeperhost.polylib.fabric.inventory.power.PolyFabricEnergyWrapper;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
-import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
-import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
-import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
-import net.fabricmc.api.EnvType;
+import net.creeperhost.polylib.inventory.power.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
@@ -49,7 +47,9 @@ public class PolyLibFabric implements ModInitializer
 
         EnergyStorage.ITEM.registerFallback((itemStack, context) -> {
             if (itemStack.getItem() instanceof PolyEnergyItem item) {
-                return new PolyFabricEnergyWrapper(item.getEnergyStorage(itemStack));
+                if (item.getEnergyStorage(itemStack) instanceof IPolyEnergyStorageItem storage){
+                    return new PolyFabricEnergyItemWrapper(storage, context);
+                }
             }
             return null;
         });

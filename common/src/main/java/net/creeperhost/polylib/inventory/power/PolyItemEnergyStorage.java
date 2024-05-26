@@ -2,11 +2,12 @@ package net.creeperhost.polylib.inventory.power;
 
 import net.creeperhost.polylib.init.DataComps;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by brandon3055 on 03/03/2024
  */
-public class PolyItemEnergyStorage extends PolyEnergyStorage {
+public class PolyItemEnergyStorage extends PolyEnergyStorage implements IPolyEnergyStorageItem {
     private final ItemStack stack;
 
     public PolyItemEnergyStorage(ItemStack stack, long capacity) {
@@ -45,5 +46,10 @@ public class PolyItemEnergyStorage extends PolyEnergyStorage {
 
     private void saveEnergy() {
         stack.set(DataComps.ITEM_ENERGY.get(), energy);
+    }
+
+    @Override
+    public @NotNull ItemStack getContainer() {
+        return stack;
     }
 }

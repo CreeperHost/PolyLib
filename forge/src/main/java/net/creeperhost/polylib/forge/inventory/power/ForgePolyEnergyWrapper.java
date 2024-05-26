@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.forge.inventory.power;
 
-import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
