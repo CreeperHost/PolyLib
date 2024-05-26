@@ -95,7 +95,7 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
         }
 
         IPolyEnergyStorageItem dischargeHandler = EnergyManager.getHandler(energyItemInv.getItem(1));
-        if (dischargeHandler != null && EnergyManager.transferEnergy(energy, dischargeHandler) > 0) {
+        if (dischargeHandler != null && EnergyManager.transferEnergy(dischargeHandler, energy) > 0) {
             energyItemInv.setItem(1, dischargeHandler.getContainer());
         }
     }
