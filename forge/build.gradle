@@ -54,6 +54,9 @@ dependencies {
 
     implementation "blue.endless:jankson:1.2.1"
     shadowCommon "blue.endless:jankson:1.2.1"
+
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
+//    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
 }
 
 processResources {

@@ -8,7 +8,6 @@ import net.creeperhost.testmod.init.TestBlocks;
 import net.creeperhost.testmod.init.TestContainers;
 import net.creeperhost.testmod.init.TestItems;
 import net.creeperhost.testmod.init.TestScreens;
-import net.creeperhost.testmod.network.TestNetwork;
 import net.fabricmc.api.EnvType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +24,6 @@ public class TestMod
         TestBlocks.TILES_ENTITIES.register();
         TestItems.ITEMS.register();
         TestContainers.CONTAINERS.register();
-        TestNetwork.init();
         if(Platform.getEnv() == EnvType.CLIENT)
         {
             ClientLifecycleEvent.CLIENT_SETUP.register(instance -> TestScreens.init());

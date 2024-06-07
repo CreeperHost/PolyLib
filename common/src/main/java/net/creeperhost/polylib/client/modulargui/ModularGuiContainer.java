@@ -30,6 +30,10 @@ import org.jetbrains.annotations.Nullable;
 public class ModularGuiContainer<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements ContainerScreenAccess<T> {
 
     public final ModularGui modularGui;
+    /**
+     * Flag used to disable vanilla slot highlight rendering.
+     * */
+    private boolean renderingSlots = false;
 
     public ModularGuiContainer(T containerMenu, Inventory inventory, ContainerGuiProvider<T> provider) {
         super(containerMenu, inventory, Component.empty());
@@ -76,7 +80,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         if (modularGui.renderBackground()) {
             renderBackground(poseStack);
         }
-        GuiRender render = modularGui.createRender(minecraft.renderBuffers().bufferSource());
+        GuiRender render = new GuiRender(minecraft, poseStack, minecraft.renderBuffers().bufferSource());
         modularGui.render(render, partialTicks);
 
         super.render(poseStack, mouseX, mouseY, partialTicks);
@@ -129,7 +133,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     protected boolean renderHoveredStackToolTip(GuiRender guiGraphics, int mouseX, int mouseY) {
         if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
             GuiElement<?> handler = modularGui.getSlotHandler(hoveredSlot);
-            if (handler != null && handler.blockMouseOver(handler, mouseX, mouseY)) {
+            if (handler != null && (handler.blockMouseOver(handler, mouseX, mouseY) || !handler.isMouseOver())) {
                 return false;
             }
             ItemStack itemStack = this.hoveredSlot.getItem();
@@ -195,7 +199,11 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
 
     @Override
     public void renderSlot(PoseStack poseStack, Slot slot) {
-        if (modularGui.vanillaSlotRendering()) super.renderSlot(poseStack, slot);
+        if (modularGui.vanillaSlotRendering()) {
+            super.renderSlot(poseStack, slot);
+        } else {
+            renderingSlots = true;
+        }
     }
 
     //Modular gui friendly version of the slot render
@@ -243,8 +251,21 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         }
     }
 
+    @Override
+    public boolean isHovering(Slot pSlot, double pMouseX, double pMouseY) {
+        boolean ret = super.isHovering(pSlot, pMouseX, pMouseY);
+        //Override the isHovering check before renderSlotHighlight is called.
+        if (ret && renderingSlots && pSlot.isActive()) {
+            //This breaks the default hoveredSlot assignment, so we need to handle that here.
+            hoveredSlot = pSlot;
+            return false;
+        }
+        return ret;
+    }
+
     @Override //Disable vanilla title and inventory name rendering
     protected void renderLabels(PoseStack poseStack, int i, int j) {
+        renderingSlots = false;
     }
 
     @Override

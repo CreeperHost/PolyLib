@@ -5,6 +5,7 @@ import net.creeperhost.polylib.client.modulargui.lib.container.ContainerScreenAc
 import net.creeperhost.polylib.client.modulargui.lib.container.DataSync;
 import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -38,8 +39,6 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
     public final Map<Slot, SlotGroup> slotGroupMap = new HashMap<>();
     public final Map<Integer, List<Slot>> zonedSlots = new HashMap<>();
     public final List<DataSync<?>> dataSyncs = new ArrayList<>();
-    private BiConsumer<ServerPlayer, Consumer<FriendlyByteBuf>> serverToClientPacketHandler;
-    private Consumer<Consumer<FriendlyByteBuf>> clientToServerPacketHandler;
 
     protected ModularGuiContainerMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory) {
         super(menuType, containerId);
@@ -92,35 +91,12 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
 
     //=== Network ===//
 
-    /**
-     * Set the server to client packet handler.
-     * As polylib does not have its own network implementation, the implementor of ModularGuiContainerMenu must provide their own if
-     * they wish to use the network functionality built into ModularGuiContainerMenu.
-     * <p>
-     * An example imeplementation may look something like:
-     * <pre>
-     * setServerToClientPacketHandler((player, packetWriter) -> {
-     *     FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-     *     packetWriter.accept(buf);
-     *     MyNetwork.sendModularGuiMenuPacketToPlayer(player, buf);
-     * });
-     * </pre>
-     * Then, in your client side packet handler you would call {@link ModularGuiContainerMenu#handlePacketFromServer(Player, FriendlyByteBuf)}
-     * The player can be the client side player.
-     *
-     * <p>
-     * A server to client packet handler is required for the {@link DataSync} system to work.
-     */
+    @Deprecated (forRemoval = true) //Networking is now handled by PolyLib.
     public void setServerToClientPacketHandler(BiConsumer<ServerPlayer, Consumer<FriendlyByteBuf>> serverToClientPacketHandler) {
-        this.serverToClientPacketHandler = serverToClientPacketHandler;
     }
 
-    /**
-     * This should be implemented similar to {@link #setServerToClientPacketHandler(BiConsumer)}
-     * The difference being this will be sending packets in the other direction.
-     */
+    @Deprecated (forRemoval = true) //Networking is now handled by PolyLib.
     public void setClientToServerPacketHandler(Consumer<Consumer<FriendlyByteBuf>> clientToServerPacketHandler) {
-        this.clientToServerPacketHandler = clientToServerPacketHandler;
     }
 
     /**
@@ -131,8 +107,8 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * @param packetWriter Use this callback to write your data to the packet.
      */
     public void sendPacketToClient(int packetId, Consumer<FriendlyByteBuf> packetWriter) {
-        if (serverToClientPacketHandler != null && inventory.player instanceof ServerPlayer serverPlayer) {
-            serverToClientPacketHandler.accept(serverPlayer, buf -> {
+        if (inventory.player instanceof ServerPlayer serverPlayer) {
+            PolyLibNetwork.sendContainerPacketToClient(serverPlayer, buf -> {
                 buf.writeByte(containerId);
                 buf.writeByte((byte) packetId);
                 packetWriter.accept(buf);
@@ -148,13 +124,11 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * @param packetWriter Use this callback to write your data to the packet.
      */
     public void sendPacketToServer(int packetId, Consumer<FriendlyByteBuf> packetWriter) {
-        if (clientToServerPacketHandler != null) {
-            clientToServerPacketHandler.accept(buf -> {
-                buf.writeByte(containerId);
-                buf.writeByte((byte) packetId);
-                packetWriter.accept(buf);
-            });
-        }
+        PolyLibNetwork.sendContainerPacketToServer(buf -> {
+            buf.writeByte(containerId);
+            buf.writeByte((byte) packetId);
+            packetWriter.accept(buf);
+        });
     }
 
     public static void handlePacketFromClient(Player player, FriendlyByteBuf packet) {
@@ -208,8 +182,6 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
 
     /**
      * Transfers to the next zone in order, and will loop around to the lowest zone.
-     * TODO, Would be nice to have better control over quick-move
-     *  Maybe just the ability to specify which zones each group quick-moves to...
      */
     @Override
     public ItemStack quickMoveStack(@NotNull Player player, int slotIndex) {
@@ -277,12 +249,12 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
                 itemStack2 = slot.getItem();
                 if (!itemStack2.isEmpty() && ItemStack.isSameItemSameTags(stack, itemStack2)) {
                     int l = itemStack2.getCount() + stack.getCount();
-                    if (l <= stack.getMaxStackSize()) {
+                    if (l <= Math.min(stack.getMaxStackSize(), slot.getMaxStackSize(stack))) {
                         stack.setCount(0);
                         itemStack2.setCount(l);
                         slot.setChanged();
                         moved = true;
-                    } else if (itemStack2.getCount() < stack.getMaxStackSize()) {
+                    } else if (itemStack2.getCount() < Math.min(stack.getMaxStackSize(), slot.getMaxStackSize(stack))) {
                         stack.shrink(stack.getMaxStackSize() - itemStack2.getCount());
                         itemStack2.setCount(stack.getMaxStackSize());
                         slot.setChanged();
@@ -317,8 +289,8 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
                 slot = targets.get(position);
                 itemStack2 = slot.getItem();
                 if (itemStack2.isEmpty() && slot.mayPlace(stack)) {
-                    if (stack.getCount() > slot.getMaxStackSize()) {
-                        slot.set(stack.split(slot.getMaxStackSize()));
+                    if (stack.getCount() > slot.getMaxStackSize(stack)) {
+                        slot.set(stack.split(slot.getMaxStackSize(stack)));
                     } else {
                         slot.set(stack.split(stack.getCount()));
                     }

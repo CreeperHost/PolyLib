@@ -3,7 +3,10 @@ package net.creeperhost.polylib.client.modulargui.elements;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import net.creeperhost.polylib.client.modulargui.lib.Assembly;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
@@ -16,8 +19,6 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
@@ -60,6 +61,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
 
     private Supplier<Component> suggestion = null;
     private Supplier<Integer> suggestionColour = () -> 0x7f7f80;
+    private Supplier<Boolean> suggestionShadow = () -> true;
 
     private Predicate<String> filter = Objects::nonNull;
     private BiFunction<String, Integer, FormattedCharSequence> formatter = (string, pos) -> FormattedCharSequence.forward(string, Style.EMPTY);
@@ -142,8 +144,24 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     /**
      * Set the colour of the suggestion text.
      */
+    //TODO, Change return type to GuiTextField in next MC version
     public void setSuggestionColour(Supplier<Integer> suggestionColour) {
         this.suggestionColour = suggestionColour;
+    }
+
+    public GuiTextField setSuggestionColour(int suggestionColour) {
+        this.suggestionColour = () -> suggestionColour;
+        return this;
+    }
+
+    public GuiTextField setSuggestionShadow(Supplier<Boolean> suggestionShadow) {
+        this.suggestionShadow = suggestionShadow;
+        return this;
+    }
+
+    public GuiTextField setSuggestionShadow(boolean suggestionShadow) {
+        this.suggestionShadow = () -> suggestionShadow;
+        return this;
     }
 
     /**
@@ -610,7 +628,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
         }
 
         if (suggestion != null && value.isEmpty()) {
-            render.drawString(suggestion.get(), (float) (k1 - 1), (float) drawY, suggestionColour.get(), shadow.get());
+            render.drawString(suggestion.get(), (float) (k1 - 1), (float) drawY, suggestionColour.get(), suggestionShadow.get());
         }
 
         if (cursorBlink) {
@@ -685,4 +703,3 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
         return new Assembly<>(background, textField);
     }
 }
-

@@ -1,9 +1,7 @@
 package net.creeperhost.polylib.client.modulargui;
 
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
-import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
-import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
-import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
@@ -13,6 +11,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * The modular gui system is built around "Gui Elements" but those elements need to be rendered by a base parent element. That's what this class is.
@@ -56,6 +56,7 @@ public class ModularGui implements GuiParent<ModularGui> {
 
     private Component guiTitle = Component.empty();
     private GuiElement<?> focused;
+    private ResourceLocation newCursor = null;
 
     private final Map<Slot, GuiElement<?>> slotHandlers = new HashMap<>();
     private final List<Runnable> tickListeners = new ArrayList<>();
@@ -65,6 +66,8 @@ public class ModularGui implements GuiParent<ModularGui> {
     private final List<TriConsumer<Double, Double, Integer>> postClickListeners = new ArrayList<>();
     private final List<TriConsumer<Integer, Integer, Integer>> preKeyPressListeners = new ArrayList<>();
     private final List<TriConsumer<Integer, Integer, Integer>> postKeyPressListeners = new ArrayList<>();
+
+    private int jeiHighlightTime = 0;
 
     /**
      * @param provider The gui builder that will be used to construct this modular gui when the screen is initialized.
@@ -138,9 +141,13 @@ public class ModularGui implements GuiParent<ModularGui> {
     }
 
     /**
-     * @return the root element.
+     * @return the root element to which content elements should be added.
      */
     public GuiElement<?> getRoot() {
+        return root instanceof ContentElement ? ((ContentElement<?>) root).getContentElement() : root;
+    }
+
+    public GuiElement<?> getDirectRoot() {
         return root;
     }
 
@@ -200,6 +207,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @param buffers BufferSource can be retried from {@link net.minecraft.client.gui.GuiGraphics}
      * @return A new {@link GuiRender} for the current render call.
      */
+    @Deprecated //If you have the GuiGraphics, use GuiRender#convert to ensure the underlying PoseStack is carried over. That will ensure things like the JEI overlay will be rendered at a
     public GuiRender createRender(MultiBufferSource.BufferSource buffers) {
         return new GuiRender(mc, buffers);
     }
@@ -208,7 +216,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Primary render method for ModularGui. The screen implementing ModularGui must call this in its render method.
      * Followed by the {@link #renderOverlay(GuiRender, float)} method to handle overlay rendering.
      *
-     * @param render A new gui render call should be constructed for each frame via {@link #createRender(MultiBufferSource.BufferSource)}
+     * @param render GuiRender instance converted from Minecraft's {@link GuiGraphics} via {@link GuiRender#convert(GuiGraphics)}
      */
     public void render(GuiRender render, float partialTicks) {
         root.clearGeometryCache();
@@ -245,11 +253,14 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Primary update / tick method. Must be called from the tick method of the implementing screen.
      */
     public void tick() {
+        newCursor = null;
         double mouseX = computeMouseX();
         double mouseY = computeMouseY();
         root.updateMouseOver(mouseX, mouseY, false);
         tickListeners.forEach(Runnable::run);
         root.tick(mouseX, mouseY);
+        CursorHelper.setCursor(newCursor);
+        if (jeiHighlightTime > 0) jeiHighlightTime--;
     }
 
     /**
@@ -347,6 +358,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Must be called by the screen when this gui is closed.
      */
     public void onGuiClose() {
+        CursorHelper.resetCursor();
         closeListeners.forEach(Runnable::run);
     }
 
@@ -513,6 +525,26 @@ public class ModularGui implements GuiParent<ModularGui> {
      */
     public GuiElement<?> getSlotHandler(Slot slot) {
         return slotHandlers.get(slot);
+    }
+
+    public void setCursor(ResourceLocation cursor) {
+        this.newCursor = cursor;
+    }
+
+    public List<GuiElement<?>> getJeiExclusions() {
+        return root.addJeiExclusions(new ArrayList<>());
+    }
+
+    public List<GuiElement<?>> getJeiDropTargets() {
+        return root.addJeiDropTargets(new ArrayList<>());
+    }
+
+    public void setJeiHighlightTime(int jeiHighlightTime) {
+        this.jeiHighlightTime = jeiHighlightTime;
+    }
+
+    public int getJeiHighlightTime() {
+        return jeiHighlightTime;
     }
 
     /**
