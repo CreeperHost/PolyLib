@@ -2,6 +2,7 @@ package net.creeperhost.polylib.client.render.rendertypes;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.SequencedMap;
 
 public class GhostRenderType extends RenderType
 {
@@ -43,7 +45,7 @@ public class GhostRenderType extends RenderType
 
     public static class GhostBuffers extends MultiBufferSource.BufferSource
     {
-        public GhostBuffers(BufferBuilder fallback, Map<RenderType, BufferBuilder> layerBuffers)
+        public GhostBuffers(ByteBufferBuilder fallback, SequencedMap<RenderType, ByteBufferBuilder> layerBuffers)
         {
             super(fallback, layerBuffers);
         }

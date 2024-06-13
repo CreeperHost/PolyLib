@@ -34,7 +34,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
 
     @Override
     public void makeTextures(Function<DynamicTextures.DynamicTexture, String> textures) {
-        backgroundTexture = dynamicTexture(textures, new ResourceLocation(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), new ResourceLocation(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
+        backgroundTexture = dynamicTexture(textures, ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
 
     @Override
     public void makeTextures(Function<DynamicTexture, String> textures) {
-        BACKGROUND_TEXTURE = dynamicTexture(textures, new ResourceLocation(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), new ResourceLocation(TestMod.MOD_ID, "textures/gui/test_gui"), 200, 200, 4);
+        BACKGROUND_TEXTURE = dynamicTexture(textures, ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/test_gui"), 200, 200, 4);
     }
 
     @Override

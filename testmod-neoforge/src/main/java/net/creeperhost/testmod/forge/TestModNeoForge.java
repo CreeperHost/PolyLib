@@ -1,9 +1,9 @@
 package net.creeperhost.testmod.forge;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.creeperhost.testmod.TestMod;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 
 
@@ -14,6 +14,9 @@ public class TestModNeoForge
     {
         TestMod.init();
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> NeoForgeClientEvents::init);
+        if(Platform.getEnvironment() == Env.CLIENT)
+        {
+            NeoForgeClientEvents.init(bus);
+        }
     }
 }

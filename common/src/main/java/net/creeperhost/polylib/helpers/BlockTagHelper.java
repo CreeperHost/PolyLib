@@ -11,7 +11,7 @@ public class BlockTagHelper
 {
     public static Iterable<Holder<Block>> getValues(String string)
     {
-        return getValues(new ResourceLocation(string));
+        return getValues(ResourceLocation.withDefaultNamespace(string));
     }
 
     public static Iterable<Holder<Block>> getValues(ResourceLocation resourceLocation)

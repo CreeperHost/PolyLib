@@ -35,7 +35,6 @@ public class LoadingSpinner
         poseStack.translate(x, y, 0);
         poseStack.scale(scale, scale, 1F);
         poseStack.mulPose(new Quaternionf().rotateLocalZ(rotationDegrees));
-//        poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotationDegrees));
         drawItem(poseStack, stack, 0, true, null);
         poseStack.popPose();
     }
@@ -59,7 +58,6 @@ public class LoadingSpinner
         var modelViewStack = RenderSystem.getModelViewStack();
         modelViewStack.pushMatrix();
         modelViewStack.mul(poseStack.last().pose());
-        // modelViewStack.translate(x, y, 100.0D + this.blitOffset);
         modelViewStack.scale(1F, -1F, 1F);
         modelViewStack.scale(16F, 16F, 16F);
         RenderSystem.applyModelViewMatrix();
@@ -104,32 +102,24 @@ public class LoadingSpinner
             if (stack.isBarVisible())
             {
                 RenderSystem.disableDepthTest();
-                //TODO
-//                RenderSystem.disableTexture();
                 RenderSystem.disableBlend();
                 int barWidth = stack.getBarWidth();
                 int barColor = stack.getBarColor();
                 draw(poseStack, t, -6, 5, 13, 2, 0, 0, 0, 255);
                 draw(poseStack, t, -6, 5, barWidth, 1, barColor >> 16 & 255, barColor >> 8 & 255, barColor & 255, 255);
                 RenderSystem.enableBlend();
-                //TODO
-//                RenderSystem.enableTexture();
                 RenderSystem.enableDepthTest();
             }
 
             float cooldown = mc.player == null ? 0F : mc.player.getCooldowns().getCooldownPercent(stack.getItem(),
-                    mc.getFrameTime());
+                    mc.getFrameTimeNs());
 
             if (cooldown > 0F)
             {
                 RenderSystem.disableDepthTest();
-                //TODO
-//                RenderSystem.disableTexture();
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 draw(poseStack, t, -8, Mth.floor(16F * (1F - cooldown)) - 8, 16, Mth.ceil(16F * cooldown), 255, 255, 255, 127);
-                //TODO
-//                RenderSystem.enableTexture();
                 RenderSystem.enableDepthTest();
             }
         }
@@ -144,12 +134,11 @@ public class LoadingSpinner
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Matrix4f m = matrixStack.last().pose();
-        BufferBuilder renderer = t.getBuilder();
-        renderer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        renderer.vertex(m, x, y, 0).color(red, green, blue, alpha).endVertex();
-        renderer.vertex(m, x, y + height, 0).color(red, green, blue, alpha).endVertex();
-        renderer.vertex(m, x + width, y + height, 0).color(red, green, blue, alpha).endVertex();
-        renderer.vertex(m, x + width, y, 0).color(red, green, blue, alpha).endVertex();
-        t.end();
+        BufferBuilder bufferbuilder = t.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        bufferbuilder.addVertex(m, x, y, 0).setColor(red, green, blue, alpha);
+        bufferbuilder.addVertex(m, x, y + height, 0).setColor(red, green, blue, alpha);
+        bufferbuilder.addVertex(m, x + width, y + height, 0).setColor(red, green, blue, alpha);
+        bufferbuilder.addVertex(m, x + width, y, 0).setColor(red, green, blue, alpha);
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 }

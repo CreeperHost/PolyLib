@@ -30,8 +30,8 @@ public class ScreenInventoryTestBlock extends ContainerGuiProvider<ContainerInve
     @Override
     public void makeTextures(Function<DynamicTexture, String> textures)
     {
-        BACKGROUND_TEXTURE = dynamicTexture(textures, new ResourceLocation(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"),
-                new ResourceLocation(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
+        BACKGROUND_TEXTURE = dynamicTexture(textures, ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"),
+                ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
     }
 
     @Override
@@ -147,8 +147,6 @@ public class ScreenInventoryTestBlock extends ContainerGuiProvider<ContainerInve
                 .constrain(LEFT, literal(10))
                 .constrain(WIDTH, literal(100))
                 .constrain(HEIGHT, literal(15));
-
-
     }
 
     public static ModularGuiContainer<ContainerInventoryTestBlock> create(ContainerInventoryTestBlock menu, Inventory inventory, Component component)

@@ -70,9 +70,8 @@ public class RenderUtils
     {
         poseStack.pushPose();
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferBuilder = tesselator.getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         Matrix4f matrix4f = poseStack.last().pose();
         fillGradient(matrix4f, bufferBuilder, x - 3, y - 4, x + width + 3, y - 3, 400, -267386864, -267386864);
         fillGradient(matrix4f, bufferBuilder, x - 3, y + height + 3, x + width + 3, y + height + 4, 400, -267386864,
@@ -89,19 +88,16 @@ public class RenderUtils
         fillGradient(matrix4f, bufferBuilder, x - 3, y + height + 2, x + width + 3, y + height + 3, 400, 1344798847,
                 1344798847);
 
-        //TODO
-//        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        BufferUploader.drawWithShader(bufferBuilder.end());
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
         RenderSystem.disableBlend();
+
         //TODO
-//        RenderSystem.enableTexture();
-        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(
-                Tesselator.getInstance().getBuilder());
+//        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         poseStack.translate(0.0, 0.0, 400.0);
 
-        bufferSource.endBatch();
+//        bufferSource.endBatch();
         poseStack.popPose();
     }
 
@@ -115,9 +111,9 @@ public class RenderUtils
         float r = (float) (o >> 16 & 255) / 255.0F;
         float s = (float) (o >> 8 & 255) / 255.0F;
         float t = (float) (o & 255) / 255.0F;
-        bufferBuilder.vertex(matrix4f, (float) k, (float) j, (float) m).color(g, h, p, f).endVertex();
-        bufferBuilder.vertex(matrix4f, (float) i, (float) j, (float) m).color(g, h, p, f).endVertex();
-        bufferBuilder.vertex(matrix4f, (float) i, (float) l, (float) m).color(r, s, t, q).endVertex();
-        bufferBuilder.vertex(matrix4f, (float) k, (float) l, (float) m).color(r, s, t, q).endVertex();
+        bufferBuilder.addVertex(matrix4f, (float) k, (float) j, (float) m).setColor(g, h, p, f);
+        bufferBuilder.addVertex(matrix4f, (float) i, (float) j, (float) m).setColor(g, h, p, f);
+        bufferBuilder.addVertex(matrix4f, (float) i, (float) l, (float) m).setColor(r, s, t, q);
+        bufferBuilder.addVertex(matrix4f, (float) k, (float) l, (float) m).setColor(r, s, t, q);
     }
 }

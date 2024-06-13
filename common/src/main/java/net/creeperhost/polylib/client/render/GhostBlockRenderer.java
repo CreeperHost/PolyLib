@@ -1,10 +1,9 @@
 package net.creeperhost.polylib.client.render;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.creeperhost.polylib.client.render.rendertypes.GhostRenderType;
-//import net.creeperhost.polylib.mixins.AccessorMultiBufferSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Map;
+import java.util.SequencedMap;
 
 public class GhostBlockRenderer
 {
@@ -32,10 +32,12 @@ public class GhostBlockRenderer
 
     public static MultiBufferSource.BufferSource initBuffers(MultiBufferSource.BufferSource original)
     {
-        BufferBuilder fallback = original.builder;
-        Map<RenderType, BufferBuilder> layerBuffers = original.fixedBuffers;
-        Map<RenderType, BufferBuilder> remapped = new Object2ObjectLinkedOpenHashMap<>();
-        for (Map.Entry<RenderType, BufferBuilder> e : layerBuffers.entrySet())
+        ByteBufferBuilder fallback = original.sharedBuffer;
+        SequencedMap<RenderType, ByteBufferBuilder> layerBuffers = original.fixedBuffers;
+
+        SequencedMap<RenderType, ByteBufferBuilder> remapped = new Object2ObjectLinkedOpenHashMap<>();
+
+        for (Map.Entry<RenderType, ByteBufferBuilder> e : layerBuffers.entrySet())
         {
             remapped.put(GhostRenderType.remap(e.getKey()), e.getValue());
         }

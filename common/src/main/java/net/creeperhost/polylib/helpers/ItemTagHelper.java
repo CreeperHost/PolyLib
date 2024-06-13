@@ -14,7 +14,7 @@ public class ItemTagHelper
 {
     public static Iterable<Holder<Item>> getValues(String string)
     {
-        return getValues(new ResourceLocation(string));
+        return getValues(ResourceLocation.withDefaultNamespace(string));
     }
 
     public static Iterable<Holder<Item>> getValues(ResourceLocation resourceLocation)

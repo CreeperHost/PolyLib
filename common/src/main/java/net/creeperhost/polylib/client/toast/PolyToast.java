@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PolyToast implements Toast
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation("toast/system");
+    public static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("toast/system");
 
     @Override
     public Visibility render(GuiGraphics guiGraphics, ToastComponent toastComponent, long l)
@@ -17,7 +17,6 @@ public class PolyToast implements Toast
         return null;
     }
 
-    //TODO scale the image
     public void renderImage(GuiGraphics guiGraphics, ToastComponent toastComponent, ResourceLocation resourceLocation)
     {
         RenderSystem.setShaderTexture(0, resourceLocation);

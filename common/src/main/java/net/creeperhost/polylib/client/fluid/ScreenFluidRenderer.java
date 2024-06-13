@@ -1,10 +1,7 @@
 package net.creeperhost.polylib.client.fluid;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import dev.architectury.fluid.FluidStack;
 import dev.architectury.hooks.fluid.FluidStackHooks;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -111,7 +108,7 @@ public class ScreenFluidRenderer
         RenderSystem.setShaderColor(red, green, blue, alpha);
     }
 
-    private static void drawTextureWithMasking(double xCoord, double yCoord, TextureAtlasSprite textureSprite, int maskTop, int maskRight, double zLevel)
+    private static void drawTextureWithMasking(float xCoord, float yCoord, TextureAtlasSprite textureSprite, int maskTop, int maskRight, float zLevel)
     {
         double uMin = textureSprite.getU0();
         double uMax = textureSprite.getU1();
@@ -120,14 +117,11 @@ public class ScreenFluidRenderer
         uMax = uMax - (maskRight / 16.0 * (uMax - uMin));
         vMax = vMax - (maskTop / 16.0 * (vMax - vMin));
 
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.vertex(xCoord, yCoord + 16, zLevel).uv((float) uMin, (float) vMax).endVertex();
-        bufferBuilder.vertex(xCoord + 16 - maskRight, yCoord + 16, zLevel).uv((float) uMax, (float) vMax).endVertex();
-        bufferBuilder.vertex(xCoord + 16 - maskRight, yCoord + maskTop, zLevel).uv((float) uMax,
-                (float) vMin).endVertex();
-        bufferBuilder.vertex(xCoord, yCoord + maskTop, zLevel).uv((float) uMin, (float) vMin).endVertex();
-        tessellator.end();
+        BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferBuilder.addVertex(xCoord, yCoord + 16, zLevel).setUv((float) uMin, (float) vMax);
+        bufferBuilder.addVertex(xCoord + 16 - maskRight, yCoord + 16, zLevel).setUv((float) uMax, (float) vMax);
+        bufferBuilder.addVertex(xCoord + 16 - maskRight, yCoord + maskTop, zLevel).setUv((float) uMax, (float) vMin);
+        bufferBuilder.addVertex(xCoord, yCoord + maskTop, zLevel).setUv((float) uMin, (float) vMin);
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
     }
 }

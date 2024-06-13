@@ -61,6 +61,6 @@ public class PolyTextures {
      * @return A new Material for the specified gui texture.
      */
     public static Material getUncached(String texture) {
-        return new Material(ATLAS_HOLDER.atlasLocation(), new ResourceLocation(MOD_ID, "gui/" + texture), ATLAS_HOLDER::getSprite);
+        return new Material(ATLAS_HOLDER.atlasLocation(), ResourceLocation.fromNamespaceAndPath(MOD_ID, "gui/" + texture), ATLAS_HOLDER::getSprite);
     }
 }

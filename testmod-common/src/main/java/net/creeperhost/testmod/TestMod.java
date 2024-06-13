@@ -49,14 +49,12 @@ public class TestMod
                         Minecraft.getInstance().setScreen(new TestGui());
                     }).pos((titleScreen.width / 2) - 80, 40).build();
 
-
-
                     List<GuiEventListener> children = (List<GuiEventListener>) screen.children();
 
                     titleScreen.renderables.add(debugScreen);
                     children.add(debugScreen);
                 }
-                TestItems.addCustomStacksToTab();
+//                TestItems.addCustomStacksToTab();
             });
         }
     }

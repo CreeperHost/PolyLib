@@ -1,5 +1,7 @@
 package net.creeperhost.polylib.neoforge;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
@@ -13,10 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -27,7 +27,10 @@ public class PolyLibNeoForge
 {
     public PolyLibNeoForge(IEventBus modEventBus)
     {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> NeoForgeClientEvents::init);
+        if(Platform.getEnvironment() == Env.CLIENT)
+        {
+            NeoForgeClientEvents.init(modEventBus);
+        }
 
         PolyLib.init();
         NeoForgeEvents.init();

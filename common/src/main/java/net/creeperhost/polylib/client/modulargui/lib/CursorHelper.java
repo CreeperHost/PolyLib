@@ -22,11 +22,11 @@ import java.util.Map;
  */
 public class CursorHelper {
 
-    public static final ResourceLocation DRAG = new ResourceLocation(PolyLib.MOD_ID, "textures/gui/cursors/drag.png");
-    public static final ResourceLocation RESIZE_H = new ResourceLocation(PolyLib.MOD_ID, "textures/gui/cursors/resize_h.png");
-    public static final ResourceLocation RESIZE_V = new ResourceLocation(PolyLib.MOD_ID, "textures/gui/cursors/resize_v.png");
-    public static final ResourceLocation RESIZE_TRBL = new ResourceLocation(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_trbl.png");
-    public static final ResourceLocation RESIZE_TLBR = new ResourceLocation(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_tlbr.png");
+    public static final ResourceLocation DRAG = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/drag.png");
+    public static final ResourceLocation RESIZE_H = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_h.png");
+    public static final ResourceLocation RESIZE_V = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_v.png");
+    public static final ResourceLocation RESIZE_TRBL = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_trbl.png");
+    public static final ResourceLocation RESIZE_TLBR = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_tlbr.png");
     private static Map<ResourceLocation, Long> cursors = new HashMap<>();
     private static ResourceLocation active = null;
 

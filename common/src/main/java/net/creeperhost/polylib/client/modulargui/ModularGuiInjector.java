@@ -7,6 +7,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.hooks.client.screen.ScreenAccess;
 import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -70,14 +71,14 @@ public class ModularGuiInjector<T extends Screen> {
         return (T) object;
     }
 
-    private static void renderPost(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    private static void renderPost(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, DeltaTracker delta) {
         if (activeGui == null) return;
         GuiRender render = GuiRender.convert(graphics);
         if (screen instanceof AbstractContainerScreen<?>) {
             render.pose().translate(0, 0, 275); //Ensure we render on top of inventory stacks.
         }
-        activeGui.render(render, delta);
-        activeGui.renderOverlay(render, delta);
+        activeGui.render(render, delta.getGameTimeDeltaTicks());
+        activeGui.renderOverlay(render, delta.getGameTimeDeltaTicks());
     }
 
     private static EventResult keyPressed(Minecraft client, Screen screen, int keyCode, int scanCode, int modifiers) {

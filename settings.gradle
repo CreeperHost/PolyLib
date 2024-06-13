@@ -14,7 +14,7 @@ include("neoforge")
 
 //include("testmod-common")
 //include("testmod-fabric")
-//include("testmod-forge")
+////include("testmod-forge")
 //include("testmod-neoforge")
 
 rootProject.name = "polylib"

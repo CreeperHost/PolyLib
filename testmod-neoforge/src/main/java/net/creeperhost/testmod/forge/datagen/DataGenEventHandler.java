@@ -27,7 +27,7 @@ public class DataGenEventHandler {
 
             textureProvider.addDynamicTextures(new ModularGuiTest());
             textureProvider.addDynamicTextures(new MGuiTestBlockGui());
-            textureProvider.addDynamicTexture(new ResourceLocation(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla.png"), new ResourceLocation(TestMod.MOD_ID, "textures/gui/test_dynamic_texture.png"), 200, 200, 4, 4, 4, 4);
+            textureProvider.addDynamicTexture(ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla.png"), ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/test_dynamic_texture.png"), 200, 200, 4, 4, 4, 4);
 
             gen.addProvider(true, textureProvider);
         }

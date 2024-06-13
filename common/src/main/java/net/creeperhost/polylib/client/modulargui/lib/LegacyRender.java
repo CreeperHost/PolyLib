@@ -55,27 +55,25 @@ public abstract class LegacyRender {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         Matrix4f matrix4f = pose().last().pose();
-        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex(matrix4f, (float)xMin, (float)yMin, (float)z).uv(uMin, vMin).endVertex();
-        bufferbuilder.vertex(matrix4f, (float)xMin, (float)yMax, (float)z).uv(uMin, vMax).endVertex();
-        bufferbuilder.vertex(matrix4f, (float)xMax, (float)yMax, (float)z).uv(uMax, vMax).endVertex();
-        bufferbuilder.vertex(matrix4f, (float)xMax, (float)yMin, (float)z).uv(uMax, vMin).endVertex();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.addVertex(matrix4f, (float)xMin, (float)yMin, (float)z).setUv(uMin, vMin);
+        bufferbuilder.addVertex(matrix4f, (float)xMin, (float)yMax, (float)z).setUv(uMin, vMax);
+        bufferbuilder.addVertex(matrix4f, (float)xMax, (float)yMax, (float)z).setUv(uMax, vMax);
+        bufferbuilder.addVertex(matrix4f, (float)xMax, (float)yMin, (float)z).setUv(uMax, vMin);
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 
     void innerBlit(ResourceLocation texture, int xMin, int xMax, int yMin, int yMax, int z, float uMin, float uMax, float vMin, float vMax, float red, float green, float blue, float alpha) {
         RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableBlend();
         Matrix4f matrix4f = pose().last().pose();
-        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-        bufferbuilder.vertex(matrix4f, (float)xMin, (float)yMin, (float)z).color(red, green, blue, alpha).uv(uMin, vMin).endVertex();
-        bufferbuilder.vertex(matrix4f, (float)xMin, (float)yMax, (float)z).color(red, green, blue, alpha).uv(uMin, vMax).endVertex();
-        bufferbuilder.vertex(matrix4f, (float)xMax, (float)yMax, (float)z).color(red, green, blue, alpha).uv(uMax, vMax).endVertex();
-        bufferbuilder.vertex(matrix4f, (float)xMax, (float)yMin, (float)z).color(red, green, blue, alpha).uv(uMax, vMin).endVertex();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        bufferbuilder.addVertex(matrix4f, (float)xMin, (float)yMin, (float)z).setColor(red, green, blue, alpha).setUv(uMin, vMin);
+        bufferbuilder.addVertex(matrix4f, (float)xMin, (float)yMax, (float)z).setColor(red, green, blue, alpha).setUv(uMin, vMax);
+        bufferbuilder.addVertex(matrix4f, (float)xMax, (float)yMax, (float)z).setColor(red, green, blue, alpha).setUv(uMax, vMax);
+        bufferbuilder.addVertex(matrix4f, (float)xMax, (float)yMin, (float)z).setColor(red, green, blue, alpha).setUv(uMax, vMin);
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
         RenderSystem.disableBlend();
     }
 

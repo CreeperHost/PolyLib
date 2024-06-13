@@ -33,14 +33,15 @@ public class PolyLibNetwork {
     private static final Logger LOGGER = LogManager.getLogger();
 
     //Server To Client
-    private static final ResourceLocation CONTAINER_PACKET_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "container_client");
-    private static final ResourceLocation TILE_DATA_VALUE_TO_CLIENT = new ResourceLocation(PolyLib.MOD_ID, "tile_client");
+    private static final ResourceLocation CONTAINER_PACKET_TO_CLIENT = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "container_client");
+    private static final ResourceLocation TILE_DATA_VALUE_TO_CLIENT = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_client");
 
     //Client to server
-    private static final ResourceLocation CONTAINER_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "container_packet_server");
-    private static final ResourceLocation TILE_DATA_VALUE_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_data_server");
-    private static final ResourceLocation TILE_PACKET_TO_SERVER = new ResourceLocation(PolyLib.MOD_ID, "tile_packet_server");
+    private static final ResourceLocation CONTAINER_PACKET_TO_SERVER = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "container_packet_server");
+    private static final ResourceLocation TILE_DATA_VALUE_TO_SERVER = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_data_server");
+    private static final ResourceLocation TILE_PACKET_TO_SERVER = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_packet_server");
 
+    @SuppressWarnings("removal")
     public static void init() {
         if (Platform.getEnv() == EnvType.CLIENT) {
             NetworkManager.registerReceiver(NetworkManager.Side.S2C, CONTAINER_PACKET_TO_CLIENT, (buf, context) -> {

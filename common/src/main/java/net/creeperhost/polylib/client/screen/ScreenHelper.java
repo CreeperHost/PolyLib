@@ -12,24 +12,25 @@ public class ScreenHelper
 {
     public void renderHead(GuiGraphics guiGraphics, int x, int y)
     {
-        guiGraphics.blit(new ResourceLocation("textures/entity/steve.png"), x, y - 2, 9, 9, 8.0F, 8.0F, 8, 8, 64, 64);
+        guiGraphics.blit(ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 8.0F, 8.0F, 8, 8, 64, 64);
         RenderSystem.enableBlend();
-        guiGraphics.blit(new ResourceLocation("textures/entity/steve.png"), x, y - 2, 9, 9, 40.0F, 8.0F, 8, 8, 64, 64);
+        guiGraphics.blit(ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 40.0F, 8.0F, 8, 8, 64, 64);
         RenderSystem.disableBlend();
     }
 
     public static void drawModalRectWithCustomSizedTextureFloat(Matrix4f matrix, float x, float y, float u, float v, int width, int height, float textureWidth, float textureHeight)
     {
-        float f = 1.0F / textureWidth;
-        float f1 = 1.0F / textureHeight;
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex(matrix, x, y + height, 0.0F).uv(u * f, (v + (float) height) * f1).endVertex();
-        bufferbuilder.vertex(matrix, x + width, y + height, 0.0F).uv((u + (float) width) * f, (v + (float) height) * f1).endVertex();
-        bufferbuilder.vertex(matrix, x + width, y, 0.0F).uv((u + (float) width) * f, v * f1).endVertex();
-        bufferbuilder.vertex(matrix, x, y, 0.0F).uv(u * f, v * f1).endVertex();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        //TODO
+//        float f = 1.0F / textureWidth;
+//        float f1 = 1.0F / textureHeight;
+//        Tesselator tessellator = Tesselator.getInstance();
+//        BufferBuilder bufferbuilder = tessellator.getBuilder();
+//        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+//        bufferbuilder.vertex(matrix, x, y + height, 0.0F).uv(u * f, (v + (float) height) * f1).endVertex();
+//        bufferbuilder.vertex(matrix, x + width, y + height, 0.0F).uv((u + (float) width) * f, (v + (float) height) * f1).endVertex();
+//        bufferbuilder.vertex(matrix, x + width, y, 0.0F).uv((u + (float) width) * f, v * f1).endVertex();
+//        bufferbuilder.vertex(matrix, x, y, 0.0F).uv(u * f, v * f1).endVertex();
+//        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
     public static void drawContinuousTexturedBox(PoseStack matrixStack, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight, int topBorder, int bottomBorder, int leftBorder, int rightBorder, float zLevel)
@@ -93,34 +94,36 @@ public class ScreenHelper
 
     public static void drawTexturedModalRect(PoseStack matrixStack, int x, int y, int u, int v, int width, int height, float zLevel)
     {
-        final float uScale = 1f / 0x100;
-        final float vScale = 1f / 0x100;
-
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder wr = tessellator.getBuilder();
-        wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        Matrix4f matrix = matrixStack.last().pose();
-        wr.vertex(matrix, x, y + height, zLevel).uv(u * uScale, ((v + height) * vScale)).endVertex();
-        wr.vertex(matrix, x + width, y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
-        wr.vertex(matrix, x + width, y, zLevel).uv((u + width) * uScale, (v * vScale)).endVertex();
-        wr.vertex(matrix, x, y, zLevel).uv(u * uScale, (v * vScale)).endVertex();
-        BufferUploader.drawWithShader(wr.end());
+        //TODO
+//        final float uScale = 1f / 0x100;
+//        final float vScale = 1f / 0x100;
+//
+//        Tesselator tessellator = Tesselator.getInstance();
+//        BufferBuilder wr = tessellator.getBuilder();
+//        wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+//        Matrix4f matrix = matrixStack.last().pose();
+//        wr.vertex(matrix, x, y + height, zLevel).uv(u * uScale, ((v + height) * vScale)).endVertex();
+//        wr.vertex(matrix, x + width, y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
+//        wr.vertex(matrix, x + width, y, zLevel).uv((u + width) * uScale, (v * vScale)).endVertex();
+//        wr.vertex(matrix, x, y, zLevel).uv(u * uScale, (v * vScale)).endVertex();
+//        BufferUploader.drawWithShader(wr.end());
     }
 
     public static void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight)
     {
-        float f = 1.0F / tileWidth;
-        float f1 = 1.0F / tileHeight;
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex(x, y + height, 0.0D).uv((u * f),
-                ((v + (float) vHeight) * f1)).endVertex();
-        bufferbuilder.vertex(x + width, y + height, 0.0D).uv(((u + (float) uWidth) * f),
-                ((v + (float) vHeight) * f1)).endVertex();
-        bufferbuilder.vertex(x + width, y, 0.0D).uv(((u + (float) uWidth) * f),
-                (v * f1)).endVertex();
-        bufferbuilder.vertex(x, y, 0.0D).uv((u * f), (v * f1)).endVertex();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        //TODO
+//        float f = 1.0F / tileWidth;
+//        float f1 = 1.0F / tileHeight;
+//        Tesselator tessellator = Tesselator.getInstance();
+//        BufferBuilder bufferbuilder = tessellator.getBuilder();
+//        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+//        bufferbuilder.vertex(x, y + height, 0.0D).uv((u * f),
+//                ((v + (float) vHeight) * f1)).endVertex();
+//        bufferbuilder.vertex(x + width, y + height, 0.0D).uv(((u + (float) uWidth) * f),
+//                ((v + (float) vHeight) * f1)).endVertex();
+//        bufferbuilder.vertex(x + width, y, 0.0D).uv(((u + (float) uWidth) * f),
+//                (v * f1)).endVertex();
+//        bufferbuilder.vertex(x, y, 0.0D).uv((u * f), (v * f1)).endVertex();
+//        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 }

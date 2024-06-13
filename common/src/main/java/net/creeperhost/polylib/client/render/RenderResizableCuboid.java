@@ -144,7 +144,7 @@ public class RenderResizableCuboid
         Vector3f vertex = withValue(VEC_ZERO, u, xyz[uFinal]);
         vertex = withValue(vertex, v, xyz[vFinal]);
         vertex = withValue(vertex, face.getAxis(), other);
-        buffer.vertex(matrix4f, vertex.x(), vertex.y(), vertex.z()).color(red, green, blue, alpha).uv(uv[uFinal],
-                uv[vFinal]).uv2(light).endVertex();
+        buffer.addVertex(matrix4f, vertex.x(), vertex.y(), vertex.z()).setColor(red, green, blue, alpha).setUv(uv[uFinal],
+                uv[vFinal]).setLight(light);
     }
 }

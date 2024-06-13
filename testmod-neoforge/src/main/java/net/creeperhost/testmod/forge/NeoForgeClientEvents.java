@@ -6,17 +6,15 @@ import net.creeperhost.testmod.client.gui.TestModTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class NeoForgeClientEvents
 {
-    public static void init() {
+    public static void init(IEventBus iEventBus) {
         NeoForge.EVENT_BUS.addListener(NeoForgeClientEvents::registerClientCommands);
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        eventBus.addListener(NeoForgeClientEvents::registerReloadListeners);
+        iEventBus.addListener(NeoForgeClientEvents::registerReloadListeners);
     }
 
     private static void registerClientCommands(RegisterClientCommandsEvent event)

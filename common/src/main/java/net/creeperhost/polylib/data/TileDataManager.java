@@ -60,7 +60,7 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
      *              {@link DataManagerBlock#CLIENT_CONTROL} - Allows this value to be set from a client side container screen.
      */
     public <D extends AbstractDataStore<?>> D register(String name, D data, int... flags) {
-        assert ResourceLocation.isValidResourceLocation(name);
+        assert ResourceLocation.isValidPath(name);
         int combinedFlags = 0;
         for (int flag : flags) {
             combinedFlags |= flag;

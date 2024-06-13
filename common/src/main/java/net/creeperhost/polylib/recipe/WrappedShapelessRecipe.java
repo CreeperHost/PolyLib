@@ -34,15 +34,16 @@ public abstract class WrappedShapelessRecipe implements CraftingRecipe
         return internal.category();
     }
 
-    @Override
-    public abstract @NotNull ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider);
-
-
-    @Override
-    public boolean matches(@NotNull CraftingContainer inv, @NotNull Level world)
-    {
-        return internal.matches(inv, world) && !assemble(inv, world.registryAccess()).isEmpty();
-    }
+    //TODO
+//    @Override
+//    public abstract @NotNull ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider);
+//
+//
+//    @Override
+//    public boolean matches(@NotNull CraftingContainer inv, @NotNull Level world)
+//    {
+//        return internal.matches(inv, world) && !assemble(inv, world.registryAccess()).isEmpty();
+//    }
 
     @Override
     public boolean canCraftInDimensions(int width, int height)
@@ -56,12 +57,13 @@ public abstract class WrappedShapelessRecipe implements CraftingRecipe
         return internal.getResultItem(provider);
     }
 
-    @NotNull
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(@NotNull CraftingContainer inv)
-    {
-        return internal.getRemainingItems(inv);
-    }
+    //TODO
+//    @NotNull
+//    @Override
+//    public NonNullList<ItemStack> getRemainingItems(@NotNull CraftingContainer inv)
+//    {
+//        return internal.getRemainingItems(inv);
+//    }
 
     @NotNull
     @Override

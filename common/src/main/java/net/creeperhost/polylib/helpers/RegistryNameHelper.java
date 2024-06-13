@@ -27,11 +27,6 @@ public class RegistryNameHelper
         return Optional.of(BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
     }
 
-    public static Optional<ResourceLocation> getRegistryName(Enchantment enchantment)
-    {
-        return Optional.ofNullable(BuiltInRegistries.ENCHANTMENT.getKey(enchantment));
-    }
-
     public static Optional<ResourceLocation> getRegistryName(Potion potion)
     {
         return Optional.of(BuiltInRegistries.POTION.getKey(potion));

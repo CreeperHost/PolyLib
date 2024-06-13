@@ -45,7 +45,7 @@ public class ChestGuiInjection implements GuiProvider {
 
         GuiEntityRenderer creeper = new GuiEntityRenderer(root)
                 .jeiExclude()
-                .setEntity(new ResourceLocation("creeper"))
+                .setEntity(ResourceLocation.withDefaultNamespace("creeper"))
                 .setDrawName(true)
                 .setTrackMouse(true);
         Constraints.size(creeper, 64, 64);
@@ -54,7 +54,7 @@ public class ChestGuiInjection implements GuiProvider {
         GuiEntityRenderer chicken = new GuiEntityRenderer(root)
                 .jeiExclude()
                 .setRotationSpeed(2)
-                .setEntity(new ResourceLocation("chicken"));
+                .setEntity(ResourceLocation.withDefaultNamespace("chicken"));
         Constraints.size(chicken, 32, 32);
         Constraints.placeInside(chicken, root, Constraints.LayoutPos.BOTTOM_CENTER, 0, 0);
 
@@ -80,7 +80,7 @@ public class ChestGuiInjection implements GuiProvider {
         dvd.getContentElement().jeiExclude();
         Constraints.size(dvd, 40, 40);
         Constraints.placeInside(dvd, root, Constraints.LayoutPos.BOTTOM_LEFT, 20, -20);
-        GuiTexture disc = new GuiTexture(dvd.getContentElement(), Material.fromRawTexture(new ResourceLocation("textures/item/music_disc_13.png")));
+        GuiTexture disc = new GuiTexture(dvd.getContentElement(), Material.fromRawTexture(ResourceLocation.withDefaultNamespace("textures/item/music_disc_13.png")));
         Constraints.bind(disc, dvd.getContentElement());
         dvd.start();
         dvd.onBounce(bounce -> disc.setColour(0xFF000000 | ChatFormatting.getById(1 + (bounce % 15)).getColor()));

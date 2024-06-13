@@ -7,7 +7,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PolyButton extends Button
 {
-    public static final WidgetSprites SPRITES = new WidgetSprites(new ResourceLocation("widget/button"), new ResourceLocation("widget/button_disabled"), new ResourceLocation("widget/button_highlighted"));
+    public static final WidgetSprites SPRITES = new WidgetSprites(
+            ResourceLocation.withDefaultNamespace("widget/button"),
+            ResourceLocation.withDefaultNamespace("widget/button_disabled"),
+            ResourceLocation.withDefaultNamespace("widget/button_highlighted"));
 
     public PolyButton(int x, int y, int xSize, int ySize, Component component, OnPress onPress, CreateNarration createNarration)
     {
