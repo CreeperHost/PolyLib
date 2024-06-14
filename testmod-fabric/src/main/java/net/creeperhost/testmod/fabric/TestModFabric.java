@@ -21,10 +21,9 @@ public class TestModFabric implements ModInitializer
     {
         TestMod.init();
 
-
         if (Platform.getEnv() == EnvType.CLIENT)
         {
-            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(TestModTextures::getAtlasHolder, new ResourceLocation(TestMod.MOD_ID, "gui_atlas_reload")));
+            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(TestModTextures::getAtlasHolder, ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "gui_atlas_reload")));
         }
     }
 }

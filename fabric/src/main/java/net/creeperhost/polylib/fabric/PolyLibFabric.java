@@ -13,6 +13,7 @@ import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.*;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
@@ -42,7 +43,7 @@ public class PolyLibFabric implements ModInitializer
         {
             WorldRenderEvents.END.register(context -> ClientRenderEvents.LAST.invoker().onRenderLastEvent(context.matrixStack()));
 
-            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(PolyTextures::getAtlasHolder, new ResourceLocation(PolyLib.MOD_ID, "gui_atlas_reload")));
+            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListenerWrapper(PolyTextures::getAtlasHolder, ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "gui_atlas_reload")));
         }
 
         EnergyStorage.ITEM.registerFallback((itemStack, context) -> {

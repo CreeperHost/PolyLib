@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.fabric.datagen.tags;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -18,6 +17,6 @@ public class FabricTags
     private static TagKey<Block> create(String string)
     {
         // Create the tag
-        return TagKey.create(BuiltInRegistries.BLOCK.key(), new ResourceLocation(string));
+        return TagKey.create(BuiltInRegistries.BLOCK.key(), ResourceLocation.parse(string));
     }
 }

@@ -19,6 +19,6 @@ public class ForgeTags
     private static TagKey<Block> create(String string)
     {
         // Create a tag key with the block registry and the resource location of the tag
-        return TagKey.create(BuiltInRegistries.BLOCK.key(), new ResourceLocation(string));
+        return TagKey.create(BuiltInRegistries.BLOCK.key(), ResourceLocation.parse(string));
     }
 }

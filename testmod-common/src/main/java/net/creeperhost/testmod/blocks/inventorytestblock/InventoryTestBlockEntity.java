@@ -67,7 +67,6 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
         return simpleItemInventory;
     }
 
-
     public Container getOutputContainer() {
         return outputInv;
     }
@@ -111,7 +110,6 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
         simpleItemInventory.deserialize(provider, nbt);
         outputInv.deserialize(provider, nbt.getCompound("out_inv"));
     }
-
 
     @Override
     public void handlePacketFromClient(ServerPlayer player, int id, FriendlyByteBuf buf) {

@@ -60,7 +60,7 @@ public class TestModDataGen implements DataGeneratorEntrypoint
 
             recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
                     TestBlocks.INVENTORY_TEST_BLOCK.get(),
-                    Ingredient.of(Items.COPPER_BLOCK)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), new ResourceLocation("testmod", "namedrecipe"), ModuleType.COMMON);
+                    Ingredient.of(Items.COPPER_BLOCK)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ResourceLocation.fromNamespaceAndPath("testmod", "namedrecipe"), ModuleType.COMMON);
 
            return recipeProvider;
         });
@@ -78,10 +78,10 @@ public class TestModDataGen implements DataGeneratorEntrypoint
 
         pack.addProvider((output, registriesFuture) -> {
            PolyModelProvider modelProvider = new PolyModelProvider(output, ModuleType.COMMON);
-           modelProvider.addSimpleBlockModel(TestBlocks.INVENTORY_TEST_BLOCK.get(), new ResourceLocation("minecraft", "block/stone"), ModuleType.COMMON);
-           modelProvider.addSimpleBlockModel(TestBlocks.MULTIBLOCK_TEST_BLOCK.get(), new ResourceLocation("minecraft", "block/stone"), ModuleType.COMMON);
-           modelProvider.addSimpleBlockModel(TestBlocks.MGUI_TEST_BLOCK.get(), new ResourceLocation("minecraft", "block/stone_bricks"), ModuleType.COMMON);
-           modelProvider.addSimpleBlockModel(TestBlocks.CREATIVE_ENERGY_BLOCK.get(), new ResourceLocation("minecraft", "block/stone"), ModuleType.COMMON);
+           modelProvider.addSimpleBlockModel(TestBlocks.INVENTORY_TEST_BLOCK.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "block/stone"), ModuleType.COMMON);
+           modelProvider.addSimpleBlockModel(TestBlocks.MULTIBLOCK_TEST_BLOCK.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "block/stone"), ModuleType.COMMON);
+           modelProvider.addSimpleBlockModel(TestBlocks.MGUI_TEST_BLOCK.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "block/stone_bricks"), ModuleType.COMMON);
+           modelProvider.addSimpleBlockModel(TestBlocks.CREATIVE_ENERGY_BLOCK.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "block/stone"), ModuleType.COMMON);
 
            modelProvider.addSimpleItemModel(TestItems.TEST_ENERGY_ITEM.get(), ModuleType.COMMON);
            return modelProvider;
