@@ -20,17 +20,14 @@ public class ScreenHelper
 
     public static void drawModalRectWithCustomSizedTextureFloat(Matrix4f matrix, float x, float y, float u, float v, int width, int height, float textureWidth, float textureHeight)
     {
-        //TODO
-//        float f = 1.0F / textureWidth;
-//        float f1 = 1.0F / textureHeight;
-//        Tesselator tessellator = Tesselator.getInstance();
-//        BufferBuilder bufferbuilder = tessellator.getBuilder();
-//        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-//        bufferbuilder.vertex(matrix, x, y + height, 0.0F).uv(u * f, (v + (float) height) * f1).endVertex();
-//        bufferbuilder.vertex(matrix, x + width, y + height, 0.0F).uv((u + (float) width) * f, (v + (float) height) * f1).endVertex();
-//        bufferbuilder.vertex(matrix, x + width, y, 0.0F).uv((u + (float) width) * f, v * f1).endVertex();
-//        bufferbuilder.vertex(matrix, x, y, 0.0F).uv(u * f, v * f1).endVertex();
-//        BufferUploader.drawWithShader(bufferbuilder.end());
+        float f = 1.0F / textureWidth;
+        float f1 = 1.0F / textureHeight;
+        BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.addVertex(matrix, x, y + height, 0.0F).setUv(u * f, (v + (float) height) * f1);
+        bufferbuilder.addVertex(matrix, x + width, y + height, 0.0F).setUv((u + (float) width) * f, (v + (float) height) * f1);
+        bufferbuilder.addVertex(matrix, x + width, y, 0.0F).setUv((u + (float) width) * f, v * f1);
+        bufferbuilder.addVertex(matrix, x, y, 0.0F).setUv(u * f, v * f1);
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 
     public static void drawContinuousTexturedBox(PoseStack matrixStack, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight, int topBorder, int bottomBorder, int leftBorder, int rightBorder, float zLevel)
@@ -94,36 +91,27 @@ public class ScreenHelper
 
     public static void drawTexturedModalRect(PoseStack matrixStack, int x, int y, int u, int v, int width, int height, float zLevel)
     {
-        //TODO
-//        final float uScale = 1f / 0x100;
-//        final float vScale = 1f / 0x100;
-//
-//        Tesselator tessellator = Tesselator.getInstance();
-//        BufferBuilder wr = tessellator.getBuilder();
-//        wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-//        Matrix4f matrix = matrixStack.last().pose();
-//        wr.vertex(matrix, x, y + height, zLevel).uv(u * uScale, ((v + height) * vScale)).endVertex();
-//        wr.vertex(matrix, x + width, y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
-//        wr.vertex(matrix, x + width, y, zLevel).uv((u + width) * uScale, (v * vScale)).endVertex();
-//        wr.vertex(matrix, x, y, zLevel).uv(u * uScale, (v * vScale)).endVertex();
-//        BufferUploader.drawWithShader(wr.end());
+        final float uScale = 1f / 0x100;
+        final float vScale = 1f / 0x100;
+
+        BufferBuilder wr = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        Matrix4f matrix = matrixStack.last().pose();
+        wr.addVertex(matrix, x, y + height, zLevel).setUv(u * uScale, ((v + height) * vScale));
+        wr.addVertex(matrix, x + width, y + height, zLevel).setUv((u + width) * uScale, ((v + height) * vScale));
+        wr.addVertex(matrix, x + width, y, zLevel).setUv((u + width) * uScale, (v * vScale));
+        wr.addVertex(matrix, x, y, zLevel).setUv(u * uScale, (v * vScale));
+        BufferUploader.drawWithShader(wr.buildOrThrow());
     }
 
     public static void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight)
     {
-        //TODO
-//        float f = 1.0F / tileWidth;
-//        float f1 = 1.0F / tileHeight;
-//        Tesselator tessellator = Tesselator.getInstance();
-//        BufferBuilder bufferbuilder = tessellator.getBuilder();
-//        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-//        bufferbuilder.vertex(x, y + height, 0.0D).uv((u * f),
-//                ((v + (float) vHeight) * f1)).endVertex();
-//        bufferbuilder.vertex(x + width, y + height, 0.0D).uv(((u + (float) uWidth) * f),
-//                ((v + (float) vHeight) * f1)).endVertex();
-//        bufferbuilder.vertex(x + width, y, 0.0D).uv(((u + (float) uWidth) * f),
-//                (v * f1)).endVertex();
-//        bufferbuilder.vertex(x, y, 0.0D).uv((u * f), (v * f1)).endVertex();
-//        BufferUploader.drawWithShader(bufferbuilder.end());
+        float f = 1.0F / tileWidth;
+        float f1 = 1.0F / tileHeight;
+        BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.addVertex(x, y + height, 0.0F).setUv((u * f), ((v + (float) vHeight) * f1));
+        bufferbuilder.addVertex(x + width, y + height, 0.0F).setUv(((u + (float) uWidth) * f), ((v + (float) vHeight) * f1));
+        bufferbuilder.addVertex(x + width, y, 0.0F).setUv(((u + (float) uWidth) * f), (v * f1));
+        bufferbuilder.addVertex(x, y, 0.0F).setUv((u * f), (v * f1));
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 }
