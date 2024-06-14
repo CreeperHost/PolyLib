@@ -54,7 +54,6 @@ public class TestMod
                     titleScreen.renderables.add(debugScreen);
                     children.add(debugScreen);
                 }
-//                TestItems.addCustomStacksToTab();
             });
         }
     }

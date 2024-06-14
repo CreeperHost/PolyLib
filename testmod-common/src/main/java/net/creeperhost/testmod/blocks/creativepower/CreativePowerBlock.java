@@ -1,9 +1,12 @@
 package net.creeperhost.testmod.blocks.creativepower;
 
+import dev.architectury.registry.menu.MenuRegistry;
 import net.creeperhost.polylib.blocks.BlockFacing;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,6 +38,12 @@ public class CreativePowerBlock extends BlockFacing
             boolean isEnergyBlock = EnergyManager.isEnergyBlock(level.getBlockEntity(blockPos), blockHitResult.getDirection());
             var power = EnergyManager.getHandler(level.getBlockEntity(blockPos), blockHitResult.getDirection());
             System.out.println("isEnergyBlock " + isEnergyBlock + " Stored " + power.getEnergyStored() + " Max " + power.getMaxEnergyStored());
+            return InteractionResult.SUCCESS;
+        }
+        if (!level.isClientSide)
+        {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            MenuRegistry.openExtendedMenu((ServerPlayer) player, (MenuProvider) blockEntity, packetBuffer -> packetBuffer.writeBlockPos(blockEntity.getBlockPos()));
             return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(blockState, level, blockPos, player, blockHitResult);

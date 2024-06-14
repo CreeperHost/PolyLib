@@ -25,7 +25,7 @@ public class InventoryTestBlock extends BlockFacing
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if(!level.isClientSide() && player.isShiftKeyDown())
         {
             boolean isEnergyBlock = EnergyManager.isEnergyBlock(level.getBlockEntity(blockPos), blockHitResult.getDirection());
@@ -36,7 +36,7 @@ public class InventoryTestBlock extends BlockFacing
         if (!level.isClientSide)
         {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            MenuRegistry.openExtendedMenu((ServerPlayer) player, (MenuProvider) blockEntity, packetBuffer -> packetBuffer.writeBlockPos(blockEntity.getBlockPos()));
+            MenuRegistry.openExtendedMenu((ServerPlayer) player, (MenuProvider) blockEntity, packetBuffer -> packetBuffer.writeBlockPos(blockPos));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.SUCCESS;

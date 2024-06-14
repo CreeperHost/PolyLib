@@ -4,6 +4,8 @@ import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.creeperhost.testmod.TestMod;
+import net.creeperhost.testmod.blocks.creativepower.PowerContainer;
+import net.creeperhost.testmod.blocks.creativepower.PowerScreen;
 import net.creeperhost.testmod.blocks.inventorytestblock.ContainerInventoryTestBlock;
 import net.creeperhost.testmod.blocks.mguitestblock.MGuiTestBlockContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -21,5 +23,7 @@ public class TestContainers
     public static final RegistrySupplier<MenuType<MGuiTestBlockContainerMenu>> MGUI_TEST_BLOCK_CONTAINER =
             CONTAINERS.register("mgui_test_block_container",
                     () -> MenuRegistry.ofExtended(MGuiTestBlockContainerMenu::new));
+
+    public static final RegistrySupplier<MenuType<PowerContainer>> POWER_CONTAINEr = CONTAINERS.register("test", () -> MenuRegistry.ofExtended( PowerContainer::new));
 
 }

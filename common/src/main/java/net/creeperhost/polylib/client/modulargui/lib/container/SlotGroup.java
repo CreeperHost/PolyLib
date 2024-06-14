@@ -6,6 +6,7 @@ import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.containers.slots.PolySlot;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -83,16 +84,15 @@ public class SlotGroup {
     }
 
     public void addPlayerArmor(Inventory inventory) {
-        //TODO
-//        for (int i = 0; i < 4; ++i) {
-//            EquipmentSlot slot = EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, 3 - i);
-//            addSlot(new PolySlot(inventory, 39 - i)
-//                    .onSetByPlayer((oldStack, newStack) -> onEquipItem(inventory, slot, newStack, oldStack))
-//                    .setStackLimit(stack -> 1)
-//                    .setValidator(stack -> slot == Mob.getEquipmentSlotForItem(stack))
-//                    .setCanRemove((player, stack) -> stack.isEmpty() || player.isCreative() || !EnchantmentHelper.hasBindingCurse(stack))
-//            );
-//        }
+        for (int i = 0; i < 4; ++i) {
+            EquipmentSlot slot = EquipmentSlot.values()[i + 2];
+            addSlot(new PolySlot(inventory, 39 - i)
+                    .onSetByPlayer((oldStack, newStack) -> onEquipItem(inventory, slot, newStack, oldStack))
+                    .setStackLimit(stack -> 1)
+                    .setValidator(stack -> slot == inventory.player.getEquipmentSlotForItem(stack))
+                    .setCanRemove((player, stack) -> stack.isEmpty() || player.isCreative())// || !EnchantmentHelper.hasBindingCurse(stack))
+            );
+        }
     }
 
     public void addPlayerOffhand(Inventory inventory) {

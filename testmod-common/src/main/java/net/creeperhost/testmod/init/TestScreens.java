@@ -1,8 +1,11 @@
 package net.creeperhost.testmod.init;
 
 import dev.architectury.registry.menu.MenuRegistry;
+import dev.architectury.registry.registries.DeferredRegister;
 import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
 import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
+import net.creeperhost.testmod.TestMod;
+import net.creeperhost.testmod.blocks.creativepower.PowerScreen;
 import net.creeperhost.testmod.blocks.inventorytestblock.ScreenInventoryTestBlock;
 import net.creeperhost.testmod.blocks.mguitestblock.MGuiTestBlockContainerMenu;
 import net.creeperhost.testmod.blocks.mguitestblock.MGuiTestBlockGui;
@@ -10,8 +13,10 @@ import net.creeperhost.testmod.client.gui.ChestGuiInjection;
 import net.creeperhost.testmod.client.gui.MainMenuGuiInjection;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MenuType;
 
 public class TestScreens
 {
@@ -23,5 +28,6 @@ public class TestScreens
     {
         MenuRegistry.registerScreenFactory(TestContainers.TEST_INVENTORY_CONTAINER.get(), ScreenInventoryTestBlock::create);
         MenuRegistry.registerScreenFactory(TestContainers.MGUI_TEST_BLOCK_CONTAINER.get(), MGuiTestBlockGui::create);
+        MenuRegistry.registerScreenFactory(TestContainers.POWER_CONTAINEr.get(), PowerScreen::new);
     }
 }
