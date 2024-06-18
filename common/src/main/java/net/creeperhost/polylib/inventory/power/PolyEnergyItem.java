@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
  */
 public interface PolyEnergyItem {
 
+    //TODO This should always return a IPolyEnergyStorageItem, Return type should be changed to IPolyEnergyStorageItem in next update.
     IPolyEnergyStorage getEnergyStorage(ItemStack stack);
 
 }
