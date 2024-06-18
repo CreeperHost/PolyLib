@@ -99,7 +99,7 @@ public interface ToolTipHandler<T extends ToolTipHandler<T>> {
         List<Component> list = supplier.get();
         if (list.isEmpty()) return false;
         //Run all components though split to account for newline characters in translations
-        render.renderTooltip(list.stream().flatMap(component -> render.font().split(component, Integer.MAX_VALUE).stream()).toList(), mouseX, mouseY);
+        render.componentTooltip(list.stream().flatMap(component -> render.font().getSplitter().splitLines(component, Integer.MAX_VALUE, component.getStyle()).stream()).toList(), mouseX, mouseY);
         return true;
     }
 }
