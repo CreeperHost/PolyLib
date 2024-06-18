@@ -234,6 +234,25 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
         }
 
 
+        new GuiRectangle(root)
+                .border(0xFF505050)
+                .setSize(background.scaledScreenWidth() * 0.77, 5)
+                .constrain(LEFT, literal(5))
+                .constrain(TOP, literal(5))
+                .setTooltipDelay(0)
+                .setTooltip(Component.literal("This is a test of long, single line tool tip wrapping. So this is just one verrrry looooong line of text. yep... long line of random text that should get wrapped appropriately."));
+
+        new GuiRectangle(root)
+                .border(0xFF505050)
+                .setSize(background.scaledScreenWidth() * 0.77, 5)
+                .constrain(LEFT, literal(5))
+                .constrain(TOP, literal(12))
+                .setTooltipDelay(0)
+                .setTooltip(Component.literal("This is a test of long, multi line tool tip wrapping.").withStyle(ChatFormatting.RED),
+                        Component.literal("This is line 2, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vestibulum ipsum mauris, nec vulputate mi auctor vel. Praesent ultricies sapien.").withStyle(ChatFormatting.GREEN),
+                        Component.literal("This is line 3, Lorem ipsum dolor sit amet, erspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam..").withStyle(ChatFormatting.BLUE)
+                        );
+
     }
 
     public static ModularGuiContainer<MGuiTestBlockContainerMenu> create(MGuiTestBlockContainerMenu menu, Inventory inventory, Component component) {
