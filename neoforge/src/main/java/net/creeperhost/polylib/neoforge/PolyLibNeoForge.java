@@ -10,6 +10,7 @@ import net.creeperhost.polylib.neoforge.inventory.energy.NeoForgeItemEnergyConta
 import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
 import net.creeperhost.polylib.neoforge.inventory.item.ItemContainerWrapper;
 import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
+import net.creeperhost.polylib.neoforge.inventory.item.PolyInvWrapper;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -84,7 +85,7 @@ public class PolyLibNeoForge
                     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new ItemContainerWrapper(((ItemInventoryBlock)entity).getContainer(side)));
                 }
                 if (dummy instanceof PolyInventoryBlock) {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new InvWrapper(((PolyInventoryBlock) entity).getContainer(side)));
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new PolyInvWrapper(((PolyInventoryBlock) entity).getContainer(side)));
                 }
                 if (dummy instanceof PolyEnergyBlock) {
                     event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new PolyNeoEnergyWrapper(((PolyEnergyBlock) entity).getEnergyStorage(side)));

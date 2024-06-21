@@ -25,7 +25,7 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu impleme
     public final SlotGroup offhand = createSlotGroup(2, 3, 0);
 
     public final SlotGroup machineInputs = createSlotGroup(3, 1, 0, 2);//zone id is 3, Quick move to zone 1, then 0, then 2
-    public final SlotGroup machineOutputs = createSlotGroup(3, 1, 0, 2);
+    public final SlotGroup machineOutputs = createSlotGroup(3, 1, 0, 2);//zone id is 3, Quick move to zone 1, then 0, then 2
 
     public final DataSync<Byte> progressSync;
     public final DataSync<Integer> energy;
@@ -51,8 +51,8 @@ public class ContainerInventoryTestBlock extends ModularGuiContainerMenu impleme
         armor.addPlayerArmor(inventory);
         offhand.addPlayerOffhand(inventory);
 
-        machineInputs.addSlots(1, 0, index -> new PolySlot(blockEntity.simpleItemInventory, index));
-        machineOutputs.addAllSlots(blockEntity.getOutputContainer(), (container, integer) -> new PolySlot(container, integer).output());
+        machineInputs.addSlot(new PolySlot(blockEntity.simpleItemInventory, 0));
+        machineOutputs.addSlot(new PolySlot(blockEntity.simpleItemInventory, 1));
     }
 
     @Override

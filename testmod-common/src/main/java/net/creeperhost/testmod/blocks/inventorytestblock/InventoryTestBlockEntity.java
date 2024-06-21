@@ -1,15 +1,9 @@
 package net.creeperhost.testmod.blocks.inventorytestblock;
 
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
-import net.creeperhost.polylib.data.TileDataManager;
-import net.creeperhost.polylib.data.DataManagerBlock;
 import net.creeperhost.polylib.data.serializable.IntData;
-import net.creeperhost.polylib.inventory.energy.impl.SimpleEnergyContainer;
-import net.creeperhost.polylib.inventory.energy.impl.WrappedBlockEnergyContainer;
-import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
-import net.creeperhost.polylib.inventory.item.SerializableContainer;
-import net.creeperhost.polylib.inventory.item.SimpleItemInventory;
 import net.creeperhost.polylib.inventory.items.BlockInventory;
+import net.creeperhost.polylib.inventory.items.ContainerAccessControl;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage;
@@ -43,8 +37,7 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
 {
     int progress = 0;
 
-    public final BlockInventory simpleItemInventory = new BlockInventory(this, 1);
-    public final BlockInventory outputInv = new BlockInventory(this, 1);
+    public final BlockInventory simpleItemInventory = new BlockInventory(this, 2);
     public final PolyEnergyStorage energyContainer = new PolyBlockEnergyStorage(this, 1000000);
 
     public IntData testSyncedIntField = register("test_int", new IntData(0), SAVE, SYNC, CLIENT_CONTROL);
@@ -63,7 +56,7 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
             if(progress >= 100)
             {
                 progress = 0;
-                getOutputContainer().setItem(0, new ItemStack(Items.DIAMOND));
+                simpleItemInventory.setItem(1, new ItemStack(Items.DIAMOND));
                 testSyncedIntField.set(testSyncedIntField.get() + 1);
             }
         }
@@ -71,13 +64,11 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
 
     @Override
     public Container getContainer(@Nullable Direction side) {
-        return simpleItemInventory;
+        return new ContainerAccessControl(simpleItemInventory, 0, 1)
+                .containerInsertCheck((slot, stack) -> slot == 0 && stack.is(Items.COBBLESTONE))
+                .containerRemoveCheck((slot, stack) -> slot > 0);
     }
 
-
-    public Container getOutputContainer() {
-        return outputInv;
-    }
 
     @Override
     public IPolyEnergyStorage getEnergyStorage(@Nullable Direction side) {
@@ -110,13 +101,11 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
     @Override
     public void writeExtraData(CompoundTag nbt) {
         simpleItemInventory.serialize(nbt);
-        nbt.put("out_inv", outputInv.serialize(new CompoundTag()));
     }
 
     @Override
     public void readExtraData(CompoundTag nbt) {
         simpleItemInventory.deserialize(nbt);
-        outputInv.deserialize(nbt.getCompound("out_inv"));
     }
 
     @Override
