@@ -49,7 +49,7 @@ public class PolyRecipeProvider extends FabricRecipeProvider
         //If values is empty don't generate an empty array json file
         if (values.isEmpty()) return null;
         recipePathProvider.root = appendPath(moduleType);
-        return super.run(writer);
+        return super.run(writer, wrapperLookup);
     }
 
     public Path appendPath(ModuleType moduleType)

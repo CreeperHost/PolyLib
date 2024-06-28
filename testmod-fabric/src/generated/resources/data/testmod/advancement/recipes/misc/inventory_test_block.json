@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:logs_that_burn"
+            "items": "#minecraft:logs_that_burn"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "testmod:namedrecipe"
+        "recipe": "testmod:inventory_test_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "testmod:namedrecipe"
+      "testmod:inventory_test_block"
     ]
   }
 }
