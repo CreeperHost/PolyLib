@@ -78,8 +78,8 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
-    public void onClose() {
-        super.onClose();
+    public void removed() {
+        super.removed();
         modularGui.onGuiClose();
     }
 
