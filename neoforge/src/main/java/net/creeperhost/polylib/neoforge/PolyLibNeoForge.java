@@ -11,12 +11,15 @@ import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -56,6 +59,12 @@ public class PolyLibNeoForge
         {
             try
             {
+                ResourceLocation reg = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntityType);
+                ModContainer mod = ModList.get().getModContainerById(reg.getNamespace()).orElse(null);
+                if (mod == null || mod.getModInfo().getDependencies().stream().noneMatch(e -> e.getModId().equals(PolyLib.MOD_ID))) {
+                    continue;
+                }
+
                 //This is terrible... There has to be a better way!
                 BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
                 if (blockEntity == null) continue;
@@ -69,7 +78,7 @@ public class PolyLibNeoForge
                 if (blockEntity instanceof PolyFluidBlock) {
                     event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> ((PolyFluidBlock)entity).getFluidHandler(side) == null ? null : new PolyNeoFluidWrapper(((PolyFluidBlock)entity).getFluidHandler(side)));
                 }
-            } catch (Exception ignored) {}
+            } catch (Throwable ignored) {}
         }
     }
 }
