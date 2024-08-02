@@ -18,7 +18,7 @@ logoFile="polylib_logo.png"
 [[dependencies.polylib]]
 modId = "neoforge"
 type="required"
-versionRange = "[20,)"
+versionRange = "[20.0.148,)"
 ordering = "NONE"
 side = "BOTH"
 
