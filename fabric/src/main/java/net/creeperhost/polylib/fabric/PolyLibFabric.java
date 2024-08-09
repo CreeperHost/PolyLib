@@ -13,6 +13,7 @@ import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.*;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
