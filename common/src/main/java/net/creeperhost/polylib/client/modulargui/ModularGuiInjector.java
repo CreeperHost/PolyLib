@@ -10,6 +10,7 @@ import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.jetbrains.annotations.Nullable;
@@ -32,10 +33,12 @@ public class ModularGuiInjector<T extends Screen> {
     private static double prevMouseX = 0;
     private static double prevMouseY = 0;
 
-    /**
-     * @param screenPredicate Used to determine if this gui should be injected into the specified screen.
-     */
+    @Deprecated //TODO, Remove next MC version, Switch to registerInjection
     public ModularGuiInjector(Predicate<Screen> screenPredicate, Function<T, GuiProvider> guiFunction) {
+        providerMap.put(screenPredicate, guiFunction);
+    }
+
+    public static void registerInjection(Predicate<Screen> screenPredicate, Function<Screen, GuiProvider> guiFunction) {
         providerMap.put(screenPredicate, guiFunction);
     }
 
