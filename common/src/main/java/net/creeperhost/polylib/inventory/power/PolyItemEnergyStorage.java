@@ -41,11 +41,11 @@ public class PolyItemEnergyStorage extends PolyEnergyStorage implements IPolyEne
     }
 
     private void loadEnergy() {
-        energy = stack.getOrDefault(DataComps.ITEM_ENERGY.get(), 0L);
+        energy = stack.getOrDefault(DataComps.getItemEnergy(), 0L);
     }
 
     private void saveEnergy() {
-        stack.set(DataComps.ITEM_ENERGY.get(), energy);
+        stack.set(DataComps.getItemEnergy(), energy);
     }
 
     @Override

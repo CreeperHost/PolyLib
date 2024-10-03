@@ -30,8 +30,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-import static net.creeperhost.polylib.init.DataComps.ITEM_TILE_DATA;
-
 /**
  * Created by brandon3055 on 19/02/2024
  */
@@ -110,8 +108,8 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
         if (blockEntity instanceof DataRetainingBlock retaining) {
-            if (stack.has(ITEM_TILE_DATA.get())) {
-                retaining.readFromItemStack(level.registryAccess(), stack.get(ITEM_TILE_DATA.get()).copyTag());
+            if (stack.has(DataComps.getItemTileData())) {
+                retaining.readFromItemStack(level.registryAccess(), stack.get(DataComps.getItemTileData()).copyTag());
             }
         }
 
@@ -129,7 +127,7 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
             CompoundTag nbt = new CompoundTag();
             ((DataRetainingBlock) blockEntity).writeToItemStack(level.registryAccess(), nbt, false);
             if (!nbt.isEmpty()) {
-                stack.set(ITEM_TILE_DATA.get(), CustomData.of(nbt));
+                stack.set(DataComps.getItemTileData(), CustomData.of(nbt));
             }
         }
 
@@ -153,7 +151,7 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
             retaining.writeToItemStack(level.registryAccess(), nbt, true);
             if (!nbt.isEmpty()) {
                 stack = new ItemStack(this, 1);
-                stack.set(ITEM_TILE_DATA.get(), CustomData.of(nbt));
+                stack.set(DataComps.getItemTileData(), CustomData.of(nbt));
             }
         }
 
