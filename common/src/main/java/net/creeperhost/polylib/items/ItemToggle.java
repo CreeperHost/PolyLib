@@ -1,9 +1,9 @@
 package net.creeperhost.polylib.items;
 
+import net.creeperhost.polylib.init.DataComps;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import static net.creeperhost.polylib.init.DataComps.ITEM_TOGGLE_ACTIVE;
 
 public class ItemToggle extends Item
 {
@@ -15,26 +15,26 @@ public class ItemToggle extends Item
 
     public boolean isActive(ItemStack itemStack)
     {
-        return itemStack.getOrDefault(ITEM_TOGGLE_ACTIVE.get(), false);
+        return itemStack.getOrDefault(DataComps.getItemToggleActive(), false);
     }
 
     public void setActive(ItemStack itemStack, boolean active)
     {
         if (isActive(itemStack) != active) {
-            itemStack.set(ITEM_TOGGLE_ACTIVE.get(), active);
+            itemStack.set(DataComps.getItemToggleActive(), active);
             onToggleChanged(itemStack);
         }
     }
 
     public void setActive(ItemStack itemStack)
     {
-        itemStack.set(ITEM_TOGGLE_ACTIVE.get(), true);
+        itemStack.set(DataComps.getItemToggleActive(), true);
         onToggleChanged(itemStack);
     }
 
     public void setDeactivate(ItemStack itemStack)
     {
-        itemStack.set(ITEM_TOGGLE_ACTIVE.get(), false);
+        itemStack.set(DataComps.getItemToggleActive(), false);
         onToggleChanged(itemStack);
     }
 
