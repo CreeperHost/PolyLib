@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,11 +80,11 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, @Nullable Orientation orientation, boolean isMoving) {
         if (level.getBlockEntity(pos) instanceof ChangeListener listener) {
-            listener.onNeighborChange(blockIn, fromPos, isMoving);
+            listener.onNeighborChange(blockIn, orientation, isMoving);
         }
-        super.neighborChanged(state, level, pos, blockIn, fromPos, isMoving);
+        super.neighborChanged(state, level, pos, blockIn, orientation, isMoving);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class RecipeHelper
 {
     public static Set<Recipe<?>> findRecipesByType(RecipeType<?> typeIn, Level world)
     {
-        Set<RecipeHolder<?>> recipeHolders = world != null ? world.getRecipeManager().getRecipes().stream().filter(
+        Set<RecipeHolder<?>> recipeHolders = world != null ? world.getServer().getRecipeManager().getRecipes().stream().filter(
                 recipe -> recipe.value().getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
 
         //TODO test if this worked

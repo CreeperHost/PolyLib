@@ -104,7 +104,7 @@ public class ImageRenderer
             {
                 for (int x = 0; x < width; x++)
                 {
-                    img.setPixelRGBA(x, y, pixels[y * width + x]);
+                    img.setPixel(x, y, pixels[y * width + x]);
                 }
             }
             return img;

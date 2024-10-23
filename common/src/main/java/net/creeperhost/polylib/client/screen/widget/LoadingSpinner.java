@@ -111,8 +111,7 @@ public class LoadingSpinner
                 RenderSystem.enableDepthTest();
             }
 
-            float cooldown = mc.player == null ? 0F : mc.player.getCooldowns().getCooldownPercent(stack.getItem(),
-                    mc.getFrameTimeNs());
+            float cooldown = mc.player == null ? 0F : mc.player.getCooldowns().getCooldownPercent(stack, mc.getFrameTimeNs());
 
             if (cooldown > 0F)
             {

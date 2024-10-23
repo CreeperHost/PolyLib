@@ -36,7 +36,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor.ARGB32;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -236,14 +236,14 @@ public class GuiRender extends LegacyRender {
      */
     public void gradientFillV(RenderType type, double xMin, double yMin, double xMax, double yMax, int topColour, int bottomColour) {
         VertexConsumer buffer = buffers().getBuffer(type);
-        float sA = (float) ARGB32.alpha(topColour) / 255.0F;
-        float sR = (float) ARGB32.red(topColour) / 255.0F;
-        float sG = (float) ARGB32.green(topColour) / 255.0F;
-        float sB = (float) ARGB32.blue(topColour) / 255.0F;
-        float eA = (float) ARGB32.alpha(bottomColour) / 255.0F;
-        float eR = (float) ARGB32.red(bottomColour) / 255.0F;
-        float eG = (float) ARGB32.green(bottomColour) / 255.0F;
-        float eB = (float) ARGB32.blue(bottomColour) / 255.0F;
+        float sA = (float) ARGB.alpha(topColour) / 255.0F;
+        float sR = (float) ARGB.red(topColour) / 255.0F;
+        float sG = (float) ARGB.green(topColour) / 255.0F;
+        float sB = (float) ARGB.blue(topColour) / 255.0F;
+        float eA = (float) ARGB.alpha(bottomColour) / 255.0F;
+        float eR = (float) ARGB.red(bottomColour) / 255.0F;
+        float eG = (float) ARGB.green(bottomColour) / 255.0F;
+        float eB = (float) ARGB.blue(bottomColour) / 255.0F;
         Matrix4f mat = pose.last().pose();
         //TODO not seeing a replacement for end so not sure if its still needed??
         buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA);//.endVertex(); //R-B
@@ -265,14 +265,14 @@ public class GuiRender extends LegacyRender {
      */
     public void gradientFillH(RenderType type, double xMin, double yMin, double xMax, double yMax, int leftColour, int rightColour) {
         VertexConsumer buffer = buffers().getBuffer(type);
-        float sA = (float) ARGB32.alpha(leftColour) / 255.0F;
-        float sR = (float) ARGB32.red(leftColour) / 255.0F;
-        float sG = (float) ARGB32.green(leftColour) / 255.0F;
-        float sB = (float) ARGB32.blue(leftColour) / 255.0F;
-        float eA = (float) ARGB32.alpha(rightColour) / 255.0F;
-        float eR = (float) ARGB32.red(rightColour) / 255.0F;
-        float eG = (float) ARGB32.green(rightColour) / 255.0F;
-        float eB = (float) ARGB32.blue(rightColour) / 255.0F;
+        float sA = (float) ARGB.alpha(leftColour) / 255.0F;
+        float sR = (float) ARGB.red(leftColour) / 255.0F;
+        float sG = (float) ARGB.green(leftColour) / 255.0F;
+        float sB = (float) ARGB.blue(leftColour) / 255.0F;
+        float eA = (float) ARGB.alpha(rightColour) / 255.0F;
+        float eR = (float) ARGB.red(rightColour) / 255.0F;
+        float eG = (float) ARGB.green(rightColour) / 255.0F;
+        float eB = (float) ARGB.blue(rightColour) / 255.0F;
         Matrix4f mat = pose.last().pose();
         //TODO not seeing a replacement for end so not sure if its still needed??
         buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA);//.endVertex(); //R-B
@@ -1161,7 +1161,7 @@ public class GuiRender extends LegacyRender {
 
     public int drawString(@Nullable String message, double x, double y, int colour, boolean shadow) {
         if (message == null) return 0;
-        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880, font().isBidirectional());
+        int i = font().drawInBatch(Component.literal(message), (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880, font().isBidirectional());
         this.flushIfUnBatched();
         return i;
     }
@@ -1367,7 +1367,7 @@ public class GuiRender extends LegacyRender {
             int height = tooltips.size() == 1 ? -2 : 0;
             for (ClientTooltipComponent line : tooltips) {
                 width = Math.max(width, line.getWidth(event.getFont()));
-                height += line.getHeight();
+                height += line.getHeight(font());
             }
 
             Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
@@ -1389,7 +1389,7 @@ public class GuiRender extends LegacyRender {
             for (int i = 0; i < tooltips.size(); ++i) {
                 ClientTooltipComponent component = tooltips.get(i);
                 component.renderImage(event.getFont(), xPos, linePos, renderWrapper);
-                linePos += component.getHeight() + (i == 0 ? 2 : 0);
+                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
             }
         }
     }
@@ -1570,7 +1570,7 @@ public class GuiRender extends LegacyRender {
             }
 
             LocalPlayer localplayer = mc().player;
-            float f = localplayer == null ? 0.0F : localplayer.getCooldowns().getCooldownPercent(stack.getItem(), mc().getFrameTimeNs());
+            float f = localplayer == null ? 0.0F : localplayer.getCooldowns().getCooldownPercent(stack, mc().getFrameTimeNs());
             if (f > 0.0F) {
                 double i1 = y + Mth.floor(16.0F * (1.0F - f));
                 double j1 = i1 + Mth.ceil(16.0F * f);
@@ -1677,21 +1677,21 @@ public class GuiRender extends LegacyRender {
     }
 
     private static float r(int argb) {
-        return ARGB32.red(argb) / 255F;
+        return ARGB.red(argb) / 255F;
     }
 
     private static float g(int argb) {
-        return ARGB32.green(argb) / 255F;
+        return ARGB.green(argb) / 255F;
 
     }
 
     private static float b(int argb) {
-        return ARGB32.blue(argb) / 255F;
+        return ARGB.blue(argb) / 255F;
 
     }
 
     private static float a(int argb) {
-        return ARGB32.alpha(argb) / 255F;
+        return ARGB.alpha(argb) / 255F;
 
     }
 

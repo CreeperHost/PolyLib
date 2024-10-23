@@ -286,7 +286,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         render.renderItemDecorations(itemStack, x, y - (this.draggingItem.isEmpty() ? 0 : 8), string);
         render.pose().popPose();
     }
-
+    
     @Nullable
     @Override
     public Slot findSlot(double mouseX, double mouseY) {

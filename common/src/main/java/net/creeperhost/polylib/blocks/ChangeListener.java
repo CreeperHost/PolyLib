@@ -3,6 +3,8 @@ package net.creeperhost.polylib.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Can be implemented by any {@link BlockEntity} whose block extends {@link PolyEntityBlock}.
@@ -12,5 +14,5 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  */
 public interface ChangeListener {
 
-    void onNeighborChange(Block fromBlock, BlockPos fromPos, boolean isMoving);
+    void onNeighborChange(Block fromBlock, @Nullable Orientation orientation, boolean isMoving);
 }

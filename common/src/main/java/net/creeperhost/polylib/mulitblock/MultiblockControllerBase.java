@@ -583,7 +583,7 @@ public abstract class MultiblockControllerBase
                         // Ensure that we save our data, even if the our save
                         // delegate is in has no TEs.
                         LevelChunk chunkToSave = this.worldObj.getChunk(x, z);
-                        chunkToSave.setUnsaved(true);
+                        chunkToSave.markUnsaved();
                     }
                 }
             }

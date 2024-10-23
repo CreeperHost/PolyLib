@@ -2,15 +2,13 @@ package net.creeperhost.polylib.recipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 //Thanks Pup, Copied from Mek
 public abstract class WrappedShapelessRecipe implements CraftingRecipe
@@ -34,42 +32,43 @@ public abstract class WrappedShapelessRecipe implements CraftingRecipe
         return internal.category();
     }
 
-    //TODO
-//    @Override
-//    public abstract @NotNull ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider);
-//
-//
-//    @Override
-//    public boolean matches(@NotNull CraftingContainer inv, @NotNull Level world)
-//    {
-//        return internal.matches(inv, world) && !assemble(inv, world.registryAccess()).isEmpty();
-//    }
+    @Override
+    public abstract @NotNull ItemStack assemble(CraftingInput recipeInput, HolderLookup.Provider provider);
 
     @Override
-    public boolean canCraftInDimensions(int width, int height)
+    public boolean matches(CraftingInput recipeInput, Level level)
     {
-        return internal.canCraftInDimensions(width, height);
+        return internal.matches(recipeInput, level);
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider)
+    public @NotNull List<RecipeDisplay> display()
     {
-        return internal.getResultItem(provider);
+        return internal.display();
     }
 
-    //TODO
-//    @NotNull
-//    @Override
-//    public NonNullList<ItemStack> getRemainingItems(@NotNull CraftingContainer inv)
-//    {
-//        return internal.getRemainingItems(inv);
-//    }
-
-    @NotNull
     @Override
-    public NonNullList<Ingredient> getIngredients()
+    public @NotNull RecipeBookCategory recipeBookCategory()
     {
-        return internal.getIngredients();
+        return internal.recipeBookCategory();
+    }
+
+    @Override
+    public @NotNull RecipeType<CraftingRecipe> getType()
+    {
+        return internal.getType();
+    }
+
+    @Override
+    public RecipeSerializer<? extends CraftingRecipe> getSerializer()
+    {
+        return internal.getSerializer();
+    }
+
+    @Override
+    public @NotNull NonNullList<ItemStack> getRemainingItems(CraftingInput craftingInput)
+    {
+        return internal.getRemainingItems(craftingInput);
     }
 
     @Override
@@ -78,23 +77,9 @@ public abstract class WrappedShapelessRecipe implements CraftingRecipe
         return internal.isSpecial();
     }
 
-    @NotNull
     @Override
-    public String getGroup()
+    public @NotNull String group()
     {
-        return internal.getGroup();
-    }
-
-    @NotNull
-    @Override
-    public ItemStack getToastSymbol()
-    {
-        return internal.getToastSymbol();
-    }
-
-    @Override
-    public boolean isIncomplete()
-    {
-        return internal.isIncomplete();
+        return internal.group();
     }
 }

@@ -14,7 +14,7 @@ public class FuelHelper
 
     public static int getItemBurnTime(@NotNull ItemStack itemstack)
     {
-        return FuelRegistry.get(itemstack);
+        return FuelRegistry.get(itemstack, null, null);
     }
 
     public static void registerFuel(@NotNull Item item, int value)

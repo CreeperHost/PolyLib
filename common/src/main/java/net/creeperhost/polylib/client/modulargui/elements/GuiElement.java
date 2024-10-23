@@ -11,7 +11,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -539,7 +539,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
         if (installStandardHighlight) {
             GuiRectangle highlight = new GuiRectangle(this)
                     .setEnabled(() -> getModularGui().getJeiHighlightTime() > 0)
-                    .fill(() -> FastColor.ARGB32.color(Math.min(getModularGui().getJeiHighlightTime() * 2, 0x50), 0, 0xFF, 0));
+                    .fill(() -> ARGB.color(Math.min(getModularGui().getJeiHighlightTime() * 2, 0x50), 0, 0xFF, 0));
             Constraints.bind(highlight, this);
         }
         return (T) this;

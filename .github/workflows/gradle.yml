@@ -2,7 +2,7 @@ name: Java CI
 
 on:
   push:
-    branches: [ release/1.21 ]
+    branches: [ release/1.21.3 ]
   workflow_dispatch:
     inputs:
       norelease:
