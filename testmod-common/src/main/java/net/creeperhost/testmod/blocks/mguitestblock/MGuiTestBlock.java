@@ -24,8 +24,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class MGuiTestBlock extends PolyEntityBlock
 {
-    public MGuiTestBlock() {
-        super(Properties.of());
+    public MGuiTestBlock(Properties properties) {
+        super(properties);
         setBlockEntity(TestBlocks.MGUI_TEST_BLOCK_ENTITY::get, true);
     }
 

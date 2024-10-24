@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class MachineTestBlock extends BlockFacing
 {
-    public MachineTestBlock()
+    public MachineTestBlock(Properties properties)
     {
-        super(Properties.of());
+        super(properties);
     }
 
     @Nullable

@@ -19,9 +19,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class InventoryTestBlock extends BlockFacing
 {
-    public InventoryTestBlock()
+    public InventoryTestBlock(Properties properties)
     {
-        super(Properties.of());
+        super(properties);
     }
 
     @Override

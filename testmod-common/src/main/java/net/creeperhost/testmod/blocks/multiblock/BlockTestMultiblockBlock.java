@@ -2,6 +2,7 @@ package net.creeperhost.testmod.blocks.multiblock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -18,9 +19,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class BlockTestMultiblockBlock extends Block implements EntityBlock
 {
-    public BlockTestMultiblockBlock()
+    public BlockTestMultiblockBlock(Properties properties)
     {
-        super(Properties.of());
+        super(properties);
     }
 
     @Nullable
@@ -51,7 +52,8 @@ public class BlockTestMultiblockBlock extends Block implements EntityBlock
             }
             else
             {
-                player.sendSystemMessage(Component.literal("Server: Assembled " + assembled));
+                if(player instanceof ServerPlayer serverPlayer)
+                    serverPlayer.sendSystemMessage(Component.literal("Server: Assembled " + assembled));
                 return InteractionResult.SUCCESS;
             }
         }

@@ -18,21 +18,21 @@ logoFile="polylib_logo.png"
 [[dependencies.polylib]]
 modId = "neoforge"
 type="required"
-versionRange = "[20.0.148,)"
+versionRange = "[20.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.polylib]]
 modId = "minecraft"
 type="required"
-versionRange = "[1.21,)"
+versionRange = "[1.21.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.polylib]]
 modId = "architectury"
 type="required"
-versionRange = "[13.0.1,)"
+versionRange = "[14.0.3,)"
 ordering = "AFTER"
 side = "BOTH"
 

@@ -19,9 +19,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class CreativePowerBlock extends BlockFacing
 {
-    public CreativePowerBlock()
+    public CreativePowerBlock(Properties properties)
     {
-        super(Properties.of());
+        super(properties);
     }
 
     @Nullable
