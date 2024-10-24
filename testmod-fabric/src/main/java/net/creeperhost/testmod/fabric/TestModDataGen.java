@@ -7,17 +7,25 @@ import net.creeperhost.testmod.init.TestBlocks;
 import net.creeperhost.testmod.init.TestItems;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 
 
 public class TestModDataGen implements DataGeneratorEntrypoint
 {
+
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator)
     {
@@ -50,9 +58,11 @@ public class TestModDataGen implements DataGeneratorEntrypoint
             return blockTagProvider;
         });
 
-//        pack.addProvider((output, registriesFuture) -> {
-//           PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON, registriesFuture);
-//
+        pack.addProvider((output, registriesFuture) -> {
+           PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON, registriesFuture);
+
+            recipeProvider.add(SimpleCookingRecipeBuilder.smelting(Ingredient.of(Items.DIAMOND), RecipeCategory.BUILDING_BLOCKS, Items.DIAMOND, 0.1F, 200).unlockedBy("hasDiamond", null), ModuleType.COMMON);
+
 //           recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
 //                   TestBlocks.INVENTORY_TEST_BLOCK.get(),
 //                   Ingredient.of(Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
@@ -60,9 +70,10 @@ public class TestModDataGen implements DataGeneratorEntrypoint
 //            recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
 //                    TestBlocks.INVENTORY_TEST_BLOCK.get(),
 //                    Ingredient.of(Items.COPPER_BLOCK)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ResourceLocation.fromNamespaceAndPath("testmod", "namedrecipe"), ModuleType.COMMON);
-//
-//           return recipeProvider;
-//        });
+
+           return recipeProvider;
+        });
+
 
         pack.addProvider((output, registriesFuture) -> {
             PolyItemTagProvider itemTagProvider = new PolyItemTagProvider(output, registriesFuture, null, ModuleType.COMMON);
