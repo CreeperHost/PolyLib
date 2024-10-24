@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +62,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             if (drawHeader)
             {
-                guiGraphics.blitSprite(SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+                guiGraphics.blitSprite(RenderType::guiTextured, SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 
                 int j = 14737632;
 
@@ -92,7 +93,7 @@ public class DropdownButton<E extends DropdownButton.IDropdownOption> extends Po
                     boolean ourHovered = mouseX >= this.getX() && mouseY >= drawY && mouseX < this.getX() + this.width && mouseY < drawY + this.height - 2;
 
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                    guiGraphics.blitSprite(SPRITES.get(this.active, ourHovered), this.getX(), drawY, this.getWidth(), this.getHeight());
+                    guiGraphics.blitSprite(RenderType::guiTextured, SPRITES.get(this.active, ourHovered), this.getX(), drawY, this.getWidth(), this.getHeight());
                     String name = I18n.get(e.getTranslate(selected, true));
                     int textColour = 14737632;
 

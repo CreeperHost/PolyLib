@@ -18,7 +18,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Container screen implementation for {@link ModularGui}.
@@ -30,7 +29,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     public final ModularGui modularGui;
     /**
      * Flag used to disable vanilla slot highlight rendering.
-     * */
+     */
     private boolean renderingSlots = false;
 
     public ModularGuiContainer(T containerMenu, Inventory inventory, ContainerGuiProvider<T> provider) {
@@ -91,6 +90,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     }
 
     private boolean renderingBackground = false;
+
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int i, int j, float f) {
         if (renderingBackground) super.renderBackground(guiGraphics, i, j, f);
@@ -286,18 +286,6 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         render.renderItemDecorations(itemStack, x, y - (this.draggingItem.isEmpty() ? 0 : 8), string);
         render.pose().popPose();
     }
-    
-    @Nullable
-    @Override
-    public Slot findSlot(double mouseX, double mouseY) {
-        Slot slot = super.findSlot(mouseX, mouseY);
-        if (slot == null) return null;
-        GuiElement<?> handler = modularGui.getSlotHandler(slot);
-        if (handler != null && (!handler.isEnabled() || !handler.isMouseOver())) {
-            return null;
-        }
-        return slot;
-    }
 
     @Override
     protected void slotClicked(Slot slot, int i, int j, ClickType clickType) {
@@ -306,5 +294,19 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
             if (handler != null && !handler.isEnabled()) return;
         }
         super.slotClicked(slot, i, j, clickType);
+    }
+
+    @Override
+    public void renderSlotHighlightBack(GuiGraphics guiGraphics) {
+        if (modularGui.vanillaSlotRendering()) {
+            super.renderSlotHighlightBack(guiGraphics);
+        }
+    }
+
+    @Override
+    public void renderSlotHighlightFront(GuiGraphics guiGraphics) {
+        if (modularGui.vanillaSlotRendering()) {
+            super.renderSlotHighlightFront(guiGraphics);
+        }
     }
 }

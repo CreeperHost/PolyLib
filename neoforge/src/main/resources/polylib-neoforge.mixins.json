@@ -7,7 +7,6 @@
     "MixinLevelSettings"
   ],
   "client": [
-    "ModularGuiContainerMixin",
     "MixinClientLevelData"
   ],
   "injectors": {

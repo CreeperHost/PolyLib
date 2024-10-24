@@ -49,7 +49,7 @@ public class PolyLibNeoForge
         {
             if(item instanceof PolyEnergyItem polyEnergyItem)
             {
-                PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getDescription().getString());
+                PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getName().getString());
 
                 event.registerItem(Capabilities.EnergyStorage.ITEM, (object, object2) -> new PolyNeoEnergyWrapper(polyEnergyItem.getEnergyStorage(object)), item);
             }

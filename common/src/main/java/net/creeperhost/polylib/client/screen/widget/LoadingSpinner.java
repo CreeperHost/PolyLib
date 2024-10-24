@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
+@Deprecated //Switch to Modular GUI
 public class LoadingSpinner
 {
     public static void render(PoseStack poseStack, float partialTicks, int ticks, int x, int y, ItemStack stack)
@@ -60,7 +61,7 @@ public class LoadingSpinner
         modelViewStack.mul(poseStack.last().pose());
         modelViewStack.scale(1F, -1F, 1F);
         modelViewStack.scale(16F, 16F, 16F);
-        RenderSystem.applyModelViewMatrix();
+//        RenderSystem.applyModelViewMatrix();
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         boolean flatLight = !bakedModel.usesBlockLight();
 
@@ -82,7 +83,7 @@ public class LoadingSpinner
         }
 
         modelViewStack.popMatrix();
-        RenderSystem.applyModelViewMatrix();
+//        RenderSystem.applyModelViewMatrix();
 
         if (renderOverlay)
         {
@@ -131,7 +132,7 @@ public class LoadingSpinner
             return;
         }
 
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+//        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Matrix4f m = matrixStack.last().pose();
         BufferBuilder bufferbuilder = t.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         bufferbuilder.addVertex(m, x, y, 0).setColor(red, green, blue, alpha);

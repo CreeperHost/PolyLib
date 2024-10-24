@@ -8,12 +8,8 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositione
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-//import net.minecraftforge.client.ForgeHooksClient;
-//import net.minecraftforge.client.event.RenderTooltipEvent;
-//import net.minecraftforge.common.MinecraftForge;
 import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -29,11 +25,8 @@ public class PolyLibClientImpl {
         return new TTR(preEvent);
     }
 
-    public static PolyLibClient.ToolTipColour postTooltipColour(@NotNull ItemStack stack, GuiGraphics graphics, int x, int y, int backgroundStart, int backgroundEnd , int borderStart, int borderEnd, @NotNull Font font, @NotNull List<ClientTooltipComponent> components) {
-        RenderTooltipEvent.Color colorEvent = new RenderTooltipEvent.Color(stack, graphics, x, y, font, backgroundStart, borderStart, borderEnd, components);
-        colorEvent.setBackgroundEnd(backgroundEnd);
-        NeoForge.EVENT_BUS.post(colorEvent);
-        return new TTC(colorEvent);
+    public static PolyLibClient.ToolTipColour postTooltipColour(@NotNull ItemStack stack, GuiGraphics graphics, int x, int y, int backgroundStart, int backgroundEnd, int borderStart, int borderEnd, @NotNull Font font, @NotNull List<ClientTooltipComponent> components) {
+        return new TTC(backgroundStart, backgroundEnd, borderStart, borderEnd);
     }
 
     public static List<ClientTooltipComponent> postGatherTooltipComponents(ItemStack stack, List<? extends FormattedText> textElements, Optional<TooltipComponent> itemComponent, int mouseX, int screenWidth, int screenHeight, Font fallbackFont) {
@@ -43,7 +36,6 @@ public class PolyLibClientImpl {
     public static void onItemDecorate(GuiGraphics guiGraphics, Font font, ItemStack stack, int xOffset, int yOffset) {
         net.neoforged.neoforge.client.ItemDecoratorHandler.of(stack).render(guiGraphics, font, stack, xOffset, yOffset);
     }
-
 
 
     //@formatter:off
@@ -59,14 +51,22 @@ public class PolyLibClientImpl {
     }
 
     private static class TTC implements PolyLibClient.ToolTipColour {
-        private final RenderTooltipEvent.Color event;
-        public TTC(RenderTooltipEvent.Color event) {
-            this.event = event;
+        private final int backgroundStart;
+        private final int backgroundEnd;
+        private final int borderStart;
+        private final int borderEnd;
+
+        public TTC(int backgroundStart, int backgroundEnd, int borderStart, int borderEnd) {
+            this.backgroundStart = backgroundStart;
+            this.backgroundEnd = backgroundEnd;
+            this.borderStart = borderStart;
+            this.borderEnd = borderEnd;
         }
-        @Override public int getBackgroundStart() { return event.getBackgroundStart(); }
-        @Override public int getBackgroundEnd() { return event.getBackgroundEnd(); }
-        @Override public int getBorderStart() { return event.getBorderStart(); }
-        @Override public int getBorderEnd() { return event.getBorderEnd(); }
+
+        @Override public int getBackgroundStart() { return backgroundStart; }
+        @Override public int getBackgroundEnd() { return backgroundEnd; }
+        @Override public int getBorderStart() { return borderStart; }
+        @Override public int getBorderEnd() { return borderEnd; }
     }
     //@formatter:on
 

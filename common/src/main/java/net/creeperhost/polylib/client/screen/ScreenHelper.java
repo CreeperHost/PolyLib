@@ -3,6 +3,7 @@ package net.creeperhost.polylib.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
@@ -12,9 +13,9 @@ public class ScreenHelper
 {
     public void renderHead(GuiGraphics guiGraphics, int x, int y)
     {
-        guiGraphics.blit(ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 8.0F, 8.0F, 8, 8, 64, 64);
+        guiGraphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 8, 8, 8, 8, 64, 64);
         RenderSystem.enableBlend();
-        guiGraphics.blit(ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 40.0F, 8.0F, 8, 8, 64, 64);
+        guiGraphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 40, 8, 8, 8, 64, 64);
         RenderSystem.disableBlend();
     }
 

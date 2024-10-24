@@ -13,6 +13,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -39,7 +40,7 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  */
 public class GuiTextField extends GuiElement<GuiTextField> implements BackgroundRender {
     private static final RenderType HIGHLIGHT_TYPE = RenderType.create("text_field_highlight", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-            .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
+            .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_COLOR))
             .setColorLogicState(RenderStateShard.OR_REVERSE_COLOR_LOGIC)
             .createCompositeState(false));
 

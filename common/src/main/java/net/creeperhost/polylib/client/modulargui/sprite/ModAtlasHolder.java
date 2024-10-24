@@ -7,7 +7,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.util.profiling.Zone;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -50,21 +52,37 @@ public class ModAtlasHolder implements PreparableReloadListener, AutoCloseable {
     }
 
     @Override
-    public final @NotNull CompletableFuture<Void> reload(PreparableReloadListener.PreparationBarrier prepParrier, ResourceManager resourceManager, ProfilerFiller profiler, ProfilerFiller profiler2, Executor executor, Executor executor2) {
-        Objects.requireNonNull(prepParrier);
-        SpriteLoader spriteLoader = ModSpriteLoader.create(this.textureAtlas, modid);
-        return spriteLoader.loadAndStitch(resourceManager, this.atlasInfoLocation, 0, executor)
-                .thenCompose(SpriteLoader.Preparations::waitForUpload)
-                .thenCompose(prepParrier::wait)
-                .thenAcceptAsync((preparations) -> this.apply(preparations, profiler2), executor2);
+    public final CompletableFuture<Void> reload(PreparableReloadListener.PreparationBarrier preparationBarrier, ResourceManager resourceManager, Executor executor, Executor executor2) {
+        CompletableFuture<SpriteLoader.Preparations> future = ModSpriteLoader.create(this.textureAtlas, modid)
+                .loadAndStitch(resourceManager, this.atlasInfoLocation, 0, executor, SpriteLoader.DEFAULT_METADATA_SECTIONS)
+                .thenCompose(SpriteLoader.Preparations::waitForUpload);
+
+        Objects.requireNonNull(preparationBarrier);
+        return future.thenCompose(preparationBarrier::wait)
+                .thenAcceptAsync(this::apply, executor2);
     }
 
-    private void apply(SpriteLoader.Preparations preparations, ProfilerFiller profilerFiller) {
-        profilerFiller.startTick();
-        profilerFiller.push("upload");
-        this.textureAtlas.upload(preparations);
-        profilerFiller.pop();
-        profilerFiller.endTick();
+    private void apply(SpriteLoader.Preparations preparations) {
+        Zone zone = Profiler.get().zone("upload");
+
+        try {
+            this.textureAtlas.upload(preparations);
+        } catch (Throwable var6) {
+            if (zone != null) {
+                try {
+                    zone.close();
+                } catch (Throwable var5) {
+                    var6.addSuppressed(var5);
+                }
+            }
+
+            throw var6;
+        }
+
+        if (zone != null) {
+            zone.close();
+        }
+
     }
 
     @Override

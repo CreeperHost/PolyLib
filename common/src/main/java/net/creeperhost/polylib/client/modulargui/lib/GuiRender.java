@@ -23,10 +23,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -39,17 +36,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.util.TriState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector2ic;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -86,7 +86,7 @@ public class GuiRender extends LegacyRender {
     }
 
     public static GuiRender convert(GuiGraphics graphics) {
-        return new GuiRender(Minecraft.getInstance(), graphics.pose(), graphics.bufferSource());
+        return new GuiRender(Minecraft.getInstance(), graphics.pose(), graphics.bufferSource);
     }
 
     @Override
@@ -150,6 +150,11 @@ public class GuiRender extends LegacyRender {
         RenderSystem.disableDepthTest();
         buffers.endBatch();
         RenderSystem.enableDepthTest();
+    }
+
+    public void drawSpecial(Consumer<MultiBufferSource> consumer) {
+        consumer.accept(this.buffers);
+        this.buffers.endBatch();
     }
 
     /**
@@ -1381,16 +1386,18 @@ public class GuiRender extends LegacyRender {
             for (int i = 0; i < tooltips.size(); ++i) {
                 ClientTooltipComponent component = tooltips.get(i);
                 component.renderText(event.getFont(), xPos, linePos, pose.last().pose(), buffers);
-                linePos += component.getHeight() + (i == 0 ? 2 : 0);
+                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
             }
 
             linePos = yPos;
 
-            for (int i = 0; i < tooltips.size(); ++i) {
-                ClientTooltipComponent component = tooltips.get(i);
-                component.renderImage(event.getFont(), xPos, linePos, renderWrapper);
-                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
-            }
+            throw new NotImplementedException("TODO Fix This! v!");
+//            for (int i = 0; i < tooltips.size(); ++i) {
+//                ClientTooltipComponent component = tooltips.get(i);
+                                                                    //TODO, What are these new ints?
+//                component.renderImage(event.getFont(), xPos, linePos, 0, 0, renderWrapper);
+//                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
+//            }
         }
     }
 
@@ -1699,8 +1706,8 @@ public class GuiRender extends LegacyRender {
 
     public static RenderType texType(ResourceLocation location) {
         return RenderType.create("tex_type", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-                .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexShader))
-                .setTextureState(new RenderStateShard.TextureStateShard(location, false, false))
+                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX))
+                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
                 .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                 .setCullState(RenderStateShard.NO_CULL)
                 .createCompositeState(false));
@@ -1708,8 +1715,8 @@ public class GuiRender extends LegacyRender {
 
     public static RenderType texColType(ResourceLocation location) {
         return RenderType.create("tex_col_type", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-                .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexColorShader))
-                .setTextureState(new RenderStateShard.TextureStateShard(location, false, false))
+                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX_COLOR))
+                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
                 .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                 .setCullState(RenderStateShard.NO_CULL)
                 .createCompositeState(false));
@@ -1727,23 +1734,8 @@ public class GuiRender extends LegacyRender {
         }
 
         @Override
-        public void drawManaged(Runnable runnable) {
-            wrapped.batchDraw(runnable);
-        }
-
-        @Override
         public void flush() {
             wrapped.flush();
-        }
-
-        @Override
-        protected void flushIfManaged() {
-            wrapped.flushIfBatched();
-        }
-
-        @Override
-        protected void flushIfUnmanaged() {
-            wrapped.flushIfUnBatched();
         }
     }
 }

@@ -3,6 +3,7 @@ package net.creeperhost.polylib.client.screen.widget.buttons;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,7 @@ public class ButtonMultiple extends PolyButton
         if (this.visible)
         {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            guiGraphics.blit(resourceLocation, getX(), getY(), index * 20, getY(), this.width, this.height);
+            guiGraphics.blit(RenderType::guiTextured, resourceLocation, getX(), getY(), index * 20, getY(), this.width, this.height, 256, 256);
         }
     }
 }

@@ -4,11 +4,13 @@ import net.creeperhost.polylib.client.modulargui.elements.GuiSlots;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.containers.slots.PolySlot;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,8 +98,8 @@ public class SlotGroup {
     }
 
     static void onEquipItem(Inventory inventory, EquipmentSlot slot, ItemStack newStack, ItemStack oldStack) {
-        Equipable equipable = Equipable.get(newStack);
-        if (equipable != null) {
+        Equippable equippable = newStack.get(DataComponents.EQUIPPABLE);
+        if (equippable != null) {
             inventory.player.onEquipItem(slot, oldStack, newStack);
         }
     }

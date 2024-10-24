@@ -6,6 +6,7 @@ import net.creeperhost.polylib.client.screen.ScreenHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ComponentRenderUtils;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
@@ -39,7 +40,7 @@ public class GuiButtonLarge extends PolyButton
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partial) {
         Minecraft mc = Minecraft.getInstance();
         int k = getYImage(isHovered);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX);
         ScreenHelper.drawContinuousTexturedBox(graphics.pose(), getX(), getY(), 0, 46 + k * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
         int color = 14737632;
 

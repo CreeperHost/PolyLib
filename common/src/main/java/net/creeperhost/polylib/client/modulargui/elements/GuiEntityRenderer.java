@@ -13,6 +13,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -67,8 +69,8 @@ public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements 
     public GuiEntityRenderer setEntity(ResourceLocation entity) {
         this.entityName = entity;
         this.entity = entityCache.computeIfAbsent(entity, resourceLocation -> {
-            EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entity);
-            return type.create(mc().level);
+            EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(entity);
+            return type.create(mc().level, EntitySpawnReason.SPAWNER);
         });
 
         invalidEntity = this.entity == null;
@@ -272,7 +274,9 @@ public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements 
         }
 
         entityrenderdispatcher.setRenderShadow(false);
-        RenderSystem.runAsFancy(() -> entityrenderdispatcher.render(pEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, render.pose(), render.buffers(), 15728880));
+        render.drawSpecial((multiBufferSource) -> {
+            entityrenderdispatcher.render(pEntity, 0.0D, 0.0D, 0.0F, 1.0F, render.pose(), multiBufferSource, 15728880);
+        });
         render.flush();
         entityrenderdispatcher.setRenderShadow(true);
         render.pose().popPose();

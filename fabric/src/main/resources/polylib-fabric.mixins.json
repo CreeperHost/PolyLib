@@ -7,7 +7,6 @@
     "MixinLevelSettings"
   ],
   "client": [
-    "AbstractContainerScreenMixin",
     "MixinClientLevelData"
   ],
   "injectors": {

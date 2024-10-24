@@ -29,7 +29,7 @@ public class ResourceReloadListenerWrapper implements IdentifiableResourceReload
     }
 
     @Override
-    public @NotNull CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, ProfilerFiller profilerFiller, ProfilerFiller profilerFiller2, Executor executor, Executor executor2) {
-        return getWrapped.get().reload(preparationBarrier, resourceManager, profilerFiller, profilerFiller2, executor, executor2);
+    public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, Executor executor, Executor executor2) {
+        return getWrapped.get().reload(preparationBarrier, resourceManager, executor, executor2);
     }
 }
