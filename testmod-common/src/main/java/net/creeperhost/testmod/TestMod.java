@@ -41,6 +41,9 @@ public class TestMod
         {
             ClientLifecycleEvent.CLIENT_SETUP.register(instance -> TestScreens.init());
             ClientRenderEvents.LAST.register(PlacementRenderer::render);
+            ClientLifecycleEvent.CLIENT_STARTED.register(instance -> {
+                TestItems.addCustomStacksToTab();
+            });
 
             ClientGuiEvent.INIT_POST.register((screen, access) ->
             {
