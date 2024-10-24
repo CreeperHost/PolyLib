@@ -15,7 +15,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import static net.minecraft.data.recipes.RecipeProvider.has;
 
 public class TestModDataGen implements DataGeneratorEntrypoint
 {
@@ -51,19 +50,19 @@ public class TestModDataGen implements DataGeneratorEntrypoint
             return blockTagProvider;
         });
 
-        pack.addProvider((output, registriesFuture) -> {
-           PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON, registriesFuture);
-
-           recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
-                   TestBlocks.INVENTORY_TEST_BLOCK.get(),
-                   Ingredient.of(Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
-
-            recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
-                    TestBlocks.INVENTORY_TEST_BLOCK.get(),
-                    Ingredient.of(Items.COPPER_BLOCK)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ResourceLocation.fromNamespaceAndPath("testmod", "namedrecipe"), ModuleType.COMMON);
-
-           return recipeProvider;
-        });
+//        pack.addProvider((output, registriesFuture) -> {
+//           PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON, registriesFuture);
+//
+//           recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
+//                   TestBlocks.INVENTORY_TEST_BLOCK.get(),
+//                   Ingredient.of(Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
+//
+//            recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
+//                    TestBlocks.INVENTORY_TEST_BLOCK.get(),
+//                    Ingredient.of(Items.COPPER_BLOCK)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ResourceLocation.fromNamespaceAndPath("testmod", "namedrecipe"), ModuleType.COMMON);
+//
+//           return recipeProvider;
+//        });
 
         pack.addProvider((output, registriesFuture) -> {
             PolyItemTagProvider itemTagProvider = new PolyItemTagProvider(output, registriesFuture, null, ModuleType.COMMON);
