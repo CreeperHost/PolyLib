@@ -1391,13 +1391,12 @@ public class GuiRender extends LegacyRender {
 
             linePos = yPos;
 
-            throw new NotImplementedException("TODO Fix This! v!");
-//            for (int i = 0; i < tooltips.size(); ++i) {
-//                ClientTooltipComponent component = tooltips.get(i);
-                                                                    //TODO, What are these new ints?
-//                component.renderImage(event.getFont(), xPos, linePos, 0, 0, renderWrapper);
-//                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
-//            }
+            for (int i = 0; i < tooltips.size(); ++i) {
+                ClientTooltipComponent component = tooltips.get(i);
+                // TODO, What are these new ints (NO idea but it works)?
+                component.renderImage(event.getFont(), xPos, linePos, 0, 0, renderWrapper);
+                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
+            }
         }
     }
 
