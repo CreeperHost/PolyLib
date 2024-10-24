@@ -1,16 +1,24 @@
 package net.creeperhost.polylib.fabric.datagen.providers;
 
+import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.CachedOutput;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -22,11 +30,13 @@ public class PolyRecipeProvider extends FabricRecipeProvider
 {
     private final ModuleType moduleType;
     private final Map<ResourceLocation, RecipeBuilder> values = new HashMap<>();
+    private final HolderGetter<Item> items;
 
     public PolyRecipeProvider(FabricDataOutput dataOutput, ModuleType moduleType, CompletableFuture<HolderLookup.Provider> registryLookup)
     {
         super(dataOutput, registryLookup);
         this.moduleType = moduleType;
+        items = registryLookup.join().lookupOrThrow(Registries.ITEM);
     }
 
     public void add(RecipeBuilder recipeBuilder, ResourceLocation id, ModuleType moduleType)
@@ -40,44 +50,38 @@ public class PolyRecipeProvider extends FabricRecipeProvider
         add(recipeBuilder, resourceLocation, moduleType);
     }
 
-//    @Override
-//    public void buildRecipes(RecipeOutput exporter)
-//    {
-//        values.forEach((resourceLocation, recipeBuilder) -> recipeBuilder.save(exporter, resourceLocation));
-//    }
-
     @Override
     protected RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup, RecipeOutput exporter)
     {
-        values.forEach((resourceLocation, recipeBuilder) -> recipeBuilder.save(exporter));
-        return null;
+        return new RecipeProvider(registryLookup, exporter)
+        {
+            @Override
+            public void buildRecipes()
+            {
+                values.forEach((resourceLocation, recipeBuilder) -> recipeBuilder.save(exporter));
+            }
+        };
     }
-
-//    @Override
-//    public CompletableFuture<?> run(CachedOutput writer)
-//    {
-//        //If values is empty don't generate an empty array json file
-//        if (values.isEmpty()) return null;
-////        recipePathProvider.root = appendPath(moduleType);
-//        return super.run(writer);
-//    }
 
     @Override
     public @NotNull String getName()
     {
-        return "";
+        return PolyLib.MOD_ID;
     }
-
-//    @Override
-//    public CompletableFuture<?> run(CachedOutput writer, HolderLookup.Provider wrapperLookup) {
-//        //If values is empty don't generate an empty array json file
-//        if (values.isEmpty()) return null;
-//        recipePathProvider.root = appendPath(moduleType);
-//        return super.run(writer, wrapperLookup);
-//    }
 
     public Path appendPath(ModuleType moduleType)
     {
         return PolyDataGen.getPathFromModuleType(moduleType).resolve("data");
+    }
+
+    //Has helpers
+    public Criterion<InventoryChangeTrigger.TriggerInstance> has(ItemLike itemLike)
+    {
+        return RecipeProvider.inventoryTrigger(ItemPredicate.Builder.item().of(this.items, new ItemLike[]{itemLike}));
+    }
+
+    public Criterion<InventoryChangeTrigger.TriggerInstance> has(TagKey<Item> tagKey)
+    {
+        return RecipeProvider.inventoryTrigger(ItemPredicate.Builder.item().of(items, tagKey));
     }
 }

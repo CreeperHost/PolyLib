@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_log": {
+    "hasDiamond": {
       "conditions": {
         "items": [
           {
-            "items": "#minecraft:logs_that_burn"
+            "items": "minecraft:diamond"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "testmod:namedrecipe"
+        "recipe": "minecraft:diamond"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_log"
+      "hasDiamond"
     ]
   ],
   "rewards": {
     "recipes": [
-      "testmod:namedrecipe"
+      "minecraft:diamond"
     ]
   }
 }

@@ -61,15 +61,8 @@ public class TestModDataGen implements DataGeneratorEntrypoint
         pack.addProvider((output, registriesFuture) -> {
            PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON, registriesFuture);
 
-            recipeProvider.add(SimpleCookingRecipeBuilder.smelting(Ingredient.of(Items.DIAMOND), RecipeCategory.BUILDING_BLOCKS, Items.DIAMOND, 0.1F, 200).unlockedBy("hasDiamond", null), ModuleType.COMMON);
-
-//           recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
-//                   TestBlocks.INVENTORY_TEST_BLOCK.get(),
-//                   Ingredient.of(Items.LEAD)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ModuleType.COMMON);
-//
-//            recipeProvider.add(RecipeProvider.slabBuilder(RecipeCategory.MISC,
-//                    TestBlocks.INVENTORY_TEST_BLOCK.get(),
-//                    Ingredient.of(Items.COPPER_BLOCK)).unlockedBy("has_log", has(ItemTags.LOGS_THAT_BURN)), ResourceLocation.fromNamespaceAndPath("testmod", "namedrecipe"), ModuleType.COMMON);
+            recipeProvider.add(SimpleCookingRecipeBuilder.smelting(Ingredient.of(Items.DIAMOND), RecipeCategory.BUILDING_BLOCKS,
+                    Items.DIAMOND, 0.1F, 200).unlockedBy("hasDiamond", recipeProvider.has(Items.DIAMOND)), ModuleType.COMMON);
 
            return recipeProvider;
         });
@@ -81,10 +74,6 @@ public class TestModDataGen implements DataGeneratorEntrypoint
             return itemTagProvider;
         });
 
-//        pack.addProvider((output, registriesFuture) -> {
-//            PolyAdvancementProvider advancementProvider = new PolyAdvancementProvider(output, ModuleType.COMMON);
-//            return advancementProvider;
-//        });
 
         pack.addProvider((output, registriesFuture) -> {
            PolyModelProvider modelProvider = new PolyModelProvider(output, ModuleType.COMMON);
