@@ -120,8 +120,8 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-        ItemStack stack = super.getCloneItemStack(level, pos, state);
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean bl) {
+        ItemStack stack = super.getCloneItemStack(level, pos, state, bl);
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
         if (blockEntity instanceof DataRetainingBlock retaining && retaining.saveToItem() && (level instanceof ServerLevel || !isCTRLKeyDown())) {

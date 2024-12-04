@@ -175,7 +175,7 @@ public class AnimatedGif
             totalFrameTicks = Arrays.stream(delays).map(d -> Math.max(MIN_GIF_TICKS, d)).sum();
             glTexture = TextureUtil.generateTextureId();
             TextureUtil.prepareImage(glTexture, 0, width, height * frames);
-            toNativeImage().upload(0, 0, 0, 0, 0, width, height * frames, false, true);
+            toNativeImage().upload(0, 0, 0, 0, 0, width, height * frames, true);
         }
 
         public void reset()

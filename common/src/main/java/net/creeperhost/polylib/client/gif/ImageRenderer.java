@@ -24,7 +24,7 @@ public class ImageRenderer
         this.image = image;
         glTexture = TextureUtil.generateTextureId();
         TextureUtil.prepareImage(glTexture, 0, image.width, image.height);
-        Image.toNativeImage().upload(0, 0, 0, 0, 0, image.width, image.height, false, true);
+        Image.toNativeImage().upload(0, 0, 0, 0, 0, image.width, image.height, true);
     }
 
     public void render(PoseStack matrixStack, int x, int y, int width, int height, float partialTicks)

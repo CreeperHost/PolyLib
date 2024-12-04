@@ -81,8 +81,8 @@ public class ScreenList<T extends ScreenListEntry> extends AbstractSelectionList
     }
 
     @Override
-    public int getScrollbarPosition()
+    public int scrollBarX()
     {
-        return scrollBarPosition == -1 ? super.getScrollbarPosition() : scrollBarPosition;
+        return scrollBarPosition == -1 ? super.scrollBarX() : scrollBarPosition;
     }
 }
