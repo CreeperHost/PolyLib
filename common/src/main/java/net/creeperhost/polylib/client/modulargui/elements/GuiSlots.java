@@ -11,6 +11,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Position;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,7 @@ import java.util.function.Function;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.match;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.relative;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
-import static net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
+//import static net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
 
 /**
  * This element is used to manage and render a grid of inventory slots in a GUI.
@@ -32,6 +33,8 @@ import static net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
  * Created by brandon3055 on 08/09/2023
  */
 public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
+    private static final ResourceLocation BLOCK_ATLAS = ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png");
+
     public static final Material[] ARMOR_SLOTS = new Material[]{Material.fromAtlas(BLOCK_ATLAS, "item/empty_armor_slot_helmet"), Material.fromAtlas(BLOCK_ATLAS, "item/empty_armor_slot_chestplate"), Material.fromAtlas(BLOCK_ATLAS, "item/empty_armor_slot_leggings"), Material.fromAtlas(BLOCK_ATLAS, "item/empty_armor_slot_boots")};
     public static final Material OFF_HAND_SLOT = Material.fromAtlas(BLOCK_ATLAS, "item/empty_armor_slot_shield");
 

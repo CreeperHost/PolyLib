@@ -14,12 +14,10 @@ if (JavaVersion.current().ordinal() + 1 < 21) {
 
 include("common")
 include("fabric")
-//include("forge")
 include("neoforge")
 
 //include("testmod-common")
 //include("testmod-fabric")
-////include("testmod-forge")
 //include("testmod-neoforge")
 
 rootProject.name = "polylib"

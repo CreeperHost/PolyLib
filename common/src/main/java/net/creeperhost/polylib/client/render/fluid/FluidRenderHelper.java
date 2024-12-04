@@ -14,10 +14,11 @@ public class FluidRenderHelper
 {
     public static final FluidRenderMap<Int2ObjectMap<Model3D>> CACHED_FLUIDS = new FluidRenderMap<>();
     public static final int STAGES = 1400;
+    private static final ResourceLocation BLOCK_ATLAS = ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png");
 
     public static TextureAtlasSprite getSprite(ResourceLocation spriteLocation)
     {
-        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(spriteLocation);
+        return Minecraft.getInstance().getTextureAtlas(BLOCK_ATLAS).apply(spriteLocation);
     }
 
     public static Model3D getFluidModel(FluidStack fluid, int stage)

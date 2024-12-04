@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import dev.architectury.fluid.FluidStack;
 import dev.architectury.hooks.fluid.FluidStackHooks;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class ScreenFluidRenderer
 {
     public static final ScreenFluidRenderer INSTANCE = new ScreenFluidRenderer(1000, 16, 16, 16);
+    private static final ResourceLocation BLOCK_ATLAS = ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png");
 
     private static final int TEX_WIDTH = 16;
     private static final int TEX_HEIGHT = 16;
@@ -64,7 +66,7 @@ public class ScreenFluidRenderer
 
     private void drawTiledSprite(final int xPosition, final int yPosition, final int tiledWidth, final int tiledHeight, int color, int scaledAmount, TextureAtlasSprite sprite)
     {
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+        RenderSystem.setShaderTexture(0, BLOCK_ATLAS);
         setGLColorFromInt(color);
 
         final int xTileCount = tiledWidth / TEX_WIDTH;

@@ -1488,27 +1488,28 @@ public class GuiRender extends LegacyRender {
      */
     public void renderItem(@Nullable LivingEntity entity, @Nullable Level level, ItemStack stack, double x, double y, double size, int modelRand) {
         if (!stack.isEmpty()) {
-            BakedModel bakedmodel = mc().getItemRenderer().getModel(stack, level, entity, modelRand);
-            pose.pushPose();
-            pose.translate(x + (size / 2D), y + (size / 2D), size);
-            try {
-                pose.mulPose((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
-                pose.scale((float) size, (float) size, (float) size);
-                boolean flag = !bakedmodel.usesBlockLight();
-                if (flag) Lighting.setupForFlatItems();
-                mc().getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, buffers, 0xf000f0, OverlayTexture.NO_OVERLAY, bakedmodel);
-                this.flush();
-                if (flag) Lighting.setupFor3DItems();
-            } catch (Throwable throwable) {
-                CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering item");
-                CrashReportCategory crashreportcategory = crashreport.addCategory("Item being rendered");
-                crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
-                crashreportcategory.setDetail("Item Stack", () -> String.valueOf(stack.getItem()));
-                crashreportcategory.setDetail("Item Damage", () -> String.valueOf(stack.getDamageValue()));
-                crashreportcategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));
-                throw new ReportedException(crashreport);
-            }
-            pose.popPose();
+            //TODO
+//            BakedModel bakedmodel = mc().getItemRenderer().getModel(stack, level, entity, modelRand);
+//            pose.pushPose();
+//            pose.translate(x + (size / 2D), y + (size / 2D), size);
+//            try {
+//                pose.mulPose((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
+//                pose.scale((float) size, (float) size, (float) size);
+//                boolean flag = !bakedmodel.usesBlockLight();
+//                if (flag) Lighting.setupForFlatItems();
+//                mc().getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, buffers, 0xf000f0, OverlayTexture.NO_OVERLAY, bakedmodel);
+//                this.flush();
+//                if (flag) Lighting.setupFor3DItems();
+//            } catch (Throwable throwable) {
+//                CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering item");
+//                CrashReportCategory crashreportcategory = crashreport.addCategory("Item being rendered");
+//                crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
+//                crashreportcategory.setDetail("Item Stack", () -> String.valueOf(stack.getItem()));
+//                crashreportcategory.setDetail("Item Damage", () -> String.valueOf(stack.getDamageValue()));
+//                crashreportcategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));
+//                throw new ReportedException(crashreport);
+//            }
+//            pose.popPose();
         }
     }
 
