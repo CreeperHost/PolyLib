@@ -141,6 +141,7 @@ unifiedPublishing {
         relations {
             depends {
                 curseforge = "architectury-api"
+                modrinth = "architectury-api"
             }
         }
 
