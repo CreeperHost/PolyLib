@@ -3,11 +3,11 @@ accessWidener   v2  named
 accessible field net/minecraft/data/PackOutput outputFolder Ljava/nio/file/Path;
 mutable field net/minecraft/data/PackOutput outputFolder Ljava/nio/file/Path;
 
-accessible field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
-mutable field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
+#accessible field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
+#mutable field net/minecraft/data/models/ModelProvider blockStatePathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 
-accessible field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/PackOutput$PathProvider;
-mutable field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/PackOutput$PathProvider;
+#accessible field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/PackOutput$PathProvider;
+#mutable field net/minecraft/data/models/ModelProvider modelPathProvider Lnet/minecraft/data/PackOutput$PathProvider;
 
 accessible field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;
 mutable field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Path;

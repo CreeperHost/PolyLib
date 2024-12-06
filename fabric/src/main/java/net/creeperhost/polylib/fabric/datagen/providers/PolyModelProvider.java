@@ -3,15 +3,14 @@ package net.creeperhost.polylib.fabric.datagen.providers;
 import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.fabric.datagen.ModuleType;
 import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.data.models.BlockModelGenerators.createSimpleBlock;
+import static net.minecraft.client.data.models.BlockModelGenerators.createSimpleBlock;
 
 public class PolyModelProvider extends FabricModelProvider
 {
@@ -39,6 +38,7 @@ public class PolyModelProvider extends FabricModelProvider
         this.dataOutput = dataOutput;
         updatePaths();
     }
+
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator)
@@ -99,8 +99,9 @@ public class PolyModelProvider extends FabricModelProvider
     public void updatePaths()
     {
         dataOutput.outputFolder = appendPath(moduleType);
-        blockStatePathProvider.root = appendPath(moduleType);
-        modelPathProvider.root = appendPath(moduleType);
+        //TODO
+//        blockStatePathProvider.root = appendPath(moduleType);
+//        modelPathProvider.root = appendPath(moduleType);
     }
 
     public Path appendPath(ModuleType moduleType)
