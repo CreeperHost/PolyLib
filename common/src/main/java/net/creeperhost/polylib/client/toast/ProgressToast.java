@@ -1,17 +1,19 @@
 package net.creeperhost.polylib.client.toast;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.gui.components.toasts.Toast;
+import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ProgressToast extends PolyToast
+public class ProgressToast implements Toast
 {
+    private static final ResourceLocation BG_TEXTURE = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
     private final Component title;
     private float progress;
     private float lastProgress;
@@ -35,18 +37,16 @@ public class ProgressToast extends PolyToast
     }
 
     @Override
+    public void update(ToastManager toastManager, long l) {}
+
+    @Override
     public void render(GuiGraphics guiGraphics, Font font, long l)
     {
-        RenderSystem.setShader(CoreShaders.POSITION_TEX);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 0, 0, 0, 0, this.width(), this.height(), 256, 256);
-        if (iconResourceLocation != null)
-        {
-            renderImage(guiGraphics, iconResourceLocation);
+        guiGraphics.blit(RenderType::guiTextured, BG_TEXTURE, 0, 0, 0, 0, width(), height(), width(), height());
+        if (iconResourceLocation != null) {
+            guiGraphics.blit(RenderType::guiTextured, iconResourceLocation, 5, (height() - 22) / 2, 0, 0, 22, 22, 22, 22);
         }
         guiGraphics.drawString(Minecraft.getInstance().font, this.title, 30, 12, -1);
-
 
         guiGraphics.fill(3, 28, 157, 29, -1);
         float f = Mth.clampedLerp(this.lastProgress, this.progress, (float) (l - this.lastProgressTime) / 100.0f);
