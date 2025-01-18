@@ -174,10 +174,17 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
     }
 
     public void readFromBuf(RegistryFriendlyByteBuf buf) {
-        fluid.write(buf);
+        if (buf.readBoolean()){
+            fluid = FluidStack.read(buf);
+        } else {
+            fluid = FluidStack.empty();
+        }
     }
 
     public void writeToBuf(RegistryFriendlyByteBuf buf) {
-        fluid = FluidStack.read(buf);
+        buf.writeBoolean(!fluid.isEmpty());
+        if (!fluid.isEmpty()) {
+            fluid.write(buf);
+        }
     }
 }
