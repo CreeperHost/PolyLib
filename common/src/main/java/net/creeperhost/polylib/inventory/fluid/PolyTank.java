@@ -162,12 +162,14 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
 
     @Override
     public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        fluid = FluidStack.read(provider, nbt).orElse(FluidStack.empty());
+        fluid = nbt.isEmpty() ? FluidStack.empty() : FluidStack.read(provider, nbt).orElse(FluidStack.empty());
     }
 
     @Override
     public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        fluid.write(provider, nbt);
+        if (!fluid.isEmpty()) {
+            fluid.write(provider, nbt);
+        }
         return nbt;
     }
 
