@@ -50,12 +50,13 @@ public class FluidData extends AbstractDataStore<FluidStack> {
 
     @Override
     public Tag toTag(Provider provider) {
-        return value.write(provider, new CompoundTag());
+        return value.isEmpty() ? new CompoundTag() : value.write(provider, new CompoundTag());
     }
 
     @Override
     public void fromTag(Provider provider, Tag tag) {
-        value = validValue(FluidStack.read(provider, tag).orElse(FluidStack.empty()), value);
+        FluidStack newStack = tag instanceof CompoundTag cTag && cTag.isEmpty() ? FluidStack.empty() : FluidStack.read(provider, tag).orElse(FluidStack.empty());
+        value = validValue(newStack, value);
     }
 
     @Override
