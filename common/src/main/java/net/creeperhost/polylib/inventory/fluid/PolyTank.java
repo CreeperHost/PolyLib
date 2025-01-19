@@ -4,6 +4,7 @@ import dev.architectury.fluid.FluidStack;
 import net.creeperhost.polylib.Serializable;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
@@ -162,13 +163,13 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
 
     @Override
     public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        fluid = nbt.isEmpty() ? FluidStack.empty() : FluidStack.read(provider, nbt).orElse(FluidStack.empty());
+        fluid = !nbt.contains("poly_tank", Tag.TAG_COMPOUND) ? FluidStack.empty() : FluidStack.read(provider, nbt.get("poly_tank")).orElse(FluidStack.empty());
     }
 
     @Override
     public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt) {
         if (!fluid.isEmpty()) {
-            fluid.write(provider, nbt);
+            nbt.put("poly_tank", fluid.write(provider, new CompoundTag()));
         }
         return nbt;
     }
