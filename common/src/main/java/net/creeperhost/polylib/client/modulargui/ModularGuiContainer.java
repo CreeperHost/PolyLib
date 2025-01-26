@@ -38,6 +38,13 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         provider.setMenuAccess(this);
         this.modularGui = new ModularGui(provider);
         this.modularGui.setScreen(this);
+        addRenderableOnly(this::renderModularGui);
+    }
+
+    @Override
+    protected void clearWidgets() {
+        super.clearWidgets();
+        addRenderableOnly(this::renderModularGui);
     }
 
     public ModularGui getModularGui() {
@@ -74,26 +81,23 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         imageWidth = (int) root.getValue(GeoParam.WIDTH);
         imageHeight = (int) root.getValue(GeoParam.HEIGHT);
 
-        modularGui.setVanillaSlotRendering(false);
-        if (modularGui.renderBackground()) {
-            renderingBackground = true;
-            renderBackground(graphics, mouseX, mouseY, partialTicks);
-        }
-        renderingBackground = false;
-        GuiRender render = GuiRender.convert(graphics);
-        modularGui.render(render, partialTicks);
-
         super.render(graphics, mouseX, mouseY, partialTicks);
 
+        GuiRender render = GuiRender.convert(graphics);
         if (!handleFloatingItemRender(render, mouseX, mouseY) && !renderHoveredStackToolTip(render, mouseX, mouseY)) {
             modularGui.renderOverlay(render, partialTicks);
         }
     }
 
-    private boolean renderingBackground = false;
+    private void renderModularGui(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        modularGui.render(GuiRender.convert(graphics), partialTicks);
+    }
+
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int i, int j, float f) {
-        if (renderingBackground) super.renderBackground(guiGraphics, i, j, f);
+        if (modularGui.renderBackground()) {
+            super.renderBackground(guiGraphics, i, j, f);
+        }
     }
 
     protected boolean handleFloatingItemRender(GuiRender render, int mouseX, int mouseY) {
@@ -141,7 +145,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
                 return false;
             }
             ItemStack itemStack = this.hoveredSlot.getItem();
-            guiGraphics.toolTipWithImage(this.getTooltipFromContainerItem(itemStack), itemStack.getTooltipImage(), mouseX, mouseY);
+            guiGraphics.toolTipWithImage(this.getTooltipFromContainerItem(itemStack), itemStack.getTooltipImage(), itemStack, mouseX, mouseY, 0xf0100010, 0xf0100010, 0x505000ff, 0x5028007f);
             return true;
         }
         return false;
