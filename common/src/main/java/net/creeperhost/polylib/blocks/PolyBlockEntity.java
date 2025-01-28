@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -240,7 +241,18 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
         return true;
     }
 
+    @Deprecated
     public void onNeighborChange(Block fromBlock, BlockPos fromPos, boolean isMoving) {
+        if (this instanceof RedstoneActivatedBlock) {
+            boolean lastSignal = isPowered.get();
+            isPowered.set(level.hasNeighborSignal(worldPosition));
+            if (isPowered.get() != lastSignal) {
+                onSignalChange(isPowered.get());
+            }
+        }
+    }
+
+    public void onNeighborChange(Block fromBlock, @Nullable Orientation fromPos, boolean isMoving) {
         if (this instanceof RedstoneActivatedBlock) {
             boolean lastSignal = isPowered.get();
             isPowered.set(level.hasNeighborSignal(worldPosition));
