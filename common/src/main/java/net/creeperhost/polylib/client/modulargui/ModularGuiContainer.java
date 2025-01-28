@@ -153,8 +153,8 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     }
 
     @Override
-    public void onClose() {
-        super.onClose();
+    public void removed() {
+        super.removed();
         modularGui.onGuiClose();
     }
 
