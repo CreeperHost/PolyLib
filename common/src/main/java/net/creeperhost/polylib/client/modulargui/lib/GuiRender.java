@@ -1373,6 +1373,9 @@ public class GuiRender extends LegacyRender {
             Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
             int xPos = position.x();
             int yPos = Math.max(position.y(), 3); //Default positioner allows negative y-pos for some reason...
+            pose.pushPose();
+            //This really shouldn't be needed with the way we render things in ModularGui, but unfortunately we still need this do avoid rendering under things like JEI.
+            pose.translate(0, 0, 400);
 
             PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, renderWrapper, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
             toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
@@ -1391,6 +1394,7 @@ public class GuiRender extends LegacyRender {
                 component.renderImage(event.getFont(), xPos, linePos, renderWrapper);
                 linePos += component.getHeight() + (i == 0 ? 2 : 0);
             }
+            pose.popPose();
         }
     }
 
