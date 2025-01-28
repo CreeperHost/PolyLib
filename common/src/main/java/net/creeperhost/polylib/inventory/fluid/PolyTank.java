@@ -4,6 +4,7 @@ import dev.architectury.fluid.FluidStack;
 import net.creeperhost.polylib.Serializable;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
@@ -162,20 +163,29 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
 
     @Override
     public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        fluid = FluidStack.read(provider, nbt).orElse(FluidStack.empty());
+        fluid = !nbt.contains("poly_tank", Tag.TAG_COMPOUND) ? FluidStack.empty() : FluidStack.read(provider, nbt.get("poly_tank")).orElse(FluidStack.empty());
     }
 
     @Override
     public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        fluid.write(provider, nbt);
+        if (!fluid.isEmpty()) {
+            nbt.put("poly_tank", fluid.write(provider, new CompoundTag()));
+        }
         return nbt;
     }
 
     public void readFromBuf(RegistryFriendlyByteBuf buf) {
-        fluid.write(buf);
+        if (buf.readBoolean()){
+            fluid = FluidStack.read(buf);
+        } else {
+            fluid = FluidStack.empty();
+        }
     }
 
     public void writeToBuf(RegistryFriendlyByteBuf buf) {
-        fluid = FluidStack.read(buf);
+        buf.writeBoolean(!fluid.isEmpty());
+        if (!fluid.isEmpty()) {
+            fluid.write(buf);
+        }
     }
 }

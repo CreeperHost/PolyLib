@@ -122,6 +122,7 @@ unifiedPublishing {
         relations {
             depends {
                 curseforge = "architectury-api"
+                modrinth = "architectury-api"
             }
         }
 
@@ -139,7 +140,7 @@ unifiedPublishing {
             modrinth {
                 token = MODRINTH_TOKEN
                 id = rootProject.modrinth_id
-                version = "$project.version+$project.name"
+                version = "$project.version"
             }
         }
     }

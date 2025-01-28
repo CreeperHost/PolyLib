@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.neoforge;
 
+import com.google.common.collect.Iterables;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.creeperhost.polylib.PolyLib;
@@ -13,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -66,7 +68,11 @@ public class PolyLibNeoForge
                 }
 
                 //This is terrible... There has to be a better way!
-                BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
+                Block block = Iterables.getFirst(blockEntityType.getValidBlocks(), null);
+                if (block == null) {
+                    continue;
+                }
+                BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, block.defaultBlockState());
                 if (blockEntity == null) continue;
                 if (blockEntity instanceof PolyInventoryBlock)
                 {
