@@ -52,6 +52,9 @@ public class PolyLibNetwork {
                 ByteBuf copy = buf.copy();
                 context.queue(() -> handleTileDataValueFromServer(context.getPlayer(), new RegistryFriendlyByteBuf(copy, buf.registryAccess())));
             });
+        } else {
+            NetworkManager.registerS2CPayloadType(TILE_DATA_VALUE_TO_CLIENT);
+            NetworkManager.registerS2CPayloadType(CONTAINER_PACKET_TO_CLIENT);
         }
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, CONTAINER_PACKET_TO_SERVER, (buf, context) -> {
             ByteBuf copy = buf.copy();
