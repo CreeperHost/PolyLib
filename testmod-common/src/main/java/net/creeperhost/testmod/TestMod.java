@@ -39,27 +39,7 @@ public class TestMod
 
         if(Platform.getEnv() == EnvType.CLIENT)
         {
-            ClientLifecycleEvent.CLIENT_SETUP.register(instance -> TestScreens.init());
-            ClientRenderEvents.LAST.register(PlacementRenderer::render);
-            ClientLifecycleEvent.CLIENT_STARTED.register(instance -> {
-                TestItems.addCustomStacksToTab();
-            });
-
-            ClientGuiEvent.INIT_POST.register((screen, access) ->
-            {
-                if(screen instanceof TitleScreen titleScreen)
-                {
-                    Button debugScreen = Button.builder(Component.literal("TestMod test screen"), button ->
-                    {
-                        Minecraft.getInstance().setScreen(new TestGui());
-                    }).pos((titleScreen.width / 2) - 80, 40).build();
-
-                    List<GuiEventListener> children = (List<GuiEventListener>) screen.children();
-
-                    titleScreen.renderables.add(debugScreen);
-                    children.add(debugScreen);
-                }
-            });
+            TestModClient.init();
         }
     }
 }
