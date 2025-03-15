@@ -9,21 +9,20 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 /**
  * Created by brandon3055 on 07/09/2023
  */
-//@EventBusSubscriber (bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber (bus = EventBusSubscriber.Bus.MOD)
 public class DataGenEventHandler {
 
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
+    public static void gatherData(GatherDataEvent.Client event) {
         DataGenerator gen = event.getGenerator();
 
         if (event.includeDev()) {
-            DynamicTextureProvider textureProvider = new DynamicTextureProvider(gen, event.getExistingFileHelper(), TestMod.MOD_ID);
+            DynamicTextureProvider textureProvider = new DynamicTextureProvider(gen, TestMod.MOD_ID);
 
             textureProvider.addDynamicTextures(new ModularGuiTest());
             textureProvider.addDynamicTextures(new MGuiTestBlockGui());

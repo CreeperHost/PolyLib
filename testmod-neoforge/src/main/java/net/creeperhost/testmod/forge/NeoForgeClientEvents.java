@@ -1,13 +1,15 @@
 package net.creeperhost.testmod.forge;
 
 import net.creeperhost.polylib.client.modulargui.ModularGuiScreen;
+import net.creeperhost.testmod.TestMod;
 import net.creeperhost.testmod.client.gui.ModularGuiTest;
 import net.creeperhost.testmod.client.gui.TestModTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class NeoForgeClientEvents
@@ -26,8 +28,8 @@ public class NeoForgeClientEvents
         event.getDispatcher().register(testGui);
     }
 
-    private static void registerReloadListeners(RegisterClientReloadListenersEvent event)
+    private static void registerReloadListeners(AddClientReloadListenersEvent event)
     {
-        event.registerReloadListener(TestModTextures.getAtlasHolder());
+        event.addListener(ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "mod_texture"), TestModTextures.getAtlasHolder());
     }
 }

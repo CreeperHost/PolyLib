@@ -8,19 +8,25 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.VanillaPackResources;
+import net.minecraft.server.packs.VanillaPackResourcesBuilder;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -31,13 +37,11 @@ import java.util.concurrent.CompletableFuture;
  */
 public class DynamicTextureProvider implements DataProvider {
     private final DataGenerator gen;
-    private final ExistingFileHelper fileHelper;
     private final String modid;
     private final List<GeneratorResult> results = new ArrayList<>();
 
-    public DynamicTextureProvider(DataGenerator gen, ExistingFileHelper fileHelper, String modid) {
+    public DynamicTextureProvider(DataGenerator gen, String modid) {
         this.gen = gen;
-        this.fileHelper = fileHelper;
         this.modid = modid;
     }
 
@@ -71,11 +75,16 @@ public class DynamicTextureProvider implements DataProvider {
                 outputTexture = ResourceLocation.fromNamespaceAndPath(outputTexture.getNamespace(), outputTexture.getPath() + ".png");
             }
 
-            Resource inputResource = fileHelper.getResource(dynamicInput, PackType.CLIENT_RESOURCES);
+            VanillaPackResources resources = new VanillaPackResourcesBuilder().exposeNamespace(dynamicInput.getNamespace()).pushJarResources().build(new PackLocationInfo("mod-resources", Component.literal("mod-resources"), PackSource.BUILT_IN, Optional.empty()));
+
+            //TODO Test if this works... Testmod Datagens currently seem to be broken which makes testing this tricky...
+//            Resource inputResource = fileHelper.getResource(dynamicInput, PackType.CLIENT_RESOURCES);
+            InputStream inputResource = resources.getResource(PackType.CLIENT_RESOURCES, dynamicInput).get();
             PackOutput packOutput = gen.getPackOutput("assets/" + outputTexture.getNamespace());
             Path outputFile = packOutput.getOutputFolder().resolve(outputTexture.getPath());
 
-            BufferedImage input = ImageIO.read(inputResource.open());
+            BufferedImage input = ImageIO.read(inputResource);
+//            BufferedImage input = ImageIO.read(inputResource.open());
             BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D graphics = output.createGraphics();
 
