@@ -14,8 +14,8 @@ loom {
     }
 
     runs {
-        data {
-            data()
+        clientData {
+            clientData()
             programArgs "--mod", "testmod"
             programArgs "--all"
             programArgs "--output", generatedResources.absolutePath

@@ -1,9 +1,11 @@
 package net.creeperhost.polylib.neoforge;
 
+import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.events.ClientRenderEvents;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
@@ -21,8 +23,8 @@ public class NeoForgeClientEvents
             ClientRenderEvents.LAST.invoker().onRenderLastEvent(event.getPoseStack());
     }
 
-    private static void registerReloadListeners(RegisterClientReloadListenersEvent event)
+    private static void registerReloadListeners(AddClientReloadListenersEvent event)
     {
-        event.registerReloadListener(PolyTextures.getAtlasHolder());
+        event.addListener(ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "texture_listener"), PolyTextures.getAtlasHolder());
     }
 }
