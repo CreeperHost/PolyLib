@@ -13,8 +13,11 @@ import net.creeperhost.polylib.inventory.item.ItemInventoryBlock;
 import net.creeperhost.polylib.neoforge.inventory.item.PolyInvWrapper;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +32,9 @@ import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
 @Mod(PolyLib.MOD_ID)
 public class PolyLibNeoForge
@@ -82,10 +87,10 @@ public class PolyLibNeoForge
                 }
                 if (dummy instanceof ItemInventoryBlock)
                 {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new ItemContainerWrapper(((ItemInventoryBlock)entity).getContainer(side)));
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> getInvWrapper(((ItemInventoryBlock) entity).getContainer(side), side));
                 }
                 if (dummy instanceof PolyInventoryBlock) {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> new PolyInvWrapper(((PolyInventoryBlock) entity).getContainer(side)));
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> getInvWrapper(((PolyInventoryBlock) entity).getContainer(side), side));
                 }
                 if (dummy instanceof PolyEnergyBlock) {
                     event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> new PolyNeoEnergyWrapper(((PolyEnergyBlock) entity).getEnergyStorage(side)));
@@ -94,6 +99,16 @@ public class PolyLibNeoForge
                     event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> new PolyNeoFluidWrapper(((PolyFluidBlock) entity).getFluidHandler(side)));
                 }
             } catch (Throwable ignored) {}
+        }
+    }
+
+    private IItemHandlerModifiable getInvWrapper(Container container, Direction side) {
+        if (container == null) {
+            return null;
+        } else if (container instanceof WorldlyContainer worldlyContainer) {
+            return new SidedInvWrapper(worldlyContainer, side);
+        } else {
+            return new PolyInvWrapper(container);
         }
     }
 }
