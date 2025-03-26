@@ -36,7 +36,7 @@ public class FloatData extends AbstractDataStore<Float> {
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).getAsFloat(), value);
+        value = validValue(((NumericTag) tag).floatValue(), value);
     }
 
     //=============== Helpers ===============

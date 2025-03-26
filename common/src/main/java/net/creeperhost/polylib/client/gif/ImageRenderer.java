@@ -16,23 +16,24 @@ import java.nio.IntBuffer;
 
 public class ImageRenderer
 {
-    private final int glTexture;
+//    private final int glTexture;
     private final Image image;
 
     public ImageRenderer(Image image)
     {
         this.image = image;
-        glTexture = TextureUtil.generateTextureId();
-        TextureUtil.prepareImage(glTexture, 0, image.width, image.height);
-        Image.toNativeImage().upload(0, 0, 0, 0, 0, image.width, image.height, true);
+        //TODO 1.21.5
+//        glTexture = TextureUtil.generateTextureId();
+//        TextureUtil.prepareImage(glTexture, 0, image.width, image.height);
+//        Image.toNativeImage().upload(0, 0, 0, 0, 0, image.width, image.height, true);
     }
 
     public void render(PoseStack matrixStack, int x, int y, int width, int height, float partialTicks)
     {
-        //TODO
+        //TODO 1.21.5
 //        RenderSystem.enableTexture();
-        RenderSystem.disableBlend();
-        RenderSystem.bindTexture(glTexture);
+//        RenderSystem.disableBlend();
+//        RenderSystem.bindTexture(glTexture);
 //        GuiComponent.blit(matrixStack, x, y, 0.0F, 0.0F, width, height, width, height);
     }
 

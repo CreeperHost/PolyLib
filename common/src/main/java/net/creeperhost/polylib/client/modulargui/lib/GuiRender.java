@@ -23,7 +23,6 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -150,9 +149,11 @@ public class GuiRender extends LegacyRender {
     }
 
     public void flush() {
-        RenderSystem.disableDepthTest();
+        //TODO 1.21.5
+//        RenderSystem.disableDepthTest();
         buffers.endBatch();
-        RenderSystem.enableDepthTest();
+        //TODO 1.21.5
+//        RenderSystem.enableDepthTest();
     }
 
     public void drawSpecial(Consumer<MultiBufferSource> consumer) {
@@ -1409,22 +1410,23 @@ public class GuiRender extends LegacyRender {
     public void renderComponentHoverEffect(@Nullable Style style, int mouseX, int mouseY) {
         if (style != null && style.getHoverEvent() != null) {
             HoverEvent event = style.getHoverEvent();
-            HoverEvent.ItemStackInfo stackInfo = event.getValue(HoverEvent.Action.SHOW_ITEM);
-            if (stackInfo != null) {
-                renderTooltip(stackInfo.getItemStack(), mouseX, mouseY);
-            } else {
-                HoverEvent.EntityTooltipInfo tooltipInfo = event.getValue(HoverEvent.Action.SHOW_ENTITY);
-                if (tooltipInfo != null) {
-                    if (mc().options.advancedItemTooltips) {
-                        componentTooltip(tooltipInfo.getTooltipLines(), mouseX, mouseY);
-                    }
-                } else {
-                    Component component = event.getValue(HoverEvent.Action.SHOW_TEXT);
-                    if (component != null) {
-                        renderTooltip(font().split(component, Math.max(this.guiWidth() / 2, 200)), mouseX, mouseY);
-                    }
-                }
-            }
+            //TODO 1.21.5
+//            HoverEvent.ItemStackInfo stackInfo = event.getValue(HoverEvent.Action.SHOW_ITEM);
+//            if (stackInfo != null) {
+//                renderTooltip(stackInfo.getItemStack(), mouseX, mouseY);
+//            } else {
+//                HoverEvent.EntityTooltipInfo tooltipInfo = event.getValue(HoverEvent.Action.SHOW_ENTITY);
+//                if (tooltipInfo != null) {
+//                    if (mc().options.advancedItemTooltips) {
+//                        componentTooltip(tooltipInfo.getTooltipLines(), mouseX, mouseY);
+//                    }
+//                } else {
+//                    Component component = event.getValue(HoverEvent.Action.SHOW_TEXT);
+//                    if (component != null) {
+//                        renderTooltip(font().split(component, Math.max(this.guiWidth() / 2, 200)), mouseX, mouseY);
+//                    }
+//                }
+//            }
         }
     }
 
@@ -1495,7 +1497,8 @@ public class GuiRender extends LegacyRender {
      */
     public void renderItem(@Nullable LivingEntity entity, @Nullable Level level, ItemStack stack, double x, double y, double size, int modelRand) {
         if (!stack.isEmpty()) {
-            mc().getItemModelResolver().updateForTopItem(stackRenderState, stack, ItemDisplayContext.GUI, false, level, entity, modelRand);
+            //TODO 1.21.5
+//            mc().getItemModelResolver().updateForTopItem(stackRenderState, stack, ItemDisplayContext.GUI, false, level, entity, modelRand);
             pose.pushPose();
             pose.translate(x + (size / 2D), y + (size / 2D), size);
 
@@ -1713,22 +1716,33 @@ public class GuiRender extends LegacyRender {
 
     //Render Type Builders
 
+    //TODO 1.21.5
+//    public static RenderType texType(ResourceLocation location) {
+//        return RenderType.create("tex_type", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
+//                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX))
+//                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
+//                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+//                .setCullState(RenderStateShard.NO_CULL)
+//                .createCompositeState(false));
+//    }
+//
+//    public static RenderType texColType(ResourceLocation location) {
+//        return RenderType.create("tex_col_type", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
+//                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX_COLOR))
+//                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
+//                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+//                .setCullState(RenderStateShard.NO_CULL)
+//                .createCompositeState(false));
+//    }
+
+    //TODO 1.21.5, This is just to cut down on errors for now
+
     public static RenderType texType(ResourceLocation location) {
-        return RenderType.create("tex_type", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX))
-                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
-                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                .setCullState(RenderStateShard.NO_CULL)
-                .createCompositeState(false));
+        return RenderType.text(location);
     }
 
     public static RenderType texColType(ResourceLocation location) {
-        return RenderType.create("tex_col_type", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX_COLOR))
-                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
-                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                .setCullState(RenderStateShard.NO_CULL)
-                .createCompositeState(false));
+        return RenderType.text(location);
     }
 
     /**

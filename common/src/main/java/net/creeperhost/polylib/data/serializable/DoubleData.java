@@ -37,7 +37,7 @@ public class DoubleData extends AbstractDataStore<Double> {
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).getAsDouble(), value);
+        value = validValue(((NumericTag) tag).doubleValue(), value);
     }
 
     //=============== Helpers ===============

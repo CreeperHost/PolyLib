@@ -41,12 +41,13 @@ public class StackData extends AbstractDataStore<ItemStack> {
 
     @Override
     public Tag toTag(HolderLookup.Provider provider) {
-        return value.saveOptional(provider);
+        return value.save(provider);
     }
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(ItemStack.parseOptional(provider, (CompoundTag) tag), value);
+        //TODO 1.21.5
+//        value = validValue(ItemStack.parseOptional(provider, (CompoundTag) tag), value);
     }
 
     @Override

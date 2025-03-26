@@ -66,7 +66,8 @@ public class ScreenFluidRenderer
 
     private void drawTiledSprite(final int xPosition, final int yPosition, final int tiledWidth, final int tiledHeight, int color, int scaledAmount, TextureAtlasSprite sprite)
     {
-        RenderSystem.setShaderTexture(0, BLOCK_ATLAS);
+        //TODO 1.21.5
+//        RenderSystem.setShaderTexture(0, BLOCK_ATLAS);
         setGLColorFromInt(color);
 
         final int xTileCount = tiledWidth / TEX_WIDTH;
@@ -124,6 +125,7 @@ public class ScreenFluidRenderer
         bufferBuilder.addVertex(xCoord + 16 - maskRight, yCoord + 16, zLevel).setUv((float) uMax, (float) vMax);
         bufferBuilder.addVertex(xCoord + 16 - maskRight, yCoord + maskTop, zLevel).setUv((float) uMax, (float) vMin);
         bufferBuilder.addVertex(xCoord, yCoord + maskTop, zLevel).setUv((float) uMin, (float) vMin);
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+        //TODO 1.21.5
+//        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
     }
 }

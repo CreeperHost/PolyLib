@@ -1,18 +1,13 @@
 package net.creeperhost.polylib.client.screen.widget.buttons;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.creeperhost.polylib.client.screen.ScreenHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ComponentRenderUtils;
-import net.minecraft.client.renderer.CoreShaders;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -40,8 +35,9 @@ public class GuiButtonLarge extends PolyButton
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partial) {
         Minecraft mc = Minecraft.getInstance();
         int k = getYImage(isHovered);
-        RenderSystem.setShader(CoreShaders.POSITION_TEX);
-        ScreenHelper.drawContinuousTexturedBox(graphics.pose(), getX(), getY(), 0, 46 + k * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
+        //TODO 1.21.5
+//        RenderSystem.setShader(CoreShaders.POSITION_TEX);
+//        ScreenHelper.drawContinuousTexturedBox(graphics.pose(), getX(), getY(), 0, 46 + k * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
         int color = 14737632;
 
         List<FormattedCharSequence> newstring = ComponentRenderUtils.wrapComponents(description, width - 12, mc.font);

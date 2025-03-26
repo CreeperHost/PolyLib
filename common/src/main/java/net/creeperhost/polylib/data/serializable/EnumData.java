@@ -68,7 +68,7 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
             if (nbt.contains("null")) {
                 value = null;
             } else {
-                value = validValue(indexToValue.get(MathUtil.clamp(nbt.getByte("value") & 0xFF, 0, indexToValue.size() - 1)), value);
+                value = validValue(indexToValue.get(MathUtil.clamp(nbt.getByte("value").get() & 0xFF, 0, indexToValue.size() - 1)), value);
             }
         }
     }

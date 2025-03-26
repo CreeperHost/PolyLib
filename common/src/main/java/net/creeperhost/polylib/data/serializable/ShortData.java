@@ -36,7 +36,7 @@ public class ShortData extends AbstractDataStore<Short> {
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).getAsShort(), value);
+        value = validValue(((NumericTag) tag).shortValue(), value);
     }
 
     //=============== Helpers ===============

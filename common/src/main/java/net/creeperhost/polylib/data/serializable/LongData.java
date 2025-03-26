@@ -36,7 +36,7 @@ public class LongData extends AbstractDataStore<Long> {
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).getAsLong(), value);
+        value = validValue(((NumericTag) tag).longValue(), value);
     }
 
     //=============== Helpers ===============

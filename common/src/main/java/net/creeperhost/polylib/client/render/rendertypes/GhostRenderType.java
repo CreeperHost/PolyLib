@@ -1,9 +1,9 @@
 package net.creeperhost.polylib.client.render.rendertypes;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.*;
 import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -17,30 +17,62 @@ public class GhostRenderType extends RenderType
 {
     private static final Map<RenderType, RenderType> remappedTypes = new IdentityHashMap<>();
 
-    private GhostRenderType(RenderType original)
-    {
-        super(String.format("%s_%s_ghost", original.toString(), PolyLib.MOD_ID), original.format(), original.mode(),
-                original.bufferSize(), original.affectsCrumbling(), true, () ->
-                {
-                    original.setupRenderState();
-
-                    RenderSystem.disableDepthTest();
-                    RenderSystem.enableBlend();
-                    RenderSystem.setShaderColor(1, 1, 1, 0.4F);
-                }, () ->
-                {
-                    RenderSystem.setShaderColor(1, 1, 1, 1);
-                    RenderSystem.disableBlend();
-                    RenderSystem.enableDepthTest();
-
-                    original.clearRenderState();
-                });
+    public GhostRenderType(String string, int i, boolean bl, boolean bl2, Runnable runnable, Runnable runnable2) {
+        super(string, i, bl, bl2, runnable, runnable2);
     }
+
+    //TODO 1.21.5
+//    private GhostRenderType(RenderType original)
+//    {
+//        super(String.format("%s_%s_ghost", original.toString(), PolyLib.MOD_ID), original.format(), original.mode(),
+//                original.bufferSize(), original.affectsCrumbling(), true, () ->
+//                {
+//                    original.setupRenderState();
+//
+//                    RenderSystem.disableDepthTest();
+//                    RenderSystem.enableBlend();
+//                    RenderSystem.setShaderColor(1, 1, 1, 0.4F);
+//                }, () ->
+//                {
+//                    RenderSystem.setShaderColor(1, 1, 1, 1);
+//                    RenderSystem.disableBlend();
+//                    RenderSystem.enableDepthTest();
+//
+//                    original.clearRenderState();
+//                });
+//    }
 
     public static RenderType remap(RenderType in)
     {
         if (in instanceof GhostRenderType) return in;
-        return remappedTypes.computeIfAbsent(in, GhostRenderType::new);
+        //TODO 1.21.5
+//        return remappedTypes.computeIfAbsent(in, GhostRenderType::new);
+        return remappedTypes.get(in);
+    }
+
+    @Override
+    public void draw(MeshData meshData) {
+
+    }
+
+    @Override
+    public RenderTarget getRenderTarget() {
+        return null;
+    }
+
+    @Override
+    public RenderPipeline getRenderPipeline() {
+        return null;
+    }
+
+    @Override
+    public VertexFormat format() {
+        return null;
+    }
+
+    @Override
+    public VertexFormat.Mode mode() {
+        return null;
     }
 
     public static class GhostBuffers extends MultiBufferSource.BufferSource

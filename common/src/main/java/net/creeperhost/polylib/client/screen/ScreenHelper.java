@@ -14,9 +14,11 @@ public class ScreenHelper
     public void renderHead(GuiGraphics guiGraphics, int x, int y)
     {
         guiGraphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 8, 8, 8, 8, 64, 64);
-        RenderSystem.enableBlend();
+        //TODO 1.21.5
+//        RenderSystem.enableBlend();
         guiGraphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/entity/steve.png"), x, y - 2, 9, 9, 40, 8, 8, 8, 64, 64);
-        RenderSystem.disableBlend();
+        //TODO 1.21.5
+//        RenderSystem.disableBlend();
     }
 
     public static void drawModalRectWithCustomSizedTextureFloat(Matrix4f matrix, float x, float y, float u, float v, int width, int height, float textureWidth, float textureHeight)
@@ -28,14 +30,16 @@ public class ScreenHelper
         bufferbuilder.addVertex(matrix, x + width, y + height, 0.0F).setUv((u + (float) width) * f, (v + (float) height) * f1);
         bufferbuilder.addVertex(matrix, x + width, y, 0.0F).setUv((u + (float) width) * f, v * f1);
         bufferbuilder.addVertex(matrix, x, y, 0.0F).setUv(u * f, v * f1);
-        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+        //TODO 1.21.5
+//        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 
     public static void drawContinuousTexturedBox(PoseStack matrixStack, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight, int topBorder, int bottomBorder, int leftBorder, int rightBorder, float zLevel)
     {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+        //TODO 1.21.5
+//        RenderSystem.enableBlend();
+//        RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         int fillerWidth = textureWidth - leftBorder - rightBorder;
         int fillerHeight = textureHeight - topBorder - bottomBorder;
@@ -101,7 +105,8 @@ public class ScreenHelper
         wr.addVertex(matrix, x + width, y + height, zLevel).setUv((u + width) * uScale, ((v + height) * vScale));
         wr.addVertex(matrix, x + width, y, zLevel).setUv((u + width) * uScale, (v * vScale));
         wr.addVertex(matrix, x, y, zLevel).setUv(u * uScale, (v * vScale));
-        BufferUploader.drawWithShader(wr.buildOrThrow());
+        //TODO 1.21.5
+//        BufferUploader.drawWithShader(wr.buildOrThrow());
     }
 
     public static void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight)
@@ -113,6 +118,7 @@ public class ScreenHelper
         bufferbuilder.addVertex(x + width, y + height, 0.0F).setUv(((u + (float) uWidth) * f), ((v + (float) vHeight) * f1));
         bufferbuilder.addVertex(x + width, y, 0.0F).setUv(((u + (float) uWidth) * f), (v * f1));
         bufferbuilder.addVertex(x, y, 0.0F).setUv((u * f), (v * f1));
-        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+        //TODO 1.21.5
+//        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 }

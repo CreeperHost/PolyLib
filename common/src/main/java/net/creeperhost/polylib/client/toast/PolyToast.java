@@ -13,10 +13,12 @@ public abstract class PolyToast implements Toast
     public static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("toast/system");
 
     public void renderImage(GuiGraphics guiGraphics, ResourceLocation resourceLocation) {
-        RenderSystem.setShaderTexture(0, resourceLocation);
-        RenderSystem.enableBlend();
+        //TODO 1.21.5
+//        RenderSystem.setShaderTexture(0, resourceLocation);
+//        RenderSystem.enableBlend();
         guiGraphics.blit(RenderType::guiTextured, resourceLocation, 8, 8, 0, 0, 16, 16, 16, 16, 256, 256);
-        RenderSystem.enableBlend();
+        //TODO 1.21.5
+//        RenderSystem.enableBlend();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class IntData extends AbstractDataStore<Integer> {
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).getAsInt(), value);
+        value = validValue(((NumericTag) tag).intValue(), value);
     }
 
     //=============== Helpers ===============

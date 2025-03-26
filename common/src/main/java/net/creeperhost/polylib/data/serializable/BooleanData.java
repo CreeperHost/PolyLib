@@ -37,7 +37,7 @@ public class BooleanData extends AbstractDataStore<Boolean> {
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).getAsByte() != 0, value);
+        value = validValue(((NumericTag) tag).byteValue() != 0, value);
     }
 
     /**

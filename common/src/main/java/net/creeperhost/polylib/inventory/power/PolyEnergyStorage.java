@@ -160,7 +160,7 @@ public class PolyEnergyStorage implements IPolyEnergyStorage, Serializable {
 
     @Override
     public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        energy = nbt.getLong("energy");
+        energy = nbt.getLong("energy").get();
     }
 
     public void readFromBuf(FriendlyByteBuf buf) {

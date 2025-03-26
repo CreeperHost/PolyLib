@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -49,8 +48,9 @@ public class SimpleToast extends PolyToast {
 
     @Override
     public void render(GuiGraphics guiGraphics, Font font, long l) {
-        RenderSystem.setShader(CoreShaders.POSITION_TEX);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        //TODO 1.21.5
+//        RenderSystem.setShader(CoreShaders.POSITION_TEX);
+//        RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         guiGraphics.blit(RenderType::guiTextured, TEXTURE, 0, 0, 0, 0, this.width(), this.height(), 256, 256);
         if (iconResourceLocation != null) {

@@ -157,7 +157,7 @@ public class AnimatedGif
 
     public class GifPlayer implements AutoCloseable
     {
-        private final int glTexture;
+//        private final int glTexture;
         private final int totalFrameTicks;
         private boolean playing;
         private int animationProgress;
@@ -173,9 +173,10 @@ public class AnimatedGif
         private GifPlayer()
         {
             totalFrameTicks = Arrays.stream(delays).map(d -> Math.max(MIN_GIF_TICKS, d)).sum();
-            glTexture = TextureUtil.generateTextureId();
-            TextureUtil.prepareImage(glTexture, 0, width, height * frames);
-            toNativeImage().upload(0, 0, 0, 0, 0, width, height * frames, true);
+            //TODO 1.21.5
+//            glTexture = TextureUtil.generateTextureId();
+//            TextureUtil.prepareImage(glTexture, 0, width, height * frames);
+//            toNativeImage().upload(0, 0, 0, 0, 0, width, height * frames, true);
         }
 
         public void reset()
@@ -247,15 +248,16 @@ public class AnimatedGif
                 lastFrame = frameIndex;
             }
 
-            RenderSystem.disableBlend();
-            RenderSystem.bindTexture(glTexture);
-            //TODO
+            //TODO 1.21.5
+//            RenderSystem.disableBlend();
+//            RenderSystem.bindTexture(glTexture);
 //            guiGraphics.blit(glTexture, x, y, w, h, 0, lastFrame * height, width, height, width, height * frames);
         }
 
         public void close()
         {
-            TextureUtil.releaseTextureId(glTexture);
+            //TODO 1.21.5
+//            TextureUtil.releaseTextureId(glTexture);
         }
 
         public void setAutoplay(boolean autoplay)

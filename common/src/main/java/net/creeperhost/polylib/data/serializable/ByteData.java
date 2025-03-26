@@ -37,7 +37,7 @@ public class ByteData extends AbstractDataStore<Byte> {
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).getAsByte(), value);
+        value = validValue(((NumericTag) tag).byteValue(), value);
     }
 
     //=============== Helpers ===============

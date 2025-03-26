@@ -99,7 +99,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
         // off the cached data.
         if (!compoundTag.getCompound("multiblockData").isEmpty())
         {
-            this.cachedMultiblockData = compoundTag.getCompound("multiblockData");
+            this.cachedMultiblockData = compoundTag.getCompound("multiblockData").get();
         }
     }
 
@@ -157,7 +157,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     {
         if (packetData.get("multiblockData") != null)
         {
-            CompoundTag tag = packetData.getCompound("multiblockData");
+            CompoundTag tag = packetData.getCompound("multiblockData").get();
             if (isConnected())
             {
                 getMultiblockController().decodeDescriptionPacket(tag);
