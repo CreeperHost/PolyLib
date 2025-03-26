@@ -5,13 +5,13 @@ plugins {
 
 def ENV = System.getenv()
 
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
 architectury {
     platformSetupLoomIde()
     fabric()
-}
-
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 
 configurations {

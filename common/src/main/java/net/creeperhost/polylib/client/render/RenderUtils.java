@@ -1,13 +1,9 @@
 package net.creeperhost.polylib.client.render;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.architectury.fluid.FluidStack;
 import dev.architectury.hooks.fluid.FluidStackHooks;
 import net.creeperhost.polylib.client.model.Model3D;
-import net.minecraft.client.renderer.CoreShaders;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import org.joml.Matrix4f;
 
 @Deprecated //I dont think any of this isi needed anymore
