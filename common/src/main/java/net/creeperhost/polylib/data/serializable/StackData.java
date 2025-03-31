@@ -2,6 +2,7 @@ package net.creeperhost.polylib.data.serializable;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -41,13 +42,20 @@ public class StackData extends AbstractDataStore<ItemStack> {
 
     @Override
     public Tag toTag(HolderLookup.Provider provider) {
-        return value.save(provider);
+        if (!value.isEmpty()) {
+            return value.save(provider);
+        } else {
+            return new CompoundTag();
+        }
     }
 
     @Override
     public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        //TODO 1.21.5
-//        value = validValue(ItemStack.parseOptional(provider, (CompoundTag) tag), value);
+        if (tag instanceof CompoundTag c && c.isEmpty()) {
+            value = validValue(ItemStack.EMPTY, value);
+        } else {
+            value = validValue(ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY), value);
+        }
     }
 
     @Override

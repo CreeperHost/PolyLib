@@ -2,10 +2,8 @@ package net.creeperhost.polylib.client.modulargui.lib;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.creeperhost.polylib.PolyLibClient;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
@@ -24,7 +22,6 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositione
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -38,7 +35,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
-import net.minecraft.util.TriState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -149,11 +145,7 @@ public class GuiRender extends LegacyRender {
     }
 
     public void flush() {
-        //TODO 1.21.5
-//        RenderSystem.disableDepthTest();
         buffers.endBatch();
-        //TODO 1.21.5
-//        RenderSystem.enableDepthTest();
     }
 
     public void drawSpecial(Consumer<MultiBufferSource> consumer) {
@@ -1408,25 +1400,16 @@ public class GuiRender extends LegacyRender {
     }
 
     public void renderComponentHoverEffect(@Nullable Style style, int mouseX, int mouseY) {
-        if (style != null && style.getHoverEvent() != null) {
-            HoverEvent event = style.getHoverEvent();
-            //TODO 1.21.5
-//            HoverEvent.ItemStackInfo stackInfo = event.getValue(HoverEvent.Action.SHOW_ITEM);
-//            if (stackInfo != null) {
-//                renderTooltip(stackInfo.getItemStack(), mouseX, mouseY);
-//            } else {
-//                HoverEvent.EntityTooltipInfo tooltipInfo = event.getValue(HoverEvent.Action.SHOW_ENTITY);
-//                if (tooltipInfo != null) {
-//                    if (mc().options.advancedItemTooltips) {
-//                        componentTooltip(tooltipInfo.getTooltipLines(), mouseX, mouseY);
-//                    }
-//                } else {
-//                    Component component = event.getValue(HoverEvent.Action.SHOW_TEXT);
-//                    if (component != null) {
-//                        renderTooltip(font().split(component, Math.max(this.guiWidth() / 2, 200)), mouseX, mouseY);
-//                    }
-//                }
-//            }
+        if (style == null || style.getHoverEvent() == null) {
+            return;
+        }
+        HoverEvent event = style.getHoverEvent();
+        if (event instanceof HoverEvent.ShowItem(ItemStack item)) {
+            this.renderTooltip(item, mouseX, mouseY);
+        } else if (event instanceof HoverEvent.ShowEntity(HoverEvent.EntityTooltipInfo entity)) {
+            this.componentTooltip(entity.getTooltipLines(), mouseX, mouseY);
+        } else if (event instanceof HoverEvent.ShowText(Component value)) {
+            this.renderTooltip(font().split(value, Math.max(this.guiWidth() / 2, 200)), mouseX, mouseY);
         }
     }
 
@@ -1497,8 +1480,7 @@ public class GuiRender extends LegacyRender {
      */
     public void renderItem(@Nullable LivingEntity entity, @Nullable Level level, ItemStack stack, double x, double y, double size, int modelRand) {
         if (!stack.isEmpty()) {
-            //TODO 1.21.5
-//            mc().getItemModelResolver().updateForTopItem(stackRenderState, stack, ItemDisplayContext.GUI, false, level, entity, modelRand);
+            mc().getItemModelResolver().updateForTopItem(stackRenderState, stack, ItemDisplayContext.GUI, level, entity, modelRand);
             pose.pushPose();
             pose.translate(x + (size / 2D), y + (size / 2D), size);
 
@@ -1716,33 +1698,26 @@ public class GuiRender extends LegacyRender {
 
     //Render Type Builders
 
-    //TODO 1.21.5
+    //Use Will just use texColType for everything going forward.
 //    public static RenderType texType(ResourceLocation location) {
-//        return RenderType.create("tex_type", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-//                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX))
-//                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
-//                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-//                .setCullState(RenderStateShard.NO_CULL)
-//                .createCompositeState(false));
+
+    /// /        return RenderType.create("tex_type", 786432, true, true, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder()
+    /// ///                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX))
+    /// /                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
+    /// ///                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+    /// ///                .setCullState(RenderStateShard.NO_CULL)
+    /// /                .createCompositeState(false));
+//        return RenderType.guiTextured(location);
 //    }
-//
-//    public static RenderType texColType(ResourceLocation location) {
-//        return RenderType.create("tex_col_type", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-//                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX_COLOR))
-//                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
-//                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-//                .setCullState(RenderStateShard.NO_CULL)
-//                .createCompositeState(false));
-//    }
-
-    //TODO 1.21.5, This is just to cut down on errors for now
-
-    public static RenderType texType(ResourceLocation location) {
-        return RenderType.text(location);
-    }
-
     public static RenderType texColType(ResourceLocation location) {
-        return RenderType.text(location);
+//        return RenderType.create("tex_col_type", 786432, true, true, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder()
+////                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX_COLOR))
+//                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
+////                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+////                .setCullState(RenderStateShard.NO_CULL)
+//                .createCompositeState(false));
+        //TODO, only thing this is missing is NO_CULL, that may or may not cause issues...
+        return RenderType.guiTextured(location);
     }
 
     /**

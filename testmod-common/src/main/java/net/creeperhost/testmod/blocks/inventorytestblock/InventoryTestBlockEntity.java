@@ -108,7 +108,7 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
     @Override
     public void readExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
         simpleItemInventory.deserialize(provider, nbt);
-        outputInv.deserialize(provider, nbt.getCompound("out_inv"));
+        outputInv.deserialize(provider, nbt.getCompound("out_inv").orElseGet(CompoundTag::new));
     }
 
     @Override

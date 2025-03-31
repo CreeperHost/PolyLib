@@ -36,12 +36,6 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  * Created by brandon3055 on 03/09/2023
  */
 public class GuiTextField extends GuiElement<GuiTextField> implements BackgroundRender {
-    //TODO 1.21.5
-//    private static final RenderType HIGHLIGHT_TYPE = RenderType.create("text_field_highlight", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder()
-//            .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_COLOR))
-//            .setColorLogicState(RenderStateShard.OR_REVERSE_COLOR_LOGIC)
-//            .createCompositeState(false));
-
     private int tick;
     private int cursorPos;
     private int maxLength = 32;
@@ -644,8 +638,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
         if (highlightStart != textStart) {
             int l1 = (int) (drawX + font().width(displayText.substring(0, highlightStart)));
             render.pose().translate(0, 0, 0.035);
-            //TODO 1.21.5
-//            render.fill(HIGHLIGHT_TYPE, k1, drawY - 1, l1 - 1, drawY + 1 + 9, 0xFF0000FF);
+            render.fill(RenderType.guiTextHighlight(), k1, drawY - 1, l1 - 1, drawY + 1 + 9, 0xFF0000FF);
             render.pose().translate(0, 0, -0.035);
         }
     }

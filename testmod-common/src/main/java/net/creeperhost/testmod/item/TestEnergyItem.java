@@ -8,10 +8,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created by brandon3055 on 03/03/2024
@@ -50,11 +52,10 @@ public class TestEnergyItem extends Item implements PolyEnergyItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
         IPolyEnergyStorage energy = getEnergyStorage(itemStack);
 
-        list.add(Component.literal("Energy"));
-        list.add(Component.literal(energy.getEnergyStored() + " / " + energy.getMaxEnergyStored()));
-
+        consumer.accept(Component.literal("Energy"));
+        consumer.accept(Component.literal(energy.getEnergyStored() + " / " + energy.getMaxEnergyStored()));
     }
 }
