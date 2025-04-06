@@ -56,7 +56,7 @@ public enum AxisConfig {
     public final TriFunction<Constraint, Constraint, Constraint, Double> min;
     public final TriFunction<Constraint, Constraint, Constraint, Double> max;
     public final TriFunction<Constraint, Constraint, Constraint, Double> size;
-    //[min][max][size] TODO, I Clean this up once i confirm everything works correctly.
+    //[min][max][size]
     private static final AxisConfig[][][] LOOKUP = new AxisConfig[][][]{
             { //Min = 0
                     { //Max = 0

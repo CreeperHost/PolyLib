@@ -304,12 +304,9 @@ public abstract class ConstrainedGeometry<T extends ConstrainedGeometry<T>> impl
     @SuppressWarnings ("unchecked")
     public T strictMode(boolean strictMode) {
         this.strictMode = strictMode;
-        //TODO Propagate to children (Will be handled in the base GuiElement)
         return (T) this;
     }
 
-    //TODO This needs to be called from the parent element somewhere. Possibly on tick or render
-    //Ideally i would like to find a way to only call it once. we need to account for constraints being modified after initial element construction.
     public void validate() {
         if (strictMode) {
             if (xAxis.constraints != 2) {

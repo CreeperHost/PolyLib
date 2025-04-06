@@ -2,8 +2,6 @@ package net.creeperhost.testmod;
 
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
-import net.creeperhost.polylib.events.ClientRenderEvents;
-import net.creeperhost.testmod.client.PlacementRenderer;
 import net.creeperhost.testmod.init.TestItems;
 import net.creeperhost.testmod.init.TestScreens;
 import net.minecraft.client.gui.screens.TitleScreen;

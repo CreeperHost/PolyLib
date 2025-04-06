@@ -173,7 +173,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     }
 
     //=== Minecraft Properties / Initialisation ===//
-    //TODO I can probably just pass these calls all the way up to the root parent...
 
     @Override
     public Minecraft mc() {

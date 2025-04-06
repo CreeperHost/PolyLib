@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  * <p>
  * Created by brandon3055 on 29/06/2023
  */
-public class GuiRender extends LegacyRender {
+public class GuiRender {
     public static final RenderType SOLID = RenderType.gui();
 
     //Used for things like events that require the vanilla GuiGraphics
@@ -87,7 +87,6 @@ public class GuiRender extends LegacyRender {
         return new GuiRender(Minecraft.getInstance(), graphics.pose(), graphics.bufferSource);
     }
 
-    @Override
     public PoseStack pose() {
         return pose;
     }
@@ -217,11 +216,10 @@ public class GuiRender extends LegacyRender {
 
         Matrix4f mat = pose.last().pose();
         VertexConsumer buffer = buffers.getBuffer(type);
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(colour);//.endVertex(); //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(colour);//.endVertex(); //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(colour);//.endVertex(); //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(colour);//.endVertex(); //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(colour); //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(colour); //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(colour); //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(colour); //L-B
         flushIfUnBatched();
     }
 
@@ -246,11 +244,10 @@ public class GuiRender extends LegacyRender {
         float eG = (float) ARGB.green(bottomColour) / 255.0F;
         float eB = (float) ARGB.blue(bottomColour) / 255.0F;
         Matrix4f mat = pose.last().pose();
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA);//.endVertex(); //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(sR, sG, sB, sA);//.endVertex(); //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA);//.endVertex(); //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(eR, eG, eB, eA);//.endVertex(); //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA); //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(sR, sG, sB, sA); //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA); //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(eR, eG, eB, eA); //L-B
         this.flushIfUnBatched();
     }
 
@@ -275,11 +272,10 @@ public class GuiRender extends LegacyRender {
         float eG = (float) ARGB.green(rightColour) / 255.0F;
         float eB = (float) ARGB.blue(rightColour) / 255.0F;
         Matrix4f mat = pose.last().pose();
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA);//.endVertex(); //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(eR, eG, eB, eA);//.endVertex(); //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA);//.endVertex(); //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(sR, sG, sB, sA);//.endVertex(); //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA); //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(eR, eG, eB, eA); //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA); //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(sR, sG, sB, sA); //L-B
         this.flushIfUnBatched();
     }
 
@@ -544,11 +540,10 @@ public class GuiRender extends LegacyRender {
     public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
         VertexConsumer buffer = buffers().getBuffer(type);
         Matrix4f mat = pose.last().pose();
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());//.endVertex();  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());//.endVertex();  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());//.endVertex();  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());//.endVertex();  //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());  //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());  //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());  //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());  //L-B
         flushIfUnBatched();
     }
 
@@ -643,11 +638,10 @@ public class GuiRender extends LegacyRender {
         float[] v = {sprite.getV1(), sprite.getV1(), sprite.getV0(), sprite.getV0()};
         VertexConsumer buffer = buffers().getBuffer(type);
         Matrix4f mat = pose.last().pose();
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);//.endVertex();  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);//.endVertex();  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);//.endVertex();  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);//.endVertex();  //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);  //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);  //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);  //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);  //L-B
         flushIfUnBatched();
     }
 
@@ -761,11 +755,10 @@ public class GuiRender extends LegacyRender {
         float v1 = sprite.getV1();
         float ul = u1 - u0;
         float vl = v1 - v0;
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMax * vl));//.endVertex();  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMin * vl));//.endVertex();  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMin * vl));//.endVertex();  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMax * vl));//.endVertex();  //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMax * vl));  //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMin * vl));  //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMin * vl));  //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMax * vl));  //L-B
         flushIfUnBatched();
     }
 
@@ -906,11 +899,10 @@ public class GuiRender extends LegacyRender {
         TextureAtlasSprite sprite = material.sprite();
         VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
         Matrix4f mat = pose.last().pose();
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());//.endVertex();  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());//.endVertex();  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());//.endVertex();  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());//.endVertex();  //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());  //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());  //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());  //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());  //L-B
         flushIfUnBatched();
     }
 
@@ -1006,11 +998,10 @@ public class GuiRender extends LegacyRender {
         float[] u = {sprite.getU0(), sprite.getU1(), sprite.getU1(), sprite.getU0()};
         float[] v = {sprite.getV1(), sprite.getV1(), sprite.getV0(), sprite.getV0()};
         Matrix4f mat = pose.last().pose();
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);//.endVertex();  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);//.endVertex();  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);//.endVertex();  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);//.endVertex();  //L-B
+        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);  //R-B
+        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);  //R-T
+        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);  //L-T
+        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);  //L-B
         flushIfUnBatched();
     }
 
@@ -1143,11 +1134,10 @@ public class GuiRender extends LegacyRender {
         int w = tex.contents().width();
         int h = tex.contents().height();
         //@formatter:off
-        //TODO not seeing a replacement for end so not sure if its still needed??
-        builder.addVertex(mat, x,         y + height, 0).setColor(red, green, blue, alpha).setUv(tex.getU((textureX / w)),           tex.getV(((textureY + height) / h)));//.endVertex();
-        builder.addVertex(mat, x + width, y + height, 0).setColor(red, green, blue, alpha).setUv(tex.getU(((textureX + width) / w)), tex.getV(((textureY + height) / h)));//.endVertex();
-        builder.addVertex(mat, x + width, y,          0).setColor(red, green, blue, alpha).setUv(tex.getU(((textureX + width) / w)), tex.getV(((textureY) / h)));//.endVertex();
-        builder.addVertex(mat, x,         y,          0).setColor(red, green, blue, alpha).setUv(tex.getU((textureX / w)),           tex.getV(((textureY) / h)));//.endVertex();
+        builder.addVertex(mat, x,         y + height, 0).setColor(red, green, blue, alpha).setUv(tex.getU((textureX / w)),           tex.getV(((textureY + height) / h)));
+        builder.addVertex(mat, x + width, y + height, 0).setColor(red, green, blue, alpha).setUv(tex.getU(((textureX + width) / w)), tex.getV(((textureY + height) / h)));
+        builder.addVertex(mat, x + width, y,          0).setColor(red, green, blue, alpha).setUv(tex.getU(((textureX + width) / w)), tex.getV(((textureY) / h)));
+        builder.addVertex(mat, x,         y,          0).setColor(red, green, blue, alpha).setUv(tex.getU((textureX / w)),           tex.getV(((textureY) / h)));
         //@formatter:on
     }
 

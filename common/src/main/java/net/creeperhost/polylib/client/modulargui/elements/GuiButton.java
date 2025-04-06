@@ -277,8 +277,6 @@ public class GuiButton extends GuiElement<GuiButton> {
         return vanillaAnimated(parent, label).onPress(onPress);
     }
 
-    //TODO Could use a quad-sliced texture for this.
-
     /**
      * Creates a vanilla button with a "press" animation.
      */

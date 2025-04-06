@@ -11,23 +11,18 @@ public class PlayerHelper
 {
     public static boolean doesPlayerHaveItemEquipped(Player player, Item item)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            //TODO 1.21.5
-//            ItemStack stack = player.getInventory().getArmor(i);
-//            if (stack.getItem() == item)
-//            {
-//                return true;
-//            }
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack stack = player.getItemBySlot(slot);
+            if (stack.getItem() == item) {
+                return true;
+            }
         }
         return false;
     }
 
     public static boolean isPlayerWearingEquipment(Player player, EquipmentSlot equipmentSlot)
     {
-        //TODO 1.21.5
-//        return !player.getInventory().getArmor(equipmentSlot.getIndex()).isEmpty();
-        return false;
+        return !player.getItemBySlot(equipmentSlot).isEmpty();
     }
 
     public static void giveItemStackToPlayer(Player player, ItemStack itemStack)

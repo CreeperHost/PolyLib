@@ -151,10 +151,4 @@ public interface Constraint {
     static ConstraintImpl.MidPointDynamic midPoint(GeoRef start, GeoRef end, Supplier<Double> offset) {
         return new ConstraintImpl.MidPointDynamic(start, end, offset);
     }
-
-    //TODO
-    // Between with offset
-    // Will att more as i start to use this system and figure out whats needed.
-    //
-
 }
