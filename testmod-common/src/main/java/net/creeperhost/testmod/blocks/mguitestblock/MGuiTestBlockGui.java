@@ -13,9 +13,13 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.Align;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
+import net.creeperhost.polylib.client.toast.ProgressToast;
+import net.creeperhost.polylib.client.toast.SimpleToast;
 import net.creeperhost.testmod.TestMod;
 import net.creeperhost.testmod.client.gui.TestModTextures;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,6 +35,7 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContainerMenu> implements DynamicTextures {
 
     private String backgroundTexture;
+    private int toastTimer = 1000;
 
     @Override
     public void makeTextures(Function<DynamicTextures.DynamicTexture, String> textures) {
@@ -273,6 +278,49 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
                         Component.literal("This is line 3, Lorem ipsum dolor sit amet, erspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam..").withStyle(ChatFormatting.BLUE)
                         );
 
+        GuiButton testToast = GuiButton.vanillaAnimated(root, Component.literal("Test Toast"))
+                .onPress(this::testToast)
+                .constrain(LEFT, relative(gui.get(LEFT), 5))
+                .constrain(BOTTOM, relative(gui.get(BOTTOM), -5));
+        Constraints.size(testToast, 100, 16);
+
+        gui.onTick(this::tick);
+
+    }
+
+    public void testToast() {
+        toastTimer = 0;
+    }
+
+    private static final ResourceLocation CREEPERHOST_LOGO_25 = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/creeperhost.png");
+
+    private void tick() {
+        int interval = 50;
+        if (toastTimer == 0) {
+            addToast(new SimpleToast(Component.literal("Toast Title"), Component.empty()));
+        }
+        if (toastTimer == interval * 1) {
+            addToast(new SimpleToast(Component.literal("Toast with long Title text that should wrap"), Component.empty()));
+        }
+        if (toastTimer == interval * 2) {
+            addToast(new SimpleToast(Component.literal("Toast Title"), Component.literal("And message")));
+        }
+        if (toastTimer == interval * 3) {
+            addToast(new SimpleToast(Component.literal("Toast with icon"), Component.empty(), CREEPERHOST_LOGO_25));
+        }
+        if (toastTimer == interval * 4) {
+            long startTime = System.currentTimeMillis();
+            addToast(new ProgressToast(Component.literal("Progress Toast"), () -> (System.currentTimeMillis() - startTime) / 5000D));
+        }
+        if (toastTimer == interval * 5) {
+            long startTime = System.currentTimeMillis();
+            addToast(new ProgressToast(Component.literal("Progress Toast with icon and long title"), () -> (System.currentTimeMillis() - startTime) / 5000D, CREEPERHOST_LOGO_25));
+        }
+        toastTimer++;
+    }
+
+    private void addToast(Toast toast) {
+        Minecraft.getInstance().getToastManager().addToast(toast);
     }
 
     public static ModularGuiContainer<MGuiTestBlockContainerMenu> create(MGuiTestBlockContainerMenu menu, Inventory inventory, Component component) {

@@ -1,33 +1,58 @@
 package net.creeperhost.polylib.client.toast;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.gui.components.toasts.Toast;
+import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ProgressToast extends PolyToast
+import java.util.function.Supplier;
+
+public class ProgressToast implements Toast
 {
+    private static final ResourceLocation BG_TEXTURE = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
     private final Component title;
-    private float progress;
-    private float lastProgress;
+    private Supplier<Double> progress;
+    private double lastProgress;
     private long lastProgressTime;
     private final ResourceLocation iconResourceLocation;
 
-    public ProgressToast(Component title, float progress, ResourceLocation resourceLocation)
+    public ProgressToast(Component title, Supplier<Double> progress)
+    {
+        this.title = title;
+        this.progress = progress;
+        this.iconResourceLocation = null;
+    }
+
+    public ProgressToast(Component title, Supplier<Double> progress, ResourceLocation resourceLocation)
     {
         this.title = title;
         this.progress = progress;
         this.iconResourceLocation = resourceLocation;
     }
 
+    public ProgressToast(Component title, double progress)
+    {
+        this.title = title;
+        this.progress = () -> progress;
+        this.iconResourceLocation = null;
+    }
+
+    public ProgressToast(Component title, double progress, ResourceLocation resourceLocation)
+    {
+        this.title = title;
+        this.progress = () -> progress;
+        this.iconResourceLocation = resourceLocation;
+    }
+
     @Override
     public Visibility getWantedVisibility() {
-        if (progress >= 1.0F)
+        if (progress.get() >= 1.0F)
         {
             return Visibility.HIDE;
         }
@@ -35,29 +60,37 @@ public class ProgressToast extends PolyToast
     }
 
     @Override
+    public void update(ToastManager toastManager, long l) {}
+
+    @Override
     public void render(GuiGraphics guiGraphics, Font font, long l)
     {
-        RenderSystem.setShader(CoreShaders.POSITION_TEX);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 0, 0, 0, 0, this.width(), this.height(), 256, 256);
-        if (iconResourceLocation != null)
-        {
-            renderImage(guiGraphics, iconResourceLocation);
+        //x, y, u, v, width, height, texWidth, texHeight
+        guiGraphics.blit(RenderType::guiTextured, BG_TEXTURE, 0, 0, 0, 0, width(), height(), width(), height());
+        int wrapWidth = 125;
+        int xOffset = 30;
+        if (iconResourceLocation != null) {
+            guiGraphics.blit(RenderType::guiTextured, iconResourceLocation, 5, (height() - 22) / 2, 0, 0, 22, 22, 22, 22);
+        } else {
+            wrapWidth += 23;
+            xOffset -= 23;
         }
-        guiGraphics.drawString(Minecraft.getInstance().font, this.title, 30, 12, -1);
 
+        if (title != null) {
+            guiGraphics.drawWordWrap(Minecraft.getInstance().font, title, xOffset, 7, wrapWidth, 0xFFFF88FF);
+        }
 
         guiGraphics.fill(3, 28, 157, 29, -1);
-        float f = Mth.clampedLerp(this.lastProgress, this.progress, (float) (l - this.lastProgressTime) / 100.0f);
-        int i = this.progress >= this.lastProgress ? -16755456 : -11206656;
+        double f = Mth.clampedLerp(this.lastProgress, this.progress.get(), (float) (l - this.lastProgressTime) / 100.0f);
+        int i = this.progress.get() >= this.lastProgress ? -16755456 : -11206656;
         guiGraphics.fill(3, 28, (int) (3.0f + 154.0f * f), 29, i);
         this.lastProgress = f;
         this.lastProgressTime = l;
     }
 
-    public void updateProgress(float progress)
+    public void updateProgress(double progress)
     {
-        this.progress = progress;
+        this.progress = () -> progress;
     }
+
 }
