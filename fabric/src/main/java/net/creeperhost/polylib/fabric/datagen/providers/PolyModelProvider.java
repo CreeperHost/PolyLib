@@ -57,8 +57,9 @@ public class PolyModelProvider extends FabricModelProvider
 
     public void addSimpleBlockModel(Block block, ResourceLocation textureLocation, ModuleType moduleType)
     {
-        MultiVariantGenerator multiVariantGenerator = createSimpleBlock(block, textureLocation);
-        addBlockModel(block, multiVariantGenerator, moduleType);
+        //TODO 1.21.5
+//        MultiVariantGenerator multiVariantGenerator = createSimpleBlock(block, textureLocation);
+//        addBlockModel(block, multiVariantGenerator, moduleType);
     }
 
     @Override
