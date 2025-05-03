@@ -1,13 +1,11 @@
 package net.creeperhost.polylib.fabric.inventory.power;
 
-import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.world.item.ItemStack;
-import team.reborn.energy.api.EnergyStorage;
 
 /**
  * Created by brandon3055 on 26/05/2024
