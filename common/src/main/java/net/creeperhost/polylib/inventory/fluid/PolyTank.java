@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -162,16 +164,13 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
     }
 
     @Override
-    public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        fluid = !nbt.contains("poly_tank") ? FluidStack.empty() : FluidStack.read(provider, nbt.get("poly_tank")).orElse(FluidStack.empty());
+    public void deserialize(ValueInput input) {
+        fluid = input.read("poly_tank", FluidStack.CODEC).orElse(FluidStack.empty());
     }
 
     @Override
-    public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        if (!fluid.isEmpty()) {
-            nbt.put("poly_tank", fluid.write(provider, new CompoundTag()));
-        }
-        return nbt;
+    public void serialize(ValueOutput output) {
+        output.store("poly_tank", FluidStack.CODEC, fluid);
     }
 
     public void readFromBuf(RegistryFriendlyByteBuf buf) {

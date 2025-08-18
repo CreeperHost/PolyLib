@@ -1,9 +1,8 @@
 package net.creeperhost.polylib.data.serializable;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -65,9 +64,9 @@ public abstract class AbstractDataStore<T> {
 
     public abstract void fromBytes(RegistryFriendlyByteBuf buf);
 
-    public abstract Tag toTag(HolderLookup.Provider provider);
+    public abstract void toTag(ValueOutput output);
 
-    public abstract void fromTag(HolderLookup.Provider provider, Tag tag);
+    public abstract void fromTag(ValueInput input);
 
     public boolean isSameValue(T newValue) {
         return Objects.equals(value, newValue);

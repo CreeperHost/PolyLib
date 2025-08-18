@@ -6,6 +6,8 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.Objects;
 
@@ -49,14 +51,13 @@ public class FluidData extends AbstractDataStore<FluidStack> {
     }
 
     @Override
-    public Tag toTag(Provider provider) {
-        return value.isEmpty() ? new CompoundTag() : value.write(provider, new CompoundTag());
+    public void toTag(ValueOutput output) {
+        output.store("value", FluidStack.CODEC, value);
     }
 
     @Override
-    public void fromTag(Provider provider, Tag tag) {
-        FluidStack newStack = tag instanceof CompoundTag cTag && cTag.isEmpty() ? FluidStack.empty() : FluidStack.read(provider, tag).orElse(FluidStack.empty());
-        value = validValue(newStack, value);
+    public void fromTag(ValueInput input) {
+        value = input.read("value", FluidStack.CODEC).orElse(FluidStack.empty());
     }
 
     @Override

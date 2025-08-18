@@ -45,6 +45,21 @@ public class TestMultiBlockBlockEntity extends RectangularMultiblockTileEntityBa
     }
 
     @Override
+    public boolean hasMultiblockSaveData() {
+        return false;
+    }
+
+    @Override
+    public CompoundTag getMultiblockSaveData() {
+        return new CompoundTag();
+    }
+
+    @Override
+    public void onMultiblockDataAssimilated() {
+
+    }
+
+    @Override
     public MultiblockControllerBase createNewMultiblock()
     {
         return new MultiBlockTest(getLevel());

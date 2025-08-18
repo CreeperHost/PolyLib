@@ -28,6 +28,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -100,15 +102,15 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
     }
 
     @Override
-    public void writeExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
-        simpleItemInventory.serialize(provider, nbt);
-        nbt.put("out_inv", outputInv.serialize(provider, new CompoundTag()));
+    public void writeExtraData(ValueOutput output) {
+        simpleItemInventory.serialize(output);
+        outputInv.serialize(output.child("out_inv"));
     }
 
     @Override
-    public void readExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
-        simpleItemInventory.deserialize(provider, nbt);
-        outputInv.deserialize(provider, nbt.getCompound("out_inv").orElseGet(CompoundTag::new));
+    public void readExtraData(ValueInput input) {
+        simpleItemInventory.deserialize(input);
+        outputInv.deserialize(input.childOrEmpty("out_inv"));
     }
 
     @Override

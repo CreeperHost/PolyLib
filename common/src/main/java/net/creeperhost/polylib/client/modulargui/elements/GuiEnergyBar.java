@@ -76,8 +76,8 @@ public class GuiEnergyBar extends GuiElement<GuiEnergyBar> implements Background
         float p = 1/128F;
         float height = getCapacity() <= 0 ? 0 : (float) ySize() * (getEnergy() / (float) getCapacity());
         float texHeight = height * p;
-        render.partialSprite(EMPTY.renderType(GuiRender::texColType), xMin(), yMin(), xMax(), yMax(), EMPTY.sprite(), 0F, 1F - (p * (float) ySize()), p * (float) xSize(), 1F, 0xFFFFFFFF);
-        render.partialSprite(FULL.renderType(GuiRender::texColType), xMin(), yMin() + (ySize() - height), xMax(), yMax(), FULL.sprite(), 0F, 1F - texHeight, p * (float) xSize(), 1F, 0xFFFFFFFF);
+        render.partialSprite(GuiRender.guiTexPipe(), xMin(), yMin(), xMax(), yMax(), EMPTY.sprite(), 0F, 1F - (p * (float) ySize()), p * (float) xSize(), 1F, 0xFFFFFFFF);
+        render.partialSprite(GuiRender.guiTexPipe(), xMin(), yMin() + (ySize() - height), xMax(), yMax(), FULL.sprite(), 0F, 1F - texHeight, p * (float) xSize(), 1F, 0xFFFFFFFF);
     }
 
     /**

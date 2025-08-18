@@ -9,6 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     private boolean visited;
 
     private boolean saveMultiblockData;
-    private CompoundTag cachedMultiblockData;
+//    private CompoundTag cachedMultiblockData;
 
     public MultiblockBlockEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)
     {
@@ -30,7 +32,7 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
         controller = null;
         visited = false;
         saveMultiblockData = false;
-        cachedMultiblockData = null;
+//        cachedMultiblockData = null;
     }
 
     // /// Multiblock Connection Base Logic
@@ -90,28 +92,25 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
-    {
-        super.loadAdditional(compoundTag, provider);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
         // We can't directly initialize a multiblock controller yet, so we cache
         // the data here until
         // we receive a validate() call, which creates the controller and hands
         // off the cached data.
-        if (!compoundTag.getCompound("multiblockData").isEmpty())
-        {
-            this.cachedMultiblockData = compoundTag.getCompound("multiblockData").get();
-        }
+//        input.child("multiblockData").ifPresent(valueInput -> {
+//            this.cachedMultiblockData = valueInput.//input.getCompound("multiblockData").get();
+//        });
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
-    {
-        super.saveAdditional(compoundTag, provider);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
         if (isMultiblockSaveDelegate() && isConnected())
         {
             CompoundTag multiblockData = new CompoundTag();
             this.controller.writeToNBT(multiblockData);
-            compoundTag.put("multiblockData", multiblockData);
+//            output.put("multiblockData", multiblockData);
         }
     }
 
@@ -164,28 +163,28 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
             } else
             {
                 // This part hasn't been added to a machine yet, so cache the data.
-                this.cachedMultiblockData = tag;
+//                this.cachedMultiblockData = tag;
             }
         }
     }
 
-    @Override
-    public boolean hasMultiblockSaveData()
-    {
-        return this.cachedMultiblockData != null;
-    }
-
-    @Override
-    public CompoundTag getMultiblockSaveData()
-    {
-        return this.cachedMultiblockData;
-    }
-
-    @Override
-    public void onMultiblockDataAssimilated()
-    {
-        this.cachedMultiblockData = null;
-    }
+//    @Override
+//    public boolean hasMultiblockSaveData()
+//    {
+//        return this.cachedMultiblockData != null;
+//    }
+//
+//    @Override
+//    public CompoundTag getMultiblockSaveData()
+//    {
+//        return this.cachedMultiblockData;
+//    }
+//
+//    @Override
+//    public void onMultiblockDataAssimilated()
+//    {
+//        this.cachedMultiblockData = null;
+//    }
 
     @Override
     public abstract void onMachineAssembled(MultiblockControllerBase multiblockControllerBase);

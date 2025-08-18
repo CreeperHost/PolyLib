@@ -202,17 +202,6 @@ public class ModularGui implements GuiParent<ModularGui> {
     //=== Modular Gui Passthrough Methods ===//
 
     /**
-     * Create a new {@link GuiRender} for the current render call.
-     *
-     * @param buffers BufferSource can be retried from {@link net.minecraft.client.gui.GuiGraphics}
-     * @return A new {@link GuiRender} for the current render call.
-     */
-    @Deprecated //If you have the GuiGraphics, use GuiRender#convert to ensure the underlying PoseStack is carried over. That will ensure things like the JEI overlay will be rendered at a
-    public GuiRender createRender(MultiBufferSource.BufferSource buffers) {
-        return new GuiRender(mc, buffers);
-    }
-
-    /**
      * Primary render method for ModularGui. The screen implementing ModularGui must call this in its render method.
      * Followed by the {@link #renderOverlay(GuiRender, float)} method to handle overlay rendering.
      *
@@ -226,11 +215,11 @@ public class ModularGui implements GuiParent<ModularGui> {
 
         //Ensure overlay is rendered at a depth of ether 400 or total element depth + 100 (whichever is greater)
         double depth = root.getCombinedElementDepth();
-        if (depth <= 300) {
-            render.pose().translate(0, 0, 400 - depth);
-        } else {
-            render.pose().translate(0, 0, 100);
-        }
+//        if (depth <= 300) {
+//            render.pose().translate(0, 0, 400 - depth);
+//        } else {
+//            render.pose().translate(0, 0, 100);
+//        }
     }
 
     /**

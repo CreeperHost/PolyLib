@@ -7,6 +7,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -69,11 +70,11 @@ public class ProgressToast implements Toast
     public void render(GuiGraphics guiGraphics, Font font, long l)
     {
         //x, y, u, v, width, height, texWidth, texHeight
-        guiGraphics.blit(RenderType::guiTextured, BG_TEXTURE, 0, 0, 0, 0, width(), height(), width(), height());
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, BG_TEXTURE, 0, 0, 0, 0, width(), height(), width(), height());
         int wrapWidth = 125;
         int xOffset = 30;
         if (iconResourceLocation != null) {
-            guiGraphics.blit(RenderType::guiTextured, iconResourceLocation, 5, (height() - 22) / 2, 0, 0, 22, 22, 22, 22);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, iconResourceLocation, 5, (height() - 22) / 2, 0, 0, 22, 22, 22, 22);
         } else {
             wrapWidth += 23;
             xOffset -= 23;

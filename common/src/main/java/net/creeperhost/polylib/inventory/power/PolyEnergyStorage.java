@@ -4,6 +4,8 @@ import net.creeperhost.polylib.Serializable;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * Simple implementation of IPolyEnergyStorage that ensures the given block entity is marked dirty when energy content changes.
@@ -153,14 +155,13 @@ public class PolyEnergyStorage implements IPolyEnergyStorage, Serializable {
     }
 
     @Override
-    public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        nbt.putLong("energy", energy);
-        return nbt;
+    public void serialize(ValueOutput output) {
+        output.putLong("energy", energy);
     }
 
     @Override
-    public void deserialize(HolderLookup.Provider provider, CompoundTag nbt) {
-        energy = nbt.getLong("energy").get();
+    public void deserialize(ValueInput input) {
+        energy = input.getLongOr("energy", 0);
     }
 
     public void readFromBuf(FriendlyByteBuf buf) {

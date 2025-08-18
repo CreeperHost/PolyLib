@@ -82,14 +82,14 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
 
         super.render(graphics, mouseX, mouseY, partialTicks);
 
-        GuiRender render = GuiRender.convert(graphics);
+        GuiRender render = new GuiRender(graphics);
         if (!handleFloatingItemRender(render, mouseX, mouseY) && !renderHoveredStackToolTip(render, mouseX, mouseY)) {
             modularGui.renderOverlay(render, partialTicks);
         }
     }
 
     private void renderModularGui(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        modularGui.render(GuiRender.convert(graphics), partialTicks);
+        modularGui.render(new GuiRender(graphics), partialTicks);
     }
 
     @Override
@@ -119,19 +119,18 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
             ret = true;
         }
 
-        if (!this.snapbackItem.isEmpty()) {
-            float anim = (float) (Util.getMillis() - this.snapbackTime) / 100.0F;
-            if (anim >= 1.0F) {
-                anim = 1.0F;
-                this.snapbackItem = ItemStack.EMPTY;
-            }
-
-            int xDist = snapbackEnd.x - snapbackStartX;
-            int yDist = snapbackEnd.y - snapbackStartY;
-            int xPos = snapbackStartX + (int) ((float) xDist * anim);
-            int yPos = snapbackStartY + (int) ((float) yDist * anim);
-            renderFloatingItem(render, snapbackItem, xPos + leftPos, yPos + topPos, null);
+        if (snapbackData != null) {
+            float f = Mth.clamp((float)(Util.getMillis() - snapbackData.time) / 100.0F, 0.0F, 1.0F);
+            int i = snapbackData.end.x - snapbackData.start.x;
+            int j = snapbackData.end.y - snapbackData.start.y;
+            int k = snapbackData.start.x + (int)((float)i * f);
+            int l = snapbackData.start.y + (int)((float)j * f);
+            render.graphics().nextStratum();
+            renderFloatingItem(render.graphics(), snapbackData.item, k, l, (String)null);
             ret = true;
+            if (f >= 1.0F) {
+                snapbackData = null;
+            }
         }
 
         return ret;
@@ -273,7 +272,7 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
 
     @Override //Disable vanilla title and inventory name rendering
     protected void renderLabels(GuiGraphics guiGraphics, int i, int j) {
-        renderingSlots = false;
+
     }
 
     @Override
@@ -282,11 +281,11 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     }
 
     public void renderFloatingItem(GuiRender render, ItemStack itemStack, int x, int y, String string) {
-        render.pose().pushPose();
-        render.pose().translate(0.0F, 0.0F, 50F);
+//        render.pose().pushMatrix();
+//        render.pose().translate(0.0F, 0.0F, 50F);
         render.renderItem(itemStack, x, y);
         render.renderItemDecorations(itemStack, x, y - (this.draggingItem.isEmpty() ? 0 : 8), string);
-        render.pose().popPose();
+//        render.pose().popMatrix();
     }
 
     @Override
@@ -310,5 +309,6 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         if (modularGui.vanillaSlotRendering()) {
             super.renderSlotHighlightFront(guiGraphics);
         }
+        renderingSlots = false;
     }
 }

@@ -18,7 +18,7 @@ public interface DataRetainingBlock {
      * @param willHarvest This will be true if the block is actually about to be harvested.
      *                    vs for example, using pick-block to copy the block.
      */
-    void writeToItemStack(HolderLookup.Provider provider, CompoundTag nbt, boolean willHarvest);
+    CompoundTag writeToItemStack(HolderLookup.Provider provider, boolean willHarvest);
 
     /**
      * @param nbt Will contain all data written in {@link #writeToItemStack(CompoundTag, boolean)}.

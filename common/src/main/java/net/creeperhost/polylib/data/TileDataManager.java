@@ -3,14 +3,14 @@ package net.creeperhost.polylib.data;
 import net.creeperhost.polylib.data.serializable.AbstractDataStore;
 import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -93,10 +93,10 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
     /**
      * Call from tiles load method.
      */
-    public void load(HolderLookup.Provider provider, CompoundTag tag) {
+    public void load(ValueInput input) {
         dataStoreMap.forEach((name, data) -> {
-            if ((dataFlags.get(data) & SAVE) > 0 && tag.contains(name)) {
-                data.fromTag(provider, tag.get(name));
+            if ((dataFlags.get(data) & SAVE) > 0 && input.child(name).isPresent()) {
+                data.fromTag(input.childOrEmpty(name));
             }
         });
     }
@@ -104,26 +104,26 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
     /**
      * Call from tiles save method.
      */
-    public void save(HolderLookup.Provider provider, CompoundTag tag) {
+    public void save(ValueOutput output) {
         dataStoreMap.forEach((name, data) -> {
             if ((dataFlags.get(data) & SAVE) > 0) {
-                tag.put(name, data.toTag(provider));
+                data.toTag(output.child(name));
             }
         });
     }
 
-    public void loadFromItem(HolderLookup.Provider provider, CompoundTag tag) {
+    public void loadFromItem(ValueInput input) {
         dataStoreMap.forEach((name, data) -> {
-            if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0 && tag.contains(name)) {
-                data.fromTag(provider, tag.get(name));
+            if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0 && input.child(name).isPresent()) {
+                data.fromTag(input.childOrEmpty(name));
             }
         });
     }
 
-    public void saveToItem(HolderLookup.Provider provider, CompoundTag tag) {
+    public void saveToItem(ValueOutput output) {
         dataStoreMap.forEach((name, data) -> {
             if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0) {
-                tag.put(name, data.toTag(provider));
+                data.toTag(output.child(name));
             }
         });
     }

@@ -20,13 +20,13 @@ mutable field net/minecraft/data/PackOutput$PathProvider root Ljava/nio/file/Pat
 accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
 accessible method net/minecraft/client/gui/components/AbstractSelectionList$Entry <init> ()V
 
+accessible method net/minecraft/client/renderer/RenderType$CompositeRenderType <init> (Ljava/lang/String;IZZLcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/client/renderer/RenderType$CompositeState;)V
+
 accessible method net/minecraft/client/renderer/texture/TextureAtlas getWidth ()I
 accessible method net/minecraft/client/renderer/texture/TextureAtlas getHeight ()I
 
-extendable method net/minecraft/client/gui/GuiGraphics <init> (Lnet/minecraft/client/Minecraft;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V # <init>
-#extendable method net/minecraft/client/gui/GuiGraphics flushIfUnmanaged ()V
-#extendable method net/minecraft/client/gui/GuiGraphics flushIfManaged ()V
-accessible field net/minecraft/client/gui/GuiGraphics bufferSource Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;
+accessible field net/minecraft/client/gui/GuiGraphics minecraft Lnet/minecraft/client/Minecraft;
+accessible method net/minecraft/client/gui/GuiGraphics innerBlit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIIIFFFFI)V
 
 extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;)V
 accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;)V
@@ -48,11 +48,11 @@ accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScr
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen isSplittingStack Z
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftingType I
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftingRemainder I
-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackItem Lnet/minecraft/world/item/ItemStack;
-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackTime J
-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackEnd Lnet/minecraft/world/inventory/Slot;
-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackStartX I
-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackStartY I
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackData Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData;
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData item Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData start Lorg/joml/Vector2i;
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData end Lorg/joml/Vector2i;
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData time J
 
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageWidth I
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I

@@ -1,11 +1,11 @@
 package net.creeperhost.polylib;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public interface Serializable
 {
-    void deserialize(HolderLookup.Provider provider, CompoundTag nbt);
+    void deserialize(ValueInput input);
 
-    CompoundTag serialize(HolderLookup.Provider provider, CompoundTag nbt);
+    void serialize(ValueOutput output);
 }

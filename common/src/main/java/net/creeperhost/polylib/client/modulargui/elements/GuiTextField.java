@@ -1,8 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.creeperhost.polylib.client.modulargui.lib.Assembly;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
@@ -12,8 +10,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
@@ -53,10 +50,10 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
 
     private TextState textState = TextState.simpleState("");
     private Supplier<Boolean> shadow = () -> true;
-    private Supplier<Integer> textColor = () -> 0xe0e0e0;
+    private Supplier<Integer> textColor = () -> 0xFFE0E0E0;
 
     private Supplier<Component> suggestion = null;
-    private Supplier<Integer> suggestionColour = () -> 0x7f7f80;
+    private Supplier<Integer> suggestionColour = () -> 0xFF7F7F80;
     private Supplier<Boolean> suggestionShadow = () -> true;
 
     private Predicate<String> filter = Objects::nonNull;
@@ -637,9 +634,9 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
 
         if (highlightStart != textStart) {
             int l1 = (int) (drawX + font().width(displayText.substring(0, highlightStart)));
-            render.pose().translate(0, 0, 0.035);
-            render.fill(RenderType.guiTextHighlight(), k1, drawY - 1, l1 - 1, drawY + 1 + 9, 0xFF0000FF);
-            render.pose().translate(0, 0, -0.035);
+//            render.pose().translate(0, 0, 0.035);
+            render.fill(RenderPipelines.GUI_TEXT_HIGHLIGHT, k1, drawY - 1, l1 - 1, drawY + 1 + 9, 0xFF0000FF);
+//            render.pose().translate(0, 0, -0.035);
         }
     }
 

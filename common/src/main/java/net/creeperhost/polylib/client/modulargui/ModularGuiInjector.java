@@ -71,10 +71,10 @@ public class ModularGuiInjector<T extends Screen> {
 
     private static void renderPost(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, DeltaTracker delta) {
         if (activeGui == null) return;
-        GuiRender render = GuiRender.convert(graphics);
-        if (screen instanceof AbstractContainerScreen<?>) {
-            render.pose().translate(0, 0, 275); //Ensure we render on top of inventory stacks.
-        }
+        GuiRender render = new GuiRender(graphics);
+//        if (screen instanceof AbstractContainerScreen<?>) {
+//            render.pose().translate(0, 0, 275); //Ensure we render on top of inventory stacks.
+//        }
         activeGui.render(render, delta.getGameTimeDeltaTicks());
         activeGui.renderOverlay(render, delta.getGameTimeDeltaTicks());
     }

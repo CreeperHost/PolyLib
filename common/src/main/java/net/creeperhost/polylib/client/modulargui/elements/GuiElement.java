@@ -373,7 +373,7 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
             double depth = bgr.getBackgroundDepth();
             bgr.renderBehind(render, mouseX, mouseY, partialTicks);
             if (depth > 0) {
-                render.pose().translate(0, 0, depth);
+//                render.pose().translate(0, 0, depth);
             }
         }
 
@@ -385,21 +385,21 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
                 if (!zStacking && rendered) {
                     double depth = child.getCombinedElementDepth();
                     maxDepth = Math.max(maxDepth, depth);
-                    render.pose().translate(0, 0, -depth);
+//                    render.pose().translate(0, 0, -depth);
                 }
             }
         }
 
         if (!zStacking) {
             //Now we need to apply the z offset of the tallest child.
-            render.pose().translate(0, 0, maxDepth);
+//            render.pose().translate(0, 0, maxDepth);
         }
 
         if (this instanceof ForegroundRender fgr) {
             double depth = fgr.getForegroundDepth();
             fgr.renderInFront(render, mouseX, mouseY, partialTicks);
             if (depth > 0) {
-                render.pose().translate(0, 0, depth);
+//                render.pose().translate(0, 0, depth);
             }
         }
     }

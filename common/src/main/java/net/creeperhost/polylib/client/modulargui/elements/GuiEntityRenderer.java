@@ -262,11 +262,12 @@ public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements 
     }
 
     public static void renderEntityInInventory(GuiRender render, double pX, double pY, double pScale, Quaternionf quat, @Nullable Quaternionf pCameraOrientation, Entity pEntity) {
-        render.pose().pushPose();
-        render.pose().translate(pX, pY, 50.0D);
-        render.pose().mulPose((new Matrix4f()).scaling((float) pScale, (float) pScale, (float) (-pScale)));
-        render.pose().mulPose(quat);
-        Lighting.setupForEntityInInventory();
+        render.pose().pushMatrix();
+        //TODO gui entity rendering
+//        render.pose().translate(pX, pY, 50.0D);
+//        render.pose().mulPose((new Matrix4f()).scaling((float) pScale, (float) pScale, (float) (-pScale)));
+//        render.pose().mulPose(quat);
+//        Lighting.setupForEntityInInventory();
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         if (pCameraOrientation != null) {
             pCameraOrientation.conjugate();
@@ -274,12 +275,12 @@ public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements 
         }
 
         entityrenderdispatcher.setRenderShadow(false);
-        render.drawSpecial((multiBufferSource) -> {
-            entityrenderdispatcher.render(pEntity, 0.0D, 0.0D, 0.0F, 1.0F, render.pose(), multiBufferSource, 15728880);
-        });
-        render.flush();
+//        render.drawSpecial((multiBufferSource) -> {
+//            entityrenderdispatcher.render(pEntity, 0.0D, 0.0D, 0.0F, 1.0F, render.pose(), multiBufferSource, 15728880);
+//        });
+//        render.flush();
         entityrenderdispatcher.setRenderShadow(true);
-        render.pose().popPose();
-        Lighting.setupFor3DItems();
+        render.pose().popMatrix();
+//        Lighting.setupFor3DItems();
     }
 }

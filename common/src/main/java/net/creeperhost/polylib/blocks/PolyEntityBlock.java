@@ -125,14 +125,13 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
         if (blockEntity instanceof DataRetainingBlock retaining && retaining.saveToItem() && (level instanceof ServerLevel || !isCTRLKeyDown())) {
-            CompoundTag nbt = new CompoundTag();
-            ((DataRetainingBlock) blockEntity).writeToItemStack(level.registryAccess(), nbt, false);
+            CompoundTag nbt = retaining.writeToItemStack(level.registryAccess(), false);
             if (!nbt.isEmpty()) {
                 stack.set(DataComps.getItemTileData(), CustomData.of(nbt));
             }
         }
 
-        if (blockEntity instanceof Nameable nameable && ((Nameable) blockEntity).hasCustomName()) {
+        if (blockEntity instanceof Nameable nameable && nameable.hasCustomName()) {
             stack.set(DataComponents.CUSTOM_NAME, nameable.getName());
         }
 
@@ -148,8 +147,7 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
         ItemStack stack = ItemStack.EMPTY;
 
         if (blockEntity instanceof DataRetainingBlock retaining && retaining.saveToItem()) {
-            CompoundTag nbt = new CompoundTag();
-            retaining.writeToItemStack(level.registryAccess(), nbt, true);
+            CompoundTag nbt = retaining.writeToItemStack(level.registryAccess(), true);
             if (!nbt.isEmpty()) {
                 stack = new ItemStack(this, 1);
                 stack.set(DataComps.getItemTileData(), CustomData.of(nbt));

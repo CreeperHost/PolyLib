@@ -245,7 +245,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
         updateSlots(root);
 
         Slot highlightSlot = null;
-        render.pose().pushPose();
+//        render.pose().pushMatrix();
 
         for (int index = 0; index < slotCount; index++) {
             Slot slot = slots.getSlot(index + firstSlot);
@@ -255,7 +255,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             }
         }
 
-        render.pose().translate(0, 0, 0.4);
+//        render.pose().translate(0, 0, 0.4);
 
         for (int index = 0; index < slotCount; index++) {
             Slot slot = slots.getSlot(index + firstSlot);
@@ -273,7 +273,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             }
         }
 
-        render.pose().translate(0, 0, getBackgroundDepth() - 0.8);
+//        render.pose().translate(0, 0, getBackgroundDepth() - 0.8);
 
         if (slotOverlay != null) {
             for (int index = 0; index < slotCount; index++) {
@@ -287,7 +287,7 @@ public class GuiSlots extends GuiElement<GuiSlots> implements BackgroundRender {
             render.rect(highlightSlot.x + root.xMin(), highlightSlot.y + root.yMin(), 16, 16, highlightColour.apply(highlightSlot));
         }
 
-        render.pose().popPose();
+//        render.pose().popMatrix();
     }
 
     //=== Construction Helpers ===//

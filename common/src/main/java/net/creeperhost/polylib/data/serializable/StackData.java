@@ -1,12 +1,10 @@
 package net.creeperhost.polylib.data.serializable;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * Created by brandon3055 on 09/09/2023
@@ -41,21 +39,13 @@ public class StackData extends AbstractDataStore<ItemStack> {
     }
 
     @Override
-    public Tag toTag(HolderLookup.Provider provider) {
-        if (!value.isEmpty()) {
-            return value.save(provider);
-        } else {
-            return new CompoundTag();
-        }
+    public void toTag(ValueOutput output) {
+        output.store("value", ItemStack.OPTIONAL_CODEC, value);
     }
 
     @Override
-    public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        if (tag instanceof CompoundTag c && c.isEmpty()) {
-            value = validValue(ItemStack.EMPTY, value);
-        } else {
-            value = validValue(ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY), value);
-        }
+    public void fromTag(ValueInput input) {
+        value = input.read("value", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override

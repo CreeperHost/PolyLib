@@ -52,11 +52,11 @@ public class TestModDataGen implements DataGeneratorEntrypoint
            return blockLootProvider;
         });
 
-        pack.addProvider((output, registriesFuture) -> {
-            PolyBlockTagProvider blockTagProvider = new PolyBlockTagProvider(output, registriesFuture, ModuleType.COMMON);
-            TestBlocks.BLOCKS.forEach(blockRegistrySupplier -> blockTagProvider.add(BlockTags.MINEABLE_WITH_PICKAXE, blockRegistrySupplier.get(), ModuleType.COMMON));
-            return blockTagProvider;
-        });
+//        pack.addProvider((output, registriesFuture) -> {
+//            PolyBlockTagProvider blockTagProvider = new PolyBlockTagProvider(output, registriesFuture, ModuleType.COMMON);
+//            TestBlocks.BLOCKS.forEach(blockRegistrySupplier -> blockTagProvider.add(BlockTags.MINEABLE_WITH_PICKAXE, blockRegistrySupplier.get(), ModuleType.COMMON));
+//            return blockTagProvider;
+//        });
 
         pack.addProvider((output, registriesFuture) -> {
            PolyRecipeProvider recipeProvider = new PolyRecipeProvider(output, ModuleType.COMMON, registriesFuture);
@@ -68,11 +68,11 @@ public class TestModDataGen implements DataGeneratorEntrypoint
         });
 
 
-        pack.addProvider((output, registriesFuture) -> {
-            PolyItemTagProvider itemTagProvider = new PolyItemTagProvider(output, registriesFuture, null, ModuleType.COMMON);
-            TestItems.ITEMS.forEach(itemRegistrySupplier -> itemTagProvider.add(ItemTags.ANVIL, itemRegistrySupplier.get(), ModuleType.COMMON));
-            return itemTagProvider;
-        });
+//        pack.addProvider((output, registriesFuture) -> {
+//            PolyItemTagProvider itemTagProvider = new PolyItemTagProvider(output, registriesFuture, null, ModuleType.COMMON);
+//            TestItems.ITEMS.forEach(itemRegistrySupplier -> itemTagProvider.add(ItemTags.ANVIL, itemRegistrySupplier.get(), ModuleType.COMMON));
+//            return itemTagProvider;
+//        });
 
 
         pack.addProvider((output, registriesFuture) -> {

@@ -9,6 +9,8 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -112,14 +114,15 @@ public class BlockInventory implements Container, Serializable, ContainerHelpers
     }
 
     @Override
-    public void deserialize(HolderLookup.Provider provider, CompoundTag compoundTag) {
-        ContainerHelper.loadAllItems(compoundTag, items, provider);
+    public void deserialize(ValueInput input) {
+        ContainerHelper.loadAllItems(input, items);
     }
 
     @Override
-    public CompoundTag serialize(HolderLookup.Provider provider, CompoundTag compoundTag) {
-        return ContainerHelper.saveAllItems(compoundTag, items, provider);
+    public void serialize(ValueOutput output) {
+        ContainerHelper.saveAllItems(output, items);
     }
+
 
     @Override
     public int getMaxStackSize() {

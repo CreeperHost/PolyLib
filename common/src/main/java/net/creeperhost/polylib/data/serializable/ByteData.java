@@ -6,6 +6,8 @@ import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * Created by brandon3055 on 09/09/2023
@@ -31,13 +33,13 @@ public class ByteData extends AbstractDataStore<Byte> {
     }
 
     @Override
-    public Tag toTag(HolderLookup.Provider provider) {
-        return ByteTag.valueOf(value);
+    public void toTag(ValueOutput output) {
+        output.putByte("value", value);
     }
 
     @Override
-    public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        value = validValue(((NumericTag) tag).byteValue(), value);
+    public void fromTag(ValueInput input) {
+        value = input.getByteOr("value", value);
     }
 
     //=============== Helpers ===============

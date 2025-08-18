@@ -5,6 +5,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,24 +54,18 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
     }
 
     @Override
-    public Tag toTag(HolderLookup.Provider provider) {
-        CompoundTag nbt = new CompoundTag();
-        if (value == null) {
-            nbt.putBoolean("null", true);
+    public void toTag(ValueOutput output) {
+        if (value != null) {
+            output.putByte("value", valueToIndex.get(value).byteValue());
         } else {
-            nbt.putByte("value", valueToIndex.get(value).byteValue());
+            output.putBoolean("null", true);
         }
-        return nbt;
     }
 
     @Override
-    public void fromTag(HolderLookup.Provider provider, Tag tag) {
-        if (tag instanceof CompoundTag nbt) {
-            if (nbt.contains("null")) {
-                value = null;
-            } else {
-                value = validValue(indexToValue.get(MathUtil.clamp(nbt.getByte("value").get() & 0xFF, 0, indexToValue.size() - 1)), value);
-            }
+    public void fromTag(ValueInput input) {
+        if (!input.getBooleanOr("null", false)) {
+            value = validValue(indexToValue.get(MathUtil.clamp(input.getByteOr("value", (byte) 0) & 0xFF, 0, indexToValue.size() - 1)), value);
         }
     }
 

@@ -91,13 +91,14 @@ public class GuiProgressIcon extends GuiElement<GuiProgressIcon> implements Back
 
     @Override
     public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
-        render.pose().pushPose();
+        render.pose().pushMatrix();
 
         double width = direction.getAxis() == Axis.X ? xSize() : ySize();
         double height = direction.getAxis() == Axis.X ? ySize() : xSize();
 
-        render.pose().translate(xMin() + (xSize() / 2), yMin() + (ySize() / 2), 0);
-        render.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees((float) Direction.RIGHT.rotationTo(direction)));
+        render.translate(xMin() + (xSize() / 2), yMin() + (ySize() / 2));
+//        render.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees((float) Direction.RIGHT.rotationTo(direction)));
+        render.pose().rotate((float) Direction.RIGHT.rotationTo(direction));
 
         double halfWidth = width / 2;
         double halfHeight = height / 2;
@@ -107,8 +108,8 @@ public class GuiProgressIcon extends GuiElement<GuiProgressIcon> implements Back
 
         if (animated == null) return;
         float progress = (float) getProgress();
-        render.partialSprite(animated.renderType(GuiRender::texColType), -halfWidth, -halfHeight, -halfWidth + (width* progress), -halfHeight + height, animated.sprite(), 0F, 0F, progress, 1F, 0xFFFFFFFF);
+        render.partialSprite(GuiRender.guiTexPipe(), -halfWidth, -halfHeight, -halfWidth + (width * progress), -halfHeight + height, animated.sprite(), 0F, 0F, progress, 1F, 0xFFFFFFFF);
 
-        render.pose().popPose();
+        render.pose().popMatrix();
     }
 }

@@ -15,6 +15,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -218,12 +219,13 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
         boolean tooLong = textWidth > xSize();
         double yPos = (yMin() + ySize() / 2 - textHeight / 2D) + 1; //Adding 1 here makes the text look 'visually' centered, Text height includes the height of the optional underline.
 
-        PoseStack stack = render.pose();
+        Matrix3x2fStack stack = render.pose();
         if (rotation != null) {
-            stack.pushPose();
-            stack.translate(xMin() + rotatePoint.x(), yMin() + rotatePoint.y(), 0);
-            stack.mulPose(Axis.ZP.rotationDegrees(rotation.get().floatValue()));
-            stack.translate(-xMin() - rotatePoint.x(), -yMin() - rotatePoint.y(), 0);
+            stack.pushMatrix();
+            render.translate(xMin() + rotatePoint.x(), yMin() + rotatePoint.y());
+//            stack.mulPose(Axis.ZP.rotationDegrees(rotation.get().floatValue()));
+            stack.rotate(rotation.get().floatValue());
+            render.translate(-xMin() - rotatePoint.x(), -yMin() - rotatePoint.y());
         }
 
         //Draw Trimmed
@@ -262,7 +264,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
         }
 
         if (rotation != null) {
-            stack.popPose();
+            stack.popMatrix();
         }
     }
 }

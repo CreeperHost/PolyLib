@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Orientation;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -139,47 +144,46 @@ public class PolyBlockEntity extends BlockEntity implements Nameable, DataManage
 
     //=== Data ===
 
-
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
-    {
-        super.saveAdditional(compoundTag, provider);
-        dataManager.save(provider, compoundTag);
-        writeExtraData(provider, compoundTag);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        dataManager.save(output);
+        writeExtraData(output);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
-    {
-        super.loadAdditional(compoundTag, provider);
-        dataManager.load(provider, compoundTag);
-        readExtraData(provider, compoundTag);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        dataManager.load(input);
+        readExtraData(input);
     }
 
-
     @Override
-    public void writeToItemStack(HolderLookup.Provider provider, CompoundTag nbt, boolean willHarvest) {
-        dataManager.saveToItem(provider, nbt);
-        writeExtraData(provider, nbt);
+    public CompoundTag writeToItemStack(HolderLookup.Provider provider, boolean willHarvest) {
+        TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, provider);
+        dataManager.saveToItem(output);
+        writeExtraData(output);
+        return output.buildResult();
     }
 
     @Override
     public void readFromItemStack(HolderLookup.Provider provider, CompoundTag nbt) {
-        dataManager.loadFromItem(provider, nbt);
-        readExtraData(provider, nbt);
+        ValueInput input = TagValueInput.create(ProblemReporter.DISCARDING, provider, nbt);
+        dataManager.loadFromItem(input);
+        readExtraData(input);
     }
 
     /**
      * Convenience method for writing extra data to both the tile NBT, and item NBT when harvested.
      */
-    public void writeExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
+    public void writeExtraData(ValueOutput output) {
 
     }
 
     /**
      * Convenience method for reading extra data from both the tile NBT, and item NBT.
      */
-    public void readExtraData(HolderLookup.Provider provider, CompoundTag nbt) {
+    public void readExtraData(ValueInput input) {
 
     }
 

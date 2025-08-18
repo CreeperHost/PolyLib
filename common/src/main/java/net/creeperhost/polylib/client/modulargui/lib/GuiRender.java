@@ -1,16 +1,10 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.creeperhost.polylib.PolyLibClient;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
-import net.minecraft.CrashReport;
-import net.minecraft.CrashReportCategory;
-import net.minecraft.ReportedException;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -20,11 +14,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -37,16 +29,16 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fStack;
 import org.joml.Vector2ic;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -59,44 +51,54 @@ import java.util.stream.Collectors;
  * Created by brandon3055 on 29/06/2023
  */
 public class GuiRender {
-    public static final RenderType SOLID = RenderType.gui();
-
-    //Used for things like events that require the vanilla GuiGraphics
-    private final RenderWrapper renderWrapper;
-
-    private final Minecraft mc;
-    private final PoseStack pose;
-    private final ScissorHandler scissorHandler = new ScissorHandler();
-    private final MultiBufferSource.BufferSource buffers;
-    private final ItemStackRenderState stackRenderState = new ItemStackRenderState();
-    private boolean batchDraw;
+    private final GuiGraphics wrapped;
+    //    public static final RenderType SOLID = create("gui", 786432, RenderPipelines.GUI, RenderType.CompositeState.builder().createCompositeState(false));
+//
+//    //Used for things like events that require the vanilla GuiGraphics
+//    private final RenderWrapper renderWrapper;
+//
+//    private final Minecraft mc;
+//    private final PoseStack pose;
+//    private final ScissorHandler scissorHandler = new ScissorHandler();
+//    private final MultiBufferSource.BufferSource buffers;
+//    private final ItemStackRenderState stackRenderState = new ItemStackRenderState();
+//    private boolean batchDraw;
     private Font fontOverride;
 
-    public GuiRender(Minecraft mc, PoseStack poseStack, MultiBufferSource.BufferSource buffers) {
-        this.mc = mc;
-        this.pose = poseStack;
-        this.buffers = buffers;
-        this.renderWrapper = new RenderWrapper(this);
+//    public GuiRender(Minecraft mc, PoseStack poseStack, MultiBufferSource.BufferSource buffers) {
+//        this.mc = mc;
+//        this.pose = poseStack;
+//        this.buffers = buffers;
+//        this.renderWrapper = new RenderWrapper(this);
+//    }
+//
+//    public GuiRender(Minecraft mc, MultiBufferSource.BufferSource buffers) {
+//        this(mc, new PoseStack(), buffers);
+//    }
+
+//    public static GuiRender convert(GuiGraphics graphics) {
+//        return new GuiRender(Minecraft.getInstance(), graphics.pose(), graphics.bufferSource);
+//    }
+
+
+    public GuiRender(GuiGraphics wrapped) {
+        this.wrapped = wrapped;
     }
 
-    public GuiRender(Minecraft mc, MultiBufferSource.BufferSource buffers) {
-        this(mc, new PoseStack(), buffers);
+    public GuiGraphics graphics() {
+        return wrapped;
     }
 
-    public static GuiRender convert(GuiGraphics graphics) {
-        return new GuiRender(Minecraft.getInstance(), graphics.pose(), graphics.bufferSource);
+    public Matrix3x2fStack pose() {
+        return wrapped.pose();
     }
 
-    public PoseStack pose() {
-        return pose;
-    }
-
-    public MultiBufferSource.BufferSource buffers() {
-        return buffers;
-    }
+//    public MultiBufferSource.BufferSource buffers() {
+//        return wrapped.;
+//    }
 
     public Minecraft mc() {
-        return mc;
+        return wrapped.minecraft;
     }
 
     public Font font() {
@@ -121,46 +123,46 @@ public class GuiRender {
         this.fontOverride = font;
     }
 
-    /**
-     * Allow similar render calls to be batched together into a single draw for better render efficiency.
-     * All render calls in batch must use the same render type.
-     *
-     * @param batch callback in which the rendering should be implemented.
-     */
-    public void batchDraw(Runnable batch) {
-        flush();
-        batchDraw = true;
-        batch.run();
-        batchDraw = false;
-        flush();
-    }
-
-    private void flushIfUnBatched() {
-        if (!batchDraw) flush();
-    }
-
-    private void flushIfBatched() {
-        if (batchDraw) flush();
-    }
-
-    public void flush() {
-        buffers.endBatch();
-    }
-
-    public void drawSpecial(Consumer<MultiBufferSource> consumer) {
-        consumer.accept(this.buffers);
-        this.buffers.endBatch();
-    }
-
-    /**
-     * Only use this as a last resort! It may explode... Have fun!
-     *
-     * @return A Vanilla GuiGraphics instance that wraps this {@link GuiRender}
-     */
-    @Deprecated
-    public RenderWrapper guiGraphicsWrapper() {
-        return renderWrapper;
-    }
+//    /**
+//     * Allow similar render calls to be batched together into a single draw for better render efficiency.
+//     * All render calls in batch must use the same render type.
+//     *
+//     * @param batch callback in which the rendering should be implemented.
+//     */
+//    public void batchDraw(Runnable batch) {
+//        flush();
+//        batchDraw = true;
+//        batch.run();
+//        batchDraw = false;
+//        flush();
+//    }
+//
+//    private void flushIfUnBatched() {
+//        if (!batchDraw) flush();
+//    }
+//
+//    private void flushIfBatched() {
+//        if (batchDraw) flush();
+//    }
+//
+//    public void flush() {
+//        buffers.endBatch();
+//    }
+//
+//    public void drawSpecial(Consumer<MultiBufferSource> consumer) {
+//        consumer.accept(this.buffers);
+//        this.buffers.endBatch();
+//    }
+//
+//    /**
+//     * Only use this as a last resort! It may explode... Have fun!
+//     *
+//     * @return A Vanilla GuiGraphics instance that wraps this {@link GuiRender}
+//     */
+//    @Deprecated
+//    public RenderWrapper guiGraphicsWrapper() {
+//        return renderWrapper;
+//    }
 
     //=== Un-Textured geometry ===//
 
@@ -168,13 +170,13 @@ public class GuiRender {
      * Fill rectangle with solid colour
      */
     public void rect(Rectangle rectangle, int colour) {
-        this.rect(SOLID, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), colour);
+        this.rect(RenderPipelines.GUI, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), colour);
     }
 
     /**
      * Fill rectangle with solid colour
      */
-    public void rect(RenderType type, Rectangle rectangle, int colour) {
+    public void rect(RenderPipeline type, Rectangle rectangle, int colour) {
         this.rect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), colour);
     }
 
@@ -182,13 +184,13 @@ public class GuiRender {
      * Fill rectangle with solid colour
      */
     public void rect(double x, double y, double width, double height, int colour) {
-        this.fill(SOLID, x, y, x + width, y + height, colour);
+        this.fill(RenderPipelines.GUI, x, y, x + width, y + height, colour);
     }
 
     /**
      * Fill rectangle with solid colour
      */
-    public void rect(RenderType type, double x, double y, double width, double height, int colour) {
+    public void rect(RenderPipeline type, double x, double y, double width, double height, int colour) {
         this.fill(type, x, y, x + width, y + height, colour);
     }
 
@@ -196,88 +198,90 @@ public class GuiRender {
      * Fill area with solid colour
      */
     public void fill(double xMin, double yMin, double xMax, double yMax, int colour) {
-        this.fill(SOLID, xMin, yMin, xMax, yMax, colour);
+        this.fill(RenderPipelines.GUI, xMin, yMin, xMax, yMax, colour);
     }
 
     /**
      * Fill area with solid colour
      */
-    public void fill(RenderType type, double xMin, double yMin, double xMax, double yMax, int colour) {
-        if (xMax < xMin) {
-            double min = xMax;
-            xMax = xMin;
-            xMin = min;
-        }
-        if (yMax < yMin) {
-            double min = yMax;
-            yMax = yMin;
-            yMin = min;
-        }
-
-        Matrix4f mat = pose.last().pose();
-        VertexConsumer buffer = buffers.getBuffer(type);
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(colour); //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(colour); //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(colour); //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(colour); //L-B
-        flushIfUnBatched();
+    public void fill(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int colour) {
+//        if (xMax < xMin) {
+//            double min = xMax;
+//            xMax = xMin;
+//            xMin = min;
+//        }
+//        if (yMax < yMin) {
+//            double min = yMax;
+//            yMax = yMin;
+//            yMin = min;
+//        }
+//
+//        Matrix4f mat = pose.last().pose();
+//        VertexConsumer buffer = buffers.getBuffer(type);
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(colour); //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(colour); //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(colour); //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(colour); //L-B
+//        flushIfUnBatched();
+        wrapped.fill(type, (int) xMin, (int) yMin, (int) xMax, (int) yMax, colour);
     }
 
     /**
      * Fill area with colour gradient from top to bottom
      */
     public void gradientFillV(double xMin, double yMin, double xMax, double yMax, int topColour, int bottomColour) {
-        this.gradientFillV(SOLID, xMin, yMin, xMax, yMax, topColour, bottomColour);
+//        this.gradientFillV(RenderPipelines.GUI, xMin, yMin, xMax, yMax, topColour, bottomColour);
+        wrapped.fillGradient((int) xMin, (int) yMin, (int) xMax, (int) yMax, topColour, bottomColour);
     }
-
-    /**
-     * Fill area with colour gradient from top to bottom
-     */
-    public void gradientFillV(RenderType type, double xMin, double yMin, double xMax, double yMax, int topColour, int bottomColour) {
-        VertexConsumer buffer = buffers().getBuffer(type);
-        float sA = (float) ARGB.alpha(topColour) / 255.0F;
-        float sR = (float) ARGB.red(topColour) / 255.0F;
-        float sG = (float) ARGB.green(topColour) / 255.0F;
-        float sB = (float) ARGB.blue(topColour) / 255.0F;
-        float eA = (float) ARGB.alpha(bottomColour) / 255.0F;
-        float eR = (float) ARGB.red(bottomColour) / 255.0F;
-        float eG = (float) ARGB.green(bottomColour) / 255.0F;
-        float eB = (float) ARGB.blue(bottomColour) / 255.0F;
-        Matrix4f mat = pose.last().pose();
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA); //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(sR, sG, sB, sA); //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA); //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(eR, eG, eB, eA); //L-B
-        this.flushIfUnBatched();
-    }
-
-    /**
-     * Fill area with colour gradient from left to right
-     */
-    public void gradientFillH(double xMin, double yMin, double xMax, double yMax, int leftColour, int rightColour) {
-        this.gradientFillH(SOLID, xMin, yMin, xMax, yMax, leftColour, rightColour);
-    }
-
-    /**
-     * Fill area with colour gradient from left to right
-     */
-    public void gradientFillH(RenderType type, double xMin, double yMin, double xMax, double yMax, int leftColour, int rightColour) {
-        VertexConsumer buffer = buffers().getBuffer(type);
-        float sA = (float) ARGB.alpha(leftColour) / 255.0F;
-        float sR = (float) ARGB.red(leftColour) / 255.0F;
-        float sG = (float) ARGB.green(leftColour) / 255.0F;
-        float sB = (float) ARGB.blue(leftColour) / 255.0F;
-        float eA = (float) ARGB.alpha(rightColour) / 255.0F;
-        float eR = (float) ARGB.red(rightColour) / 255.0F;
-        float eG = (float) ARGB.green(rightColour) / 255.0F;
-        float eB = (float) ARGB.blue(rightColour) / 255.0F;
-        Matrix4f mat = pose.last().pose();
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA); //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(eR, eG, eB, eA); //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA); //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(sR, sG, sB, sA); //L-B
-        this.flushIfUnBatched();
-    }
+//
+//    /**
+//     * Fill area with colour gradient from top to bottom
+//     */
+//    public void gradientFillV(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int topColour, int bottomColour) {
+//        VertexConsumer buffer = buffers().getBuffer(type);
+//        float sA = (float) ARGB.alpha(topColour) / 255.0F;
+//        float sR = (float) ARGB.red(topColour) / 255.0F;
+//        float sG = (float) ARGB.green(topColour) / 255.0F;
+//        float sB = (float) ARGB.blue(topColour) / 255.0F;
+//        float eA = (float) ARGB.alpha(bottomColour) / 255.0F;
+//        float eR = (float) ARGB.red(bottomColour) / 255.0F;
+//        float eG = (float) ARGB.green(bottomColour) / 255.0F;
+//        float eB = (float) ARGB.blue(bottomColour) / 255.0F;
+//        Matrix4f mat = pose.last().pose();
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA); //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(sR, sG, sB, sA); //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA); //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(eR, eG, eB, eA); //L-B
+//        this.flushIfUnBatched();
+//    }
+//
+//    /**
+//     * Fill area with colour gradient from left to right
+//     */
+//    public void gradientFillH(double xMin, double yMin, double xMax, double yMax, int leftColour, int rightColour) {
+//        this.gradientFillH(RenderPipelines.GUI, xMin, yMin, xMax, yMax, leftColour, rightColour);
+//    }
+//
+//    /**
+//     * Fill area with colour gradient from left to right
+//     */
+//    public void gradientFillH(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int leftColour, int rightColour) {
+//        VertexConsumer buffer = buffers().getBuffer(type);
+//        float sA = (float) ARGB.alpha(leftColour) / 255.0F;
+//        float sR = (float) ARGB.red(leftColour) / 255.0F;
+//        float sG = (float) ARGB.green(leftColour) / 255.0F;
+//        float sB = (float) ARGB.blue(leftColour) / 255.0F;
+//        float eA = (float) ARGB.alpha(rightColour) / 255.0F;
+//        float eR = (float) ARGB.red(rightColour) / 255.0F;
+//        float eG = (float) ARGB.green(rightColour) / 255.0F;
+//        float eB = (float) ARGB.blue(rightColour) / 255.0F;
+//        Matrix4f mat = pose.last().pose();
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(eR, eG, eB, eA); //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(eR, eG, eB, eA); //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(sR, sG, sB, sA); //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(sR, sG, sB, sA); //L-B
+//        this.flushIfUnBatched();
+//    }
 
     /**
      * Draw a bordered rectangle of specified with specified border width, border colour and fill colour.
@@ -296,14 +300,14 @@ public class GuiRender {
     /**
      * Draw a bordered rectangle of specified with specified border width, border colour and fill colour.
      */
-    public void borderRect(RenderType type, Rectangle rectangle, double borderWidth, int fillColour, int borderColour) {
+    public void borderRect(RenderPipeline type, Rectangle rectangle, double borderWidth, int fillColour, int borderColour) {
         borderFill(type, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, fillColour, borderColour);
     }
 
     /**
      * Draw a bordered rectangle of specified with specified border width, border colour and fill colour.
      */
-    public void borderRect(RenderType type, double x, double y, double width, double height, double borderWidth, int fillColour, int borderColour) {
+    public void borderRect(RenderPipeline type, double x, double y, double width, double height, double borderWidth, int fillColour, int borderColour) {
         borderFill(type, x, y, x + width, y + height, borderWidth, fillColour, borderColour);
     }
 
@@ -311,21 +315,21 @@ public class GuiRender {
      * Draw a border of specified with, fill internal area with solid colour.
      */
     public void borderFill(double xMin, double yMin, double xMax, double yMax, double borderWidth, int fillColour, int borderColour) {
-        borderFill(SOLID, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour);
+        borderFill(RenderPipelines.GUI, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour);
     }
 
     /**
      * Draw a border of specified with, fill internal area with solid colour.
      */
-    public void borderFill(RenderType type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int fillColour, int borderColour) {
-        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
-            borderFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour);
-        } else {
-            batchDraw(() -> borderFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour));
-        }
+    public void borderFill(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int fillColour, int borderColour) {
+//        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
+        borderFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour);
+//        } else {
+//            batchDraw(() -> borderFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, fillColour, borderColour));
+//        }
     }
 
-    private void borderFillInternal(RenderType type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int fillColour, int borderColour) {
+    private void borderFillInternal(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int fillColour, int borderColour) {
         fill(type, xMin, yMin, xMax, yMin + borderWidth, borderColour);                                             //Top
         fill(type, xMin, yMin + borderWidth, xMin + borderWidth, yMax - borderWidth, borderColour);                 //Left
         fill(type, xMin, yMax - borderWidth, xMax, yMax, borderColour);                                             //Bottom
@@ -340,7 +344,7 @@ public class GuiRender {
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
     public void shadedRect(Rectangle rectangle, double borderWidth, int topLeftColour, int bottomRightColour, int fillColour) {
-        shadedFill(SOLID, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
+        shadedFill(RenderPipelines.GUI, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
     }
 
     /**
@@ -349,7 +353,7 @@ public class GuiRender {
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
     public void shadedRect(double x, double y, double width, double height, double borderWidth, int topLeftColour, int bottomRightColour, int fillColour) {
-        shadedFill(SOLID, x, y, x + width, y + height, borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
+        shadedFill(RenderPipelines.GUI, x, y, x + width, y + height, borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
     }
 
     /**
@@ -358,7 +362,7 @@ public class GuiRender {
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
     public void shadedRect(Rectangle rectangle, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
-        shadedFill(SOLID, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
+        shadedFill(RenderPipelines.GUI, rectangle.x(), rectangle.y(), rectangle.xMax(), rectangle.yMax(), borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
     }
 
     /**
@@ -367,7 +371,7 @@ public class GuiRender {
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
     public void shadedRect(double x, double y, double width, double height, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
-        shadedFill(SOLID, x, y, x + width, y + height, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
+        shadedFill(RenderPipelines.GUI, x, y, x + width, y + height, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
     }
 
     /**
@@ -375,7 +379,7 @@ public class GuiRender {
      * Example Usage: render.shadedFill(0, 0, 18, 18, 1, 0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b); //Renders a vanilla style inventory slot
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
-    public void shadedRect(RenderType type, double x, double y, double width, double height, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
+    public void shadedRect(RenderPipeline type, double x, double y, double width, double height, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
         shadedFill(type, x, y, x + width, y + height, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
     }
 
@@ -385,7 +389,7 @@ public class GuiRender {
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
     public void shadedFill(double xMin, double yMin, double xMax, double yMax, double borderWidth, int topLeftColour, int bottomRightColour, int fillColour) {
-        shadedFill(SOLID, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
+        shadedFill(RenderPipelines.GUI, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, midColour(topLeftColour, bottomRightColour), fillColour);
     }
 
     /**
@@ -394,7 +398,7 @@ public class GuiRender {
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
     public void shadedFill(double xMin, double yMin, double xMax, double yMax, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
-        shadedFill(SOLID, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
+        shadedFill(RenderPipelines.GUI, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
     }
 
     /**
@@ -402,15 +406,15 @@ public class GuiRender {
      * Example Usage: render.shadedFill(0, 0, 18, 18, 1, 0xFF373737, 0xFFffffff, 0xFF8b8b8b, 0xFF8b8b8b); //Renders a vanilla style inventory slot
      * This can also be used to render things like buttons that appear to actually "push in" when you press them.
      */
-    public void shadedFill(RenderType type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
-        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
-            shadedFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
-        } else {
-            batchDraw(() -> shadedFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour));
-        }
+    public void shadedFill(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
+//        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
+        shadedFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour);
+//        } else {
+//            batchDraw(() -> shadedFillInternal(type, xMin, yMin, xMax, yMax, borderWidth, topLeftColour, bottomRightColour, cornerMixColour, fillColour));
+//        }
     }
 
-    public void shadedFillInternal(RenderType type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
+    public void shadedFillInternal(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, double borderWidth, int topLeftColour, int bottomRightColour, int cornerMixColour, int fillColour) {
         fill(type, xMin, yMin, xMax - borderWidth, yMin + borderWidth, topLeftColour);                               //Top
         fill(type, xMin, yMin + borderWidth, xMin + borderWidth, yMax - borderWidth, topLeftColour);                 //Left
         fill(type, xMin + borderWidth, yMax - borderWidth, xMax, yMax, bottomRightColour);                           //Bottom
@@ -444,11 +448,11 @@ public class GuiRender {
      * Vanilla Default Colours: 0xF0100010, 0xF0100010, 0x505000FF, 0x5028007f
      */
     public void toolTipBackground(double x, double y, double width, double height, int backgroundColourTop, int backgroundColourBottom, int borderColourTop, int borderColourBottom, boolean empty) {
-        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
-            toolTipBackgroundInternal(x, y, x + width, y + height, backgroundColourTop, backgroundColourBottom, borderColourTop, borderColourBottom, false);
-        } else {
-            batchDraw(() -> toolTipBackgroundInternal(x, y, x + width, y + height, backgroundColourTop, backgroundColourBottom, borderColourTop, borderColourBottom, false));
-        }
+//        if (batchDraw) { //Draw batched for efficiency, unless already doing a batch draw.
+        toolTipBackgroundInternal(x, y, x + width, y + height, backgroundColourTop, backgroundColourBottom, borderColourTop, borderColourBottom, false);
+//        } else {
+//            batchDraw(() -> toolTipBackgroundInternal(x, y, x + width, y + height, backgroundColourTop, backgroundColourBottom, borderColourTop, borderColourBottom, false));
+//        }
     }
 
     private void toolTipBackgroundInternal(double xMin, double yMin, double xMax, double yMax, int backgroundColourTop, int backgroundColourBottom, int borderColourTop, int borderColourBottom, boolean empty) {
@@ -467,13 +471,13 @@ public class GuiRender {
 
     //=== Textured geometry ===//
 
-    //Sprite plus RenderType
+    //Sprite plus RenderPipeline
 
     /**
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void spriteRect(RenderType type, Rectangle rectangle, TextureAtlasSprite sprite) {
+    public void spriteRect(RenderPipeline type, Rectangle rectangle, TextureAtlasSprite sprite) {
         spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), sprite, 1F, 1F, 1F, 1F);
     }
 
@@ -481,7 +485,7 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void spriteRect(RenderType type, Rectangle rectangle, TextureAtlasSprite sprite, int argb) {
+    public void spriteRect(RenderPipeline type, Rectangle rectangle, TextureAtlasSprite sprite, int argb) {
         spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), sprite, r(argb), g(argb), b(argb), a(argb));
     }
 
@@ -489,7 +493,7 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void spriteRect(RenderType type, Rectangle rectangle, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+    public void spriteRect(RenderPipeline type, Rectangle rectangle, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
         spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), sprite, red, green, blue, alpha);
     }
 
@@ -497,7 +501,7 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void spriteRect(RenderType type, double x, double y, double width, double height, TextureAtlasSprite sprite) {
+    public void spriteRect(RenderPipeline type, double x, double y, double width, double height, TextureAtlasSprite sprite) {
         spriteRect(type, x, y, width, height, sprite, 1F, 1F, 1F, 1F);
     }
 
@@ -505,7 +509,7 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void spriteRect(RenderType type, double x, double y, double width, double height, TextureAtlasSprite sprite, int argb) {
+    public void spriteRect(RenderPipeline type, double x, double y, double width, double height, TextureAtlasSprite sprite, int argb) {
         spriteRect(type, x, y, width, height, sprite, r(argb), g(argb), b(argb), a(argb));
     }
 
@@ -513,7 +517,7 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void spriteRect(RenderType type, double x, double y, double width, double height, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+    public void spriteRect(RenderPipeline type, double x, double y, double width, double height, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
         sprite(type, x, y, x + width, y + height, sprite, red, green, blue, alpha);
     }
 
@@ -521,7 +525,7 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite) {
+    public void sprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite) {
         sprite(type, xMin, yMin, xMax, yMax, sprite, 1F, 1F, 1F, 1F);
     }
 
@@ -529,7 +533,7 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int argb) {
+    public void sprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int argb) {
         sprite(type, xMin, yMin, xMax, yMax, sprite, r(argb), g(argb), b(argb), a(argb));
     }
 
@@ -537,113 +541,119 @@ public class GuiRender {
      * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      */
-    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
-        VertexConsumer buffer = buffers().getBuffer(type);
-        Matrix4f mat = pose.last().pose();
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());  //L-B
-        flushIfUnBatched();
+    public void sprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+//        VertexConsumer buffer = buffers().getBuffer(type);
+//        Matrix4f mat = pose.last().pose();
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());  //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());  //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());  //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());  //L-B
+//        flushIfUnBatched();
+//        wrapped.blitSprite(type, sprite, (int) xMin, (int) yMin, (int) xMax, (int) yMax, ARGB.colorFromFloat(alpha, red, green, blue));
+        wrapped.innerBlit(type, sprite.atlasLocation(), (int) xMin, (int) xMax, (int) yMin, (int) yMax, sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(), ARGB.colorFromFloat(alpha, red, green, blue));
     }
 
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void spriteRect(RenderType type, Rectangle rectangle, int rotation, TextureAtlasSprite sprite) {
-        spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, sprite, 1F, 1F, 1F, 1F);
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void spriteRect(RenderType type, Rectangle rectangle, int rotation, TextureAtlasSprite sprite, int argb) {
-        spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, sprite, r(argb), g(argb), b(argb), a(argb));
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void spriteRect(RenderType type, Rectangle rectangle, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
-        spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, sprite, red, green, blue, alpha);
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void spriteRect(RenderType type, double x, double y, double width, double height, int rotation, TextureAtlasSprite sprite) {
-        spriteRect(type, x, y, width, height, rotation, sprite, 1F, 1F, 1F, 1F);
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void spriteRect(RenderType type, double x, double y, double width, double height, int rotation, TextureAtlasSprite sprite, int argb) {
-        spriteRect(type, x, y, width, height, rotation, sprite, r(argb), g(argb), b(argb), a(argb));
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void spriteRect(RenderType type, double x, double y, double width, double height, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
-        sprite(type, x, y, x + width, y + height, rotation, sprite, red, green, blue, alpha);
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite) {
-        sprite(type, xMin, yMin, xMax, yMax, rotation, sprite, 1F, 1F, 1F, 1F);
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, int argb) {
-        sprite(type, xMin, yMin, xMax, yMax, rotation, sprite, r(argb), g(argb), b(argb), a(argb));
-    }
-
-    /**
-     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void sprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
-        float[] u = {sprite.getU0(), sprite.getU1(), sprite.getU1(), sprite.getU0()};
-        float[] v = {sprite.getV1(), sprite.getV1(), sprite.getV0(), sprite.getV0()};
-        VertexConsumer buffer = buffers().getBuffer(type);
-        Matrix4f mat = pose.last().pose();
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);  //L-B
-        flushIfUnBatched();
-    }
+    //TODO Sprite rotation like this is not possible with vanillas rendering... What to do..........
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void spriteRect(RenderPipeline type, Rectangle rectangle, int rotation, TextureAtlasSprite sprite) {
+//        spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, sprite, 1F, 1F, 1F, 1F);
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void spriteRect(RenderPipeline type, Rectangle rectangle, int rotation, TextureAtlasSprite sprite, int argb) {
+//        spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, sprite, r(argb), g(argb), b(argb), a(argb));
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void spriteRect(RenderPipeline type, Rectangle rectangle, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+//        spriteRect(type, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, sprite, red, green, blue, alpha);
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void spriteRect(RenderPipeline type, double x, double y, double width, double height, int rotation, TextureAtlasSprite sprite) {
+//        spriteRect(type, x, y, width, height, rotation, sprite, 1F, 1F, 1F, 1F);
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void spriteRect(RenderPipeline type, double x, double y, double width, double height, int rotation, TextureAtlasSprite sprite, int argb) {
+//        spriteRect(type, x, y, width, height, rotation, sprite, r(argb), g(argb), b(argb), a(argb));
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void spriteRect(RenderPipeline type, double x, double y, double width, double height, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+//        sprite(type, x, y, x + width, y + height, rotation, sprite, red, green, blue, alpha);
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void sprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite) {
+//        sprite(type, xMin, yMin, xMax, yMax, rotation, sprite, 1F, 1F, 1F, 1F);
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void sprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, int argb) {
+//        sprite(type, xMin, yMin, xMax, yMax, rotation, sprite, r(argb), g(argb), b(argb), a(argb));
+//    }
+//
+//    /**
+//     * Draws a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void sprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+//        float[] u = {sprite.getU0(), sprite.getU1(), sprite.getU1(), sprite.getU0()};
+//        float[] v = {sprite.getV1(), sprite.getV1(), sprite.getV0(), sprite.getV0()};
+//        VertexConsumer buffer = buffers().getBuffer(type);
+//        Matrix4f mat = pose.last().pose();
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);  //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);  //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);  //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);  //L-B
+//        flushIfUnBatched();
+//
+////        wrapped.blitSprite(type, sprite, (int) xMin, (int) yMin, (int) xMax, (int) yMax, ARGB.colorFromFloat(alpha, red, green, blue));
+//        wrapped.innerBlit(type, sprite.atlasLocation(), (int) xMin, (int) yMin, (int) xMax, (int) yMax, sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(), ARGB.colorFromFloat(alpha, red, green, blue));
+//    }
 
     //Partial Sprite
 
@@ -652,12 +662,12 @@ public class GuiRender {
 //     * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
 //     * Texture will be resized / reshaped as appropriate to fit the defined area.
 //     * <p>
-//     * This is similar to {@link #partialSprite(RenderType, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
+//     * This is similar to {@link #partialSprite(RenderPipeline, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
 //     * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
 //     *
 //     * @param rotation Rotates sprite clockwise in 90 degree steps.
 //     */
-//    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, int texXMin, int texYMin, int texXMax, int texYMax, int argb) {
+//    public void partialSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, int texXMin, int texYMin, int texXMax, int texYMax, int argb) {
 //        float width = sprite.contents().width();
 //        float height = sprite.contents().height();
 //        partialSprite(type, xMin, yMin, xMax, yMax, rotation, sprite, texXMin / width, texYMin / height, texXMax / width, texYMax / height, argb);
@@ -671,7 +681,7 @@ public class GuiRender {
 //     *
 //     * @param rotation Rotates sprite clockwise in 90 degree steps.
 //     */
-//    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, int argb) {
+//    public void partialSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, int argb) {
 //        partialSprite(type, xMin, yMin, xMax, yMax, rotation, sprite, uMin, vMin, uMax, vMax, r(argb), g(argb), b(argb), a(argb));
 //    }
 //
@@ -682,7 +692,7 @@ public class GuiRender {
 //     *
 //     * @param rotation Rotates sprite clockwise in 90 degree steps.
 //     */
-//    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float left, float top, float right, float bottom, float red, float green, float blue, float alpha) {
+//    public void partialSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, int rotation, TextureAtlasSprite sprite, float left, float top, float right, float bottom, float red, float green, float blue, float alpha) {
 //        VertexConsumer buffer = buffers().getBuffer(type);
 //        Matrix4f mat = pose.last().pose();
 //        rotation = Math.floorMod(rotation, 4);
@@ -712,10 +722,10 @@ public class GuiRender {
      * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      * <p>
-     * This is similar to {@link #partialSprite(RenderType, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
+     * This is similar to {@link #partialSprite(RenderPipeline, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
      * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
      */
-    public void partialSpriteTex(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, double texXMin, double texYMin, double texXMax, double texYMax, int argb) {
+    public void partialSpriteTex(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, double texXMin, double texYMin, double texXMax, double texYMax, int argb) {
         partialSpriteTex(type, xMin, yMin, xMax, yMax, sprite, texXMin, texYMin, texXMax, texYMax, r(argb), g(argb), b(argb), a(argb));
     }
 
@@ -723,10 +733,10 @@ public class GuiRender {
      * Draws a subsection of a TextureAtlasSprite using the given render type, Vertex format should be POSITION_COLOR_TEX
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      * <p>
-     * This is similar to {@link #partialSprite(RenderType, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
+     * This is similar to {@link #partialSprite(RenderPipeline, double, double, double, double, TextureAtlasSprite, float, float, float, float, int)}
      * Except the input uv values are in texture coordinates. So to draw a full 16x16 sprite with this you would supply 0, 0, 16, 16
      */
-    public void partialSpriteTex(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, double texXMin, double texYMin, double texXMax, double texYMax, float red, float green, float blue, float alpha) {
+    public void partialSpriteTex(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, double texXMin, double texYMin, double texXMax, double texYMax, float red, float green, float blue, float alpha) {
         int width = sprite.contents().width();
         int height = sprite.contents().height();
         partialSprite(type, xMin, yMin, xMax, yMax, sprite, (float) texXMin / width, (float) texYMin / height, (float) texXMax / width, (float) texYMax / height, red, green, blue, alpha);
@@ -737,7 +747,7 @@ public class GuiRender {
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      * Valid input u/v value range is 0 to 1 [0, 0, 1, 1 would render the full sprite]
      */
-    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, int argb) {
+    public void partialSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, int argb) {
         partialSprite(type, xMin, yMin, xMax, yMax, sprite, uMin, vMin, uMax, vMax, r(argb), g(argb), b(argb), a(argb));
     }
 
@@ -746,27 +756,28 @@ public class GuiRender {
      * Texture will be resized / reshaped as appropriate to fit the defined area.
      * Valid input u/v value range is 0 to 1 [0, 0, 1, 1 would render the full sprite]
      */
-    public void partialSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, float red, float green, float blue, float alpha) {
-        VertexConsumer buffer = buffers().getBuffer(type);
-        Matrix4f mat = pose.last().pose();
+    public void partialSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float uMin, float vMin, float uMax, float vMax, float red, float green, float blue, float alpha) {
+//        VertexConsumer buffer = buffers().getBuffer(type);
+//        Matrix4f mat = pose.last().pose();
         float u0 = sprite.getU0();
         float v0 = sprite.getV0();
         float u1 = sprite.getU1();
         float v1 = sprite.getV1();
         float ul = u1 - u0;
         float vl = v1 - v0;
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMax * vl));  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMin * vl));  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMin * vl));  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMax * vl));  //L-B
-        flushIfUnBatched();
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMax * vl));  //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMax * ul), v0 + (vMin * vl));  //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMin * vl));  //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u0 + (uMin * ul), v0 + (vMax * vl));  //L-B
+//        flushIfUnBatched();
+        wrapped.innerBlit(type, sprite.atlasLocation(), (int) xMin, (int) xMax, (int) yMin, (int) yMax, u0 + (uMin * ul), u0 + (uMax * ul), v0 + (vMin * vl), v0 + (vMax * vl), ARGB.colorFromFloat(alpha, red, green, blue));
     }
 
     /**
      * Draw a sprite tiled to fit the specified area.
      * Sprite is drawn from the top-left so sprite will be tiled right and down.
      */
-    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int argb) {
+    public void tileSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int argb) {
         tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.contents().width(), sprite.contents().height(), argb);
     }
 
@@ -777,7 +788,7 @@ public class GuiRender {
      * @param textureWidth  Set base width of the sprite texture in pixels
      * @param textureHeight Set base height of the sprite texture in pixels
      */
-    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int argb) {
+    public void tileSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int argb) {
         tileSprite(type, xMin, yMin, xMax, yMax, sprite, textureWidth, textureHeight, r(argb), g(argb), b(argb), a(argb));
     }
 
@@ -785,7 +796,7 @@ public class GuiRender {
      * Draw a sprite tiled to fit the specified area.
      * Sprite is drawn from the top-left so sprite will be tiled right and down.
      */
-    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
+    public void tileSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, float red, float green, float blue, float alpha) {
         tileSprite(type, xMin, yMin, xMax, yMax, sprite, sprite.contents().width(), sprite.contents().height(), red, green, blue, alpha);
     }
 
@@ -796,32 +807,25 @@ public class GuiRender {
      * @param textureWidth  Set base width of the sprite texture in pixels
      * @param textureHeight Set base height of the sprite texture in pixels
      */
-    public void tileSprite(RenderType type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, float red, float green, float blue, float alpha) {
+    public void tileSprite(RenderPipeline type, double xMin, double yMin, double xMax, double yMax, TextureAtlasSprite sprite, int textureWidth, int textureHeight, float red, float green, float blue, float alpha) {
         double width = xMax - xMin;
         double height = yMax - yMin;
         if (width <= textureWidth && height <= textureHeight) {
             partialSprite(type, xMin, yMin, xMax, yMax, sprite, 0F, 0F, (float) width / textureWidth, (float) height / textureHeight, red, green, blue, alpha);
         } else {
-            Runnable draw = () -> {
-                double xPos = xMin;
+            double xPos = xMin;
+            do {
+                double sectionWidth = Math.min(textureWidth, xMax - xPos);
+                double uWidth = sectionWidth / textureWidth;
+                double yPos = yMin;
                 do {
-                    double sectionWidth = Math.min(textureWidth, xMax - xPos);
-                    double uWidth = sectionWidth / textureWidth;
-                    double yPos = yMin;
-                    do {
-                        double sectionHeight = Math.min(textureHeight, yMax - yPos);
-                        double vWidth = sectionHeight / textureHeight;
-                        partialSprite(type, xPos, yPos, xPos + sectionWidth, yPos + sectionHeight, sprite, 0, 0, (float) uWidth, (float) vWidth, red, green, blue, alpha);
-                        yPos += textureHeight;
-                    } while (yPos < yMax);
-                    xPos += textureWidth;
-                } while (xPos < xMax);
-            };
-            if (batchDraw) {
-                draw.run();
-            } else {
-                batchDraw(draw);
-            }
+                    double sectionHeight = Math.min(textureHeight, yMax - yPos);
+                    double vWidth = sectionHeight / textureHeight;
+                    partialSprite(type, xPos, yPos, xPos + sectionWidth, yPos + sectionHeight, sprite, 0, 0, (float) uWidth, (float) vWidth, red, green, blue, alpha);
+                    yPos += textureHeight;
+                } while (yPos < yMax);
+                xPos += textureWidth;
+            } while (xPos < xMax);
         }
     }
 
@@ -897,113 +901,115 @@ public class GuiRender {
      */
     public void tex(Material material, double xMin, double yMin, double xMax, double yMax, float red, float green, float blue, float alpha) {
         TextureAtlasSprite sprite = material.sprite();
-        VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
-        Matrix4f mat = pose.last().pose();
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());  //L-B
-        flushIfUnBatched();
+//        VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
+//        Matrix4f mat = pose.last().pose();
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV1());  //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU1(), sprite.getV0());  //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV0());  //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(sprite.getU0(), sprite.getV1());  //L-B
+//        flushIfUnBatched();
+        sprite(guiTexPipe(), xMin, yMin, xMax, yMax, sprite, red, green, blue, alpha);
     }
 
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void texRect(Material material, int rotation, Rectangle rectangle) {
-        texRect(material, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, 1F, 1F, 1F, 1F);
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void texRect(Material material, int rotation, Rectangle rectangle, int argb) {
-        texRect(material, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, r(argb), g(argb), b(argb), a(argb));
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void texRect(Material material, int rotation, Rectangle rectangle, float red, float green, float blue, float alpha) {
-        texRect(material, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, red, green, blue, alpha);
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void texRect(Material material, int rotation, double x, double y, double width, double height) {
-        texRect(material, x, y, width, height, rotation, 1F, 1F, 1F, 1F);
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void texRect(Material material, int rotation, double x, double y, double width, double height, int argb) {
-        texRect(material, x, y, width, height, rotation, r(argb), g(argb), b(argb), a(argb));
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void texRect(Material material, double x, double y, double width, double height, int rotation, float red, float green, float blue, float alpha) {
-        tex(material, x, y, x + width, y + height, rotation, red, green, blue, alpha);
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void tex(Material material, int rotation, double xMin, double yMin, double xMax, double yMax) {
-        tex(material, xMin, yMin, xMax, yMax, rotation, 1F, 1F, 1F, 1F);
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, int rotation, int argb) {
-        tex(material, xMin, yMin, xMax, yMax, rotation, r(argb), g(argb), b(argb), a(argb));
-    }
-
-    /**
-     * Draws a texture sprite derived from the provided material.
-     * Texture will be resized / reshaped as appropriate to fit the defined area.
-     *
-     * @param rotation Rotates sprite clockwise in 90 degree steps.
-     */
-    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, int rotation, float red, float green, float blue, float alpha) {
-        TextureAtlasSprite sprite = material.sprite();
-        VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
-        float[] u = {sprite.getU0(), sprite.getU1(), sprite.getU1(), sprite.getU0()};
-        float[] v = {sprite.getV1(), sprite.getV1(), sprite.getV0(), sprite.getV0()};
-        Matrix4f mat = pose.last().pose();
-        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);  //R-B
-        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);  //R-T
-        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);  //L-T
-        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);  //L-B
-        flushIfUnBatched();
-    }
+    //TODO rotation not supported
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void texRect(Material material, int rotation, Rectangle rectangle) {
+//        texRect(material, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, 1F, 1F, 1F, 1F);
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void texRect(Material material, int rotation, Rectangle rectangle, int argb) {
+//        texRect(material, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, r(argb), g(argb), b(argb), a(argb));
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void texRect(Material material, int rotation, Rectangle rectangle, float red, float green, float blue, float alpha) {
+//        texRect(material, rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), rotation, red, green, blue, alpha);
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void texRect(Material material, int rotation, double x, double y, double width, double height) {
+//        texRect(material, x, y, width, height, rotation, 1F, 1F, 1F, 1F);
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void texRect(Material material, int rotation, double x, double y, double width, double height, int argb) {
+//        texRect(material, x, y, width, height, rotation, r(argb), g(argb), b(argb), a(argb));
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void texRect(Material material, double x, double y, double width, double height, int rotation, float red, float green, float blue, float alpha) {
+//        tex(material, x, y, x + width, y + height, rotation, red, green, blue, alpha);
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void tex(Material material, int rotation, double xMin, double yMin, double xMax, double yMax) {
+//        tex(material, xMin, yMin, xMax, yMax, rotation, 1F, 1F, 1F, 1F);
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, int rotation, int argb) {
+//        tex(material, xMin, yMin, xMax, yMax, rotation, r(argb), g(argb), b(argb), a(argb));
+//    }
+//
+//    /**
+//     * Draws a texture sprite derived from the provided material.
+//     * Texture will be resized / reshaped as appropriate to fit the defined area.
+//     *
+//     * @param rotation Rotates sprite clockwise in 90 degree steps.
+//     */
+//    public void tex(Material material, double xMin, double yMin, double xMax, double yMax, int rotation, float red, float green, float blue, float alpha) {
+//        TextureAtlasSprite sprite = material.sprite();
+//        VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
+//        float[] u = {sprite.getU0(), sprite.getU1(), sprite.getU1(), sprite.getU0()};
+//        float[] v = {sprite.getV1(), sprite.getV1(), sprite.getV0(), sprite.getV0()};
+//        Matrix4f mat = pose.last().pose();
+//        buffer.addVertex(mat, (float) xMax, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(1 + rotation) % 4], v[(1 + rotation) % 4]);  //R-B
+//        buffer.addVertex(mat, (float) xMax, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(2 + rotation) % 4], v[(2 + rotation) % 4]);  //R-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMin, 0).setColor(red, green, blue, alpha).setUv(u[(3 + rotation) % 4], v[(3 + rotation) % 4]);  //L-T
+//        buffer.addVertex(mat, (float) xMin, (float) yMax, 0).setColor(red, green, blue, alpha).setUv(u[(0 + rotation) % 4], v[(0 + rotation) % 4]);  //L-B
+//        flushIfUnBatched();
+//    }
 
     //Slice and stitch
 
@@ -1067,11 +1073,11 @@ public class GuiRender {
      * The border parameters indicate the width of the borders around the texture, e.g. a vanilla gui texture has 4 pixel borders.
      */
     public void dynamicTex(Material material, int x, int y, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder, float red, float green, float blue, float alpha) {
-        if (batchDraw) {//Draw batched for efficiency, unless already doing a batch draw.
-            dynamicTexInternal(material, x, y, width, height, topBorder, leftBorder, bottomBorder, rightBorder, red, green, blue, alpha);
-        } else {
-            batchDraw(() -> dynamicTexInternal(material, x, y, width, height, topBorder, leftBorder, bottomBorder, rightBorder, red, green, blue, alpha));
-        }
+//        if (batchDraw) {//Draw batched for efficiency, unless already doing a batch draw.
+        dynamicTexInternal(material, x, y, width, height, topBorder, leftBorder, bottomBorder, rightBorder, red, green, blue, alpha);
+//        } else {
+//            batchDraw(() -> dynamicTexInternal(material, x, y, width, height, topBorder, leftBorder, bottomBorder, rightBorder, red, green, blue, alpha));
+//        }
     }
 
     //Todo, This method can probably be made a lot more efficient.
@@ -1079,8 +1085,6 @@ public class GuiRender {
     // That would be a lot more efficient and more compatible with custom resource packs.
     private void dynamicTexInternal(Material material, int xPos, int yPos, int xSize, int ySize, int topBorder, int leftBorder, int bottomBorder, int rightBorder, float red, float green, float blue, float alpha) {
         TextureAtlasSprite sprite = material.sprite();
-        VertexConsumer buffer = material.buffer(buffers, GuiRender::texColType);
-        Matrix4f mat = pose.last().pose();
         SpriteContents contents = sprite.contents();
         int texWidth = contents.width();
         int texHeight = contents.height();
@@ -1101,8 +1105,8 @@ public class GuiRender {
             }
 
             //Top & Bottom trim
-            bufferDynamic(buffer, mat, sprite, xPos + x, yPos, trimU, 0, rWidth, topBorder, red, green, blue, alpha);
-            bufferDynamic(buffer, mat, sprite, xPos + x, yPos + ySize - bottomBorder, trimU, texHeight - bottomBorder, rWidth, bottomBorder, red, green, blue, alpha);
+            dynamicPart(sprite, xPos + x, yPos, trimU, 0, rWidth, topBorder, red, green, blue, alpha);
+            dynamicPart(sprite, xPos + x, yPos + ySize - bottomBorder, trimU, texHeight - bottomBorder, rWidth, bottomBorder, red, green, blue, alpha);
 
             rWidth = Math.min(xSize - x - leftBorder - rightBorder, trimWidth);
             for (int y = 0; y < ySize; ) {
@@ -1116,13 +1120,13 @@ public class GuiRender {
 
                 //Left & Right trim
                 if (x == 0 && y + topBorder < ySize - bottomBorder) {
-                    bufferDynamic(buffer, mat, sprite, xPos, yPos + y + topBorder, 0, trimV, leftBorder, rHeight, red, green, blue, alpha);
-                    bufferDynamic(buffer, mat, sprite, xPos + xSize - rightBorder, yPos + y + topBorder, trimU + texWidth - rightBorder, trimV, rightBorder, rHeight, red, green, blue, alpha);
+                    dynamicPart(sprite, xPos, yPos + y + topBorder, 0, trimV, leftBorder, rHeight, red, green, blue, alpha);
+                    dynamicPart(sprite, xPos + xSize - rightBorder, yPos + y + topBorder, trimU + texWidth - rightBorder, trimV, rightBorder, rHeight, red, green, blue, alpha);
                 }
 
                 //Core
                 if (y + topBorder < ySize - bottomBorder && x + leftBorder < xSize - rightBorder) {
-                    bufferDynamic(buffer, mat, sprite, xPos + x + leftBorder, yPos + y + topBorder, leftBorder, topBorder, rWidth, rHeight, red, green, blue, alpha);
+                    dynamicPart(sprite, xPos + x + leftBorder, yPos + y + topBorder, leftBorder, topBorder, rWidth, rHeight, red, green, blue, alpha);
                 }
                 y += trimHeight;
             }
@@ -1130,15 +1134,10 @@ public class GuiRender {
         }
     }
 
-    private void bufferDynamic(VertexConsumer builder, Matrix4f mat, TextureAtlasSprite tex, int x, int y, float textureX, float textureY, int width, int height, float red, float green, float blue, float alpha) {
+    private void dynamicPart(TextureAtlasSprite tex, int x, int y, float textureX, float textureY, int width, int height, float red, float green, float blue, float alpha) {
         int w = tex.contents().width();
         int h = tex.contents().height();
-        //@formatter:off
-        builder.addVertex(mat, x,         y + height, 0).setColor(red, green, blue, alpha).setUv(tex.getU((textureX / w)),           tex.getV(((textureY + height) / h)));
-        builder.addVertex(mat, x + width, y + height, 0).setColor(red, green, blue, alpha).setUv(tex.getU(((textureX + width) / w)), tex.getV(((textureY + height) / h)));
-        builder.addVertex(mat, x + width, y,          0).setColor(red, green, blue, alpha).setUv(tex.getU(((textureX + width) / w)), tex.getV(((textureY) / h)));
-        builder.addVertex(mat, x,         y,          0).setColor(red, green, blue, alpha).setUv(tex.getU((textureX / w)),           tex.getV(((textureY) / h)));
-        //@formatter:on
+        wrapped.innerBlit(guiTexPipe(), tex.atlasLocation(), x, x + width, y, y + height, tex.getU((textureX / w)), tex.getU(((textureX + width) / w)), tex.getV(((textureY) / h)), tex.getV(((textureY + height) / h)), ARGB.colorFromFloat(alpha, red, green, blue));
     }
 
     //=== Strings ===//
@@ -1152,9 +1151,11 @@ public class GuiRender {
 
     public int drawString(@Nullable String message, double x, double y, int colour, boolean shadow) {
         if (message == null) return 0;
-        int i = font().drawInBatch(Component.literal(message), (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880, font().isBidirectional());
-        this.flushIfUnBatched();
-        return i;
+//        int i = font().drawInBatch(Component.literal(message), (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880, font().isBidirectional());
+//        this.flushIfUnBatched();
+        Component component = Component.literal(message);
+        wrapped.drawString(font(), component, (int) x, (int) y, colour, shadow);
+        return (int) x + font().width(component);
     }
 
     /**
@@ -1165,9 +1166,10 @@ public class GuiRender {
     }
 
     public int drawString(FormattedCharSequence message, double x, double y, int colour, boolean shadow) {
-        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880);
-        this.flushIfUnBatched();
-        return i;
+//        int i = font().drawInBatch(message, (float) x, (float) y, colour, shadow, pose.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+//        this.flushIfUnBatched();
+        wrapped.drawString(font(), message, (int) x, (int) y, colour, shadow);
+        return (int) x + font().width(message);
     }
 
     /**
@@ -1351,7 +1353,7 @@ public class GuiRender {
 
     private void renderTooltipInternal(List<ClientTooltipComponent> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ClientTooltipPositioner positioner) {
         if (!tooltips.isEmpty()) {
-            PolyLibClient.ToolTipResult event = PolyLibClient.postRenderTooltipPre(this.tooltipStack, renderWrapper, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
+            PolyLibClient.ToolTipResult event = PolyLibClient.postRenderTooltipPre(this.tooltipStack, wrapped, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
             if (event.canceled()) return;
 
             int width = 0;
@@ -1364,17 +1366,15 @@ public class GuiRender {
             Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
             int xPos = position.x();
             int yPos = Math.max(position.y(), 3); //Default positioner allows negative y-pos for some reason...
-            pose.pushPose();
-            //This really shouldn't be needed with the way we render things in ModularGui, but unfortunately we still need this do avoid rendering under things like JEI.
-            pose.translate(0, 0, 400);
 
-            PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, renderWrapper, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
+            wrapped.pose().pushMatrix();
+            PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, wrapped, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
             toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
             int linePos = yPos;
 
             for (int i = 0; i < tooltips.size(); ++i) {
                 ClientTooltipComponent component = tooltips.get(i);
-                component.renderText(event.getFont(), xPos, linePos, pose.last().pose(), buffers);
+                component.renderText(wrapped, event.getFont(), xPos, linePos);
                 linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
             }
 
@@ -1382,10 +1382,10 @@ public class GuiRender {
 
             for (int i = 0; i < tooltips.size(); ++i) {
                 ClientTooltipComponent component = tooltips.get(i);
-                component.renderImage(event.getFont(), xPos, linePos, width, height, renderWrapper);
+                component.renderImage(event.getFont(), xPos, linePos, width, height, wrapped);
                 linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
             }
-            pose.popPose();
+            wrapped.pose().popMatrix();
         }
     }
 
@@ -1469,35 +1469,13 @@ public class GuiRender {
      * @param modelRand A somewhat random value used in model gathering, Not very important, Can just use 0 or x/y position.
      */
     public void renderItem(@Nullable LivingEntity entity, @Nullable Level level, ItemStack stack, double x, double y, double size, int modelRand) {
-        if (!stack.isEmpty()) {
-            mc().getItemModelResolver().updateForTopItem(stackRenderState, stack, ItemDisplayContext.GUI, level, entity, modelRand);
-            pose.pushPose();
-            pose.translate(x + (size / 2D), y + (size / 2D), size);
+        if (stack.isEmpty()) return;
 
-            try {
-                pose.scale((float) size, (float) -size, (float) size);
-                boolean bl = !stackRenderState.usesBlockLight();
-                if (bl) {
-                    flush();
-                    Lighting.setupForFlatItems();
-                }
-
-                stackRenderState.render(pose, buffers(), 0XF000F0, OverlayTexture.NO_OVERLAY);
-                flush();
-                if (bl) {
-                    Lighting.setupFor3DItems();
-                }
-            } catch (Throwable var11) {
-                CrashReport crashReport = CrashReport.forThrowable(var11, "Rendering item");
-                CrashReportCategory crashReportCategory = crashReport.addCategory("Item being rendered");
-                crashReportCategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
-                crashReportCategory.setDetail("Item Components", () -> String.valueOf(stack.getComponents()));
-                crashReportCategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));
-                throw new ReportedException(crashReport);
-            }
-
-            pose.popPose();
-        }
+        wrapped.pose().pushMatrix();
+        wrapped.pose().translate((float) x, (float) y);
+        wrapped.pose().scale((float) size / 16F, (float) size / 16F);
+        wrapped.renderItem(entity, stack, (int) 0, (int) 0, modelRand);
+        wrapped.pose().popMatrix();
     }
 
     /**
@@ -1537,43 +1515,15 @@ public class GuiRender {
      * Z depth requirements are the same as the renderItem method.
      */
     public void renderItemDecorations(ItemStack stack, double x, double y, double size, @Nullable String text) {
-        if (!stack.isEmpty()) {
-            pose.pushPose();
-            float scale = (float) size / 16F;
-            pose.translate(x, y, (size * 2) - 0.1);
-            pose.scale(scale, scale, 1F);
-            pose.translate(-x, -y, 0);
-
-            if (stack.getCount() != 1 || text != null) {
-                String s = text == null ? String.valueOf(stack.getCount()) : text;
-                drawString(s, x + 19 - 2 - font().width(s), y + 6 + 3, 0xffffff, true);
-            }
-
-            if (stack.isBarVisible()) {
-                int l = stack.getBarWidth();
-                int i = stack.getBarColor();
-                double j = x + 2;
-                double k = y + 13;
-                pose.translate(0.0F, 0.0F, 0.04);
-                fill(j, k, j + 13, k + 2, 0xff000000);
-                pose.translate(0.0F, 0.0F, 0.02);
-                fill(j, k, j + l, k + 1, i | 0xff000000);
-            }
-
-            LocalPlayer localplayer = mc().player;
-            float f = localplayer == null ? 0.0F : localplayer.getCooldowns().getCooldownPercent(stack, mc().getFrameTimeNs());
-            if (f > 0.0F) {
-                double i1 = y + Mth.floor(16.0F * (1.0F - f));
-                double j1 = i1 + Mth.ceil(16.0F * f);
-                pose.translate(0.0F, 0.0F, 0.02);
-                fill(x, i1, x + 16, j1, Integer.MAX_VALUE);
-            }
-
-            pose.popPose();
-            if (size == 16) {
-                PolyLibClient.onItemDecorate(renderWrapper, font(), stack, (int) x, (int) y);
-            }
+        if (stack.isEmpty()) {
+            return;
         }
+
+        wrapped.pose().pushMatrix();
+        wrapped.pose().translate((float) x, (float) y);
+        wrapped.pose().scale((float) size / 16F, (float) size / 16F);
+        wrapped.renderItemDecorations(font(), stack, 0, 0, text);
+        wrapped.pose().popMatrix();
     }
 
 
@@ -1587,26 +1537,32 @@ public class GuiRender {
     }
 
     public void pushScissorRect(double x, double y, double width, double height) {
-        flushIfBatched();
-        scissorHandler.pushGuiScissor(x, y, width, height);
+//        flushIfBatched();
+//        scissorHandler.pushGuiScissor(x, y, width, height);
+        wrapped.enableScissor((int) x, (int) y, (int) (x + width), (int) (y + height));
     }
 
     public void pushScissor(double xMin, double yMin, double xMax, double yMax) {
-        flushIfBatched();
-        scissorHandler.pushGuiScissor(xMin, yMin, xMax - xMin, yMax - yMin);
+//        flushIfBatched();
+//        scissorHandler.pushGuiScissor(xMin, yMin, xMax - xMin, yMax - yMin);
+        wrapped.enableScissor((int) xMin, (int) yMin, (int) (xMax), (int) (yMax));
     }
 
     public void popScissor() {
-        scissorHandler.popScissor();
+        wrapped.disableScissor();
     }
 
-    /**
-     * Sets the render system shader colour, Effect will vary depending on what is being rendered.
-     * Ideally this should be avoided in favor of render calls that accept colour.
-     */
-    public void setColor(float red, float green, float blue, float alpha) {
-        this.flushIfBatched();
-        RenderSystem.setShaderColor(red, green, blue, alpha);
+//    /**
+//     * Sets the render system shader colour, Effect will vary depending on what is being rendered.
+//     * Ideally this should be avoided in favor of render calls that accept colour.
+//     */
+//    public void setColor(float red, float green, float blue, float alpha) {
+//        this.flushIfBatched();
+//        RenderSystem.setShaderColor(red, green, blue, alpha);
+//    }
+
+    public Matrix3x2f translate(double x, double y) {
+        return wrapped.pose().translate((float) x, (float) y);
     }
 
     //=== Static Utils ===//
@@ -1688,42 +1644,27 @@ public class GuiRender {
 
     //Render Type Builders
 
-    //Use Will just use texColType for everything going forward.
-//    public static RenderType texType(ResourceLocation location) {
-
-    /// /        return RenderType.create("tex_type", 786432, true, true, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder()
-    /// ///                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX))
-    /// /                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
-    /// ///                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-    /// ///                .setCullState(RenderStateShard.NO_CULL)
-    /// /                .createCompositeState(false));
-//        return RenderType.guiTextured(location);
-//    }
-    public static RenderType texColType(ResourceLocation location) {
-//        return RenderType.create("tex_col_type", 786432, true, true, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder()
-////                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders.POSITION_TEX_COLOR))
-//                .setTextureState(new RenderStateShard.TextureStateShard(location, TriState.FALSE, false))
-////                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-////                .setCullState(RenderStateShard.NO_CULL)
-//                .createCompositeState(false));
-        //TODO, only thing this is missing is NO_CULL, that may or may not cause issues...
-        return RenderType.guiTextured(location);
+    public static RenderPipeline guiSolidPipe() {
+        return RenderPipelines.GUI;
     }
 
-    /**
-     * This exists to allow thing like the Tooltip events to still function correctly, hopefully without exploding...
-     */
-    public static class RenderWrapper extends GuiGraphics {
-        private final GuiRender wrapped;
+    public static RenderPipeline guiTexPipe() {
+        return RenderPipelines.GUI_TEXTURED;
+    }
 
-        private RenderWrapper(GuiRender wrapped) {
-            super(wrapped.mc(), wrapped.pose(), wrapped.buffers());
-            this.wrapped = wrapped;
-        }
+    public static RenderType texColType(ResourceLocation location) {
+        return GUI_TEXTURED.apply(location);
+    }
 
-        @Override
-        public void flush() {
-            wrapped.flush();
-        }
+    //I'm not ready to deal with foguring out rener pipelines yet, so for now... Yoink!
+    private static final Function<ResourceLocation, RenderType> GUI_TEXTURED = Util.memoize((arg) -> create("gui_textured", 786432, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(arg, false)).createCompositeState(false)));
+    ;
+
+    private static RenderType.CompositeRenderType create(String string, int i, RenderPipeline renderPipeline, RenderType.CompositeState arg) {
+        return create(string, i, false, false, renderPipeline, arg);
+    }
+
+    private static RenderType.CompositeRenderType create(String string, int i, boolean bl, boolean bl2, RenderPipeline renderPipeline, RenderType.CompositeState arg) {
+        return new RenderType.CompositeRenderType(string, i, bl, bl2, renderPipeline, arg);
     }
 }

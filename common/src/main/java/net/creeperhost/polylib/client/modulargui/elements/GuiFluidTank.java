@@ -2,7 +2,6 @@ package net.creeperhost.polylib.client.modulargui.elements;
 
 import dev.architectury.fluid.FluidStack;
 import dev.architectury.hooks.fluid.FluidStackHooks;
-import dev.architectury.platform.Platform;
 import net.creeperhost.polylib.client.modulargui.lib.Assembly;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
@@ -131,11 +130,11 @@ public class GuiFluidTank extends GuiElement<GuiFluidTank> implements Background
         if (!stack.isEmpty() && fluidMat != null) {
             int fluidColor = FluidStackHooks.getColor(stack);
             float height = getCapacity() <= 0 ? 0 : (float) ySize() * (stack.getAmount() / (float) getCapacity());
-            render.tileSprite(fluidMat.renderType(GuiRender::texColType), xMin(), yMax() - height, xMax(), yMax(), fluidMat.sprite(), fluidColor);
+            render.tileSprite(GuiRender.guiTexPipe(), xMin(), yMax() - height, xMax(), yMax(), fluidMat.sprite(), fluidColor);
         }
 
         if (window != null) {
-            render.tileSprite(window.renderType(GuiRender::texColType), xMin(), yMin(), xMax(), yMax(), window.sprite(), 0xFFFFFFFF);
+            render.tileSprite(GuiRender.guiTexPipe(), xMin(), yMin(), xMax(), yMax(), window.sprite(), 0xFFFFFFFF);
         }
 
         gaugeColour = 0xFF000000;
