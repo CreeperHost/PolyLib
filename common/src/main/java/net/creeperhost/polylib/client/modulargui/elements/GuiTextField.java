@@ -579,11 +579,6 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     //=== Rendering ===//
 
     @Override
-    public double getBackgroundDepth() {
-        return 0.04;
-    }
-
-    @Override
     public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         String value = getValue();
         int colour = textColor.get();

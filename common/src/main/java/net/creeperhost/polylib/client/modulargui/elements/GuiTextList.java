@@ -142,11 +142,6 @@ public class GuiTextList extends GuiElement<GuiTextList> implements ForegroundRe
     }
 
     @Override
-    public double getForegroundDepth() {
-        return 0.035;
-    }
-
-    @Override
     public void renderInFront(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         List<? extends Component> list = getText();
         if (list.isEmpty()) return;

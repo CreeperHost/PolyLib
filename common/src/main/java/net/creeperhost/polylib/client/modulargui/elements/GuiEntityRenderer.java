@@ -157,15 +157,6 @@ public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements 
     }
 
     @Override
-    public double getBackgroundDepth() {
-        Rectangle rect = getRectangle();
-        if (invalidEntity || entity == null) return 0.01;
-        float scale = (float) (force2dSize ? (Math.min(rect.height() / entity.getBbHeight(), rect.width() / entity.getBbWidth())) : rect.height() / entity.getBbHeight());
-        if (Float.isInfinite(scale)) scale = 1;
-        return scale * 2;
-    }
-
-    @Override
     public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         if (invalidEntity) return;
 

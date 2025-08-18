@@ -281,11 +281,8 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     }
 
     public void renderFloatingItem(GuiRender render, ItemStack itemStack, int x, int y, String string) {
-//        render.pose().pushMatrix();
-//        render.pose().translate(0.0F, 0.0F, 50F);
         render.renderItem(itemStack, x, y);
         render.renderItemDecorations(itemStack, x, y - (this.draggingItem.isEmpty() ? 0 : 8), string);
-//        render.pose().popMatrix();
     }
 
     @Override

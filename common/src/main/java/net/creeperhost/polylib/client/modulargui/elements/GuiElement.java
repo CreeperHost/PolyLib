@@ -64,7 +64,6 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     private boolean isMouseOver = false;
     private boolean opaque = false;
     private boolean removed = true;
-    private boolean zStacking = true;
     private Supplier<Boolean> enabled = () -> true;
     private Supplier<Boolean> enableToolTip = () -> true;
     private Supplier<List<Component>> toolTip = null;
@@ -319,38 +318,14 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
      *
      * @param zStacking Enable z stacking (default true)
      */
+    @Deprecated //no longer does anything
     public T setZStacking(boolean zStacking) {
-        this.zStacking = zStacking;
         return (T) this;
     }
 
+    @Deprecated //no longer does anything
     public boolean zStacking() {
-        return zStacking;
-    }
-
-    /**
-     * Returns the depth of this element plus all of its children (recursively)
-     * Note: You should almost never need to override this! Depth of background and / or foreground content
-     * should be specified via {@link BackgroundRender#getBackgroundDepth()} and {@link ForegroundRender#getForegroundDepth()}
-     *
-     * @return The depth (z height) of this element plus all of its children.
-     */
-    public double getCombinedElementDepth() {
-        double depth = 0;
-        if (this instanceof BackgroundRender bgr) depth += bgr.getBackgroundDepth();
-        if (this instanceof ForegroundRender fgr) depth += fgr.getForegroundDepth();
-
-        double childDepth = 0;
-        for (GuiElement<?> child : childElements) {
-            if (!child.isEnabled()) continue;
-            if (zStacking) {
-                childDepth += child.getCombinedElementDepth();
-            } else {
-                childDepth = Math.max(childDepth, child.getCombinedElementDepth());
-            }
-        }
-
-        return depth + childDepth;
+        return false;
     }
 
     /**
@@ -370,37 +345,17 @@ public class GuiElement<T extends GuiElement<T>> extends ConstrainedGeometry<T> 
     public void render(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         applyQueuedChildUpdates();
         if (this instanceof BackgroundRender bgr) {
-            double depth = bgr.getBackgroundDepth();
             bgr.renderBehind(render, mouseX, mouseY, partialTicks);
-            if (depth > 0) {
-//                render.pose().translate(0, 0, depth);
-            }
         }
 
-        double maxDepth = 0;
         for (GuiElement<?> child : childElements) {
             if (child.isEnabled()) {
-                boolean rendered = renderChild(child, render, mouseX, mouseY, partialTicks);
-                //If z-stacking is disabled, we need to undo the z offset that was applied by the child element.
-                if (!zStacking && rendered) {
-                    double depth = child.getCombinedElementDepth();
-                    maxDepth = Math.max(maxDepth, depth);
-//                    render.pose().translate(0, 0, -depth);
-                }
+                renderChild(child, render, mouseX, mouseY, partialTicks);
             }
-        }
-
-        if (!zStacking) {
-            //Now we need to apply the z offset of the tallest child.
-//            render.pose().translate(0, 0, maxDepth);
         }
 
         if (this instanceof ForegroundRender fgr) {
-            double depth = fgr.getForegroundDepth();
             fgr.renderInFront(render, mouseX, mouseY, partialTicks);
-            if (depth > 0) {
-//                render.pose().translate(0, 0, depth);
-            }
         }
     }
 
