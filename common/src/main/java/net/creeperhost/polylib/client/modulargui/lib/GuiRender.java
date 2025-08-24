@@ -1,6 +1,9 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.DepthTestFunction;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.creeperhost.polylib.PolyLibClient;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
@@ -1658,7 +1661,6 @@ public class GuiRender {
 
     //I'm not ready to deal with foguring out rener pipelines yet, so for now... Yoink!
     private static final Function<ResourceLocation, RenderType> GUI_TEXTURED = Util.memoize((arg) -> create("gui_textured", 786432, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(arg, false)).createCompositeState(false)));
-    ;
 
     private static RenderType.CompositeRenderType create(String string, int i, RenderPipeline renderPipeline, RenderType.CompositeState arg) {
         return create(string, i, false, false, renderPipeline, arg);
