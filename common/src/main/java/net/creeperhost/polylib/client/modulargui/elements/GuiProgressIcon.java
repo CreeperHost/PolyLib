@@ -98,7 +98,7 @@ public class GuiProgressIcon extends GuiElement<GuiProgressIcon> implements Back
 
         render.translate(xMin() + (xSize() / 2), yMin() + (ySize() / 2));
 //        render.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees((float) Direction.RIGHT.rotationTo(direction)));
-        render.pose().rotate((float) Direction.RIGHT.rotationTo(direction));
+        render.pose().rotate((float) Math.toRadians(Direction.RIGHT.rotationTo(direction)));
 
         double halfWidth = width / 2;
         double halfHeight = height / 2;
