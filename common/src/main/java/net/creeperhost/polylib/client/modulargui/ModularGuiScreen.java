@@ -64,12 +64,16 @@ public class ModularGuiScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        if (modularGui.renderBackground()) {
-            renderBackground(graphics, mouseX, mouseY, partialTicks);
-        }
         GuiRender render = new GuiRender(graphics);
         modularGui.render(render, partialTicks);
         modularGui.renderOverlay(render, partialTicks);
+    }
+
+    @Override
+    public void renderBackground(GuiGraphics guiGraphics, int i, int j, float f) {
+        if (modularGui.renderBackground()) {
+            super.renderBackground(guiGraphics, i, j, f);
+        }
     }
 
     @Override
