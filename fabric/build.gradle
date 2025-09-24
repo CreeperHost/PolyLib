@@ -131,7 +131,6 @@ unifiedPublishing {
             curseforge {
                 token = CURSE_API_KEY
                 id = rootProject.curseforge_id
-                gameVersions.addAll rootProject.minecraft_version
             }
         }
 
@@ -141,7 +140,6 @@ unifiedPublishing {
                 token = MODRINTH_TOKEN
                 id = rootProject.modrinth_id
                 version = "$project.version.${ENV.GITHUB_RUN_NUMBER}"
-                gameVersions.addAll rootProject.minecraft_version
             }
         }
     }
