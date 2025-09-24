@@ -158,7 +158,7 @@ unifiedPublishing {
             modrinth {
                 token = MODRINTH_TOKEN
                 id = rootProject.modrinth_id
-                version = "$project.version.${ENV.GITHUB_RUN_NUMBER}"
+                version = "$project.version"
             }
         }
     }
