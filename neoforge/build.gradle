@@ -159,7 +159,7 @@ unifiedPublishing {
             modrinth {
                 token = MODRINTH_TOKEN
                 id = rootProject.modrinth_id
-                version = "$project.version"
+                version = "$displayName"
                 gameVersions.addAll rootProject.minecraft_version
             }
         }
