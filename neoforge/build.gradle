@@ -150,7 +150,6 @@ unifiedPublishing {
             curseforge {
                 token = CURSE_API_KEY
                 id = rootProject.curseforge_id
-                gameVersions.addAll rootProject.minecraft_version
             }
         }
 
