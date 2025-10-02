@@ -2,7 +2,7 @@ name: Java CI
 
 on:
   push:
-    tags: [ '1.21.7-\d+.\d+.\d+.\d+' ]
+    tags: [ '1.21.9-\d+.\d+.\d+.\d+' ]
   workflow_dispatch:
     inputs:
       norelease:

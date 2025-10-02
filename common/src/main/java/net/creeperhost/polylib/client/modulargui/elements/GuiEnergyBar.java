@@ -8,6 +8,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.helpers.FormatHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -95,7 +96,7 @@ public class GuiEnergyBar extends GuiElement<GuiEnergyBar> implements Background
         return (energy, capacity) -> {
             List<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.translatable("energy_bar.polylib.energy_storage").withStyle(DARK_AQUA));
-            boolean shift = Screen.hasShiftDown();
+            boolean shift = Minecraft.getInstance().hasShiftDown();
             tooltip.add(Component.translatable("energy_bar.polylib.capacity")
                     .withStyle(GOLD)
                     .append(" ")

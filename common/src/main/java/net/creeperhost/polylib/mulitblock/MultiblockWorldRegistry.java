@@ -64,7 +64,7 @@ public class MultiblockWorldRegistry
         {
             for (MultiblockControllerBase controller : controllers)
             {
-                if (controller.worldObj == worldObj && !controller.worldObj.isClientSide)
+                if (controller.worldObj == worldObj && !controller.worldObj.isClientSide())
                 {
                     if (controller.isEmpty())
                     {

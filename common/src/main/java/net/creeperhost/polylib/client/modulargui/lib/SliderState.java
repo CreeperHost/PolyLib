@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
 import java.util.function.Consumer;
@@ -127,7 +128,7 @@ public interface SliderState {
             @Override
             public boolean canScroll(Axis scrollAxis) {
                 //Controls scrolling left and right when shift key is down.
-                return (scrollAxis == Axis.Y) != Screen.hasShiftDown();
+                return (scrollAxis == Axis.Y) != Minecraft.getInstance().hasShiftDown();
             }
         };
     }

@@ -5,6 +5,7 @@ import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
@@ -338,7 +339,7 @@ public class GuiButton extends GuiElement<GuiButton> {
         GuiButton button = new GuiButton(parent)
                 .setTooltipDelay(0)
                 .setTooltipSingle(() -> Component.translatable("rs_mode.polylib." + redstoneBlock.getRSMode().name().toLowerCase(Locale.ENGLISH)))
-                .onPress(() -> redstoneBlock.setRSMode(redstoneBlock.getRSMode().next(net.minecraft.client.gui.screens.Screen.hasShiftDown())), GuiButton.LEFT_CLICK)
+                .onPress(() -> redstoneBlock.setRSMode(redstoneBlock.getRSMode().next(Minecraft.getInstance().hasShiftDown())), GuiButton.LEFT_CLICK)
                 .onPress(() -> redstoneBlock.setRSMode(redstoneBlock.getRSMode().next(true)), GuiButton.RIGHT_CLICK);
         Constraints.size(button, 12, 12);
         Constraints.bind(new GuiRectangle(button).fill(() -> button.isMouseOver() ? 0xFFFFFFFF : 0x00FFFFFF), button);

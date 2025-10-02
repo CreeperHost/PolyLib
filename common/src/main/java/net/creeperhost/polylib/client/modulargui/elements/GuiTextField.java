@@ -290,7 +290,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     }
 
     private void deleteText(int i) {
-        if (Screen.hasControlDown()) {
+        if (Minecraft.getInstance().hasControlDown()) {
             deleteWords(i);
         } else {
             deleteChars(i);
@@ -445,7 +445,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
         if (!canConsumeInput()) {
             return false;
         } else {
-            shiftPressed = Screen.hasShiftDown();
+            shiftPressed = Minecraft.getInstance().hasShiftDown();
             if (Screen.isSelectAll(key)) {
                 moveCursorToEnd();
                 setHighlightPos(0);
@@ -472,7 +472,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
                         if (isEditable()) {
                             shiftPressed = false;
                             deleteText(-1);
-                            shiftPressed = Screen.hasShiftDown();
+                            shiftPressed = Minecraft.getInstance().hasShiftDown();
                         }
 
                         return true;
@@ -497,18 +497,18 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
                         if (isEditable()) {
                             shiftPressed = false;
                             deleteText(1);
-                            shiftPressed = Screen.hasShiftDown();
+                            shiftPressed = Minecraft.getInstance().hasShiftDown();
                         }
                         return true;
                     case InputConstants.KEY_RIGHT:
-                        if (Screen.hasControlDown()) {
+                        if (Minecraft.getInstance().hasControlDown()) {
                             moveCursorTo(getWordPosition(1));
                         } else {
                             moveCursor(1);
                         }
                         return true;
                     case InputConstants.KEY_LEFT:
-                        if (Screen.hasControlDown()) {
+                        if (Minecraft.getInstance().hasControlDown()) {
                             moveCursorTo(getWordPosition(-1));
                         } else {
                             moveCursor(-1);
@@ -531,7 +531,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
 
     @Override
     public boolean keyReleased(int key, int scancode, int modifiers, boolean consumed) {
-        this.shiftPressed = Screen.hasShiftDown();
+        this.shiftPressed = Minecraft.getInstance().hasShiftDown();
         return super.keyReleased(key, scancode, modifiers, consumed);
     }
 

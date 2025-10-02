@@ -9,6 +9,9 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -205,7 +208,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Primary render method for ModularGui. The screen implementing ModularGui must call this in its render method.
      * Followed by the {@link #renderOverlay(GuiRender, float)} method to handle overlay rendering.
      *
-     * @param render GuiRender instance converted from Minecraft's {@link GuiGraphics} via {@link GuiRender#convert(GuiGraphics)}
+     * @param render GuiRender instance converted from Minecraft's {@link GuiRender}
      */
     public void render(GuiRender render, float partialTicks) {
         root.clearGeometryCache();
@@ -257,16 +260,14 @@ public class ModularGui implements GuiParent<ModularGui> {
     /**
      * Pass through for the mouseClicked event. Any screen implementing {@link ModularGui} must pass through this event.
      *
-     * @param mouseX Mouse X position
-     * @param mouseY Mouse Y position
-     * @param button Mouse Button
+     * @param mouseButtonEvent MouseButtonEvent
      * @return true if this event has been consumed.
      */
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        preClickListeners.forEach(e -> e.accept(mouseX, mouseY, button));
-        boolean consumed = root.mouseClicked(mouseX, mouseY, button, false);
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
+        preClickListeners.forEach(e -> e.accept(mouseButtonEvent.x(), mouseButtonEvent.y(), mouseButtonEvent.button()));
+        boolean consumed = root.mouseClicked(mouseButtonEvent.x(), mouseButtonEvent.y(), mouseButtonEvent.button(), false);
         if (!consumed) {
-            postClickListeners.forEach(e -> e.accept(mouseX, mouseY, button));
+            postClickListeners.forEach(e -> e.accept(mouseButtonEvent.x(), mouseButtonEvent.y(), mouseButtonEvent.button()));
         }
         return consumed;
     }
@@ -274,28 +275,24 @@ public class ModularGui implements GuiParent<ModularGui> {
     /**
      * Pass through for the mouseReleased event. Any screen implementing {@link ModularGui} must pass through this event.
      *
-     * @param mouseX Mouse X position
-     * @param mouseY Mouse Y position
-     * @param button Mouse Button
+     * @param mouseButtonEvent MouseButtonEvent
      * @return true if this event has been consumed.
      */
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return root.mouseReleased(mouseX, mouseY, button, false);
+    public boolean mouseReleased(MouseButtonEvent mouseButtonEvent) {
+        return root.mouseReleased(mouseButtonEvent.x(), mouseButtonEvent.y(), mouseButtonEvent.button(), false);
     }
 
     /**
      * Pass through for the keyPressed event. Any screen implementing {@link ModularGui} must pass through this event.
      *
-     * @param key       the keyboard key that was pressed.
-     * @param scancode  the system-specific scancode of the key
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param keyEvent  the KeyEvent
      * @return true if this event has been consumed.
      */
-    public boolean keyPressed(int key, int scancode, int modifiers) {
-        preKeyPressListeners.forEach(e -> e.accept(key, scancode, modifiers));
-        boolean consumed = root.keyPressed(key, scancode, modifiers, false);
+    public boolean keyPressed(KeyEvent keyEvent) {
+        preKeyPressListeners.forEach(e -> e.accept(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers()));
+        boolean consumed = root.keyPressed(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers(), false);
         if (!consumed) {
-            postKeyPressListeners.forEach(e -> e.accept(key, scancode, modifiers));
+            postKeyPressListeners.forEach(e -> e.accept(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers()));
         }
         return consumed;
     }
@@ -303,24 +300,22 @@ public class ModularGui implements GuiParent<ModularGui> {
     /**
      * Pass through for the keyReleased event. Any screen implementing {@link ModularGui} must pass through this event.
      *
-     * @param key       the keyboard key that was released.
-     * @param scancode  the system-specific scancode of the key
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param keyEvent  the KeyEvent
      * @return true if this event has been consumed.
      */
-    public boolean keyReleased(int key, int scancode, int modifiers) {
-        return root.keyReleased(key, scancode, modifiers, false);
+    public boolean keyReleased(KeyEvent keyEvent) {
+        return root.keyReleased(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers(), false);
     }
 
     /**
      * Pass through for the charTyped event. Any screen implementing {@link ModularGui} must pass through this event.
      *
-     * @param character The character typed.
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param characterEvent The CharacterEvent
      * @return true if this event has been consumed.
      */
-    public boolean charTyped(char character, int modifiers) {
-        return root.charTyped(character, modifiers, false);
+    public boolean charTyped(CharacterEvent characterEvent) {
+        //TODO no idea if this will work
+        return root.charTyped(characterEvent.codepointAsString().charAt(0), characterEvent.modifiers(), false);
     }
 
     /**

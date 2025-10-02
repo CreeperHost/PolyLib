@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.blocks;
 
 import net.creeperhost.polylib.init.DataComps;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -139,7 +140,7 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
     }
 
     private boolean isCTRLKeyDown() {
-        return Screen.hasControlDown();
+        return Minecraft.getInstance().hasControlDown();
     }
 
     @Override

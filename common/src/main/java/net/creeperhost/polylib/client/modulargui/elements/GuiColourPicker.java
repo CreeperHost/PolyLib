@@ -3,6 +3,7 @@ package net.creeperhost.polylib.client.modulargui.elements;
 import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -35,19 +36,19 @@ public class GuiColourPicker extends GuiManipulable {
     }
 
     public SliderState sliderStateAlpha() {
-        return SliderState.forSlider(() -> (double) colourState.alpha(), e -> colourState.setAlpha(e.floatValue()), () -> -1D / (Screen.hasShiftDown() ? 16 : 64));
+        return SliderState.forSlider(() -> (double) colourState.alpha(), e -> colourState.setAlpha(e.floatValue()), () -> -1D / (Minecraft.getInstance().hasShiftDown() ? 16 : 64));
     }
 
     public SliderState sliderStateRed() {
-        return SliderState.forSlider(() -> (double) colourState.red(), e -> colourState.setRed(e.floatValue()), () -> -1D / (Screen.hasShiftDown() ? 16 : 64));
+        return SliderState.forSlider(() -> (double) colourState.red(), e -> colourState.setRed(e.floatValue()), () -> -1D / (Minecraft.getInstance().hasShiftDown() ? 16 : 64));
     }
 
     public SliderState sliderStateGreen() {
-        return SliderState.forSlider(() -> (double) colourState.green(), e -> colourState.setGreen(e.floatValue()), () -> -1D / (Screen.hasShiftDown() ? 16 : 64));
+        return SliderState.forSlider(() -> (double) colourState.green(), e -> colourState.setGreen(e.floatValue()), () -> -1D / (Minecraft.getInstance().hasShiftDown() ? 16 : 64));
     }
 
     public SliderState sliderStateBlue() {
-        return SliderState.forSlider(() -> (double) colourState.blue(), e -> colourState.setBlue(e.floatValue()), () -> -1D / (Screen.hasShiftDown() ? 16 : 64));
+        return SliderState.forSlider(() -> (double) colourState.blue(), e -> colourState.setBlue(e.floatValue()), () -> -1D / (Minecraft.getInstance().hasShiftDown() ? 16 : 64));
     }
 
     public TextState getTextState() {

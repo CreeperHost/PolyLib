@@ -5,6 +5,9 @@ import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -95,13 +98,13 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return modularGui.mouseClicked(mouseX, mouseY, button) || super.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
+        return modularGui.mouseClicked(mouseButtonEvent, bl) || super.mouseClicked(mouseButtonEvent, bl);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return modularGui.mouseReleased(mouseX, mouseY, button) || super.mouseReleased(mouseX, mouseY, button);
+    public boolean mouseReleased(MouseButtonEvent mouseButtonEvent) {
+        return modularGui.mouseReleased(mouseButtonEvent) || super.mouseReleased(mouseButtonEvent);
     }
 
     @Override
@@ -110,17 +113,17 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int key, int scancode, int modifiers) {
-        return modularGui.keyPressed(key, scancode, modifiers) || super.keyPressed(key, scancode, modifiers);
+    public boolean keyPressed(KeyEvent keyEvent) {
+        return modularGui.keyPressed(keyEvent) || super.keyPressed(keyEvent);
     }
 
     @Override
-    public boolean keyReleased(int key, int scancode, int modifiers) {
-        return modularGui.keyReleased(key, scancode, modifiers) || super.keyReleased(key, scancode, modifiers);
+    public boolean keyReleased(KeyEvent keyEvent) {
+        return modularGui.keyReleased(keyEvent) || super.keyReleased(keyEvent);
     }
 
     @Override
-    public boolean charTyped(char character, int modifiers) {
-        return modularGui.charTyped(character, modifiers) || super.charTyped(character, modifiers);
+    public boolean charTyped(CharacterEvent characterEvent) {
+        return modularGui.charTyped(characterEvent) || super.charTyped(characterEvent);
     }
 }
