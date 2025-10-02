@@ -2,7 +2,7 @@ name: Java CI
 
 on:
   push:
-    branches: [ release/1.21.7 ]
+    tags: [ '1.21.7-\d+.\d+.\d+.\d+' ]
   workflow_dispatch:
     inputs:
       norelease:
@@ -30,3 +30,10 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew build publish publishUnified --stacktrace --no-daemon
+      - name: Release  
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            ./neoforge/build/libs/*neoforge.jar
+            ./fabric/build/libs/*fabric.jar
