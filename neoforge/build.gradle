@@ -3,8 +3,6 @@ plugins {
     id "me.shedaniel.unified-publishing"
 }
 
-def ENV = System.getenv()
-
 architectury {
     platformSetupLoomIde()
     neoForge {
@@ -132,7 +130,7 @@ publishing {
 
 unifiedPublishing {
     project {
-        displayName = "$rootProject.curseforge_version.${ENV.GITHUB_RUN_NUMBER} [NeoForge]"
+        displayName = "$rootProject.curseforge_version [NeoForge]"
         releaseType = "$rootProject.artifact_type"
         changelog = ""
         gameVersions = ["$rootProject.minecraft_version"]
