@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
 import dev.architectury.fluid.FluidStack;
+import dev.architectury.hooks.client.fluid.ClientFluidStackHooks;
 import dev.architectury.hooks.fluid.FluidStackHooks;
 import net.creeperhost.polylib.client.modulargui.lib.Assembly;
 import net.creeperhost.polylib.client.modulargui.lib.BackgroundRender;
@@ -125,10 +126,11 @@ public class GuiFluidTank extends GuiElement<GuiFluidTank> implements Background
     @Override
     public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         FluidStack stack = getFluidStack();
-        Material fluidMat = Material.fromSprite(FluidStackHooks.getStillTexture(stack));
+
+        Material fluidMat = Material.fromSprite(ClientFluidStackHooks.getStillTexture(stack));
 
         if (!stack.isEmpty() && fluidMat != null) {
-            int fluidColor = FluidStackHooks.getColor(stack);
+            int fluidColor = ClientFluidStackHooks.getColor(stack);
             float height = getCapacity() <= 0 ? 0 : (float) ySize() * (stack.getAmount() / (float) getCapacity());
             render.tileSprite(GuiRender.guiTexPipe(), xMin(), yMax() - height, xMax(), yMax(), fluidMat.sprite(), fluidColor);
         }
@@ -185,7 +187,7 @@ public class GuiFluidTank extends GuiElement<GuiFluidTank> implements Background
                         .append(" ")
                         .append(fluidStack.getName().copy()
                                 .setStyle(Style.EMPTY
-                                        .withColor(FluidStackHooks.getColor(fluidStack))
+                                        .withColor(ClientFluidStackHooks.getColor(fluidStack))
                                 )
                         )
                 );

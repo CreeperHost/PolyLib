@@ -4,6 +4,7 @@ import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.stream.Streams;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +53,7 @@ public class GuiDialog extends GuiElement<GuiDialog> {
     }
 
     @Override
-    public boolean keyPressed(int key, int scancode, int modifiers) {
+    public boolean keyPressed(KeyEvent event) {
         return blockKeyInput;
     }
 

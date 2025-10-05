@@ -3,6 +3,7 @@ package net.creeperhost.polylib.client.screen.widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public class ScreenListEntry extends AbstractSelectionList.Entry
 {
@@ -17,13 +18,11 @@ public class ScreenListEntry extends AbstractSelectionList.Entry
 
     //Do nothing, We don't want the default render
     @Override
-    public void render(GuiGraphics guiGraphics, int i, int j, int k, int l, int m, int n, int o, boolean bl, float f)
-    {
+    public void renderContent(GuiGraphics guiGraphics, int i, int j, boolean bl, float f) {
     }
 
     @Override
-    public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_)
-    {
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
         list.setSelected(this);
         return false;
     }

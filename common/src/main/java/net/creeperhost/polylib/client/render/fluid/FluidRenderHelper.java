@@ -16,33 +16,33 @@ public class FluidRenderHelper
     public static final int STAGES = 1400;
     private static final ResourceLocation BLOCK_ATLAS = ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png");
 
-    public static TextureAtlasSprite getSprite(ResourceLocation spriteLocation)
-    {
-        return Minecraft.getInstance().getTextureAtlas(BLOCK_ATLAS).apply(spriteLocation);
-    }
+//    public static TextureAtlasSprite getSprite(ResourceLocation spriteLocation)
+//    {
+//        return Minecraft.getInstance().getTextureAtlas(BLOCK_ATLAS).apply(spriteLocation);
+//    }
 
-    public static Model3D getFluidModel(FluidStack fluid, int stage)
-    {
-        if (CACHED_FLUIDS.containsKey(fluid) && CACHED_FLUIDS.get(fluid).containsKey(stage))
-        {
-            return CACHED_FLUIDS.get(fluid).get(stage);
-        }
-        Model3D model = new Model3D();
-        model.setTexture(FluidRenderMap.getFluidTexture(fluid, FluidRenderMap.FluidType.STILL));
-
-        if (FluidStackHooks.getStillTexture(fluid.getFluid()) != null)
-        {
-            model.minX = 0.135F;
-            model.minY = 0.0725F;
-            model.minZ = 0.135F;
-
-            model.maxX = 0.865F;
-            model.maxY = 0.0525F + 0.875F * (stage / (float) 1_400);
-            model.maxZ = 0.865F;
-        }
-        CACHED_FLUIDS.computeIfAbsent(fluid, f -> new Int2ObjectOpenHashMap<>()).put(stage, model);
-        return model;
-    }
+//    public static Model3D getFluidModel(FluidStack fluid, int stage)
+//    {
+//        if (CACHED_FLUIDS.containsKey(fluid) && CACHED_FLUIDS.get(fluid).containsKey(stage))
+//        {
+//            return CACHED_FLUIDS.get(fluid).get(stage);
+//        }
+//        Model3D model = new Model3D();
+//        model.setTexture(FluidRenderMap.getFluidTexture(fluid, FluidRenderMap.FluidType.STILL));
+//
+//        if (FluidStackHooks.getStillTexture(fluid.getFluid()) != null)
+//        {
+//            model.minX = 0.135F;
+//            model.minY = 0.0725F;
+//            model.minZ = 0.135F;
+//
+//            model.maxX = 0.865F;
+//            model.maxY = 0.0525F + 0.875F * (stage / (float) 1_400);
+//            model.maxZ = 0.865F;
+//        }
+//        CACHED_FLUIDS.computeIfAbsent(fluid, f -> new Int2ObjectOpenHashMap<>()).put(stage, model);
+//        return model;
+//    }
 
     //TODO once we add some sort of fluid tank to PolyLib
     //    public static float getScale(FluidTank tank)

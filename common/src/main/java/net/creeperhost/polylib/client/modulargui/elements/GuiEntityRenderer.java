@@ -262,15 +262,15 @@ public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements 
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         if (pCameraOrientation != null) {
             pCameraOrientation.conjugate();
-            entityrenderdispatcher.overrideCameraOrientation(pCameraOrientation);
+//            entityrenderdispatcher.overrideCameraOrientation(pCameraOrientation);
         }
 
-        entityrenderdispatcher.setRenderShadow(false);
+//        entityrenderdispatcher.setRenderShadow(false);
 //        render.drawSpecial((multiBufferSource) -> {
 //            entityrenderdispatcher.render(pEntity, 0.0D, 0.0D, 0.0F, 1.0F, render.pose(), multiBufferSource, 15728880);
 //        });
 //        render.flush();
-        entityrenderdispatcher.setRenderShadow(true);
+//        entityrenderdispatcher.setRenderShadow(true);
         render.pose().popMatrix();
 //        Lighting.setupFor3DItems();
     }

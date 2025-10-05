@@ -2,6 +2,8 @@ package net.creeperhost.polylib.client.modulargui.lib;
 
 import com.google.common.collect.Lists;
 import net.creeperhost.polylib.client.modulargui.elements.GuiElement;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
 
 import java.util.List;
 
@@ -167,110 +169,100 @@ public interface ElementEvents {
     /**
      * Override this method to implement handling for the keyPressed event.
      * This event propagates through the entire gui element stack from top to bottom, If eny element consumes the event it will not propagate any further.
-     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #keyPressed(int, int, int, boolean)}
+     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #keyPressed(KeyEvent, boolean)}
      * <p>
      * Note: You do not need to call super when overriding this interface method.
      *
-     * @param key       the keyboard key that was pressed.
-     * @param scancode  the system-specific scancode of the key
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param keyEvent  The key event.
      * @return true to consume event.
      */
-    default boolean keyPressed(int key, int scancode, int modifiers) {
+    default boolean keyPressed(KeyEvent keyEvent) {
         return false;
     }
 
     /**
      * Root handler for keyPressed event. This method will always be called for all elements even if the event has already been consumed.
-     * There are a few uses for this method, but the fast majority of keyPressed handling should be implemented via {@link #keyPressed(int, int, int)}
+     * There are a few uses for this method, but the fast majority of keyPressed handling should be implemented via {@link #keyPressed(KeyEvent)}
      * <p>
      * Note: If overriding this method, do so with caution, You must either return true (if you wish to consume the event) or you must return the result of the super call.
      *
-     * @param key       the keyboard key that was pressed.
-     * @param scancode  the system-specific scancode of the key
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param keyEvent  The key event.
      * @param consumed  Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    default boolean keyPressed(int key, int scancode, int modifiers, boolean consumed) {
+    default boolean keyPressed(KeyEvent keyEvent, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
-                consumed |= child.keyPressed(key, scancode, modifiers, consumed);
+                consumed |= child.keyPressed(keyEvent, consumed);
             }
         }
-        return consumed || keyPressed(key, scancode, modifiers);
+        return consumed || keyPressed(keyEvent);
     }
 
     /**
      * Override this method to implement handling for the keyReleased event.
      * This event propagates through the entire gui element stack from top to bottom, If eny element consumes the event it will not propagate any further.
-     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #keyReleased(int, int, int, boolean)}
+     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #keyReleased(KeyEvent, boolean)}
      * <p>
      * Note: You do not need to call super when overriding this interface method.
      *
-     * @param key       the keyboard key that was released.
-     * @param scancode  the system-specific scancode of the key
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param keyEvent  The key event.
      * @return true to consume event.
      */
-    default boolean keyReleased(int key, int scancode, int modifiers) {
+    default boolean keyReleased(KeyEvent keyEvent) {
         return false;
     }
 
     /**
      * Root handler for keyReleased event. This method will always be called for all elements even if the event has already been consumed.
-     * There are a few uses for this method, but the fast majority of keyReleased handling should be implemented via {@link #keyReleased(int, int, int)}
+     * There are a few uses for this method, but the fast majority of keyReleased handling should be implemented via {@link #keyReleased(KeyEvent)}
      * <p>
      * Note: If overriding this method, do so with caution, You must either return true (if you wish to consume the event) or you must return the result of the super call.
      *
-     * @param key       the keyboard key that was released.
-     * @param scancode  the system-specific scancode of the key
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param keyEvent  The key event.
      * @param consumed  Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    default boolean keyReleased(int key, int scancode, int modifiers, boolean consumed) {
+    default boolean keyReleased(KeyEvent keyEvent, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
-                consumed |= child.keyReleased(key, scancode, modifiers, consumed);
+                consumed |= child.keyReleased(keyEvent, consumed);
             }
         }
-        return consumed || keyReleased(key, scancode, modifiers);
+        return consumed || keyReleased(keyEvent);
     }
 
     /**
      * Override this method to implement handling for the charTyped event.
      * This event propagates through the entire gui element stack from top to bottom, If eny element consumes the event it will not propagate any further.
-     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #charTyped(char, int, boolean)}
+     * For rare cases where you need to receive this even if it has been consumed, you can override {@link #charTyped(CharacterEvent, boolean)}
      * <p>
      * Note: You do not need to call super when overriding this interface method.
      *
-     * @param character The character typed.
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param characterEvent The character typed.
      * @return true to consume event.
      */
-    default boolean charTyped(char character, int modifiers) {
+    default boolean charTyped(CharacterEvent characterEvent) {
         return false;
     }
 
     /**
      * Root handler for charTyped event. This method will always be called for all elements even if the event has already been consumed.
-     * There are a few uses for this method, but the fast majority of charTyped handling should be implemented via {@link #charTyped(char, int)}
+     * There are a few uses for this method, but the fast majority of charTyped handling should be implemented via {@link #charTyped(CharacterEvent)}
      * <p>
      * Note: If overriding this method, do so with caution, You must either return true (if you wish to consume the event) or you must return the result of the super call.
      *
-     * @param character The character typed.
-     * @param modifiers bitfield describing which modifier keys were held down.
+     * @param characterEvent The character typed.
      * @param consumed  Will be true if this action has already been consumed.
      * @return true if this event has been consumed.
      */
-    default boolean charTyped(char character, int modifiers, boolean consumed) {
+    default boolean charTyped(CharacterEvent characterEvent, boolean consumed) {
         for (GuiElement<?> child : Lists.reverse(getChildren())) {
             if (child.isEnabled()) {
-                consumed |= child.charTyped(character, modifiers, consumed);
+                consumed |= child.charTyped(characterEvent, consumed);
             }
         }
-        return consumed || charTyped(character, modifiers);
+        return consumed || charTyped(characterEvent);
     }
 
 }

@@ -67,8 +67,8 @@ public class ModularGui implements GuiParent<ModularGui> {
     private final List<Runnable> closeListeners = new ArrayList<>();
     private final List<TriConsumer<Double, Double, Integer>> preClickListeners = new ArrayList<>();
     private final List<TriConsumer<Double, Double, Integer>> postClickListeners = new ArrayList<>();
-    private final List<TriConsumer<Integer, Integer, Integer>> preKeyPressListeners = new ArrayList<>();
-    private final List<TriConsumer<Integer, Integer, Integer>> postKeyPressListeners = new ArrayList<>();
+    private final List<Consumer<KeyEvent>> preKeyPressListeners = new ArrayList<>();
+    private final List<Consumer<KeyEvent>> postKeyPressListeners = new ArrayList<>();
 
     private int jeiHighlightTime = 0;
 
@@ -289,10 +289,10 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @return true if this event has been consumed.
      */
     public boolean keyPressed(KeyEvent keyEvent) {
-        preKeyPressListeners.forEach(e -> e.accept(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers()));
-        boolean consumed = root.keyPressed(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers(), false);
+        preKeyPressListeners.forEach(e -> e.accept(keyEvent));
+        boolean consumed = root.keyPressed(keyEvent, false);
         if (!consumed) {
-            postKeyPressListeners.forEach(e -> e.accept(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers()));
+            postKeyPressListeners.forEach(e -> e.accept(keyEvent));
         }
         return consumed;
     }
@@ -304,7 +304,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @return true if this event has been consumed.
      */
     public boolean keyReleased(KeyEvent keyEvent) {
-        return root.keyReleased(keyEvent.key(), keyEvent.scancode(), keyEvent.modifiers(), false);
+        return root.keyReleased(keyEvent, false);
     }
 
     /**
@@ -314,8 +314,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * @return true if this event has been consumed.
      */
     public boolean charTyped(CharacterEvent characterEvent) {
-        //TODO no idea if this will work
-        return root.charTyped(characterEvent.codepointAsString().charAt(0), characterEvent.modifiers(), false);
+        return root.charTyped(characterEvent, false);
     }
 
     /**
@@ -562,7 +561,7 @@ public class ModularGui implements GuiParent<ModularGui> {
     /**
      * Allows you to attach a callback that will be fired on key press, before the is handled by the rest of the gui.
      */
-    public void onKeyPressPre(TriConsumer<Integer, Integer, Integer> preKeyPress) {
+    public void onKeyPressPre(Consumer<KeyEvent> preKeyPress) {
         preKeyPressListeners.add(preKeyPress);
     }
 
@@ -570,7 +569,7 @@ public class ModularGui implements GuiParent<ModularGui> {
      * Allows you to attach a callback that will be fired on key press, after it has been handled by the rest of the gui.
      * Will only be fired if the event was not consumed by an element.
      */
-    public void onKeyPressPost(TriConsumer<Integer, Integer, Integer> postKeyPress) {
+    public void onKeyPressPost(Consumer<KeyEvent> postKeyPress) {
         postKeyPressListeners.add(postKeyPress);
     }
 }

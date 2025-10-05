@@ -29,19 +29,19 @@ public class RenderUtils
         return FULL_LIGHT;
     }
 
-    public static int getColorARGB(FluidStack fluidStack, float fluidScale)
-    {
-        if (fluidStack.isEmpty())
-        {
-            return -1;
-        }
-        return getColorARGB(fluidStack);
-    }
+//    public static int getColorARGB(FluidStack fluidStack, float fluidScale)
+//    {
+//        if (fluidStack.isEmpty())
+//        {
+//            return -1;
+//        }
+//        return getColorARGB(fluidStack);
+//    }
 
-    private static int getColorARGB(FluidStack fluidStack)
-    {
-        return FluidStackHooks.getColor(fluidStack);
-    }
+//    private static int getColorARGB(FluidStack fluidStack)
+//    {
+//        return FluidStackHooks.getColor(fluidStack);
+//    }
 
     public static float getRed(int color)
     {

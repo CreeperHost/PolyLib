@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -27,10 +28,14 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import org.jetbrains.annotations.Nullable;
 
 @Mod(PolyLib.MOD_ID)
 public class PolyLibNeoForge
@@ -58,7 +63,8 @@ public class PolyLibNeoForge
             {
                 PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getName().getString());
 
-                event.registerItem(Capabilities.EnergyStorage.ITEM, (object, object2) -> new PolyNeoEnergyWrapper(polyEnergyItem.getEnergyStorage(object)), item);
+                //TODO Capabilities
+                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new PolyNeoEnergyWrapper(polyEnergyItem.getEnergyStorage(stack)), item);
             }
         }
 
@@ -80,13 +86,16 @@ public class PolyLibNeoForge
                 BlockEntity blockEntity = blockEntityType.create(BlockPos.ZERO, block.defaultBlockState());
                 if (blockEntity == null) continue;
                 if (blockEntity instanceof PolyInventoryBlock) {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (entity, side) -> getInvWrapper(((PolyInventoryBlock) entity).getContainer(side), side));
+                    //TODO Capabilities
+                    event.registerBlockEntity(Capabilities.Item.BLOCK, blockEntityType, (entity, side) -> getInvWrapper(((PolyInventoryBlock) entity).getContainer(side), side));
                 }
                 if (blockEntity instanceof PolyEnergyBlock) {
-                    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (entity, side) -> ((PolyEnergyBlock)entity).getEnergyStorage(side) == null ? null :  new PolyNeoEnergyWrapper(((PolyEnergyBlock)entity).getEnergyStorage(side)));
+                    //TODO Capabilities
+                    event.registerBlockEntity(Capabilities.Energy.BLOCK, blockEntityType, (entity, side) -> ((PolyEnergyBlock)entity).getEnergyStorage(side) == null ? null :  new PolyNeoEnergyWrapper(((PolyEnergyBlock)entity).getEnergyStorage(side)));
                 }
                 if (blockEntity instanceof PolyFluidBlock) {
-                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, blockEntityType, (entity, side) -> ((PolyFluidBlock)entity).getFluidHandler(side) == null ? null : new PolyNeoFluidWrapper(((PolyFluidBlock)entity).getFluidHandler(side)));
+                    //TODO Capabilities
+                    event.registerBlockEntity(Capabilities.Fluid.BLOCK, blockEntityType, (entity, side) -> ((PolyFluidBlock)entity).getFluidHandler(side) == null ? null : new PolyNeoFluidWrapper(((PolyFluidBlock)entity).getFluidHandler(side)));
                 }
             } catch (Throwable ignored) {}
         }

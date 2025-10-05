@@ -19,17 +19,17 @@ public class FluidRenderMap<V> extends Object2ObjectOpenCustomHashMap<FluidStack
         super(FluidHashStrategy.INSTANCE);
     }
 
-    public static TextureAtlasSprite getFluidTexture(FluidStack fluidStack, FluidType type)
-    {
-        Fluid fluid = fluidStack.getFluid();
-        if (type == FluidType.STILL)
-        {
-            return FluidStackHooks.getStillTexture(fluid);
-        } else
-        {
-            return FluidStackHooks.getFlowingTexture(fluid);
-        }
-    }
+//    public static TextureAtlasSprite getFluidTexture(FluidStack fluidStack, FluidType type)
+//    {
+//        Fluid fluid = fluidStack.getFluid();
+//        if (type == FluidType.STILL)
+//        {
+//            return FluidStackHooks.getStillTexture(fluid);
+//        } else
+//        {
+//            return FluidStackHooks.getFlowingTexture(fluid);
+//        }
+//    }
 
     public static class FluidHashStrategy implements Hash.Strategy<FluidStack>
     {

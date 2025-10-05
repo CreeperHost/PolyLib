@@ -3,6 +3,7 @@ package net.creeperhost.polylib.client.modulargui.elements;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,8 +43,8 @@ public class TextInputDialog extends GuiElement<TextInputDialog> {
     }
 
     @Override
-    public boolean keyPressed(int key, int scancode, int modifiers) {
-        if (key == InputConstants.KEY_ESCAPE) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.isEscape()) {
             close();
         }
         return true;

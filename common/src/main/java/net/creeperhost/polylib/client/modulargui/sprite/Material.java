@@ -83,13 +83,18 @@ public class Material {
         return vanillaMat;
     }
 
+
+    private static TextureAtlasSprite getAtlasSprite(ResourceLocation atlas, ResourceLocation sprite) {
+        return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(atlas).getSprite(sprite);
+    }
+
     /**
      * Convenient method for getting a material from a vanilla texture atlas.
      *
      * @return an un-cached material from a vanilla atlas.
      */
     public static Material fromAtlas(ResourceLocation atlasLocation, String texture) {
-        return new Material(atlasLocation, ResourceLocation.fromNamespaceAndPath(atlasLocation.getNamespace(), texture), e -> Minecraft.getInstance().getTextureAtlas(atlasLocation).apply(e));
+        return new Material(atlasLocation, ResourceLocation.fromNamespaceAndPath(atlasLocation.getNamespace(), texture), e -> getAtlasSprite(atlasLocation, e));
     }
 
     /**
@@ -99,7 +104,7 @@ public class Material {
     @Nullable
     public static Material fromSprite(@Nullable TextureAtlasSprite sprite) {
         if (sprite == null) return null;
-        return new Material(sprite.atlasLocation(), sprite.contents().name(), e -> Minecraft.getInstance().getTextureAtlas(sprite.atlasLocation()).apply(e));
+        return new Material(sprite.atlasLocation(), sprite.contents().name(), e -> getAtlasSprite(sprite.atlasLocation(), e));
     }
 
     public static Material fromRawTexture(ResourceLocation texture) {
@@ -108,7 +113,7 @@ public class Material {
 
     private static class FullSprite extends TextureAtlasSprite {
         private FullSprite(ResourceLocation location) {
-            super(location, new SpriteContents(location, new FrameSize(1, 1), new NativeImage(1, 1, false), ResourceMetadata.EMPTY), 1, 1, 0, 0);
+            super(location, new SpriteContents(location, new FrameSize(1, 1), new NativeImage(1, 1, false)), 1, 1, 0, 0);
         }
 
         @Override

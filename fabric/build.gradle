@@ -3,6 +3,8 @@ plugins {
     id "me.shedaniel.unified-publishing"
 }
 
+def ENV = System.getenv()
+
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }

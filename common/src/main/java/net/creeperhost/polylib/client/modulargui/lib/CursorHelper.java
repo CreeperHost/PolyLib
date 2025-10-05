@@ -77,7 +77,7 @@ public class CursorHelper {
     public static void setCursor(@Nullable ResourceLocation cursor) {
         if (cursor != active) {
             active = cursor;
-            long window = Minecraft.getInstance().getWindow().getWindow();
+            long window = Minecraft.getInstance().getWindow().handle();
             long newCursor = active == null ? 0 : cursors.computeIfAbsent(cursor, CursorHelper::createCursor);
             try {
                 GLFW.glfwSetCursor(window, newCursor);

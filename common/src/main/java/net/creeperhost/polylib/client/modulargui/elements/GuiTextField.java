@@ -10,6 +10,8 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -441,25 +443,25 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     //=== Input Handling ===//
 
     @Override
-    public boolean keyPressed(int key, int scancode, int modifiers) {
+    public boolean keyPressed(KeyEvent keyEvent) {
         if (!canConsumeInput()) {
             return false;
         } else {
             shiftPressed = Minecraft.getInstance().hasShiftDown();
-            if (Screen.isSelectAll(key)) {
+            if (keyEvent.isSelectAll()) {
                 moveCursorToEnd();
                 setHighlightPos(0);
                 return true;
-            } else if (Screen.isCopy(key)) {
+            } else if (keyEvent.isCopy()) {
                 Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
                 return true;
-            } else if (Screen.isPaste(key)) {
+            } else if (keyEvent.isPaste()) {
                 if (isEditable()) {
                     insertText(Minecraft.getInstance().keyboardHandler.getClipboard());
                 }
 
                 return true;
-            } else if (Screen.isCut(key)) {
+            } else if (keyEvent.isCut()) {
                 Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
                 if (isEditable()) {
                     insertText("");
@@ -467,7 +469,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
 
                 return true;
             } else {
-                switch (key) {
+                switch (keyEvent.key()) {
                     case InputConstants.KEY_BACKSPACE:
                         if (isEditable()) {
                             shiftPressed = false;
@@ -492,7 +494,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
                     case InputConstants.KEY_PAGEDOWN:
                     default:
                         //Consume key presses when we are typing so we dont do something dumb like close the screen when you type e
-                        return key != GLFW.GLFW_KEY_ESCAPE;
+                        return keyEvent.key() != GLFW.GLFW_KEY_ESCAPE;
                     case InputConstants.KEY_DELETE:
                         if (isEditable()) {
                             shiftPressed = false;
@@ -530,18 +532,18 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     }
 
     @Override
-    public boolean keyReleased(int key, int scancode, int modifiers, boolean consumed) {
+    public boolean keyReleased(KeyEvent keyEvent, boolean consumed) {
         this.shiftPressed = Minecraft.getInstance().hasShiftDown();
-        return super.keyReleased(key, scancode, modifiers, consumed);
+        return super.keyReleased(keyEvent, consumed);
     }
 
     @Override
-    public boolean charTyped(char charTyped, int charCode) {
+    public boolean charTyped(CharacterEvent characterEvent) {
         if (!canConsumeInput()) {
             return false;
-        } else if (StringUtil.isAllowedChatCharacter(charTyped)) {
+        } else if (characterEvent.isAllowedChatCharacter()) {
             if (isEditable()) {
-                insertText(Character.toString(charTyped));
+                insertText(characterEvent.codepointAsString());
             }
             return true;
         } else {

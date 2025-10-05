@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.neoforge.inventory.fluid;
 
+import com.mojang.blaze3d.resource.ResourceHandle;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandlerItem;
@@ -9,6 +10,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -18,7 +21,7 @@ public class NeoFluidManager implements FluidManager {
 
     @Override
     public PolyFluidHandler getBlockFluidHandler(BlockEntity block, @Nullable Direction side) {
-        IFluidHandler handler = Capabilities.FluidHandler.BLOCK.getCapability(block.getLevel(), block.getBlockPos(), block.getBlockState(), block, side);
+        ResourceHandler<FluidResource> handler = Capabilities.Fluid.BLOCK.getCapability(block.getLevel(), block.getBlockPos(), block.getBlockState(), block, side);
         if (handler != null) {
             return new NeoPolyFluidWrapper(handler);
         }
@@ -27,7 +30,7 @@ public class NeoFluidManager implements FluidManager {
 
     @Override
     public @Nullable PolyFluidHandlerItem getItemFluidHandler(ItemStack stack) {
-        IFluidHandlerItem handler = Capabilities.FluidHandler.ITEM.getCapability(stack, null);
+        ResourceHandler<FluidResource> handler = Capabilities.Fluid.ITEM.getCapability(stack, null);
         if (handler != null) {
             return new NeoPolyFluidItemWrapper(handler);
         }

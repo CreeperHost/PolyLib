@@ -68,8 +68,8 @@ accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (L
 accessible field net/minecraft/client/renderer/MultiBufferSource$BufferSource fixedBuffers Ljava/util/SequencedMap;
 accessible field net/minecraft/client/renderer/MultiBufferSource$BufferSource sharedBuffer Lcom/mojang/blaze3d/vertex/ByteBufferBuilder;
 
-accessible field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I
-mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I
+accessible field net/minecraft/client/gui/components/AbstractSelectionList defaultEntryHeight I
+mutable field net/minecraft/client/gui/components/AbstractSelectionList defaultEntryHeight I
 
 
 accessible method net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder setTextureState (Lnet/minecraft/client/renderer/RenderStateShard$EmptyTextureStateShard;)Lnet/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder;

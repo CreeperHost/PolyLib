@@ -13,6 +13,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -69,29 +72,29 @@ public class ModularGuiInjector<T extends Screen> {
         return (T) object;
     }
 
-    private static void renderPost(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, DeltaTracker delta) {
+    private static void renderPost(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         if (activeGui == null) return;
         GuiRender render = new GuiRender(graphics);
 //        if (screen instanceof AbstractContainerScreen<?>) {
 //            render.pose().translate(0, 0, 275); //Ensure we render on top of inventory stacks.
 //        }
-        activeGui.render(render, delta.getGameTimeDeltaTicks());
-        activeGui.renderOverlay(render, delta.getGameTimeDeltaTicks());
+        activeGui.render(render, partialTick);
+        activeGui.renderOverlay(render, partialTick);
     }
 
-    private static EventResult keyPressed(Minecraft client, Screen screen, int keyCode, int scanCode, int modifiers) {
+    private static EventResult keyPressed(Minecraft client, Screen screen, KeyEvent event) {
         if (activeGui == null) return EventResult.pass();
-        return activeGui.keyPressed(keyCode, scanCode, modifiers) ? EventResult.interruptFalse() : EventResult.pass();
+        return activeGui.keyPressed(event) ? EventResult.interruptFalse() : EventResult.pass();
     }
 
-    private static EventResult keyReleased(Minecraft client, Screen screen, int keyCode, int scanCode, int modifiers) {
+    private static EventResult keyReleased(Minecraft client, Screen screen, KeyEvent event) {
         if (activeGui == null) return EventResult.pass();
-        return activeGui.keyReleased(keyCode, scanCode, modifiers) ? EventResult.interruptFalse() : EventResult.pass();
+        return activeGui.keyReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
     }
 
-    private static EventResult charTyped(Minecraft client, Screen screen, char character, int keyCode) {
+    private static EventResult charTyped(Minecraft client, Screen screen, CharacterEvent event) {
         if (activeGui == null) return EventResult.pass();
-        return activeGui.charTyped(character, keyCode) ? EventResult.interruptFalse() : EventResult.pass();
+        return activeGui.charTyped(event) ? EventResult.interruptFalse() : EventResult.pass();
     }
 
     private static EventResult mouseScrolled(Minecraft client, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
@@ -99,14 +102,14 @@ public class ModularGuiInjector<T extends Screen> {
         return activeGui.mouseScrolled(mouseX, mouseY, amountX, amountY) ? EventResult.interruptFalse() : EventResult.pass();
     }
 
-    private static EventResult mouseReleased(Minecraft client, Screen screen, double mouseX, double mouseY, int button) {
+    private static EventResult mouseReleased(Minecraft client, Screen screen, MouseButtonEvent event) {
         if (activeGui == null) return EventResult.pass();
-        return activeGui.mouseReleased(mouseX, mouseY, button) ? EventResult.interruptFalse() : EventResult.pass();
+        return activeGui.mouseReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
     }
 
-    private static EventResult mouseClicked(Minecraft client, Screen screen, double mouseX, double mouseY, int button) {
+    private static EventResult mouseClicked(Minecraft client, Screen screen, MouseButtonEvent event, boolean bl) {
         if (activeGui == null) return EventResult.pass();
-        return activeGui.mouseClicked(mouseX, mouseY, button) ? EventResult.interruptFalse() : EventResult.pass();
+        return activeGui.mouseClicked(event, bl) ? EventResult.interruptFalse() : EventResult.pass();
     }
 
     private static void tick(Minecraft instance) {

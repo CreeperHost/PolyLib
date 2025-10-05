@@ -20,7 +20,7 @@ public class ScreenList<T extends ScreenListEntry> extends AbstractSelectionList
         this.width = widthIn;
         this.height = heightIn;
         this.rowWidth = 220;
-        this.itemHeight = slotHeightIn;
+        this.defaultEntryHeight = slotHeightIn;
     }
 
     public ScreenList(Screen screen, Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn, int rowWidth)
@@ -30,7 +30,7 @@ public class ScreenList<T extends ScreenListEntry> extends AbstractSelectionList
         this.width = widthIn;
         this.height = heightIn;
         this.rowWidth = rowWidth;
-        this.itemHeight = slotHeightIn;
+        this.defaultEntryHeight = slotHeightIn;
     }
 
     @Override
