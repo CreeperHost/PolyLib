@@ -82,3 +82,6 @@ accessible method net/minecraft/client/renderer/RenderType$CompositeState$Compos
 accessible method net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder createCompositeState (Z)Lnet/minecraft/client/renderer/RenderType$CompositeState;
 accessible method net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder createCompositeState (Lnet/minecraft/client/renderer/RenderType$OutlineProperty;)Lnet/minecraft/client/renderer/RenderType$CompositeState;
 
+
+accessible class net/minecraft/client/resources/model/AtlasManager$AtlasEntry
+accessible method net/minecraft/client/resources/model/AtlasManager$AtlasEntry <init> (Lnet/minecraft/client/renderer/texture/TextureAtlas;Lnet/minecraft/client/resources/model/AtlasManager$AtlasConfig;)V

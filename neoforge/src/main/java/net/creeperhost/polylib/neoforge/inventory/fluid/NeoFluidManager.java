@@ -1,17 +1,19 @@
 package net.creeperhost.polylib.neoforge.inventory.fluid;
 
-import com.mojang.blaze3d.resource.ResourceHandle;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandlerItem;
 import net.minecraft.core.Direction;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -29,10 +31,18 @@ public class NeoFluidManager implements FluidManager {
     }
 
     @Override
+    @Deprecated
     public @Nullable PolyFluidHandlerItem getItemFluidHandler(ItemStack stack) {
-        ResourceHandler<FluidResource> handler = Capabilities.Fluid.ITEM.getCapability(stack, null);
+        ResourceHandler<ItemResource> container = VanillaContainerWrapper.of(new SimpleContainer(stack) {
+            @Override
+            public void setItem(int slot, @NotNull ItemStack stack, boolean performSideEffects) {
+                getItems().set(slot, stack);
+            }
+        });
+        ItemAccess itemAccess = ItemAccess.forHandlerIndex(container, 0);
+        ResourceHandler<FluidResource> handler = itemAccess.getCapability(Capabilities.Fluid.ITEM);
         if (handler != null) {
-            return new NeoPolyFluidItemWrapper(handler);
+            return new NeoPolyFluidItemWrapper(handler, itemAccess);
         }
         return null;
     }

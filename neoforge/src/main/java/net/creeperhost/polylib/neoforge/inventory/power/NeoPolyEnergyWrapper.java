@@ -1,59 +1,61 @@
 package net.creeperhost.polylib.neoforge.inventory.power;
 
-import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.NotNull;
+import com.google.common.primitives.Ints;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 /**
  * Created by brandon3055 on 26/02/2024
  */
-public class NeoPolyEnergyWrapper implements IPolyEnergyStorageItem {
-    private final IEnergyStorage storage;
-    private ItemStack container = ItemStack.EMPTY;
+public class NeoPolyEnergyWrapper implements IPolyEnergyStorage {
 
-    public NeoPolyEnergyWrapper(IEnergyStorage storage) {
-        this.storage = storage;
-    }
+    private final EnergyHandler handler;
 
-    public NeoPolyEnergyWrapper(IEnergyStorage storage, ItemStack container) {
-        this.storage = storage;
-        this.container = container;
-    }
-
-    @Override
-    public @NotNull ItemStack getContainer() {
-        return container;
+    public NeoPolyEnergyWrapper(EnergyHandler handler) {
+        this.handler = handler;
     }
 
     @Override
     public long receiveEnergy(long maxReceive, boolean simulate) {
-        return storage.receiveEnergy((int) Math.min(maxReceive, Integer.MAX_VALUE), simulate);
+        try (Transaction transaction = Transaction.open(null)){
+            long inserted = handler.insert(Ints.saturatedCast(maxReceive), transaction);
+            if (!simulate) {
+                transaction.commit();
+            }
+            return inserted;
+        }
     }
 
     @Override
     public long extractEnergy(long maxExtract, boolean simulate) {
-        return storage.extractEnergy((int) Math.min(maxExtract, Integer.MAX_VALUE), simulate);
+        try (Transaction transaction = Transaction.open(null)){
+            long extracted = handler.extract(Ints.saturatedCast(maxExtract), transaction);
+            if (!simulate) {
+                transaction.commit();
+            }
+            return extracted;
+        }
     }
 
     @Override
     public long getEnergyStored() {
-        return storage.getEnergyStored();
+        return handler.getAmountAsLong();
     }
 
     @Override
     public long getMaxEnergyStored() {
-        return storage.getMaxEnergyStored();
+        return handler.getCapacityAsLong();
     }
 
     @Override
     public boolean canExtract() {
-        return storage.canExtract();
+        return handler.getAmountAsLong() > 0;
     }
 
     @Override
     public boolean canReceive() {
-        return storage.canReceive();
+        return handler.getAmountAsLong() < handler.getCapacityAsLong();
     }
 
     @Override

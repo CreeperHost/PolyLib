@@ -7,7 +7,9 @@
     "MixinLevelSettings"
   ],
   "client": [
-    "MixinClientLevelData"
+    "AtlasManagerMixin",
+    "MixinClientLevelData",
+    "TextureAtlasMixin"
   ],
   "injectors": {
     "defaultRequire": 1

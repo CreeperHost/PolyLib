@@ -32,17 +32,17 @@ public class PolyLibPlatformImpl
      */
     public static boolean isClientSide()
     {
-        return FMLEnvironment.dist.isClient();
+        return FMLEnvironment.getDist().isClient();
     }
 
     public static boolean isEnergyItem(ItemStack stack)
     {
-        return stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
+        return Capabilities.Energy.ITEM.getCapability(stack, null) != null;
     }
 
     public static boolean isEnergyContainer(BlockEntity block, Direction direction)
     {
-        return block.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, block.getBlockPos(), null) != null;
+        return block.getLevel().getCapability(Capabilities.Energy.BLOCK, block.getBlockPos(), null) != null;
     }
 
     public static FluidManager getFluidManager() {

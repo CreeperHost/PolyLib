@@ -2,7 +2,9 @@ package net.creeperhost.polylib.neoforge.inventory.fluid;
 
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandlerItem;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -10,15 +12,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class NeoPolyFluidItemWrapper extends NeoPolyFluidWrapper implements PolyFluidHandlerItem {
 
-    private final IFluidHandlerItem handler;
+    private final ItemAccess access;
 
-    public NeoPolyFluidItemWrapper(IFluidHandlerItem handler) {
+    public NeoPolyFluidItemWrapper(ResourceHandler<FluidResource> handler, ItemAccess access) {
         super(handler);
-        this.handler = handler;
+        this.access = access;
     }
 
     @Override
     public @NotNull ItemStack getContainer() {
-        return handler.getContainer();
+        return access.getResource().toStack(access.getAmount());
     }
 }
