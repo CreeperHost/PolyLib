@@ -7,6 +7,6 @@ import net.minecraft.world.item.ItemStack;
  */
 public interface PolyEnergyItem {
 
-    IPolyEnergyStorageItem getEnergyStorage(ItemStack stack);
+    IPolyEnergyStorageItem getEnergyStorage(ItemStack access);
 
 }

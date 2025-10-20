@@ -1,6 +1,7 @@
 package net.creeperhost.polylib.inventory.power;
 
 import net.creeperhost.polylib.init.DataComps;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,11 +42,11 @@ public class PolyItemEnergyStorage extends PolyEnergyStorage implements IPolyEne
     }
 
     private void loadEnergy() {
-        energy = stack.getOrDefault(DataComps.getItemEnergy(), 0L);
+        energy = stack.getOrDefault(getEnergyComponent(), 0L);
     }
 
     private void saveEnergy() {
-        stack.set(DataComps.getItemEnergy(), energy);
+        stack.set(getEnergyComponent(), energy);
     }
 
     @Override

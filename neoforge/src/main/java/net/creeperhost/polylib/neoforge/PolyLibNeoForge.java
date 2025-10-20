@@ -9,6 +9,7 @@ import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
+import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyItemWrapper;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,7 +29,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.energy.ItemAccessEnergyHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
@@ -59,36 +59,12 @@ public class PolyLibNeoForge
             {
                 PolyLib.LOGGER.info("Adding EnergyStore Item to " + item.getName().getString());
 
-
 //                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new DelegatingEnergyHandler(), item);
 //                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new ItemAccessEnergyHandler(), item);
 //                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new LimitingEnergyHandler(), item);
 //                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new SimpleEnergyHandler(), item);
-//                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new EnergyHandler() {
-//                    @Override
-//                    public long getAmountAsLong() {
-//                        return 0;
-//                    }
-//
-//                    @Override
-//                    public long getCapacityAsLong() {
-//                        return 0;
-//                    }
-//
-//                    @Override
-//                    public int insert(int i, TransactionContext transactionContext) {
-//                        return 0;
-//                    }
-//
-//                    @Override
-//                    public int extract(int i, TransactionContext transactionContext) {
-//                        return 0;
-//                    }
-//                }, item);
 
-
-                //TODO Capabilities
-                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new PolyNeoEnergyWrapper(polyEnergyItem.getEnergyStorage(stack)), item);
+                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new PolyNeoEnergyItemWrapper(polyEnergyItem.getEnergyStorage(stack), itemAccess), item);
             }
         }
 

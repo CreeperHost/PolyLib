@@ -6,6 +6,7 @@ import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 /**
@@ -14,6 +15,7 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 public class PolyNeoFluidWrapper implements ResourceHandler<FluidResource> {
 
     private final PolyFluidHandler handler;
+    private final FluidJournal journal = new FluidJournal();
 
     public PolyNeoFluidWrapper(PolyFluidHandler handler) {
         this.handler = handler;
@@ -50,7 +52,7 @@ public class PolyNeoFluidWrapper implements ResourceHandler<FluidResource> {
 
         long insertedAmount = handler.fill(stack, true);
         if (insertedAmount > 0) {
-            //TODO what about reversion? Does the neo impl have a snapshot system that needs to be implemented here?
+            journal.updateSnapshots(transaction);
             return (int) handler.fill(stack, false);
         }
         return 0;
@@ -62,9 +64,21 @@ public class PolyNeoFluidWrapper implements ResourceHandler<FluidResource> {
 
         long extractedAmount = handler.drain(stack, true).getAmount();
         if (extractedAmount > 0) {
-
+            journal.updateSnapshots(transaction);
             return (int) handler.drain(stack, false).getAmount();
         }
         return 0;
+    }
+
+    protected class FluidJournal extends SnapshotJournal<net.neoforged.neoforge.fluids.FluidStack> {
+        @Override
+        protected net.neoforged.neoforge.fluids.FluidStack createSnapshot() {
+            return getResource(0).toStack(getAmountAsInt(0));
+        }
+
+        @Override
+        protected void revertToSnapshot(net.neoforged.neoforge.fluids.FluidStack snapshot) {
+            handler._setFluidInTank(0, FluidStackHooksForge.fromForge(snapshot));
+        }
     }
 }

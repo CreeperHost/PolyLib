@@ -12,6 +12,7 @@ import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.polylib.helpers.FormatHelper;
 import net.creeperhost.polylib.inventory.fluid.FluidManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
@@ -127,12 +128,12 @@ public class GuiFluidTank extends GuiElement<GuiFluidTank> implements Background
     public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
         FluidStack stack = getFluidStack();
 
-        Material fluidMat = Material.fromSprite(ClientFluidStackHooks.getStillTexture(stack));
+        TextureAtlasSprite sprite = ClientFluidStackHooks.getStillTexture(stack);
 
-        if (!stack.isEmpty() && fluidMat != null) {
+        if (!stack.isEmpty() && sprite != null) {
             int fluidColor = ClientFluidStackHooks.getColor(stack);
             float height = getCapacity() <= 0 ? 0 : (float) ySize() * (stack.getAmount() / (float) getCapacity());
-            render.tileSprite(GuiRender.guiTexPipe(), xMin(), yMax() - height, xMax(), yMax(), fluidMat.sprite(), fluidColor);
+            render.tileSprite(GuiRender.guiTexPipe(), xMin(), yMax() - height, xMax(), yMax(), sprite, fluidColor);
         }
 
         if (window != null) {

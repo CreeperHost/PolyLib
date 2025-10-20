@@ -1,5 +1,7 @@
 package net.creeperhost.polylib.inventory.power;
 
+import net.creeperhost.polylib.init.DataComps;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,4 +13,7 @@ public interface IPolyEnergyStorageItem extends IPolyEnergyStorage {
     @NotNull
     ItemStack getContainer();
 
+    default DataComponentType<Long> getEnergyComponent() {
+        return DataComps.getItemEnergy();
+    }
 }

@@ -101,6 +101,7 @@ public class Material {
      * Create a material from an existing sprite.
      * Note: This will only work with sprites from a vanilla atlas.
      */
+    @Deprecated //this may be broken now, try to avoid
     @Nullable
     public static Material fromSprite(@Nullable TextureAtlasSprite sprite) {
         if (sprite == null) return null;

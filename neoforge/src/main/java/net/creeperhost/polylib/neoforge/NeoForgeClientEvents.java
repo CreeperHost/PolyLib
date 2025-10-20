@@ -11,9 +11,9 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class NeoForgeClientEvents {
     public static void init(IEventBus iEventBus) {
-        NeoForge.EVENT_BUS.addListener(NeoForgeClientEvents::renderWorldLastEvent);
+//        NeoForge.EVENT_BUS.addListener(NeoForgeClientEvents::renderWorldLastEvent);
 
-        iEventBus.addListener(NeoForgeClientEvents::registerReloadListeners);
+//        iEventBus.addListener(NeoForgeClientEvents::registerReloadListeners);
         iEventBus.addListener(NeoForgeClientEvents::atlasStitched);
         iEventBus.addListener(NeoForgeClientEvents::registerTextureAtlas);
     }
@@ -29,11 +29,11 @@ public class NeoForgeClientEvents {
         }
     }
 
-    private static void renderWorldLastEvent(RenderLevelStageEvent.AfterBlockEntities event) {
+//    private static void renderWorldLastEvent(RenderLevelStageEvent.AfterBlockEntities event) {
 //        ClientRenderEvents.LAST.invoker().onRenderLastEvent(event.getPoseStack());
-    }
+//    }
 
-    private static void registerReloadListeners(AddClientReloadListenersEvent event) {
+//    private static void registerReloadListeners(AddClientReloadListenersEvent event) {
 //        event.addListener(ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "texture_listener"), PolyTextures.getAtlasHolder());
-    }
+//    }
 }

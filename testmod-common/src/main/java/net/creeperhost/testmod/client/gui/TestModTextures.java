@@ -1,6 +1,5 @@
 package net.creeperhost.testmod.client.gui;
 
-import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -67,5 +66,5 @@ public class TestModTextures {
      * @return A new Material for the specified gui texture.
      */
     public static Material getUncached(String texture) {
-        return new Material(ATLAS.location(), ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "gui/" + texture), ATLAS::getSprite);
+        return new Material(ATLAS.location(), ResourceLocation.fromNamespaceAndPath(MOD_ID, "gui/" + texture), ATLAS::getSprite);
     }}
