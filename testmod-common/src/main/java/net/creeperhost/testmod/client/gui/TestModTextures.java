@@ -1,7 +1,8 @@
 package net.creeperhost.testmod.client.gui;
 
+import net.creeperhost.polylib.PolyLib;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
-import net.creeperhost.polylib.client.modulargui.sprite.ModAtlasHolder;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -26,11 +27,15 @@ import static net.creeperhost.testmod.TestMod.MOD_ID;
  */
 public class TestModTextures {
 
-    private static final ModAtlasHolder ATLAS_HOLDER = new ModAtlasHolder(MOD_ID, "textures/atlas/gui.png", "gui");
+    public static final ResourceLocation TEXTURE_ID = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/atlas/gui.png");
+    public static final ResourceLocation DEFINITION_LOCATION = ResourceLocation.fromNamespaceAndPath(MOD_ID, "gui");
+    private static TextureAtlas ATLAS;
+
     private static final Map<String, Material> MATERIAL_CACHE = new HashMap<>();
 
-    public static ModAtlasHolder getAtlasHolder() {
-        return ATLAS_HOLDER;
+
+    public static void setAtlas(TextureAtlas atlas) {
+        ATLAS = atlas;
     }
 
     /**
@@ -62,6 +67,5 @@ public class TestModTextures {
      * @return A new Material for the specified gui texture.
      */
     public static Material getUncached(String texture) {
-        return new Material(ATLAS_HOLDER.atlasLocation(), ResourceLocation.fromNamespaceAndPath(MOD_ID, "gui/" + texture), ATLAS_HOLDER::getSprite);
-    }
-}
+        return new Material(ATLAS.location(), ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "gui/" + texture), ATLAS::getSprite);
+    }}

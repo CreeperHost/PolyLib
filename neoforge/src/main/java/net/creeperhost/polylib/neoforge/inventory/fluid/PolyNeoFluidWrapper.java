@@ -1,15 +1,17 @@
 package net.creeperhost.polylib.neoforge.inventory.fluid;
 
+import dev.architectury.fluid.FluidStack;
+import dev.architectury.hooks.fluid.FluidStackHooks;
 import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import net.creeperhost.polylib.inventory.fluid.PolyFluidHandler;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 /**
  * Created by brandon3055 on 15/02/2024
  */
-public class PolyNeoFluidWrapper implements IFluidHandler {
+public class PolyNeoFluidWrapper implements ResourceHandler<FluidResource> {
 
     private final PolyFluidHandler handler;
 
@@ -18,37 +20,51 @@ public class PolyNeoFluidWrapper implements IFluidHandler {
     }
 
     @Override
-    public int getTanks() {
+    public int size() {
         return handler.getTanks();
     }
 
     @Override
-    public @NotNull FluidStack getFluidInTank(int i) {
-        return FluidStackHooksForge.toForge(handler.getFluidInTank(i));
+    public FluidResource getResource(int index) {
+        return FluidResource.of(FluidStackHooksForge.toForge(handler.getFluidInTank(index)));
     }
 
     @Override
-    public int getTankCapacity(int i) {
-        return (int) Math.min(Integer.MAX_VALUE, handler.getTankCapacity(i));
+    public long getAmountAsLong(int index) {
+        return (int) Math.min(Integer.MAX_VALUE, handler.getFluidInTank(index).getAmount());
     }
 
     @Override
-    public boolean isFluidValid(int i, @NotNull FluidStack fluidStack) {
-        return handler.isFluidValid(i, FluidStackHooksForge.fromForge(fluidStack));
+    public long getCapacityAsLong(int index, FluidResource resource) {
+        return (int) Math.min(Integer.MAX_VALUE, handler.getTankCapacity(index));
     }
 
     @Override
-    public int fill(FluidStack fluidStack, FluidAction fluidAction) {
-        return (int) handler.fill(FluidStackHooksForge.fromForge(fluidStack), fluidAction.simulate());
+    public boolean isValid(int index, FluidResource resource) {
+        return handler.isFluidValid(index, FluidStackHooksForge.fromForge(resource.toStack((int) FluidStackHooks.bucketAmount())));
     }
 
     @Override
-    public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
-        return FluidStackHooksForge.toForge(handler.drain(FluidStackHooksForge.fromForge(fluidStack), fluidAction.simulate()));
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        dev.architectury.fluid.FluidStack stack = FluidStack.create(resource.getFluid(), amount);
+
+        long insertedAmount = handler.fill(stack, true);
+        if (insertedAmount > 0) {
+            //TODO what about reversion? Does the neo impl have a snapshot system that needs to be implemented here?
+            return (int) handler.fill(stack, false);
+        }
+        return 0;
     }
 
     @Override
-    public @NotNull FluidStack drain(int i, FluidAction fluidAction) {
-        return FluidStackHooksForge.toForge(handler.drain(i, fluidAction.simulate()));
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        FluidStack stack = FluidStack.create(resource.getFluid(), amount);
+
+        long extractedAmount = handler.drain(stack, true).getAmount();
+        if (extractedAmount > 0) {
+
+            return (int) handler.drain(stack, false).getAmount();
+        }
+        return 0;
     }
 }

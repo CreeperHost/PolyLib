@@ -52,7 +52,7 @@ public class InventoryTestBlockEntity extends PolyBlockEntity implements PolyEne
     public void tick()
     {
         super.tick();
-        if(level != null && !level.isClientSide)
+        if(level != null && !level.isClientSide())
         {
             progress++;
             if(progress >= 100)

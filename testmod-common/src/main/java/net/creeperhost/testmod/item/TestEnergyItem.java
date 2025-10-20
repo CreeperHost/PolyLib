@@ -1,6 +1,7 @@
 package net.creeperhost.testmod.item;
 
 import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
 import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
 import net.creeperhost.polylib.inventory.power.PolyItemEnergyStorage;
 import net.minecraft.network.chat.Component;
@@ -28,7 +29,7 @@ public class TestEnergyItem extends Item implements PolyEnergyItem {
     //TODO Add a base "PolyEnergyItem" class that handles all this common energy stuff.
 
     @Override
-    public IPolyEnergyStorage getEnergyStorage(ItemStack stack) {
+    public IPolyEnergyStorageItem getEnergyStorage(ItemStack stack) {
         return new PolyItemEnergyStorage(stack, 32000, 64);
     }
 

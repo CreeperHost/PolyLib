@@ -33,7 +33,7 @@ public class InventoryTestBlock extends BlockFacing
             System.out.println("isEnergyBlock " + isEnergyBlock + " Stored " + power.getEnergyStored() + " Max " + power.getMaxEnergyStored());
             return InteractionResult.SUCCESS;
         }
-        if (!level.isClientSide)
+        if (!level.isClientSide())
         {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             MenuRegistry.openExtendedMenu((ServerPlayer) player, (MenuProvider) blockEntity, packetBuffer -> packetBuffer.writeBlockPos(blockPos));

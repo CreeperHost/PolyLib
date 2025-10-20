@@ -26,8 +26,8 @@ public class TestScreens
         ModularGuiInjector.registerInjection(e -> e instanceof TitleScreen, e -> new MainMenuGuiInjection());
         ModularGuiInjector.registerInjection(e -> e instanceof ContainerScreen, e -> new ChestGuiInjection());
 
-        MenuRegistry.registerScreenFactory(TestContainers.TEST_INVENTORY_CONTAINER.get(), ScreenInventoryTestBlock::create);
-        MenuRegistry.registerScreenFactory(TestContainers.MGUI_TEST_BLOCK_CONTAINER.get(), MGuiTestBlockGui::create);
-        MenuRegistry.registerScreenFactory(TestContainers.POWER_CONTAINEr.get(), PowerScreen::new);
+//        MenuRegistry.registerScreenFactory(TestContainers.TEST_INVENTORY_CONTAINER.get(), ScreenInventoryTestBlock::create);
+//        MenuRegistry.registerScreenFactory(TestContainers.MGUI_TEST_BLOCK_CONTAINER.get(), MGuiTestBlockGui::create);
+//        MenuRegistry.registerScreenFactory(TestContainers.POWER_CONTAINEr.get(), PowerScreen::new);
     }
 }

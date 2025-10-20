@@ -45,7 +45,7 @@ public class MGuiTestBlockEntity extends PolyBlockEntity implements MenuProvider
 
     public void tick() {
         super.tick();
-        if (level.isClientSide) return;
+        if (level.isClientSide()) return;
 
         if (progress == 0) {
             if (lavaStorage.isEmpty()) {

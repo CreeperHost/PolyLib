@@ -45,7 +45,7 @@ public class BlockTestMultiblockBlock extends Block implements EntityBlock
 //                player.displayClientMessage(Component.literal(s), false);
 //                return InteractionResult.FAIL;
 //            }
-            if(level.isClientSide)
+            if(level.isClientSide())
             {
                 player.displayClientMessage(Component.literal( "Client: Assembled " + assembled), false);
                 return InteractionResult.SUCCESS;
