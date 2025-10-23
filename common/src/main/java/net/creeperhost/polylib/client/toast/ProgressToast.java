@@ -1,16 +1,19 @@
 package net.creeperhost.polylib.client.toast;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ProgressToast extends PolyToast
+public class ProgressToast implements Toast
 {
+    private static final ResourceLocation BG_TEXTURE = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
     private final Component title;
     private float progress;
     private float lastProgress;
@@ -28,9 +31,9 @@ public class ProgressToast extends PolyToast
     public Visibility render(GuiGraphics guiGraphics, ToastComponent toastComponent, long l)
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderTexture(0, BG_TEXTURE);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        guiGraphics.blit(TEXTURE, 0, 0, 0, 0, this.width(), this.height());
+        guiGraphics.blit(BG_TEXTURE, 0, 0, 0, 0, this.width(), this.height(), this.width(), this.height());
         if (iconResourceLocation != null)
         {
             renderImage(guiGraphics, toastComponent, iconResourceLocation);
@@ -54,5 +57,13 @@ public class ProgressToast extends PolyToast
     public void updateProgress(float progress)
     {
         this.progress = progress;
+    }
+
+    public void renderImage(GuiGraphics guiGraphics, ToastComponent toastComponent, ResourceLocation resourceLocation)
+    {
+        RenderSystem.setShaderTexture(0, resourceLocation);
+        RenderSystem.enableBlend();
+        guiGraphics.blit(resourceLocation, 8, 8, 0, 0, 16, 16, 16, 16);
+        RenderSystem.enableBlend();
     }
 }
