@@ -2,6 +2,7 @@ package net.creeperhost.polylib.client.toast;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
@@ -15,8 +16,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class SimpleToast extends PolyToast
+public class SimpleToast implements Toast
 {
+    private static final ResourceLocation BG_TEXTURE = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
     private final Component title;
     private final Component description;
     private ItemStack displayIconStack = ItemStack.EMPTY;
@@ -46,9 +48,9 @@ public class SimpleToast extends PolyToast
     public Toast.Visibility render(GuiGraphics guiGraphics, ToastComponent toastComponent, long l)
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderTexture(0, BG_TEXTURE);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        guiGraphics.blit(TEXTURE, 0, 0, 0, 0, this.width(), this.height());
+        guiGraphics.blit(BG_TEXTURE, 0, 0, 0, 0, this.width(), this.height(), this.width(), this.height());
         if (iconResourceLocation != null)
         {
             renderImage(guiGraphics, toastComponent, iconResourceLocation);
@@ -86,5 +88,13 @@ public class SimpleToast extends PolyToast
             return l >= 5000L ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
         }
         return Visibility.HIDE;
+    }
+
+    public void renderImage(GuiGraphics guiGraphics, ToastComponent toastComponent, ResourceLocation resourceLocation)
+    {
+        RenderSystem.setShaderTexture(0, resourceLocation);
+        RenderSystem.enableBlend();
+        guiGraphics.blit(resourceLocation, 8, 8, 0, 0, 16, 16, 16, 16);
+        RenderSystem.enableBlend();
     }
 }
