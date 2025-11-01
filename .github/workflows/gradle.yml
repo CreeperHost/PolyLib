@@ -1,5 +1,8 @@
 name: Java CI
 
+permissions:
+  contents: write
+
 on:
   push:
     tags: [ '1.21.9-\d+.\d+.\d+.\d+' ]
