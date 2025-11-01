@@ -113,7 +113,7 @@ publishing {
 
 unifiedPublishing {
     project {
-        displayName = "$rootProject.curseforge_version [Fabric]"
+        displayName = "$rootProject.mod_version [Fabric]"
         releaseType = "$rootProject.artifact_type"
         changelog = ""
         gameVersions = ["$rootProject.minecraft_version", "1.21.10"]
