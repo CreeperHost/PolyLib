@@ -15,7 +15,7 @@ import net.creeperhost.testmod.blocks.multiblock.BlockTestMultiblockBlock;
 import net.creeperhost.testmod.blocks.multiblock.TestMultiBlockBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -32,9 +32,9 @@ public class TestBlocks
         return ResourceKey.create(Registries.BLOCK, modLoc(name));
     }
 
-    static ResourceLocation modLoc (String name)
+    static Identifier modLoc (String name)
     {
-        return ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, name);
+        return Identifier.fromNamespaceAndPath(TestMod.MOD_ID, name);
     }
 
 

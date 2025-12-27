@@ -1,7 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
-//import dev.architectury.event.CompoundEventResult;
-//import dev.architectury.event.events.client.ClientGuiEvent;
+import dev.architectury.event.events.client.ClientGuiEvent;
+import dev.architectury.event.CompoundEventResult;
 import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;

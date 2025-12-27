@@ -9,7 +9,7 @@ import net.creeperhost.testmod.item.TestEnergyItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 
@@ -26,9 +26,9 @@ public class TestItems
         return ResourceKey.create(Registries.ITEM, modLoc(name));
     }
 
-    static ResourceLocation modLoc (String name)
+    static Identifier modLoc (String name)
     {
-        return ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, name);
+        return Identifier.fromNamespaceAndPath(TestMod.MOD_ID, name);
     }
 
     public static final RegistrySupplier<Item> INVENTORY_TEST_ITEMBLOCK = ITEMS.register("inventory_test_block", () -> new BlockItem(TestBlocks.INVENTORY_TEST_BLOCK.get(), new Item.Properties().setId(modKey("inventory_test_block"))));

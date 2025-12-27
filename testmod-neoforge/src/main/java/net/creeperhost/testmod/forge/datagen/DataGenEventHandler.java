@@ -6,7 +6,7 @@ import net.creeperhost.testmod.TestMod;
 import net.creeperhost.testmod.blocks.mguitestblock.MGuiTestBlockGui;
 import net.creeperhost.testmod.client.gui.ModularGuiTest;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -26,7 +26,7 @@ public class DataGenEventHandler {
 
             textureProvider.addDynamicTextures(new ModularGuiTest());
             textureProvider.addDynamicTextures(new MGuiTestBlockGui());
-            textureProvider.addDynamicTexture(ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla.png"), ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/test_dynamic_texture.png"), 200, 200, 4, 4, 4, 4);
+            textureProvider.addDynamicTexture(Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla.png"), Identifier.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/test_dynamic_texture.png"), 200, 200, 4, 4, 4, 4);
 
             gen.addProvider(true, textureProvider);
         }

@@ -21,7 +21,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
@@ -39,7 +39,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
 
     @Override
     public void makeTextures(Function<DynamicTextures.DynamicTexture, String> textures) {
-        backgroundTexture = dynamicTexture(textures, ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
+        backgroundTexture = dynamicTexture(textures, Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), Identifier.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
     }
 
     @Override
@@ -292,7 +292,7 @@ public class MGuiTestBlockGui extends ContainerGuiProvider<MGuiTestBlockContaine
         toastTimer = 0;
     }
 
-    private static final ResourceLocation CREEPERHOST_LOGO_25 = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/creeperhost.png");
+    private static final Identifier CREEPERHOST_LOGO_25 = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/creeperhost.png");
 
     private void tick() {
         int interval = 50;

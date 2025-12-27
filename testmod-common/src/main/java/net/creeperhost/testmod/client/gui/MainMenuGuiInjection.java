@@ -12,7 +12,7 @@ import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.awt.*;
 
@@ -59,7 +59,7 @@ public class MainMenuGuiInjection implements GuiProvider {
         GuiDVD dvd = new GuiDVD(root);
         Constraints.size(dvd, 40, 40);
         Constraints.placeInside(dvd, root, Constraints.LayoutPos.BOTTOM_LEFT, 20, -20);
-        GuiTexture disc = new GuiTexture(dvd.getContentElement(), Material.fromRawTexture(ResourceLocation.withDefaultNamespace("textures/item/music_disc_13.png")));
+        GuiTexture disc = new GuiTexture(dvd.getContentElement(), Material.fromRawTexture(Identifier.withDefaultNamespace("textures/item/music_disc_13.png")));
         Constraints.bind(disc, dvd.getContentElement());
         dvd.start();
         dvd.onBounce(bounce -> disc.setColour(0xFF000000 | ChatFormatting.getById(1 + (bounce % 15)).getColor()));

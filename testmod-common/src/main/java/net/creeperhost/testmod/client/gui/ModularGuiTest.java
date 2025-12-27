@@ -15,7 +15,7 @@ import net.creeperhost.testmod.TestMod;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
@@ -38,7 +38,7 @@ public class ModularGuiTest implements GuiProvider, DynamicTextures {
 
     @Override
     public void makeTextures(Function<DynamicTexture, String> textures) {
-        BACKGROUND_TEXTURE = dynamicTexture(textures, ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/test_gui"), 200, 200, 4);
+        BACKGROUND_TEXTURE = dynamicTexture(textures, Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"), Identifier.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/test_gui"), 200, 200, 4);
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.Item;
@@ -72,7 +72,7 @@ public class PolyLibNeoForge
         {
             try
             {
-                ResourceLocation reg = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntityType);
+                Identifier reg = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntityType);
                 ModContainer mod = ModList.get().getModContainerById(reg.getNamespace()).orElse(null);
                 if (mod == null || mod.getModInfo().getDependencies().stream().noneMatch(e -> e.getModId().equals(PolyLib.MOD_ID))) {
                     continue;

@@ -41,37 +41,37 @@ public class ModSpriteResourceLoader {
     }
 
     public List<Function<SpriteResourceLoader, SpriteContents>> list(ResourceManager arg) {
-        final Map<Identifier, SpriteSource.SpriteSupplier> map = new HashMap();
-        SpriteSource.Output output = new SpriteSource.Output() {
-            public void add(Identifier location, SpriteSource.SpriteSupplier arg2) {
-                if (location.getNamespace().equals(modid)) {
-                    SpriteSource.SpriteSupplier spriteSupplier = map.put(location, arg2);
-                    if (spriteSupplier != null) {
-                        spriteSupplier.discard();
-                    }
-                }
-            }
-
-            public void removeAll(Predicate<Identifier> predicate) {
-                Iterator<Map.Entry<Identifier, SpriteSource.SpriteSupplier>> iterator = map.entrySet().iterator();
-
-                while (iterator.hasNext()) {
-                    Map.Entry<Identifier, SpriteSource.SpriteSupplier> entry = iterator.next();
-                    if (predicate.test(entry.getKey())) {
-                        entry.getValue().discard();
-                        iterator.remove();
-                    }
-                }
-
-            }
-        };
-        this.sources.forEach((arg3) -> arg3.run(arg, output));
+//        final Map<Identifier, SpriteSource.SpriteSupplier> map = new HashMap();
+//        SpriteSource.Output output = new SpriteSource.Output() {
+//            public void add(Identifier location, SpriteSource.SpriteSupplier arg2) {
+//                if (location.getNamespace().equals(modid)) {
+//                    SpriteSource.SpriteSupplier spriteSupplier = map.put(location, arg2);
+//                    if (spriteSupplier != null) {
+//                        spriteSupplier.discard();
+//                    }
+//                }
+//            }
+//
+//            public void removeAll(Predicate<Identifier> predicate) {
+//                Iterator<Map.Entry<Identifier, SpriteSource.SpriteSupplier>> iterator = map.entrySet().iterator();
+//
+//                while (iterator.hasNext()) {
+//                    Map.Entry<Identifier, SpriteSource.SpriteSupplier> entry = iterator.next();
+//                    if (predicate.test(entry.getKey())) {
+//                        entry.getValue().discard();
+//                        iterator.remove();
+//                    }
+//                }
+//
+//            }
+//        };
+//        this.sources.forEach((arg3) -> arg3.run(arg, output));
 
         ImmutableList.Builder<Function<SpriteResourceLoader, SpriteContents>> builder = ImmutableList.builder();
         builder.add((spriteResourceLoader) -> {
             return MissingTextureAtlasSprite.create();
         });
-        builder.addAll(map.values());
+//        builder.addAll(map.values());
         return builder.build();
     }
 

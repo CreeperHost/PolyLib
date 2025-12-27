@@ -3,6 +3,10 @@ plugins {
     id "me.shedaniel.unified-publishing"
 }
 
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
 def ENV = System.getenv()
 
 architectury {

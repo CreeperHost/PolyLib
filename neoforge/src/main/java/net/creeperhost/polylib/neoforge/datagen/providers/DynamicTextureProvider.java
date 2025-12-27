@@ -3,19 +3,19 @@ package net.creeperhost.polylib.neoforge.datagen.providers;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
 import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
-import net.minecraft.Util;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.VanillaPackResourcesBuilder;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.util.Util;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -63,16 +63,16 @@ public class DynamicTextureProvider implements DataProvider {
     }
 
     public void addDynamicTexture(String dynamicInput, String outputTexture, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder) {
-        addDynamicTexture(ResourceLocation.fromNamespaceAndPath(modid, dynamicInput), ResourceLocation.fromNamespaceAndPath(modid, outputTexture), width, height, topBorder, leftBorder, bottomBorder, rightBorder);
+        addDynamicTexture(Identifier.fromNamespaceAndPath(modid, dynamicInput), Identifier.fromNamespaceAndPath(modid, outputTexture), width, height, topBorder, leftBorder, bottomBorder, rightBorder);
     }
 
-    public void addDynamicTexture(ResourceLocation dynamicInput, ResourceLocation outputTexture, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder) {
+    public void addDynamicTexture(Identifier dynamicInput, Identifier outputTexture, int width, int height, int topBorder, int leftBorder, int bottomBorder, int rightBorder) {
         try {
             if (!dynamicInput.getPath().endsWith(".png")) {
-                dynamicInput = ResourceLocation.fromNamespaceAndPath(dynamicInput.getNamespace(), dynamicInput.getPath() + ".png");
+                dynamicInput = Identifier.fromNamespaceAndPath(dynamicInput.getNamespace(), dynamicInput.getPath() + ".png");
             }
             if (!outputTexture.getPath().endsWith(".png")) {
-                outputTexture = ResourceLocation.fromNamespaceAndPath(outputTexture.getNamespace(), outputTexture.getPath() + ".png");
+                outputTexture = Identifier.fromNamespaceAndPath(outputTexture.getNamespace(), outputTexture.getPath() + ".png");
             }
 
             VanillaPackResources resources = new VanillaPackResourcesBuilder().exposeNamespace(dynamicInput.getNamespace()).pushJarResources().build(new PackLocationInfo("mod-resources", Component.literal("mod-resources"), PackSource.BUILT_IN, Optional.empty()));

@@ -14,7 +14,7 @@ import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.creeperhost.testmod.TestMod;
 import net.creeperhost.testmod.client.gui.TestModTextures;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.function.Function;
@@ -30,8 +30,8 @@ public class ScreenInventoryTestBlock extends ContainerGuiProvider<ContainerInve
     @Override
     public void makeTextures(Function<DynamicTexture, String> textures)
     {
-        BACKGROUND_TEXTURE = dynamicTexture(textures, ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"),
-                ResourceLocation.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
+        BACKGROUND_TEXTURE = dynamicTexture(textures, Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/dynamic/gui_vanilla"),
+                Identifier.fromNamespaceAndPath(TestMod.MOD_ID, "textures/gui/mgui_test_block"), 226, 220, 4);
     }
 
     @Override
