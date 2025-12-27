@@ -11,7 +11,7 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +55,7 @@ public class PolyModelProvider extends FabricModelProvider
         if (this.moduleType == moduleType) blockValues.put(block, blockStateGenerator);
     }
 
-    public void addSimpleBlockModel(Block block, ResourceLocation textureLocation, ModuleType moduleType)
+    public void addSimpleBlockModel(Block block, Identifier textureLocation, ModuleType moduleType)
     {
         //TODO 1.21.5
 //        MultiVariantGenerator multiVariantGenerator = createSimpleBlock(block, textureLocation);

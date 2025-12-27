@@ -6,8 +6,8 @@ import net.creeperhost.polylib.fabric.datagen.PolyDataGen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,7 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 public class PolyRecipeProvider extends FabricRecipeProvider
 {
     private final ModuleType moduleType;
-    private final Map<ResourceLocation, RecipeBuilder> values = new HashMap<>();
+    private final Map<Identifier, RecipeBuilder> values = new HashMap<>();
     private final HolderGetter<Item> items;
 
     public PolyRecipeProvider(FabricDataOutput dataOutput, ModuleType moduleType, CompletableFuture<HolderLookup.Provider> registryLookup)
@@ -39,14 +39,14 @@ public class PolyRecipeProvider extends FabricRecipeProvider
         items = registryLookup.join().lookupOrThrow(Registries.ITEM);
     }
 
-    public void add(RecipeBuilder recipeBuilder, ResourceLocation id, ModuleType moduleType)
+    public void add(RecipeBuilder recipeBuilder, Identifier id, ModuleType moduleType)
     {
         if (this.moduleType == moduleType) values.put(id, recipeBuilder);
     }
 
     public void add(RecipeBuilder recipeBuilder, ModuleType moduleType)
     {
-        ResourceLocation resourceLocation = BuiltInRegistries.ITEM.getKey(recipeBuilder.getResult().asItem());
+        Identifier resourceLocation = BuiltInRegistries.ITEM.getKey(recipeBuilder.getResult().asItem());
         add(recipeBuilder, resourceLocation, moduleType);
     }
 
