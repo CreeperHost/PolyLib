@@ -4,13 +4,11 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceMetadata;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
@@ -25,26 +23,26 @@ import java.util.function.Function;
  * Created by brandon3055 on 20/08/2023
  */
 public class Material {
-    private final ResourceLocation atlasLocation;
-    private final ResourceLocation texture;
-    private final Function<ResourceLocation, TextureAtlasSprite> spriteFunction;
+    private final Identifier atlasLocation;
+    private final Identifier texture;
+    private final Function<Identifier, TextureAtlasSprite> spriteFunction;
 
     @Nullable
     private RenderType renderType;
     @Nullable
     private net.minecraft.client.resources.model.Material vanillaMat;
 
-    public Material(ResourceLocation atlasLocation, ResourceLocation texture, Function<ResourceLocation, TextureAtlasSprite> spriteFunction) {
+    public Material(Identifier atlasLocation, Identifier texture, Function<Identifier, TextureAtlasSprite> spriteFunction) {
         this.atlasLocation = atlasLocation;
         this.texture = texture;
         this.spriteFunction = spriteFunction;
     }
 
-    public ResourceLocation atlasLocation() {
+    public Identifier atlasLocation() {
         return atlasLocation;
     }
 
-    public ResourceLocation texture() {
+    public Identifier texture() {
         return texture;
     }
 
@@ -59,7 +57,7 @@ public class Material {
      * @param typeBuilder a function that will be used to create the render type if it does not already exist.
      * @return The render type for this material.
      */
-    public RenderType renderType(Function<ResourceLocation, RenderType> typeBuilder) {
+    public RenderType renderType(Function<Identifier, RenderType> typeBuilder) {
         if (this.renderType == null) {
             this.renderType = typeBuilder.apply(atlasLocation());
         }
@@ -72,7 +70,7 @@ public class Material {
      * @param buffers     bugger source.
      * @param typeBuilder a function that will be used to create the render type if it does not already exist.
      */
-    public VertexConsumer buffer(MultiBufferSource buffers, Function<ResourceLocation, RenderType> typeBuilder) {
+    public VertexConsumer buffer(MultiBufferSource buffers, Function<Identifier, RenderType> typeBuilder) {
         return buffers.getBuffer(renderType(typeBuilder));
     }
 
@@ -84,7 +82,7 @@ public class Material {
     }
 
 
-    private static TextureAtlasSprite getAtlasSprite(ResourceLocation atlas, ResourceLocation sprite) {
+    private static TextureAtlasSprite getAtlasSprite(Identifier atlas, Identifier sprite) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(atlas).getSprite(sprite);
     }
 
@@ -93,8 +91,8 @@ public class Material {
      *
      * @return an un-cached material from a vanilla atlas.
      */
-    public static Material fromAtlas(ResourceLocation atlasLocation, String texture) {
-        return new Material(atlasLocation, ResourceLocation.fromNamespaceAndPath(atlasLocation.getNamespace(), texture), e -> getAtlasSprite(atlasLocation, e));
+    public static Material fromAtlas(Identifier atlasLocation, String texture) {
+        return new Material(atlasLocation, Identifier.fromNamespaceAndPath(atlasLocation.getNamespace(), texture), e -> getAtlasSprite(atlasLocation, e));
     }
 
     /**
@@ -108,13 +106,13 @@ public class Material {
         return new Material(sprite.atlasLocation(), sprite.contents().name(), e -> getAtlasSprite(sprite.atlasLocation(), e));
     }
 
-    public static Material fromRawTexture(ResourceLocation texture) {
+    public static Material fromRawTexture(Identifier texture) {
         return new Material(texture, texture, FullSprite::new);
     }
 
     private static class FullSprite extends TextureAtlasSprite {
-        private FullSprite(ResourceLocation location) {
-            super(location, new SpriteContents(location, new FrameSize(1, 1), new NativeImage(1, 1, false)), 1, 1, 0, 0);
+        private FullSprite(Identifier location) {
+            super(location, new SpriteContents(location, new FrameSize(1, 1), new NativeImage(1, 1, false)), 1, 1, 0, 0, 0);
         }
 
         @Override

@@ -8,9 +8,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -18,11 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class SimpleToast implements Toast {
-    private static final ResourceLocation BG_TEXTURE = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
+    private static final Identifier BG_TEXTURE = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
     private final Component title;
     private final Component description;
     private ItemStack displayIconStack = ItemStack.EMPTY;
-    private ResourceLocation iconResourceLocation;
+    private Identifier iconResourceLocation;
     private Toast.Visibility visibility = Toast.Visibility.SHOW;
 
     public SimpleToast(Component title, Component description) {
@@ -36,7 +35,7 @@ public class SimpleToast implements Toast {
         this.displayIconStack = itemStack;
     }
 
-    public SimpleToast(Component title, Component description, ResourceLocation resourceLocation) {
+    public SimpleToast(Component title, Component description, Identifier resourceLocation) {
         this.title = title;
         this.description = description;
         this.iconResourceLocation = resourceLocation;

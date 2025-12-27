@@ -5,16 +5,14 @@ import dev.architectury.platform.Platform;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.creeperhost.polylib.PolyLib;
-import net.creeperhost.polylib.PolyLibPlatform;
 import net.creeperhost.polylib.containers.DataManagerContainer;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
 import net.creeperhost.polylib.data.DataManagerBlock;
 import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -33,13 +31,13 @@ public class PolyLibNetwork {
     private static final Logger LOGGER = LogManager.getLogger();
 
     //Server To Client
-    private static final ResourceLocation CONTAINER_PACKET_TO_CLIENT = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "container_client");
-    private static final ResourceLocation TILE_DATA_VALUE_TO_CLIENT = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_client");
+    private static final Identifier CONTAINER_PACKET_TO_CLIENT = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "container_client");
+    private static final Identifier TILE_DATA_VALUE_TO_CLIENT = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_client");
 
     //Client to server
-    private static final ResourceLocation CONTAINER_PACKET_TO_SERVER = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "container_packet_server");
-    private static final ResourceLocation TILE_DATA_VALUE_TO_SERVER = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_data_server");
-    private static final ResourceLocation TILE_PACKET_TO_SERVER = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_packet_server");
+    private static final Identifier CONTAINER_PACKET_TO_SERVER = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "container_packet_server");
+    private static final Identifier TILE_DATA_VALUE_TO_SERVER = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_data_server");
+    private static final Identifier TILE_PACKET_TO_SERVER = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "tile_packet_server");
 
     @SuppressWarnings("removal")
     public static void init() {

@@ -5,7 +5,7 @@ import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -60,7 +60,7 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
      *              {@link DataManagerBlock#CLIENT_CONTROL} - Allows this value to be set from a client side container screen.
      */
     public <D extends AbstractDataStore<?>> D register(String name, D data, int... flags) {
-        assert ResourceLocation.isValidPath(name);
+        assert Identifier.isValidPath(name);
         int combinedFlags = 0;
         for (int flag : flags) {
             combinedFlags |= flag;

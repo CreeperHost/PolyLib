@@ -8,9 +8,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 
@@ -19,12 +18,12 @@ import java.util.function.Supplier;
 
 public class ProgressToast implements Toast
 {
-    private static final ResourceLocation BG_TEXTURE = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
+    private static final Identifier BG_TEXTURE = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/toast.png");
     private final Component title;
     private Supplier<Double> progress;
     private double lastProgress;
     private long lastProgressTime;
-    private final ResourceLocation iconResourceLocation;
+    private final Identifier iconResourceLocation;
 
     public ProgressToast(Component title, Supplier<Double> progress)
     {
@@ -33,7 +32,7 @@ public class ProgressToast implements Toast
         this.iconResourceLocation = null;
     }
 
-    public ProgressToast(Component title, Supplier<Double> progress, ResourceLocation resourceLocation)
+    public ProgressToast(Component title, Supplier<Double> progress, Identifier resourceLocation)
     {
         this.title = title;
         this.progress = progress;
@@ -47,7 +46,7 @@ public class ProgressToast implements Toast
         this.iconResourceLocation = null;
     }
 
-    public ProgressToast(Component title, double progress, ResourceLocation resourceLocation)
+    public ProgressToast(Component title, double progress, Identifier resourceLocation)
     {
         this.title = title;
         this.progress = () -> progress;

@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -20,8 +20,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+//import org.joml.Matrix4f;
+//import org.joml.Quaternionf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,13 +36,13 @@ import java.util.function.Supplier;
  */
 public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements BackgroundRender {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Map<ResourceLocation, Entity> entityCache = new HashMap<>();
-    private static final List<ResourceLocation> invalidEntities = new ArrayList<>();
+    private static final Map<Identifier, Entity> entityCache = new HashMap<>();
+    private static final List<Identifier> invalidEntities = new ArrayList<>();
 
     private Supplier<Float> rotationSpeed = () -> 1F;
     private Supplier<Float> lockedRotation = () -> 0F;
     private Entity entity;
-    private ResourceLocation entityName;
+    private Identifier entityName;
     private boolean invalidEntity = false;
     private Supplier<Boolean> rotationLocked = () -> false;
     private Supplier<Boolean> trackMouse = () -> false;
@@ -66,7 +67,7 @@ public class GuiEntityRenderer extends GuiElement<GuiEntityRenderer> implements 
         return this;
     }
 
-    public GuiEntityRenderer setEntity(ResourceLocation entity) {
+    public GuiEntityRenderer setEntity(Identifier entity) {
         this.entityName = entity;
         this.entity = entityCache.computeIfAbsent(entity, resourceLocation -> {
             EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(entity);

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.texture.atlas.SpriteResourceLoader;
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
@@ -41,9 +41,9 @@ public class ModSpriteResourceLoader {
     }
 
     public List<Function<SpriteResourceLoader, SpriteContents>> list(ResourceManager arg) {
-        final Map<ResourceLocation, SpriteSource.SpriteSupplier> map = new HashMap();
+        final Map<Identifier, SpriteSource.SpriteSupplier> map = new HashMap();
         SpriteSource.Output output = new SpriteSource.Output() {
-            public void add(ResourceLocation location, SpriteSource.SpriteSupplier arg2) {
+            public void add(Identifier location, SpriteSource.SpriteSupplier arg2) {
                 if (location.getNamespace().equals(modid)) {
                     SpriteSource.SpriteSupplier spriteSupplier = map.put(location, arg2);
                     if (spriteSupplier != null) {
@@ -52,11 +52,11 @@ public class ModSpriteResourceLoader {
                 }
             }
 
-            public void removeAll(Predicate<ResourceLocation> predicate) {
-                Iterator<Map.Entry<ResourceLocation, SpriteSource.SpriteSupplier>> iterator = map.entrySet().iterator();
+            public void removeAll(Predicate<Identifier> predicate) {
+                Iterator<Map.Entry<Identifier, SpriteSource.SpriteSupplier>> iterator = map.entrySet().iterator();
 
                 while (iterator.hasNext()) {
-                    Map.Entry<ResourceLocation, SpriteSource.SpriteSupplier> entry = iterator.next();
+                    Map.Entry<Identifier, SpriteSource.SpriteSupplier> entry = iterator.next();
                     if (predicate.test(entry.getKey())) {
                         entry.getValue().discard();
                         iterator.remove();
@@ -75,8 +75,8 @@ public class ModSpriteResourceLoader {
         return builder.build();
     }
 
-    public static ModSpriteResourceLoader load(ResourceManager arg, ResourceLocation arg2, String modid) {
-        ResourceLocation resourceLocation = ATLAS_INFO_CONVERTER.idToFile(arg2);
+    public static ModSpriteResourceLoader load(ResourceManager arg, Identifier arg2, String modid) {
+        Identifier resourceLocation = ATLAS_INFO_CONVERTER.idToFile(arg2);
         List<SpriteSource> list = new ArrayList<>();
 
         for (Resource resource : arg.getResourceStack(resourceLocation)) {

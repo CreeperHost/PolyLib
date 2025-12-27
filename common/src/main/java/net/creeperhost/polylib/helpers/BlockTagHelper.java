@@ -3,7 +3,7 @@ package net.creeperhost.polylib.helpers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
@@ -11,10 +11,10 @@ public class BlockTagHelper
 {
     public static Iterable<Holder<Block>> getValues(String string)
     {
-        return getValues(ResourceLocation.withDefaultNamespace(string));
+        return getValues(Identifier.withDefaultNamespace(string));
     }
 
-    public static Iterable<Holder<Block>> getValues(ResourceLocation resourceLocation)
+    public static Iterable<Holder<Block>> getValues(Identifier resourceLocation)
     {
         TagKey<Block> tagKey = TagKey.create(Registries.BLOCK, resourceLocation);
         return getValues(tagKey);

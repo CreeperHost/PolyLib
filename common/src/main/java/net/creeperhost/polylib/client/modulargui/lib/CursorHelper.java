@@ -1,10 +1,10 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
-import dev.architectury.event.CompoundEventResult;
-import dev.architectury.event.events.client.ClientGuiEvent;
+//import dev.architectury.event.CompoundEventResult;
+//import dev.architectury.event.events.client.ClientGuiEvent;
 import net.creeperhost.polylib.PolyLib;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
@@ -22,13 +22,13 @@ import java.util.Map;
  */
 public class CursorHelper {
 
-    public static final ResourceLocation DRAG = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/drag.png");
-    public static final ResourceLocation RESIZE_H = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_h.png");
-    public static final ResourceLocation RESIZE_V = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_v.png");
-    public static final ResourceLocation RESIZE_TRBL = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_trbl.png");
-    public static final ResourceLocation RESIZE_TLBR = ResourceLocation.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_tlbr.png");
-    private static Map<ResourceLocation, Long> cursors = new HashMap<>();
-    private static ResourceLocation active = null;
+    public static final Identifier DRAG = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/drag.png");
+    public static final Identifier RESIZE_H = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_h.png");
+    public static final Identifier RESIZE_V = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_v.png");
+    public static final Identifier RESIZE_TRBL = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_trbl.png");
+    public static final Identifier RESIZE_TLBR = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_tlbr.png");
+    private static Map<Identifier, Long> cursors = new HashMap<>();
+    private static Identifier active = null;
 
     public static void init() {
         ClientGuiEvent.SET_SCREEN.register(screen -> {
@@ -37,7 +37,7 @@ public class CursorHelper {
         });
     }
 
-    private static long createCursor(ResourceLocation resource) {
+    private static long createCursor(Identifier resource) {
         try {
             BufferedImage bufferedimage = ImageIO.read(Minecraft.getInstance().getResourceManager().getResource(resource).get().open());
             GLFWImage glfwImage = imageToGLFWImage(bufferedimage);
@@ -74,7 +74,7 @@ public class CursorHelper {
         return result;
     }
 
-    public static void setCursor(@Nullable ResourceLocation cursor) {
+    public static void setCursor(@Nullable Identifier cursor) {
         if (cursor != active) {
             active = cursor;
             long window = Minecraft.getInstance().getWindow().handle();

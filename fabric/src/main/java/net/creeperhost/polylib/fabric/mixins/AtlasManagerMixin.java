@@ -4,7 +4,7 @@ import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.AtlasManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,9 +20,9 @@ import java.util.Map;
 @Mixin(AtlasManager.class)
 public class AtlasManagerMixin {
 
-    @Shadow @Final private Map<ResourceLocation, AtlasManager.AtlasEntry> atlasByTexture;
+    @Shadow @Final private Map<Identifier, AtlasManager.AtlasEntry> atlasByTexture;
 
-    @Shadow @Final private Map<ResourceLocation, AtlasManager.AtlasEntry> atlasById;
+    @Shadow @Final private Map<Identifier, AtlasManager.AtlasEntry> atlasById;
 
     @Inject (method = "<init>(Lnet/minecraft/client/renderer/texture/TextureManager;I)V", at = @At ("TAIL"))
     private void atlasInit(TextureManager textureManager, int i, CallbackInfo ci) {

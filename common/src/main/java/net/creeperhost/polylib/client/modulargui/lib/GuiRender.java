@@ -1,14 +1,10 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.DepthTestFunction;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.creeperhost.polylib.PolyLibClient;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,18 +14,18 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -1655,12 +1651,12 @@ public class GuiRender {
         return RenderPipelines.GUI_TEXTURED;
     }
 
-    public static RenderType texColType(ResourceLocation location) {
+    public static RenderType texColType(Identifier location) {
         return GUI_TEXTURED.apply(location);
     }
 
     //I'm not ready to deal with foguring out rener pipelines yet, so for now... Yoink!
-    private static final Function<ResourceLocation, RenderType> GUI_TEXTURED = Util.memoize((arg) -> create("gui_textured", 786432, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(arg, false)).createCompositeState(false)));
+    private static final Function<Identifier, RenderType> GUI_TEXTURED = Util.memoize((arg) -> create("gui_textured", 786432, RenderPipelines.GUI_TEXTURED, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(arg, false)).createCompositeState(false)));
 
     private static RenderType.CompositeRenderType create(String string, int i, RenderPipeline renderPipeline, RenderType.CompositeState arg) {
         return create(string, i, false, false, renderPipeline, arg);

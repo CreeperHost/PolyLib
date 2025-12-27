@@ -60,8 +60,8 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
-    public void resize(@NotNull Minecraft minecraft, int width, int height) {
-        super.resize(minecraft, width, height);
+    public void resize(int width, int height) {
+        super.resize(width, height);
         modularGui.onScreenInit(minecraft, font, width, height);
     }
 

@@ -6,7 +6,6 @@ import net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvi
 import net.creeperhost.polylib.client.modulargui.lib.container.ContainerScreenAccess;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -15,6 +14,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
@@ -70,8 +70,8 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     }
 
     @Override
-    public void resize(@NotNull Minecraft minecraft, int width, int height) {
-        super.resize(minecraft, width, height);
+    public void resize(int width, int height) {
+        super.resize(width, height);
         modularGui.onScreenInit(minecraft, font, width, height);
     }
 
@@ -207,9 +207,9 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
     }
 
     @Override
-    public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
+    public void renderSlot(GuiGraphics guiGraphics, Slot slot, int i, int j) {
         if (modularGui.vanillaSlotRendering()) {
-            super.renderSlot(guiGraphics, slot);
+            super.renderSlot(guiGraphics, slot, i, j);
         } else {
             renderingSlots = true;
         }

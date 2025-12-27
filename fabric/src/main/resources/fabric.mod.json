@@ -28,8 +28,8 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.21.7",
-    "architectury": ">=17.0.4"
+    "minecraft": ">=1.21.11",
+    "architectury": ">=19.0.1"
   },
   "suggests": {
     "flamingo": "*"
