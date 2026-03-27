@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.0.0"
+    id "com.gradleup.shadow" version "9.2.2"
     id "maven-publish"
 }
 
@@ -11,16 +11,10 @@ configurations {
     shadowCommon
 }
 
-shadowJar {
-    zip64=true
-}
-
 dependencies {
-    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
-    // Do NOT use other classes from fabric loader
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+    minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+    implementation  "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+//    api "dev.architectury:architectury:${rootProject.architectury_version}"
     implementation "blue.endless:jankson:1.2.1"
     implementation('io.sentry:sentry:5.7.2')
     {
@@ -32,6 +26,14 @@ dependencies {
 
 architectury {
     common("fabric", "neoforge")
+}
+
+jar {
+    archiveClassifier = "raw"
+}
+
+java {
+    withSourcesJar()
 }
 
 publishing {

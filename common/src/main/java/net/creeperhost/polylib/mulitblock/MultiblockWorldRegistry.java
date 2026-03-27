@@ -336,7 +336,7 @@ public class MultiblockWorldRegistry
         {
             // Part goes into the waiting-for-chunk-load list
             Set<IMultiblockPart> partSet;
-            int chunkHash = new ChunkPos(pos).hashCode();
+            int chunkHash = ChunkPos.containing(pos).hashCode();
 
             synchronized (partsAwaitingChunkLoadMutex)
             {
@@ -370,7 +370,7 @@ public class MultiblockWorldRegistry
         BlockPos pos = part.getWorldLocation();
         if (pos != null)
         {
-            int chunkHash = new ChunkPos(pos).hashCode();
+            int chunkHash = ChunkPos.containing(pos).hashCode();
 
             if (partsAwaitingChunkLoad.containsKey(chunkHash))
             {

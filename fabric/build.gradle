@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "com.gradleup.shadow" version "9.2.2"
     id "me.shedaniel.unified-publishing"
 }
 
@@ -16,30 +16,29 @@ architectury {
 
 configurations {
     common
-    shadowLib
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    shadowCommon.extendsFrom shadowLib
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
-    implementation.extendsFrom shadowLib
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+    minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+
+    api "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    api "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+    //Waiting for update
+//    api "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
     implementation('io.sentry:sentry:5.7.2')
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
     shadowCommon("io.sentry:sentry:5.7.2") { transitive false }
     implementation "blue.endless:jankson:1.2.1"
     shadowCommon "blue.endless:jankson:1.2.1"
 
-    modCompileOnly modApi('teamreborn:energy:4.1.0') {
+    compileOnly api('teamreborn:energy:4.1.0') {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
@@ -56,32 +55,39 @@ processResources {
     }
 }
 
+jar {
+    archiveClassifier = "raw"
+}
+
+java {
+    withSourcesJar()
+}
+
 shadowJar {
+    dependsOn(jar)
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
     exclude "architectury.common.json"
 
     relocate 'io.sentry', 'net.creeperhost.polylib.io.sentry'
     relocate 'blue.endless.jankson', 'net.creeperhost.polylib.blue.endless.jankson'
 
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "shadow"
+    archiveClassifier = null
 }
 
-remapJar {
-    injectAccessWidener = true
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    archiveClassifier = "fabric"
-}
+//shadowJar {
+//    injectAccessWidener = true
+//    input.set shadowJar.archiveFile
+//    dependsOn shadowJar
+//    archiveClassifier = "fabric"
+//}
 
-jar {
-    archiveClassifier = "dev"
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
-}
+//sourcesJar {
+//    def commonSources = project(":common").sourcesJar
+//    dependsOn commonSources
+//    from commonSources.archiveFile.map { zipTree(it) }
+//}
 
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
@@ -92,7 +98,7 @@ components.java {
 publishing {
     publications {
         mavenFabric(MavenPublication) {
-            artifactId = rootProject.archivesBaseName + "-fabric"
+            artifactId = rootProject.archives_base_name + "-fabric"
             from components.java
         }
     }
@@ -118,7 +124,7 @@ unifiedPublishing {
         changelog = ""
         gameVersions = ["$rootProject.minecraft_version"]
         gameLoaders = ["fabric"]
-        mainPublication tasks.remapJar
+        mainPublication shadowJar
         relations {
             depends {
                 curseforge = "architectury-api"
