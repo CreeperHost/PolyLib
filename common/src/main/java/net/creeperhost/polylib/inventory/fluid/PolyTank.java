@@ -170,7 +170,9 @@ public class PolyTank implements PolyFluidStorage, PolyFluidHandler, Serializabl
 
     @Override
     public void serialize(ValueOutput output) {
-        output.store("poly_tank", FluidStack.CODEC, fluid);
+        if (!fluid.isEmpty()) {
+            output.store("poly_tank", FluidStack.CODEC, fluid);
+        }
     }
 
     public void readFromBuf(RegistryFriendlyByteBuf buf) {
