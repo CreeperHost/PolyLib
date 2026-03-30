@@ -52,7 +52,9 @@ public class FluidData extends AbstractDataStore<FluidStack> {
 
     @Override
     public void toTag(ValueOutput output) {
-        output.store("value", FluidStack.CODEC, value);
+        if (!value.isEmpty()) {
+            output.store("value", FluidStack.CODEC, value);
+        }
     }
 
     @Override
