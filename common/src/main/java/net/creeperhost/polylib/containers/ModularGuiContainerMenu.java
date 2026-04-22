@@ -5,7 +5,6 @@ import net.creeperhost.polylib.client.modulargui.lib.container.ContainerScreenAc
 import net.creeperhost.polylib.client.modulargui.lib.container.DataSync;
 import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
-import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -108,11 +107,12 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      */
     public void sendPacketToClient(int packetId, Consumer<RegistryFriendlyByteBuf> packetWriter) {
         if (inventory.player instanceof ServerPlayer serverPlayer) {
-            PolyLibNetwork.sendContainerPacketToClient(serverPlayer, buf -> {
-                buf.writeByte(containerId);
-                buf.writeByte((byte) packetId);
-                packetWriter.accept(buf);
-            });
+            //TODO
+//            PolyLibNetwork.sendContainerPacketToClient(serverPlayer, buf -> {
+//                buf.writeByte(containerId);
+//                buf.writeByte((byte) packetId);
+//                packetWriter.accept(buf);
+//            });
         }
     }
 
@@ -124,11 +124,12 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * @param packetWriter Use this callback to write your data to the packet.
      */
     public void sendPacketToServer(int packetId, Consumer<RegistryFriendlyByteBuf> packetWriter) {
-        PolyLibNetwork.sendContainerPacketToServer(inventory.player.registryAccess(), buf -> {
-            buf.writeByte(containerId);
-            buf.writeByte((byte) packetId);
-            packetWriter.accept(buf);
-        });
+        //TODO
+//        PolyLibNetwork.sendContainerPacketToServer(inventory.player.registryAccess(), buf -> {
+//            buf.writeByte(containerId);
+//            buf.writeByte((byte) packetId);
+//            packetWriter.accept(buf);
+//        });
     }
 
     public static void handlePacketFromClient(Player player, RegistryFriendlyByteBuf packet) {

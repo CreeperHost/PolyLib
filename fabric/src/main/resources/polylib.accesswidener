@@ -18,3 +18,6 @@ accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScr
 accessible class net/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftSlots Ljava/util/Set;
 accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen recalculateQuickCraftRemaining ()V
+accessible field net/minecraft/client/gui/GuiGraphicsExtractor minecraft Lnet/minecraft/client/Minecraft;
+accessible method net/minecraft/client/gui/GuiGraphicsExtractor innerBlit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V
+accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (Lnet/minecraft/world/inventory/Slot;)Lnet/minecraft/world/inventory/Slot;

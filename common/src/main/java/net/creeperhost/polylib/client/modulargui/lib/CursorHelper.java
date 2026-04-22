@@ -1,8 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
-import dev.architectury.event.CompoundEventResult;
-import dev.architectury.event.events.client.ClientGuiEvent;
-import net.creeperhost.polylib.PolyLib;
+import net.creeperhost.polylib.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -22,19 +20,20 @@ import java.util.Map;
  */
 public class CursorHelper {
 
-    public static final Identifier DRAG = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/drag.png");
-    public static final Identifier RESIZE_H = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_h.png");
-    public static final Identifier RESIZE_V = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_v.png");
-    public static final Identifier RESIZE_TRBL = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_trbl.png");
-    public static final Identifier RESIZE_TLBR = Identifier.fromNamespaceAndPath(PolyLib.MOD_ID, "textures/gui/cursors/resize_diag_tlbr.png");
+    public static final Identifier DRAG = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/drag.png");
+    public static final Identifier RESIZE_H = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_h.png");
+    public static final Identifier RESIZE_V = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_v.png");
+    public static final Identifier RESIZE_TRBL = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_diag_trbl.png");
+    public static final Identifier RESIZE_TLBR = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_diag_tlbr.png");
     private static Map<Identifier, Long> cursors = new HashMap<>();
     private static Identifier active = null;
 
     public static void init() {
-        ClientGuiEvent.SET_SCREEN.register(screen -> {
-            resetCursor();
-            return CompoundEventResult.pass();
-        });
+        //TODO
+//        ClientGuiEvent.SET_SCREEN.register(screen -> {
+//            resetCursor();
+//            return CompoundEventResult.pass();
+//        });
     }
 
     private static long createCursor(Identifier resource) {

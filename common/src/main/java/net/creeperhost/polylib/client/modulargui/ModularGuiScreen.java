@@ -2,6 +2,7 @@ package net.creeperhost.polylib.client.modulargui;
 
 import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -64,16 +65,16 @@ public class ModularGuiScreen extends Screen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
         GuiRender render = new GuiRender(graphics);
         modularGui.render(render, partialTicks);
         modularGui.renderOverlay(render, partialTicks);
     }
 
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int i, int j, float f) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int i, int j, float f) {
         if (modularGui.renderBackground()) {
-            super.renderBackground(guiGraphics, i, j, f);
+            super.extractBackground(guiGraphics, i, j, f);
         }
     }
 

@@ -1,14 +1,9 @@
 package net.creeperhost.polylib.client.modulargui;
 
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.client.ClientGuiEvent;
-import dev.architectury.event.events.client.ClientScreenInputEvent;
-import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.hooks.client.screen.ScreenAccess;
 import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.GuiRender;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -37,18 +32,19 @@ public class ModularGuiInjector<T extends Screen> {
     }
 
     public static void init() {
-        ClientGuiEvent.INIT_POST.register(ModularGuiInjector::initPost);
-        ClientGuiEvent.RENDER_POST.register(ModularGuiInjector::renderPost);
-        ClientScreenInputEvent.KEY_PRESSED_PRE.register(ModularGuiInjector::keyPressed);
-        ClientScreenInputEvent.KEY_RELEASED_PRE.register(ModularGuiInjector::keyReleased);
-        ClientScreenInputEvent.CHAR_TYPED_PRE.register(ModularGuiInjector::charTyped);
-        ClientScreenInputEvent.MOUSE_SCROLLED_PRE.register(ModularGuiInjector::mouseScrolled);
-        ClientScreenInputEvent.MOUSE_RELEASED_PRE.register(ModularGuiInjector::mouseReleased);
-        ClientScreenInputEvent.MOUSE_CLICKED_PRE.register(ModularGuiInjector::mouseClicked);
-        ClientTickEvent.CLIENT_POST.register(ModularGuiInjector::tick);
+        //TODO
+//        ClientGuiEvent.INIT_POST.register(ModularGuiInjector::initPost);
+//        ClientGuiEvent.RENDER_POST.register(ModularGuiInjector::renderPost);
+//        ClientScreenInputEvent.KEY_PRESSED_PRE.register(ModularGuiInjector::keyPressed);
+//        ClientScreenInputEvent.KEY_RELEASED_PRE.register(ModularGuiInjector::keyReleased);
+//        ClientScreenInputEvent.CHAR_TYPED_PRE.register(ModularGuiInjector::charTyped);
+//        ClientScreenInputEvent.MOUSE_SCROLLED_PRE.register(ModularGuiInjector::mouseScrolled);
+//        ClientScreenInputEvent.MOUSE_RELEASED_PRE.register(ModularGuiInjector::mouseReleased);
+//        ClientScreenInputEvent.MOUSE_CLICKED_PRE.register(ModularGuiInjector::mouseClicked);
+//        ClientTickEvent.CLIENT_POST.register(ModularGuiInjector::tick);
     }
 
-    private static void initPost(Screen screen, ScreenAccess access) {
+    private static void initPost(Screen screen) {
         if (activeGui != null) activeGui = null;
         Predicate<Screen> key = providerMap.keySet()
                 .stream()
@@ -68,7 +64,7 @@ public class ModularGuiInjector<T extends Screen> {
         return (T) object;
     }
 
-    private static void renderPost(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    private static void renderPost(Screen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         if (activeGui == null) return;
         GuiRender render = new GuiRender(graphics);
 //        if (screen instanceof AbstractContainerScreen<?>) {
@@ -78,35 +74,36 @@ public class ModularGuiInjector<T extends Screen> {
         activeGui.renderOverlay(render, partialTick);
     }
 
-    private static EventResult keyPressed(Minecraft client, Screen screen, KeyEvent event) {
-        if (activeGui == null) return EventResult.pass();
-        return activeGui.keyPressed(event) ? EventResult.interruptFalse() : EventResult.pass();
-    }
-
-    private static EventResult keyReleased(Minecraft client, Screen screen, KeyEvent event) {
-        if (activeGui == null) return EventResult.pass();
-        return activeGui.keyReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
-    }
-
-    private static EventResult charTyped(Minecraft client, Screen screen, CharacterEvent event) {
-        if (activeGui == null) return EventResult.pass();
-        return activeGui.charTyped(event) ? EventResult.interruptFalse() : EventResult.pass();
-    }
-
-    private static EventResult mouseScrolled(Minecraft client, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
-        if (activeGui == null) return EventResult.pass();
-        return activeGui.mouseScrolled(mouseX, mouseY, amountX, amountY) ? EventResult.interruptFalse() : EventResult.pass();
-    }
-
-    private static EventResult mouseReleased(Minecraft client, Screen screen, MouseButtonEvent event) {
-        if (activeGui == null) return EventResult.pass();
-        return activeGui.mouseReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
-    }
-
-    private static EventResult mouseClicked(Minecraft client, Screen screen, MouseButtonEvent event, boolean bl) {
-        if (activeGui == null) return EventResult.pass();
-        return activeGui.mouseClicked(event, bl) ? EventResult.interruptFalse() : EventResult.pass();
-    }
+    //TODO
+//    private static EventResult keyPressed(Minecraft client, Screen screen, KeyEvent event) {
+//        if (activeGui == null) return EventResult.pass();
+//        return activeGui.keyPressed(event) ? EventResult.interruptFalse() : EventResult.pass();
+//    }
+//
+//    private static EventResult keyReleased(Minecraft client, Screen screen, KeyEvent event) {
+//        if (activeGui == null) return EventResult.pass();
+//        return activeGui.keyReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
+//    }
+//
+//    private static EventResult charTyped(Minecraft client, Screen screen, CharacterEvent event) {
+//        if (activeGui == null) return EventResult.pass();
+//        return activeGui.charTyped(event) ? EventResult.interruptFalse() : EventResult.pass();
+//    }
+//
+//    private static EventResult mouseScrolled(Minecraft client, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
+//        if (activeGui == null) return EventResult.pass();
+//        return activeGui.mouseScrolled(mouseX, mouseY, amountX, amountY) ? EventResult.interruptFalse() : EventResult.pass();
+//    }
+//
+//    private static EventResult mouseReleased(Minecraft client, Screen screen, MouseButtonEvent event) {
+//        if (activeGui == null) return EventResult.pass();
+//        return activeGui.mouseReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
+//    }
+//
+//    private static EventResult mouseClicked(Minecraft client, Screen screen, MouseButtonEvent event, boolean bl) {
+//        if (activeGui == null) return EventResult.pass();
+//        return activeGui.mouseClicked(event, bl) ? EventResult.interruptFalse() : EventResult.pass();
+//    }
 
     private static void tick(Minecraft instance) {
         if (activeGui == null) return;

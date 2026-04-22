@@ -14,13 +14,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 
 /**
- * This is similar to Minecraft's {@link net.minecraft.client.resources.model.Material}
- * This contains the essential data required to render an atlas sprite.
- * <p>
- * The primary purpose of this class is to make porting between MC versions easier.
- * It also allows for loading sprites from a custom texture atlas. Minecraft's material class can only load from vanilla atlases.
- * <p>
- * Created by brandon3055 on 20/08/2023
+ * 26.1 port of the old compatibility wrapper.
+ *
+ * Vanilla net.minecraft.client.resources.model.Material is gone in the new
+ * rendering/model setup, so this class now stands entirely on its own.
  */
 public class Material {
     private final Identifier atlasLocation;
@@ -29,8 +26,6 @@ public class Material {
 
     @Nullable
     private RenderType renderType;
-    @Nullable
-    private net.minecraft.client.resources.model.Material vanillaMat;
 
     public Material(Identifier atlasLocation, Identifier texture, Function<Identifier, TextureAtlasSprite> spriteFunction) {
         this.atlasLocation = atlasLocation;
@@ -47,84 +42,83 @@ public class Material {
     }
 
     public TextureAtlasSprite sprite() {
-        return spriteFunction.apply(texture());
+        return spriteFunction.apply(texture);
     }
 
     /**
      * Returns the cached render type for this material.
-     * The supplied function will be used to create the render type the first time this method is called.
-     *
-     * @param typeBuilder a function that will be used to create the render type if it does not already exist.
-     * @return The render type for this material.
      */
     public RenderType renderType(Function<Identifier, RenderType> typeBuilder) {
         if (this.renderType == null) {
-            this.renderType = typeBuilder.apply(atlasLocation());
+            this.renderType = typeBuilder.apply(atlasLocation);
         }
         return this.renderType;
     }
 
     /**
-     * Convenience method to create a vertex consumer using this materials render type.
-     *
-     * @param buffers     bugger source.
-     * @param typeBuilder a function that will be used to create the render type if it does not already exist.
+     * Convenience method to create a vertex consumer using this material's render type.
      */
     public VertexConsumer buffer(MultiBufferSource buffers, Function<Identifier, RenderType> typeBuilder) {
         return buffers.getBuffer(renderType(typeBuilder));
     }
 
-    public net.minecraft.client.resources.model.Material getVanillaMat() {
-        if (vanillaMat == null) {
-            vanillaMat = new net.minecraft.client.resources.model.Material(atlasLocation, texture);
-        }
-        return vanillaMat;
-    }
-
-
+    /**
+     * Resolves a sprite from an atlas in the 26.1-style pipeline.
+     */
     private static TextureAtlasSprite getAtlasSprite(Identifier atlas, Identifier sprite) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(atlas).getSprite(sprite);
     }
 
     /**
-     * Convenient method for getting a material from a vanilla texture atlas.
-     *
-     * @return an un-cached material from a vanilla atlas.
+     * Convenient method for getting a material from an atlas.
      */
-    public static Material fromAtlas(Identifier atlasLocation, String texture) {
-        return new Material(atlasLocation, Identifier.fromNamespaceAndPath(atlasLocation.getNamespace(), texture), e -> getAtlasSprite(atlasLocation, e));
+    public static Material fromAtlas(Identifier atlasLocation, String texturePath) {
+        Identifier texture = Identifier.fromNamespaceAndPath(atlasLocation.getNamespace(), texturePath);
+        return new Material(atlasLocation, texture, id -> getAtlasSprite(atlasLocation, id));
     }
 
     /**
-     * Create a material from an existing sprite.
-     * Note: This will only work with sprites from a vanilla atlas.
+     * Create a material from an existing atlas sprite.
      */
-    @Deprecated //this may be broken now, try to avoid
     @Nullable
     public static Material fromSprite(@Nullable TextureAtlasSprite sprite) {
         if (sprite == null) return null;
-        return new Material(sprite.atlasLocation(), sprite.contents().name(), e -> getAtlasSprite(sprite.atlasLocation(), e));
+        return new Material(
+                sprite.atlasLocation(),
+                sprite.contents().name(),
+                id -> getAtlasSprite(sprite.atlasLocation(), id)
+        );
     }
 
+    /**
+     * Wrap a non-atlased raw texture.
+     *
+     * This preserves your old "full sprite" fallback behavior for code paths
+     * that expect atlas-like UV helpers.
+     */
     public static Material fromRawTexture(Identifier texture) {
         return new Material(texture, texture, FullSprite::new);
     }
 
     private static class FullSprite extends TextureAtlasSprite {
         private FullSprite(Identifier location) {
-            super(location, new SpriteContents(location, new FrameSize(1, 1), new NativeImage(1, 1, false)), 1, 1, 0, 0, 0);
+            super(location, new SpriteContents(location, new FrameSize(1, 1), new NativeImage(1, 1, false)),
+                    1,
+                    1,
+                    0,
+                    0,
+                    0
+            );
         }
 
         @Override
-        public float getU(float u)
-        {
-            return u / 16;
+        public float getU(float u) {
+            return u / 16F;
         }
 
         @Override
-        public float getV(float v)
-        {
-            return v / 16;
+        public float getV(float v) {
+            return v / 16F;
         }
     }
 }
