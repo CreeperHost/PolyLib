@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "client": [
-    "MixinTitleScreen"
+    "MixinTitleScreen",
+    "TextureAtlasMixin",
+    "AtlasManagerMixin"
   ],
   "server": [],
   "injectors": {

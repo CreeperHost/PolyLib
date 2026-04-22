@@ -1,7 +1,9 @@
 package net.creeperhost.polylib.platform;
 
 import net.creeperhost.polylib.platform.services.IPlatformHelper;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
@@ -30,5 +32,11 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public Path getConfigFolder() {
         return FMLPaths.CONFIGDIR.get();
+    }
+
+    @Override
+    public boolean isClient()
+    {
+        return FMLEnvironment.getDist() == Dist.CLIENT;
     }
 }

@@ -1,6 +1,7 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.init.DataComps;
+import net.creeperhost.polylib.testmod.TestModNeoForge;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
@@ -31,7 +32,7 @@ public class PolyLib
 
         if (PolylibCommon.testMod)
         {
-
+            TestModNeoForge.init();
         }
     }
 }

@@ -63,7 +63,7 @@ public class ModularGuiInjector<T extends Screen> {
         return (T) object;
     }
 
-    private static void renderPost(Screen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+    public static void renderPost(Screen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         if (activeGui == null) return;
         GuiRender render = new GuiRender(graphics);
 //        if (screen instanceof AbstractContainerScreen<?>) {

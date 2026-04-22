@@ -3,6 +3,7 @@ package net.creeperhost.polylib;
 import net.creeperhost.polylib.config.ConfigBuilder;
 import net.creeperhost.polylib.config.PolyConfig;
 import net.creeperhost.polylib.platform.Services;
+import net.creeperhost.polylib.testmod.TestModCommon;
 
 public class PolylibCommon
 {
@@ -14,7 +15,7 @@ public class PolylibCommon
     {
         if (testMod)
         {
-
+            TestModCommon.init();
         }
     }
 

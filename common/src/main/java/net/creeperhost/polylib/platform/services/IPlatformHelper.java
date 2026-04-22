@@ -37,4 +37,6 @@ public interface IPlatformHelper {
     }
 
     Path getConfigFolder();
+
+    boolean isClient();
 }
