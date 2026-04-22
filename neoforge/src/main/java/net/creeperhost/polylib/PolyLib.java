@@ -5,6 +5,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 @Mod(Constants.MOD_ID)
@@ -14,8 +15,11 @@ public class PolyLib
 
     public PolyLib(IEventBus eventBus)
     {
-        CommonClass.registerConfig();
-        CommonClass.init();
+        PolylibCommon.registerConfig();
+        PolylibCommon.init();
+        if (FMLLoader.getCurrent().getDist().isClient()) {
+            PolyLibClient.init();
+        }
 
         if (DataComps.isDataEnabled()) {
             COMPONENTS.register("item_toggle_active", () -> DataComps.ITEM_TOGGLE_ACTIVE);

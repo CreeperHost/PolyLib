@@ -13,16 +13,17 @@ public class PolyLib implements ModInitializer
     @Override
     public void onInitialize()
     {
-        CommonClass.registerConfig();
+        PolylibCommon.registerConfig();
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            PolyLibClient.init();
+        }
 
         if (DataComps.isDataEnabled()) {
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_toggle_active"), DataComps.ITEM_TOGGLE_ACTIVE);
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_energy"), DataComps.ITEM_ENERGY);
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_tile_data"), DataComps.ITEM_TILE_DATA);
         }
-        CommonClass.init();
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            PolyLibClient.init();
-        }
+        PolylibCommon.init();
+
     }
 }

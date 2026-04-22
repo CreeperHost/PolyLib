@@ -1,7 +1,7 @@
 package net.creeperhost.polylib.init;
 
 import com.mojang.serialization.Codec;
-import net.creeperhost.polylib.CommonClass;
+import net.creeperhost.polylib.PolylibCommon;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.component.CustomData;
@@ -19,7 +19,7 @@ public class DataComps {
 
     public static boolean isDataEnabled() {
         if (activatedByMod) return true;
-        return !CommonClass.configData.serverOnlySupport;
+        return !PolylibCommon.configData.serverOnlySupport;
     }
 
     public static void registerData() {

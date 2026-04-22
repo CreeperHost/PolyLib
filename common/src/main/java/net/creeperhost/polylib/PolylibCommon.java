@@ -6,7 +6,7 @@ import net.creeperhost.polylib.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Items;
 
-public class CommonClass
+public class PolylibCommon
 {
     public static ConfigBuilder configBuilder;
     public static PolyConfig configData;
