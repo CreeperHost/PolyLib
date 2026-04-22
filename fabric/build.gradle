@@ -1,4 +1,5 @@
 plugins {
+    id "com.gradleup.shadow" version "9.2.2"
     id 'multiloader-loader'
     id 'net.fabricmc.fabric-loom'
 }
@@ -7,6 +8,7 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation "blue.endless:jankson:1.2.1"
+    shadow("blue.endless:jankson:1.2.1") { transitive = false }
 }
 
 loom {
@@ -29,6 +31,27 @@ loom {
         }
     }
 }
+
+jar {
+    archiveClassifier = 'dev'
+}
+
+shadowJar {
+    dependsOn(jar)
+    configurations = [project.configurations.shadow]
+
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
+
+    dependencies {
+        exclude(dependency('com.google::'))
+        exclude(dependency('org.apache::'))
+    }
+    relocate 'blue.endless.jankson', 'net.creeperhost.polylib.blue.endless.jankson'
+    archiveClassifier = null
+}
+
+assemble.dependsOn(shadowJar)
 
 // Implement mcgradleconventions loader attribute
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)

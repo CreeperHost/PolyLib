@@ -9,7 +9,7 @@ public class PolylibCommon
 {
     public static ConfigBuilder configBuilder;
     public static PolyConfig configData;
-    public static boolean testMod = true;
+    public static boolean testMod = false;
 
     public static void init()
     {

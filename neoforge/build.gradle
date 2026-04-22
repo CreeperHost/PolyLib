@@ -1,4 +1,5 @@
 plugins {
+    id "com.gradleup.shadow" version "9.2.2"
     id 'multiloader-loader'
     id 'net.neoforged.moddev'
 }
@@ -41,7 +42,29 @@ neoForge {
 
 dependencies {
     implementation "blue.endless:jankson:1.2.1"
+    shadow("blue.endless:jankson:1.2.1") { transitive = false }
 }
+
+jar {
+    archiveClassifier = 'dev'
+}
+
+shadowJar {
+    dependsOn(jar)
+    configurations = [project.configurations.shadow]
+
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
+
+    dependencies {
+        exclude(dependency('com.google::'))
+        exclude(dependency('org.apache::'))
+    }
+    relocate 'blue.endless.jankson', 'net.creeperhost.polylib.blue.endless.jankson'
+    archiveClassifier = null
+}
+
+assemble.dependsOn(shadowJar)
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
