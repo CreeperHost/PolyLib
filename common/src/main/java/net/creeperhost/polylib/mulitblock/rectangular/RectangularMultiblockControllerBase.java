@@ -14,10 +14,6 @@ public abstract class RectangularMultiblockControllerBase extends MultiblockCont
         super(world);
     }
 
-    /**
-     * @return True if the machine is "whole" and should be assembled. False
-     * otherwise.
-     */
     @Override
     protected void isMachineWhole() throws MultiblockValidationException
     {

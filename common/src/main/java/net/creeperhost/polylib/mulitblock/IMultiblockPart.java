@@ -66,7 +66,7 @@ public abstract class IMultiblockPart extends BlockEntity implements MenuProvide
     public abstract void forfeitMultiblockSaveDelegate();
 
     /**
-     * Is this block the designated save/load & network delegate?
+     * Is this block the designated save/load network delegate?
      *
      * @return Boolean
      */

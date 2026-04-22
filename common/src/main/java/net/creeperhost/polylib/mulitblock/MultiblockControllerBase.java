@@ -397,7 +397,6 @@ public abstract class MultiblockControllerBase
      * now is, assemble the machine. If the machine was whole, but no longer is,
      * disassemble the machine.
      *
-     * @return
      */
     public void checkIfMachineIsWhole()
     {
@@ -1129,7 +1128,7 @@ public abstract class MultiblockControllerBase
     }
 
     /**
-     * Marks the reference coord dirty & updateable.
+     * Marks the reference coord dirty and updateable.
      * <p>
      * On the server, this will mark the for a data-update, so that nearby
      * clients will receive an updated description packet from the server after
