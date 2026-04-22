@@ -11,9 +11,9 @@ import net.minecraft.world.item.component.CustomData;
  */
 public class DataComps {
 
-    public static final DataComponentType<?> ITEM_TOGGLE_ACTIVE = DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build();
-    public static final DataComponentType<?> ITEM_ENERGY = DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build();
-    public static final DataComponentType<?> ITEM_TILE_DATA = DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).build();
+    public static final DataComponentType<Boolean> ITEM_TOGGLE_ACTIVE = DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build();
+    public static final DataComponentType<Long> ITEM_ENERGY = DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build();
+    public static final DataComponentType<CustomData> ITEM_TILE_DATA = DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).build();
 
     private static boolean activatedByMod = false;
 
@@ -24,5 +24,17 @@ public class DataComps {
 
     public static void registerData() {
         activatedByMod = true;
+    }
+
+    public static DataComponentType<Boolean> getItemToggleActive() {
+        return ITEM_TOGGLE_ACTIVE;
+    }
+
+    public static DataComponentType<Long> getItemEnergy() {
+        return ITEM_ENERGY;
+    }
+
+    public static DataComponentType<CustomData> getItemTileData() {
+        return ITEM_TILE_DATA;
     }
 }
