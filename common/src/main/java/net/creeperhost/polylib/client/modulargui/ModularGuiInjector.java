@@ -31,18 +31,6 @@ public class ModularGuiInjector<T extends Screen> {
         providerMap.put(screenPredicate, guiFunction);
     }
 
-    public static void init() {
-        //TODO
-//        ClientGuiEvent.INIT_POST.register(ModularGuiInjector::initPost);
-//        ClientGuiEvent.RENDER_POST.register(ModularGuiInjector::renderPost);
-//        ClientScreenInputEvent.KEY_PRESSED_PRE.register(ModularGuiInjector::keyPressed);
-//        ClientScreenInputEvent.KEY_RELEASED_PRE.register(ModularGuiInjector::keyReleased);
-//        ClientScreenInputEvent.CHAR_TYPED_PRE.register(ModularGuiInjector::charTyped);
-//        ClientScreenInputEvent.MOUSE_SCROLLED_PRE.register(ModularGuiInjector::mouseScrolled);
-//        ClientScreenInputEvent.MOUSE_RELEASED_PRE.register(ModularGuiInjector::mouseReleased);
-//        ClientScreenInputEvent.MOUSE_CLICKED_PRE.register(ModularGuiInjector::mouseClicked);
-    }
-
     public static void initPost(Screen screen) {
         if (activeGui != null) activeGui = null;
         Predicate<Screen> key = providerMap.keySet()
@@ -73,36 +61,35 @@ public class ModularGuiInjector<T extends Screen> {
         activeGui.renderOverlay(render, partialTick);
     }
 
-    //TODO
-//    private static EventResult keyPressed(Minecraft client, Screen screen, KeyEvent event) {
-//        if (activeGui == null) return EventResult.pass();
-//        return activeGui.keyPressed(event) ? EventResult.interruptFalse() : EventResult.pass();
-//    }
-//
-//    private static EventResult keyReleased(Minecraft client, Screen screen, KeyEvent event) {
-//        if (activeGui == null) return EventResult.pass();
-//        return activeGui.keyReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
-//    }
-//
-//    private static EventResult charTyped(Minecraft client, Screen screen, CharacterEvent event) {
-//        if (activeGui == null) return EventResult.pass();
-//        return activeGui.charTyped(event) ? EventResult.interruptFalse() : EventResult.pass();
-//    }
-//
-//    private static EventResult mouseScrolled(Minecraft client, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
-//        if (activeGui == null) return EventResult.pass();
-//        return activeGui.mouseScrolled(mouseX, mouseY, amountX, amountY) ? EventResult.interruptFalse() : EventResult.pass();
-//    }
-//
-//    private static EventResult mouseReleased(Minecraft client, Screen screen, MouseButtonEvent event) {
-//        if (activeGui == null) return EventResult.pass();
-//        return activeGui.mouseReleased(event) ? EventResult.interruptFalse() : EventResult.pass();
-//    }
-//
-//    private static EventResult mouseClicked(Minecraft client, Screen screen, MouseButtonEvent event, boolean bl) {
-//        if (activeGui == null) return EventResult.pass();
-//        return activeGui.mouseClicked(event, bl) ? EventResult.interruptFalse() : EventResult.pass();
-//    }
+    public static boolean keyPressed(Minecraft client, Screen screen, KeyEvent event) {
+        if (activeGui == null) return false;
+        return activeGui.keyPressed(event) ? true : false;
+    }
+
+    public static boolean keyReleased(Minecraft client, Screen screen, KeyEvent event) {
+        if (activeGui == null) return false;
+        return activeGui.keyReleased(event) ? true : false;
+    }
+
+    public static boolean charTyped(Minecraft client, Screen screen, CharacterEvent event) {
+        if (activeGui == null) return false;
+        return activeGui.charTyped(event) ? true : false;
+    }
+
+    public static boolean mouseScrolled(Minecraft client, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
+        if (activeGui == null) return false;
+        return activeGui.mouseScrolled(mouseX, mouseY, amountX, amountY) ? true : false;
+    }
+
+    public static boolean mouseReleased(Minecraft client, Screen screen, MouseButtonEvent event) {
+        if (activeGui == null) return false;
+        return activeGui.mouseReleased(event) ? true : false;
+    }
+
+    public static boolean mouseClicked(Minecraft client, Screen screen, MouseButtonEvent event, boolean bl) {
+        if (activeGui == null) return false;
+        return activeGui.mouseClicked(event, bl) ? true : false;
+    }
 
     public static void tick(Minecraft instance) {
         if (activeGui == null) return;

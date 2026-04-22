@@ -7,7 +7,6 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
 @EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
@@ -31,4 +30,39 @@ public class NeoForgeClientEvents
         ModularGuiInjector.renderPost(event.getScreen(), event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onKeyPressed(ScreenEvent.KeyPressed.Post event)
+    {
+        ModularGuiInjector.keyPressed(event.getScreen().getMinecraft(), event.getScreen(), event.getKeyEvent());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onKeyReleased(ScreenEvent.KeyReleased.Post event)
+    {
+        ModularGuiInjector.keyReleased(event.getScreen().getMinecraft(), event.getScreen(), event.getKeyEvent());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onCharTyped(ScreenEvent.CharacterTyped.Post event)
+    {
+        ModularGuiInjector.charTyped(event.getScreen().getMinecraft(), event.getScreen(), event.getCharacterEvent());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void mouseScrolled(ScreenEvent.MouseScrolled.Post event)
+    {
+        ModularGuiInjector.mouseScrolled(event.getScreen().getMinecraft(), event.getScreen(), event.getMouseX(), event.getMouseY(), event.getScrollDeltaX(), event.getScrollDeltaY());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void mouseClicked(ScreenEvent.MouseButtonPressed.Post event)
+    {
+        ModularGuiInjector.mouseClicked(event.getScreen().getMinecraft(), event.getScreen(), event.getMouseButtonEvent(), true);
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void mouseReleased(ScreenEvent.MouseButtonReleased.Post event)
+    {
+        ModularGuiInjector.mouseReleased(event.getScreen().getMinecraft(), event.getScreen(), event.getMouseButtonEvent());
+    }
 }
