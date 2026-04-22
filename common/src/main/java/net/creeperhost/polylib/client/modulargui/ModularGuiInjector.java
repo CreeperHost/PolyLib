@@ -41,10 +41,9 @@ public class ModularGuiInjector<T extends Screen> {
 //        ClientScreenInputEvent.MOUSE_SCROLLED_PRE.register(ModularGuiInjector::mouseScrolled);
 //        ClientScreenInputEvent.MOUSE_RELEASED_PRE.register(ModularGuiInjector::mouseReleased);
 //        ClientScreenInputEvent.MOUSE_CLICKED_PRE.register(ModularGuiInjector::mouseClicked);
-//        ClientTickEvent.CLIENT_POST.register(ModularGuiInjector::tick);
     }
 
-    private static void initPost(Screen screen) {
+    public static void initPost(Screen screen) {
         if (activeGui != null) activeGui = null;
         Predicate<Screen> key = providerMap.keySet()
                 .stream()
@@ -105,7 +104,7 @@ public class ModularGuiInjector<T extends Screen> {
 //        return activeGui.mouseClicked(event, bl) ? EventResult.interruptFalse() : EventResult.pass();
 //    }
 
-    private static void tick(Minecraft instance) {
+    public static void tick(Minecraft instance) {
         if (activeGui == null) return;
 
         //Because apparently there is no mouse move event, only drag.

@@ -1,7 +1,9 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.init.DataComps;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -19,5 +21,8 @@ public class PolyLib implements ModInitializer
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_tile_data"), DataComps.ITEM_TILE_DATA);
         }
         CommonClass.init();
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            PolyLibClient.init();
+        }
     }
 }

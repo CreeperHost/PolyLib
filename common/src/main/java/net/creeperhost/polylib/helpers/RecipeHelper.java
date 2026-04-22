@@ -16,7 +16,6 @@ public class RecipeHelper
         Set<RecipeHolder<?>> recipeHolders = world != null ? world.getServer().getRecipeManager().getRecipes().stream().filter(
                 recipe -> recipe.value().getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
 
-        //TODO test if this worked
         Set<Recipe<?>> recipes = Collections.emptySet();
         for (RecipeHolder<?> recipeHolder : recipeHolders)
         {
