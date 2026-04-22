@@ -1,37 +1,36 @@
 {
-  "schemaVersion": 1,
-  "id": "polylib",
-  "version": "${version}",
-  "name": "PolyLib",
-  "description": "",
-  "authors": [
-    "CreeperHost"
-  ],
-  "contact": {
-    "homepage": "https://github.com/CreeperHost/PolyLib/issues",
-    "sources": "https://github.com/CreeperHost/PolyLib/issues"
-  },
-  "license": "BSD 4-Clause License",
-  "icon": "assets/examplemod/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "net.creeperhost.polylib.fabric.PolyLibFabric"
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
     ],
-    "jei_mod_plugin": [
-      "net.creeperhost.polylib.compat.jei.PolyJEIPlugin"
-    ]
-  },
-  "mixins": [
-    "polylib.mixins.json",
-    "polylib-fabric.mixins.json"
-  ],
-  "depends": {
-    "fabric": "*",
-    "minecraft": ">=1.21.11",
-    "architectury": ">=19.0.1"
-  },
-  "suggests": {
-    "flamingo": "*"
-  }
+    "contact": {
+        "homepage": "https://fabricmc.net/",
+        "sources": "https://github.com/FabricMC/fabric-example-mod"
+    },
+    "license": "${license}",
+    "icon": "${mod_id}.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "net.creeperhost.polylib.PolyLib"
+        ]
+    },
+    "mixins": [
+        "${mod_id}.mixins.json",
+        "${mod_id}.fabric.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=${fabric_loader_version}",
+        "fabric-api": "*",
+        "minecraft": "~${minecraft_version}",
+        "java": ">=${java_version}"
+    },
+    "suggests": {
+        "another-mod": "*"
+    }
 }
+  

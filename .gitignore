@@ -1,28 +1,24 @@
-build/
-*.ipr
-run/
-*.iws
-out/
-*.iml
-.gradle/
-output/
-bin/
-libs/
-
+# eclipse
+bin
+*.launch
+.settings
+.metadata
 .classpath
 .project
-.idea/modules
-.idea/runConfigurations
-.idea/.name
-.idea/.gitignore
-.idea/*.xml
-classes/
-.metadata
-.vscode
-.settings
-*.launch
 
-testmod-common/src/generated/resources/assets/.cache/
-testmod-fabric/src/generated/resources/.cache/
-testmod-forge/src/generated/resources/.cache/
-.architectury-transformer/
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea/*
+!.idea/scopes
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+runs

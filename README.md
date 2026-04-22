@@ -1,58 +1,32 @@
-<p align="left">
-    <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/polylib.svg" /></a>
-    <a href="https://www.curseforge.com/minecraft/mc-mods/polylib"><img src="http://cf.way2muchnoise.eu/versions/polylib.svg" /></a>
-    <a href="https://github.com/CreeperHost/PolyLib/blob/master/LICENSE.md"><img alt="GitHub license" src="https://img.shields.io/github/license/CreeperHost/PolyLib"></a>
-    <a href="https://github.com/CreeperHost/PolyLib/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/CreeperHost/PolyLib"></a>
-    <a href="https://github.com/CreeperHost/PolyLib/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/CreeperHost/PolyLib"></a>
-    <a href="https://github.com/CreeperHost/PolyLib/commits/master"><img alt="activity" src="https://img.shields.io/github/last-commit/CreeperHost/PolyLib" ></a>
-</p>
+# MultiLoader Template
 
+This project provides a Gradle project template that can compile Minecraft mods for multiple modloaders using a common project for the sources. This project does not require any third party libraries or dependencies. If you have any questions or want to discuss the project, please join our [Discord](https://discord.myceliummod.network).
 
-# PolyLib
+## Getting Started
 
-"PolyLib," developed by CreeperHost Ltd.,
-is a compact Minecraft library mod focused on providing a collection of helper classes.
-These classes are designed to simplify various aspects of mod development, offering tools for easier GUI creation and other development enhancements to improve efficiency and user experience.
+### IntelliJ IDEA
+This guide will show how to import the MultiLoader Template into IntelliJ IDEA. The setup process is roughly equivalent to setting up the modloaders independently and should be very familiar to anyone who has worked with their MDKs.
 
-# Maven
-```gradle
-repositories {
-    maven { url "https://maven.creeperhost.net" }
-}
-```
+1. Clone or download this repository to your computer.
+2. Configure the project by setting the properties in the `gradle.properties` file. You will also need to change the `rootProject.name`  property in `settings.gradle`, this should match the folder name of your project, or else IDEA may complain.
+3. Open the template's root folder as a new project in IDEA. This is the folder that contains this README.md file and the gradlew executable.
+4. If your default JVM/JDK is not Java 25 you will encounter an error when opening the project. This error is fixed by going to `File > Settings > Build, Execution, Deployment > Build Tools > Gradle > Gradle JVM` and changing the value to a valid Java 25 JVM. You will also need to set the Project SDK to Java 25. This can be done by going to `File > Project Structure > Project SDK`. Once both have been set open the Gradle tab in IDEA and click the refresh button to reload the project.
+5. Open your Run/Debug Configurations. Under the `Application` category there should now be options to run Fabric and NeoForge projects. Select one of the client options and try to run it.
+6. Assuming you were able to run the game in step 5 your workspace should now be set up.
 
+### Eclipse
+While it is possible to use this template in Eclipse it is not recommended. During the development of this template multiple critical bugs and quirks related to Eclipse were found at nearly every level of the required build tools. While we continue to work with these tools to report and resolve issues support for projects like these are not there yet. For now Eclipse is considered unsupported by this project. The development cycle for build tools is notoriously slow so there are no ETAs available.
 
-### Architectury
-```gradle
-// Common
-dependencies {
-    modCompileOnly "net.creeperhost:polylib-fabric:VERSION"
-}
+## Development Guide
+When using this template the majority of your mod should be developed in the `common` project. The `common` project is compiled against the vanilla game and is used to hold code that is shared between the different loader-specific versions of your mod. The `common` project has no knowledge or access to ModLoader specific code, apis, or concepts. Code that requires something from a specific loader must be done through the project that is specific to that loader, such as the `fabric` or `neoforge` projects.
 
-// Fabric
-dependencies {
-    modRuntimeOnly "net.creeperhost:polylib-fabric:VERSION"
-}
+Loader specific projects such as the `fabric` and `neoforge` project are used to load the `common` project into the game. These projects also define code that is specific to that loader. Loader specific projects can access all the code in the `common` project. It is important to remember that the `common` project can not access code from loader specific projects.
 
-// Forge
-dependencies {
-    modRuntimeOnly "net.creeperhost:polylib-forge:VERSION"
-}
+## Removing Platforms and Loaders
+While this template has support for many modloaders, new loaders may appear in the future, and existing loaders may become less relevant.
 
-// NeoForge
-dependencies {
-    modRuntimeOnly "net.creeperhost:polylib-neoforge:VERSION"
-}
-```
+Removing loader specific projects is as easy as deleting the folder, and removing the `include("projectname")` line from the `settings.gradle` file.
+For example if you wanted to remove support for `forge` you would follow the following steps:
 
-### Important note for resource packs developers
-The textures in the textures/gui/dynamic directory are dynamically resized by the gui system.
-This is done by slicing the textures in a 3x3 pattern, then the sections are tiled and stitched back together.
-If you wish to customise these, they must be made in such a way that they won't look broken when cut up and tiled.
-The standard border width is defined as 5 pixes from all sides, anything inside this will be cut up and tiled as part of the texture interior.
-
-### Related note for mod developers
-Ideally we want to try to make life easy for the resource pack developers, so try to avoid using dynamic textures as much as possible.
-They are fine for things like buttons that come in all shapes and sizes, but for things like gui backgrounds,
-use the dynamic texture data generator to generate proper textures based on the dynamic textures.
-This is better for performance, and it is better for the resource pack devs.
+1. Delete the subproject folder. For example, delete `MultiLoader-Template/forge`.
+2. Remove the project from `settings.gradle`. For example, remove `include("forge")`. 

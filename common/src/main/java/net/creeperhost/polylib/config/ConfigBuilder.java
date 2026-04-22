@@ -3,7 +3,7 @@ package net.creeperhost.polylib.config;
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.JsonObject;
-import dev.architectury.platform.Platform;
+import net.creeperhost.polylib.platform.Services;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileWriter;
@@ -50,7 +50,7 @@ public class ConfigBuilder
     public ConfigBuilder(@NotNull String configName, @NotNull Class<?> clazz)
     {
         this.CONFIG_NAME = configName;
-        this.CONFIG_PATH = Platform.getConfigFolder().resolve(configName + ".json5");
+        this.CONFIG_PATH = Services.PLATFORM.getConfigFolder().resolve(configName + ".json5");
         this.CONFIG_DATA_CLASS = clazz;
         if (CONFIG_PATH.toFile().exists())
         {
