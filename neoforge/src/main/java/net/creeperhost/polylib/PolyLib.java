@@ -18,7 +18,7 @@ public class PolyLib
         PolylibCommon.registerConfig();
         PolylibCommon.init();
         if (FMLLoader.getCurrent().getDist().isClient()) {
-            PolyLibClient.init();
+            PolyLibClient.init(eventBus);
         }
 
         if (DataComps.isDataEnabled()) {
