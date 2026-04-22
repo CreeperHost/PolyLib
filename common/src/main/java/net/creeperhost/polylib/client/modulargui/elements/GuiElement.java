@@ -28,16 +28,16 @@ import java.util.function.Supplier;
  * <p>
  * In v2 this vas a massive monolithic class that had way too much crammed into it.
  * The primary goals of v3 are the following:
- * <tr>- Build a new, Extremely flexible system for handling element geometry, including relative positions, anchoring, etc.
+ * Build a new, Extremely flexible system for handling element geometry, including relative positions, anchoring, etc.
  * This was archived using the new Geometry system. For details see {@link GuiParent} and {@link ConstrainedGeometry}
- * <tr>- Implement a system to properly handle element z offsets.
+ * Implement a system to properly handle element z offsets.
  * This was archived by giving all elements a 'depth' property which defines an elements size on the z axis.
  * This is then used to properly layer elements and child elements when they are rendered.
- * <tr>- Switch everything over to the new RenderType system. (This is mostly handled behind the scenes. You don't need to mess with it when creating a GUI)
- * <tr>- Consolidate all the various rendering helper methods into one convenient utility class.
- * The new {@link net.minecraft.client.gui.GuiGraphics} system showed me a good way to implement this.
- * <tr>- Reduce the amount of ambiguity when building GUIs. (Whether I succeeded here is up for debate xD)
- * <tr>- Cut out a lot of random bloat that was never used in v2.
+ * - Switch everything over to the new RenderType system. (This is mostly handled behind the scenes. You don't need to mess with it when creating a GUI)
+ * - Consolidate all the various rendering helper methods into one convenient utility class.
+ * The new {@link net.minecraft.client.gui.GuiGraphicsExtractor} system showed me a good way to implement this.
+ * - Reduce the amount of ambiguity when building GUIs. (Whether I succeeded here is up for debate xD)
+ * - Cut out a lot of random bloat that was never used in v2.
  * <p>
  * <p>
  * Created by brandon3055 on 04/07/2023

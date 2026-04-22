@@ -1230,7 +1230,7 @@ public class GuiRender {
     /**
      * If text is to long ti fit between x and xMaz, the text will scroll from left to right.
      * Otherwise, will render centered.
-     * This is mostly copied from {@link AbstractWidget#renderScrollingString(GuiGraphics, Font, Component, int, int, int, int, int)}
+     * This is mostly copied from
      */
     @SuppressWarnings ("JavadocReference")
     public void drawScrollingString(Component component, double x, double y, double xMax, int colour, boolean shadow) {
@@ -1240,7 +1240,7 @@ public class GuiRender {
     /**
      * If text is to long ti fit between x and xMaz, the text will scroll from left to right.
      * Otherwise, will render centered.
-     * This is mostly copied from {@link AbstractWidget#renderScrollingString(GuiGraphics, Font, Component, int, int, int, int, int)}
+     * This is mostly copied from
      */
     @SuppressWarnings ("JavadocReference")
     public void drawScrollingString(Component component, double x, double y, double xMax, int colour, boolean shadow, boolean doScissor) {

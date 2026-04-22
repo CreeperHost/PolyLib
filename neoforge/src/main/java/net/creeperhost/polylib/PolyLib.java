@@ -28,5 +28,10 @@ public class PolyLib
         }
 
         COMPONENTS.register(eventBus);
+
+        if (PolylibCommon.testMod)
+        {
+
+        }
     }
 }

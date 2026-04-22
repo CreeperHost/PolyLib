@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public interface DataRetainingBlock {
 
     /**
-     * @param nbt         Write any data you wish to retain to this compound.
+     * @param provider         Write any data you wish to retain to this compound.
      *                    This will be a new empty compound so need to worry about tag conflicts.
      * @param willHarvest This will be true if the block is actually about to be harvested.
      *                    vs for example, using pick-block to copy the block.
@@ -21,7 +21,7 @@ public interface DataRetainingBlock {
     CompoundTag writeToItemStack(HolderLookup.Provider provider, boolean willHarvest);
 
     /**
-     * @param nbt Will contain all data written in {@link #writeToItemStack(CompoundTag, boolean)}.
+     * @param nbt Will contain all data written in .
      *            Use this to restore the block ewntity state.
      */
     void readFromItemStack(HolderLookup.Provider provider, CompoundTag nbt);
