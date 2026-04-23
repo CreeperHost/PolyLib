@@ -19,6 +19,7 @@ public class TestCreativeTabs {
                 output -> {
                     output.accept(TestItems.TEST_ITEM);
                     output.accept(TestItems.TEST_ITEM_2);
+                    output.accept(TestBlocks.TEST_BLOCK);
                 }
         ));
     }
