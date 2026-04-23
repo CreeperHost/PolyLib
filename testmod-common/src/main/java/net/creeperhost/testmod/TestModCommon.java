@@ -17,10 +17,11 @@ import net.minecraft.resources.Identifier;
 
 public class TestModCommon
 {
+    public static final String MOD_ID = "testmod";
     /** Demo: client-side "reduce screen shake" preference synced to nearby players. */
     public static final PlayerClientSettingsType<Boolean> REDUCE_SCREENSHAKE =
         PlayerClientSettingsRegistry.register(
-            Identifier.fromNamespaceAndPath("testmod", "reduce_screenshake"),
+            Identifier.fromNamespaceAndPath(MOD_ID, "reduce_screenshake"),
             StreamCodec.<RegistryFriendlyByteBuf, Boolean>of(
                 (buf, v) -> buf.writeBoolean(v),
                 buf -> buf.readBoolean()
@@ -35,7 +36,7 @@ public class TestModCommon
     /** Demo: server-authoritative ticks-played counter, synced to owner client. */
     public static final PlayerServerDataType<Integer> TICKS_PLAYED =
         PlayerServerDataRegistry.register(
-            Identifier.fromNamespaceAndPath("testmod", "ticks_played"),
+            Identifier.fromNamespaceAndPath(MOD_ID, "ticks_played"),
             Codec.INT,
             StreamCodec.<RegistryFriendlyByteBuf, Integer>of(
                 (buf, v) -> buf.writeVarInt(v),

@@ -6,6 +6,7 @@ import net.creeperhost.polylib.player.serverdata.PlayerServerDataType;
 import net.creeperhost.polylib.player.settings.BroadcastScope;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsRegistry;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsType;
+import net.creeperhost.testmod.TestModCommon;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 
@@ -22,7 +23,7 @@ public final class TestPlayerData
      * Synced to all nearby players (TRACKING_RANGE) and preserved on death.
      */
     public static final PlayerClientSettingsType<Boolean> TEST_TOGGLE = PlayerClientSettingsRegistry.register(
-            Identifier.fromNamespaceAndPath("testmod", "test_toggle"),
+            Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "test_toggle"),
             StreamCodec.of(
                     (buf, val) -> buf.writeBoolean(val),
                     buf -> buf.readBoolean()
@@ -37,7 +38,7 @@ public final class TestPlayerData
      * Synced to the owning player's client and lost on death.
      */
     public static final PlayerServerDataType<Integer> TEST_COUNTER = PlayerServerDataRegistry.register(
-            Identifier.fromNamespaceAndPath("testmod", "test_counter"),
+            Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "test_counter"),
             Codec.INT,
             StreamCodec.of(
                     (buf, val) -> buf.writeInt(val),

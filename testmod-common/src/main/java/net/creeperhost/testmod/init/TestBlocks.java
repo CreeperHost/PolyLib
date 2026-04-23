@@ -1,6 +1,7 @@
 package net.creeperhost.testmod.init;
 
 import net.creeperhost.polylib.registry.PolyRegistry;
+import net.creeperhost.testmod.TestModCommon;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -11,9 +12,9 @@ import java.util.function.Supplier;
 
 public class TestBlocks {
 
-    public static final PolyRegistry<Block> BLOCKS = PolyRegistry.create(Registries.BLOCK, "testmod");
+    public static final PolyRegistry<Block> BLOCKS = PolyRegistry.create(Registries.BLOCK, TestModCommon.MOD_ID);
 
-    public static final Supplier<Block> TEST_BLOCK = BLOCKS.register("test_block", "Test Block", () -> new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("testmod", "test_block")))));
+    public static final Supplier<Block> TEST_BLOCK = BLOCKS.register("test_block", "Test Block", () -> new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "test_block")))));
 
     public static void init() {
         BLOCKS.init();
