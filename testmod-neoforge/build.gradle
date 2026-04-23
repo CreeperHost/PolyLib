@@ -46,6 +46,12 @@ neoForge {
 dependencies {
     compileOnly project(':neoforge')
     runtimeOnly "blue.endless:jankson:1.2.1"
+    compileOnly(project(':common')) {
+        def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+        attributes {
+            attribute(loaderAttribute, 'common')
+        }
+    }
 
     compileOnly(project(':testmod-common')) {
         def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)

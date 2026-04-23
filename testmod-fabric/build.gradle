@@ -18,6 +18,12 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation project(':fabric')
 
+    compileOnly(project(':common')) {
+        def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+        attributes {
+            attribute(loaderAttribute, 'common')
+        }
+    }
     compileOnly(project(':testmod-common')) {
         def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
         attributes {
