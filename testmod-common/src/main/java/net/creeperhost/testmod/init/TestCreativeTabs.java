@@ -17,9 +17,9 @@ public class TestCreativeTabs {
                 Component.translatable("itemGroup.testmod.test_tab"),
                 () -> new ItemStack(Items.DIAMOND),
                 output -> {
-                    output.accept(TestItems.TEST_ITEM);
-                    output.accept(TestItems.TEST_ITEM_2);
-                    output.accept(TestBlocks.TEST_BLOCK);
+                    output.accept(TestItems.TEST_ITEM.get());
+                    output.accept(TestItems.TEST_ITEM_2.get());
+                    output.accept(TestBlocks.TEST_BLOCK.get());
                 }
         ));
     }
