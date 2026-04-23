@@ -2,6 +2,7 @@ package net.creeperhost.polylib.platform;
 
 import net.creeperhost.polylib.Constants;
 import net.creeperhost.polylib.platform.services.INetworkHelper;
+import net.creeperhost.polylib.platform.services.IPlayerDataHelper;
 import net.creeperhost.polylib.platform.services.IPlatformHelper;
 import net.creeperhost.polylib.platform.services.IRegisterHelper;
 import net.creeperhost.polylib.registry.IRegistryFactory;
@@ -14,6 +15,7 @@ public class Services {
     public static final INetworkHelper NETWORK = load(INetworkHelper.class);
     public static final IRegisterHelper REGISTER_HELPER = load(IRegisterHelper.class);
     public static final IRegistryFactory REGISTRY = load(IRegistryFactory.class);
+    public static final IPlayerDataHelper PLAYER_DATA = load(IPlayerDataHelper.class);
 
     public static <T> T load(Class<T> clazz) {
 
