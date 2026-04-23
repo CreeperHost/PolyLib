@@ -42,9 +42,9 @@ public class FabricPolyRegistry<T> extends PolyRegistry<T> {
     @Override
     @SuppressWarnings("unchecked")
     public void init() {
-        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.getValue(registryKey.registry());
+        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.getValue(registryKey.identifier());
         if (registry == null) {
-            throw new IllegalStateException("Failed to find registry for key: " + registryKey.registry());
+            throw new IllegalStateException("Failed to find registry for key: " + registryKey.identifier());
         }
         
         entries.forEach((name, supplier) -> {
