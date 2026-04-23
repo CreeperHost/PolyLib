@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
           "net.creeperhost.polylib.PolyLibFabric"
+        ],
+        "modmenu": [
+          "net.creeperhost.polylib.ModMenuCompat"
         ]
     },
     "mixins": [
@@ -30,7 +33,7 @@
         "java": ">=${java_version}"
     },
     "suggests": {
-        "another-mod": "*"
+        "modmenu": "*"
     }
 }
   

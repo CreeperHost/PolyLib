@@ -13,4 +13,7 @@ public class PolyConfig extends ConfigData {
     @Comment ("When true, all registered accessibility preferences treat the player's value as authoritative, ignoring server policy.")
     public boolean radicalAccessibility = false;
 
+    @Comment ("Controls whether the keyboard shortcut for each registered config panel is enabled. Keys are mod IDs.")
+    public java.util.Map<String, Boolean> configPanelKeybinds = new java.util.HashMap<>();
+
 }
