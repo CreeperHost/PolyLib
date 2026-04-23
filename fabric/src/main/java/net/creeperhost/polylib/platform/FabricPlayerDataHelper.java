@@ -38,15 +38,12 @@ public class FabricPlayerDataHelper implements IPlayerDataHelper
             },
             ByteBuffer::wrap);
 
-    private final Map<String, AttachmentType<byte[]>> attachmentsByTypeId = new LinkedHashMap<>();
+    private final Map<Identifier, AttachmentType<byte[]>> attachmentsByTypeId = new LinkedHashMap<>();
 
     @Override
     public void registerType(PlayerClientSettingsType<?> type)
     {
-        // Convert the namespaced type id (e.g. "discrafthonored:appearance") to a valid
-        // Identifier path by replacing ':' → '/' and any non-[a-z0-9_.-/] chars → '_'
-        String sanitized = type.id().replace(':', '/').replaceAll("[^a-z0-9_.\\-/]", "_");
-        Identifier id = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "settings/" + sanitized);
+        Identifier id = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "settings/" + type.id().getNamespace() + "/" + type.id().getPath());
 
         AttachmentType<byte[]> attachment;
         if (type.copyOnDeath())
@@ -65,7 +62,7 @@ public class FabricPlayerDataHelper implements IPlayerDataHelper
     @Override
     public void loadAll(UUID playerUUID, ServerPlayer player, PlayerClientSettingsStore store)
     {
-        for (Map.Entry<String, AttachmentType<byte[]>> entry : attachmentsByTypeId.entrySet())
+        for (Map.Entry<Identifier, AttachmentType<byte[]>> entry : attachmentsByTypeId.entrySet())
         {
             byte[] bytes = player.getAttached(entry.getValue());
             if (bytes != null && bytes.length > 0)
@@ -121,13 +118,12 @@ public class FabricPlayerDataHelper implements IPlayerDataHelper
         return data;
     }
 
-    private final Map<String, AttachmentType<?>> serverDataAttachments = new LinkedHashMap<>();
+    private final Map<Identifier, AttachmentType<?>> serverDataAttachments = new LinkedHashMap<>();
 
     @Override
     public void registerServerDataType(PlayerServerDataType<?> type)
     {
-        String sanitized = type.id().replace(':', '/').replaceAll("[^a-z0-9_.\\-/]", "_");
-        Identifier id = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "sdata/" + sanitized);
+        Identifier id = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "sdata/" + type.id().getNamespace() + "/" + type.id().getPath());
         AttachmentType<?> attachment = createServerDataAttachment(type, id);
         serverDataAttachments.put(type.id(), attachment);
     }
@@ -143,14 +139,14 @@ public class FabricPlayerDataHelper implements IPlayerDataHelper
     @Override
     public void loadServerData(UUID playerUUID, ServerPlayer player, PlayerServerDataStore store)
     {
-        for (Map.Entry<String, AttachmentType<?>> entry : serverDataAttachments.entrySet())
+        for (Map.Entry<Identifier, AttachmentType<?>> entry : serverDataAttachments.entrySet())
         {
             loadServerDataTyped(entry.getKey(), entry.getValue(), player, store);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> void loadServerDataTyped(String id,
+    private static <T> void loadServerDataTyped(Identifier id,
                                                  AttachmentType<T> attachment,
                                                  ServerPlayer player,
                                                  PlayerServerDataStore store)

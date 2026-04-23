@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.creeperhost.polylib.platform.Services;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
@@ -14,7 +15,7 @@ import java.util.function.Supplier;
  */
 public final class PlayerServerDataRegistry
 {
-    private static final Map<String, PlayerServerDataType<?>> BY_ID = new LinkedHashMap<>();
+    private static final Map<Identifier, PlayerServerDataType<?>> BY_ID = new LinkedHashMap<>();
 
     private PlayerServerDataRegistry() {}
 
@@ -29,7 +30,7 @@ public final class PlayerServerDataRegistry
      * @param copyOnDeath    Whether the value survives player death/respawn
      * @return The typed token — store as a {@code public static final} constant
      */
-    public static <T> PlayerServerDataType<T> register(String id,
+    public static <T> PlayerServerDataType<T> register(Identifier id,
                                                         Codec<T> nbtCodec,
                                                         @Nullable StreamCodec<RegistryFriendlyByteBuf, T> syncCodec,
                                                         Supplier<T> defaultFactory,
@@ -47,7 +48,7 @@ public final class PlayerServerDataRegistry
     /**
      * Convenience overload — no S2C sync (server-only data).
      */
-    public static <T> PlayerServerDataType<T> register(String id,
+    public static <T> PlayerServerDataType<T> register(Identifier id,
                                                         Codec<T> nbtCodec,
                                                         Supplier<T> defaultFactory,
                                                         boolean copyOnDeath)
@@ -62,7 +63,7 @@ public final class PlayerServerDataRegistry
     }
 
     /** Lookup by namespaced ID — used by packet handlers. */
-    public static Optional<PlayerServerDataType<?>> byId(String id)
+    public static Optional<PlayerServerDataType<?>> byId(Identifier id)
     {
         return Optional.ofNullable(BY_ID.get(id));
     }

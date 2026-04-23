@@ -3,6 +3,7 @@ package net.creeperhost.polylib.player.serverdata;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
@@ -19,7 +20,7 @@ import java.util.function.Supplier;
  */
 public final class PlayerServerDataType<T>
 {
-    private final String id;
+    private final Identifier id;
     /** DFU Codec used for NBT persistence. */
     private final Codec<T> nbtCodec;
     /**
@@ -31,7 +32,7 @@ public final class PlayerServerDataType<T>
     private final Supplier<T> defaultFactory;
     private final boolean copyOnDeath;
 
-    PlayerServerDataType(String id,
+    PlayerServerDataType(Identifier id,
                          Codec<T> nbtCodec,
                          @Nullable StreamCodec<RegistryFriendlyByteBuf, T> syncCodec,
                          Supplier<T> defaultFactory,
@@ -44,7 +45,7 @@ public final class PlayerServerDataType<T>
         this.copyOnDeath = copyOnDeath;
     }
 
-    public String id() { return id; }
+    public Identifier id() { return id; }
     public Codec<T> nbtCodec() { return nbtCodec; }
     @Nullable public StreamCodec<RegistryFriendlyByteBuf, T> syncCodec() { return syncCodec; }
     public Supplier<T> defaultFactory() { return defaultFactory; }

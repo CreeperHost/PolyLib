@@ -3,6 +3,7 @@ package net.creeperhost.polylib.player.serverdata;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class PlayerServerDataClientCache
 {
     // typeId → raw bytes as received from S2C payload (encoded via syncCodec)
-    private static final Map<String, byte[]> RAW = new ConcurrentHashMap<>();
+    private static final Map<Identifier, byte[]> RAW = new ConcurrentHashMap<>();
 
     private PlayerServerDataClientCache() {}
 
@@ -28,7 +29,7 @@ public final class PlayerServerDataClientCache
      * Store raw bytes received via {@link SyncPlayerServerDataS2CPayload}.
      * Called from the S2C packet handler on the client.
      */
-    public static void receive(String typeId, byte[] data)
+    public static void receive(Identifier typeId, byte[] data)
     {
         RAW.put(typeId, data);
     }
