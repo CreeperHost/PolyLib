@@ -183,6 +183,7 @@ public final class ConfigPanelRegistry
     public static void tickKeybinds()
     {
         Minecraft mc = Minecraft.getInstance();
+        if (mc == null) return;
         if (mc.screen != null) return;
 
         for (ConfigPanelEntry entry : ENTRIES.values())
