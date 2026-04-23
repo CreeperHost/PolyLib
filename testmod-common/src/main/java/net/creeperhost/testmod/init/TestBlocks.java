@@ -1,15 +1,19 @@
 package net.creeperhost.testmod.init;
 
-import net.creeperhost.polylib.platform.Services;
-import net.creeperhost.polylib.register.LazyBlock;
-import net.minecraft.resources.Identifier;
+import net.creeperhost.polylib.registry.PolyRegistry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
+import java.util.function.Supplier;
+
 public class TestBlocks {
 
-    public static LazyBlock<Block> TEST_BLOCK = Services.REGISTER_HELPER.registerBlock(
-            new LazyBlock<>(Identifier.fromNamespaceAndPath("testmod", "test_block"), Block::new, BlockBehaviour.Properties::of));
+    public static final PolyRegistry<Block> BLOCKS = PolyRegistry.create(Registries.BLOCK, "testmod");
 
-    public static void init() {}
+    public static final Supplier<Block> TEST_BLOCK = BLOCKS.register("test_block", "Test Block", () -> new Block(BlockBehaviour.Properties.of()));
+
+    public static void init() {
+        BLOCKS.init();
+    }
 }
