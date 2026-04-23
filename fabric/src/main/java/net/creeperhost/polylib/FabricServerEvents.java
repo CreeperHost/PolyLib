@@ -1,5 +1,6 @@
 package net.creeperhost.polylib;
 
+// TODO: depends on feat/accessibility PR being merged — AccessibilityPrefsManager lives there
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsManager;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsManager;
