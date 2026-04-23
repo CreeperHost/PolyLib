@@ -9,14 +9,16 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 
-public class PolyLib implements ModInitializer
+public class PolyLibFabric implements ModInitializer
 {
     @Override
     public void onInitialize()
     {
         PolylibCommon.registerConfig();
+        PolylibCommon.init();
+
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            PolyLibClient.init();
+            PolyLibClientFabric.init();
         }
 
         if (DataComps.isDataEnabled()) {
@@ -24,7 +26,6 @@ public class PolyLib implements ModInitializer
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_energy"), DataComps.ITEM_ENERGY);
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_tile_data"), DataComps.ITEM_TILE_DATA);
         }
-        PolylibCommon.init();
 
         if (PolylibCommon.testMod) {
             TestModFabric.init();

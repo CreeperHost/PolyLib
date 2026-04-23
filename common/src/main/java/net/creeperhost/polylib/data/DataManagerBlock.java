@@ -1,7 +1,9 @@
 package net.creeperhost.polylib.data;
 
+import net.creeperhost.polylib.PolyLibClient;
 import net.creeperhost.polylib.containers.DataManagerContainer;
 import net.creeperhost.polylib.data.serializable.AbstractDataStore;
+import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -56,15 +58,14 @@ public interface DataManagerBlock {
     default void sendPacketToServer(int id, Consumer<FriendlyByteBuf> packetWriter) {
         TileDataManager<?> manager = getDataManager();
         if (!manager.tile.getLevel().isClientSide()) return;
-        //TODO
-//        Player player = PolyLibClient.getClientPlayer();
-//        if (player == null) return;
-//        AbstractContainerMenu container = player.containerMenu;
-//        PolyLibNetwork.sendPacketToServerTile(player.registryAccess(), buf -> {
-//            buf.writeVarInt(container.containerId);
-//            buf.writeVarInt(id);
-//            packetWriter.accept(buf);
-//        });
+        Player player = PolyLibClient.getClientPlayer();
+        if (player == null) return;
+        AbstractContainerMenu container = player.containerMenu;
+        PolyLibNetwork.sendPacketToServerTile(player.registryAccess(), buf -> {
+            buf.writeVarInt(container.containerId);
+            buf.writeVarInt(id);
+            packetWriter.accept(buf);
+        });
     }
 
     /**
@@ -80,20 +81,19 @@ public interface DataManagerBlock {
     default <T> void sendDataValueToServer(AbstractDataStore<T> data, T value) {
         TileDataManager<?> manager = getDataManager();
         if (!manager.tile.getLevel().isClientSide()) return;
-        //TODO
-//        Player player = PolyLibClient.getClientPlayer();
-//        if (player == null) return;
-//
-//        int index = manager.dataOrder.indexOf(data);
-//        PolyLibNetwork.sendDataValueToServerTile(player.registryAccess(), buf -> {
-//            buf.writeVarInt(player.containerMenu.containerId);
-//            T prev = data.get();
-//            data.set(value);
-//            buf.writeVarInt(index);
-//            data.toBytes(buf);
-//            data.set(prev);
-//            data.isDirty(true);
-//        });
+        Player player = PolyLibClient.getClientPlayer();
+        if (player == null) return;
+
+        int index = manager.dataOrder.indexOf(data);
+        PolyLibNetwork.sendDataValueToServerTile(player.registryAccess(), buf -> {
+            buf.writeVarInt(player.containerMenu.containerId);
+            T prev = data.get();
+            data.set(value);
+            buf.writeVarInt(index);
+            data.toBytes(buf);
+            data.set(prev);
+            data.isDirty(true);
+        });
     }
 
     /**

@@ -15,6 +15,9 @@ public class PolylibCommon
     public static void init()
     {
         PolyLibNetwork.init();
+        if (Services.PLATFORM.isClient()) {
+            PolyLibClient.init();
+        }
         if (testMod)
         {
             TestModCommon.init();

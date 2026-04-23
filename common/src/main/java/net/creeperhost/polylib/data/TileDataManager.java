@@ -1,9 +1,8 @@
 package net.creeperhost.polylib.data;
 
 import net.creeperhost.polylib.data.serializable.AbstractDataStore;
-//import net.creeperhost.polylib.network.PolyLibNetwork;
+import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static net.creeperhost.polylib.data.DataManagerBlock.*;
 
 /**
  * This class provides a way to save and synchronize tile data with the client.
@@ -95,7 +92,7 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
      */
     public void load(ValueInput input) {
         dataStoreMap.forEach((name, data) -> {
-            if ((dataFlags.get(data) & SAVE) > 0 && input.child(name).isPresent()) {
+            if ((dataFlags.get(data) & DataManagerBlock.SAVE) > 0 && input.child(name).isPresent()) {
                 data.fromTag(input.childOrEmpty(name));
             }
         });
@@ -106,7 +103,7 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
      */
     public void save(ValueOutput output) {
         dataStoreMap.forEach((name, data) -> {
-            if ((dataFlags.get(data) & SAVE) > 0) {
+            if ((dataFlags.get(data) & DataManagerBlock.SAVE) > 0) {
                 data.toTag(output.child(name));
             }
         });
@@ -114,7 +111,7 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
 
     public void loadFromItem(ValueInput input) {
         dataStoreMap.forEach((name, data) -> {
-            if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0 && input.child(name).isPresent()) {
+            if ((dataFlags.get(data) & DataManagerBlock.SAVE_TO_ITEM) > 0 && input.child(name).isPresent()) {
                 data.fromTag(input.childOrEmpty(name));
             }
         });
@@ -122,7 +119,7 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
 
     public void saveToItem(ValueOutput output) {
         dataStoreMap.forEach((name, data) -> {
-            if ((dataFlags.get(data) & SAVE_TO_ITEM) > 0) {
+            if ((dataFlags.get(data) & DataManagerBlock.SAVE_TO_ITEM) > 0) {
                 data.toTag(output.child(name));
             }
         });
@@ -131,15 +128,14 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
     //### Internal Functions ###
 
     protected void sendToClient(AbstractDataStore<?> data) {
-        if ((dataFlags.get(data) & SYNC) == 0) return;
+        if ((dataFlags.get(data) & DataManagerBlock.SYNC) == 0) return;
         int index = dataOrder.indexOf(data);
         BlockPos pos = tile.getBlockPos();
-        //TODO
-//        PolyLibNetwork.sendTileDataValueToClients(tile.getLevel(), pos, buf -> {
-//            buf.writeBlockPos(pos);
-//            buf.writeVarInt(index);
-//            data.toBytes(buf);
-//        });
+        PolyLibNetwork.sendTileDataValueToClients(tile.getLevel(), pos, buf -> {
+            buf.writeBlockPos(pos);
+            buf.writeVarInt(index);
+            data.toBytes(buf);
+        });
     }
 
     public void handleSyncFromServer(Player player, RegistryFriendlyByteBuf packet) {
@@ -150,7 +146,7 @@ public class TileDataManager<BE extends BlockEntity & DataManagerBlock> {
     public void handleSyncFromClient(ServerPlayer player, RegistryFriendlyByteBuf packet) {
         int index = packet.readVarInt();
         AbstractDataStore<?> data = dataOrder.get(index);
-        if ((dataFlags.get(data) & CLIENT_CONTROL) > 0) {
+        if ((dataFlags.get(data) & DataManagerBlock.CLIENT_CONTROL) > 0) {
             data.fromBytes(packet);
             data.markDirty();
         }

@@ -1,16 +1,19 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
+import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.Minecraft;
 
-public class PolyLibClient
+public class PolyLibClientFabric
 {
     public static void init()
     {
+        PolyLibNetwork.initClient();
+
         ClientTickEvents.END_CLIENT_TICK.register(ModularGuiInjector::tick);
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             ModularGuiInjector.initPost(screen);

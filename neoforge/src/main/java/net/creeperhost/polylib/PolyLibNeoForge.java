@@ -1,6 +1,7 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.init.DataComps;
+import net.creeperhost.polylib.platform.NeoForgeNetworkHelper;
 import net.creeperhost.polylib.testmod.TestModNeoForge;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -10,16 +11,19 @@ import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 @Mod(Constants.MOD_ID)
-public class PolyLib
+public class PolyLibNeoForge
 {
     public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Constants.MOD_ID);
 
-    public PolyLib(IEventBus eventBus)
+    public PolyLibNeoForge(IEventBus eventBus)
     {
         PolylibCommon.registerConfig();
         PolylibCommon.init();
+
+        eventBus.addListener(NeoForgeNetworkHelper::onRegisterPayloads);
+
         if (FMLLoader.getCurrent().getDist().isClient()) {
-            PolyLibClient.init(eventBus);
+            PolyLibClientNeoForge.init(eventBus);
         }
 
         if (DataComps.isDataEnabled()) {

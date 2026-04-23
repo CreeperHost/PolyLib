@@ -16,7 +16,7 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "net.creeperhost.polylib.PolyLib"
+          "net.creeperhost.polylib.PolyLibFabric"
         ]
     },
     "mixins": [

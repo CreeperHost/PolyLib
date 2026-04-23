@@ -6,12 +6,12 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
-public class PolyLibClient
+public class PolyLibClientNeoForge
 {
     public static void init(IEventBus eventBus)
     {
-        eventBus.addListener(PolyLibClient::atlasStitched);
-        eventBus.addListener(PolyLibClient::registerTextureAtlas);
+        eventBus.addListener(PolyLibClientNeoForge::atlasStitched);
+        eventBus.addListener(PolyLibClientNeoForge::registerTextureAtlas);
     }
 
     private static void registerTextureAtlas(RegisterTextureAtlasesEvent event) {
