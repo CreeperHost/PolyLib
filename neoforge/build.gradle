@@ -64,6 +64,14 @@ shadowJar {
     archiveClassifier = null
 }
 
+// Make the shadow jar the primary published artifact so consumers get Jankson bundled
+configurations {
+    [apiElements, runtimeElements].each { config ->
+        config.outgoing.artifacts.clear()
+        config.outgoing.artifact(shadowJar)
+    }
+}
+
 assemble.dependsOn(shadowJar)
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
