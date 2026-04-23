@@ -12,6 +12,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.LinkedHashMap;
@@ -32,7 +33,7 @@ import java.util.UUID;
  */
 public class NeoForgePlayerDataHelper implements IPlayerDataHelper
 {
-    private final Map<String, PlayerClientSettingsType<?>> registeredTypes = new LinkedHashMap<>();
+    private final Map<Identifier, PlayerClientSettingsType<?>> registeredTypes = new LinkedHashMap<>();
     private static final String SETTINGS_PREFIX = "polylib_settings.";
 
     @Override
@@ -47,7 +48,7 @@ public class NeoForgePlayerDataHelper implements IPlayerDataHelper
         CompoundTag persistent = player.getPersistentData();
         for (PlayerClientSettingsType<?> type : registeredTypes.values())
         {
-            String key = SETTINGS_PREFIX + type.id();
+            String key = SETTINGS_PREFIX + type.id().toString();
             if (persistent.contains(key))
             {
                 byte[] bytes = persistent.getByteArray(key).orElse(null);
@@ -63,7 +64,7 @@ public class NeoForgePlayerDataHelper implements IPlayerDataHelper
         CompoundTag persistent = player.getPersistentData();
         for (PlayerClientSettingsType<?> dirty : store.getDirty())
         {
-            String key = SETTINGS_PREFIX + dirty.id();
+            String key = SETTINGS_PREFIX + dirty.id().toString();
             byte[] bytes = encodeClientTyped(dirty, player, store);
             persistent.put(key, new ByteArrayTag(bytes));
         }
@@ -98,7 +99,7 @@ public class NeoForgePlayerDataHelper implements IPlayerDataHelper
         return data;
     }
 
-    private final Map<String, PlayerServerDataType<?>> registeredServerTypes = new LinkedHashMap<>();
+    private final Map<Identifier, PlayerServerDataType<?>> registeredServerTypes = new LinkedHashMap<>();
     private static final String SDATA_PREFIX = "polylib_sdata.";
 
     @Override
@@ -113,7 +114,7 @@ public class NeoForgePlayerDataHelper implements IPlayerDataHelper
         CompoundTag persistent = player.getPersistentData();
         for (PlayerServerDataType<?> type : registeredServerTypes.values())
         {
-            String key = SDATA_PREFIX + type.id();
+            String key = SDATA_PREFIX + type.id().toString();
             Tag raw = persistent.get(key);
             if (raw instanceof CompoundTag wrapper)
             {
@@ -130,7 +131,7 @@ public class NeoForgePlayerDataHelper implements IPlayerDataHelper
         CompoundTag persistent = player.getPersistentData();
         for (PlayerServerDataType<?> dirty : store.getDirty())
         {
-            String key = SDATA_PREFIX + dirty.id();
+            String key = SDATA_PREFIX + dirty.id().toString();
             saveServerTyped(dirty, persistent, key, store);
         }
         store.clearDirty();
