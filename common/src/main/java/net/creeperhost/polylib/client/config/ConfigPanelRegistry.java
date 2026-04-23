@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 /**
  * Central registry for mod config panel screens.
  *
- * <h3>Registration tiers</h3>
+ * <h2>Registration tiers</h2>
  * <ol>
  *   <li><b>Vanilla Screen</b> — {@link #register(String, ScreenFactory)}.
  *       Works on any loader. The dev provides a standard {@link Screen} factory.</li>
@@ -32,7 +32,7 @@ import java.util.function.Predicate;
  *       {@link ModularGuiInjector}. Use for advanced cases only.</li>
  * </ol>
  *
- * <h3>Auto-hooks</h3>
+ * <h2>Auto-hooks</h2>
  * <ul>
  *   <li><b>NeoForge</b> — use {@code NeoForgeConfigHelper.register(...)} from the NeoForge
  *       module. This calls both this registry AND {@code IConfigScreenFactory} so the entry
@@ -44,7 +44,7 @@ import java.util.function.Predicate;
  *       Keybinds are also ticked via {@link #tickKeybinds()}.</li>
  * </ul>
  *
- * <h3>PolyConfig json5 backing</h3>
+ * <h2>PolyConfig json5 backing</h2>
  * The per-mod keybind enable/disable map is stored in {@code polylib.json5} and managed
  * through {@link PolylibCommon#configData}.
  */
@@ -106,7 +106,6 @@ public final class ConfigPanelRegistry
 
     /**
      * Register with a translation key and default English label.
-     * Contributes {@code labelKey → defaultEnglish} to {@link net.creeperhost.polylib.data.lang.PolyLangContributions} for lang datagen.
      *
      * @param modId          Mod ID
      * @param labelKey       Translation key for the config button label
@@ -117,7 +116,6 @@ public final class ConfigPanelRegistry
     public static void register(String modId, String labelKey, String defaultEnglish,
                                 ScreenFactory factory, @Nullable KeyboardShortcut shortcut)
     {
-        net.creeperhost.polylib.data.lang.PolyLangContributions.contribute(labelKey, defaultEnglish);
         register(modId, Component.translatable(labelKey), factory, shortcut);
     }
 
@@ -141,7 +139,6 @@ public final class ConfigPanelRegistry
 
     /**
      * Register a ModularGui screen with a translation key and default English label.
-     * Contributes {@code labelKey → defaultEnglish} to {@link net.creeperhost.polylib.data.lang.PolyLangContributions} for lang datagen.
      *
      * @param modId          Mod ID
      * @param labelKey       Translation key for the config button label
@@ -152,7 +149,6 @@ public final class ConfigPanelRegistry
     public static void registerModularGui(String modId, String labelKey, String defaultEnglish,
                                           GuiProviderFactory factory, @Nullable KeyboardShortcut shortcut)
     {
-        net.creeperhost.polylib.data.lang.PolyLangContributions.contribute(labelKey, defaultEnglish);
         registerModularGui(modId, Component.translatable(labelKey), factory, shortcut);
     }
 

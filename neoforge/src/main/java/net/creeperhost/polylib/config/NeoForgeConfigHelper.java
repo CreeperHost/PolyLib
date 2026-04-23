@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
  *       the native "Mods → Config" button without any extra boilerplate</li>
  * </ol>
  *
- * <h3>Usage (NeoForge mod constructor)</h3>
+ * <h2>Usage (NeoForge mod constructor)</h2>
  * <pre>{@code
  * public MyMod(ModContainer container, IEventBus bus) {
  *     // Vanilla Screen variant:

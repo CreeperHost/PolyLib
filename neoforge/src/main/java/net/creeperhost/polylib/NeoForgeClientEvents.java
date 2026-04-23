@@ -1,35 +1,22 @@
 package net.creeperhost.polylib;
 
-import net.creeperhost.polylib.accessibility.AccessibilityOptionsRegistry;
-import net.creeperhost.polylib.client.config.ConfigPanelRegistry;
 import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
-import net.creeperhost.polylib.player.serverdata.PlayerServerDataClientCache;
-import net.creeperhost.polylib.player.settings.PlayerClientSettingsClientCache;
+import net.creeperhost.polylib.client.config.ConfigPanelRegistry;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
 @EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
 public class NeoForgeClientEvents
 {
-    @SubscribeEvent
-    public static void onClientLogout(ClientPlayerNetworkEvent.LoggingOut event)
-    {
-        PlayerClientSettingsClientCache.clear();
-        PlayerServerDataClientCache.clear();
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void eventInitScreenEvent(ScreenEvent.Init.Post event)
     {
         ModularGuiInjector.initPost(event.getScreen());
-        AccessibilityOptionsRegistry.inject(event.getScreen());
-        ConfigPanelRegistry.injectConfigButton(event.getScreen(), event::addListener);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

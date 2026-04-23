@@ -7,7 +7,7 @@ import net.minecraft.resources.Identifier;
 /**
  * Describes an optional keyboard shortcut for a config panel entry.
  *
- * <h3>Variants</h3>
+ * <h2>Variants</h2>
  * <ul>
  *   <li>{@link #unbound(KeyMapping.Category)} — shows in Controls but has no default key</li>
  *   <li>{@link #suggested(int, InputConstants.Type, KeyMapping.Category)} — has a suggested
