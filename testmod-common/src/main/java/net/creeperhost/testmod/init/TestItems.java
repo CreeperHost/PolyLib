@@ -1,17 +1,20 @@
 package net.creeperhost.testmod.init;
 
-import net.creeperhost.polylib.platform.Services;
-import net.creeperhost.polylib.register.LazyItem;
+import net.creeperhost.polylib.registry.PolyRegistry;
 import net.creeperhost.testmod.items.TestItem;
-import net.minecraft.resources.Identifier;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
+
+import java.util.function.Supplier;
 
 public class TestItems
 {
-    public static LazyItem<Item> TEST_ITEM = Services.REGISTER_HELPER.registerItem(
-            new LazyItem<>(Identifier.fromNamespaceAndPath("testmod", "test_item"), TestItem::new, Item.Properties::new));
-    public static LazyItem<Item> TEST_ITEM_2 = Services.REGISTER_HELPER.registerItem(
-            new LazyItem<>(Identifier.fromNamespaceAndPath("testmod", "test_item_two"), TestItem::new, Item.Properties::new));
+    public static final PolyRegistry<Item> ITEMS = PolyRegistry.create(Registries.ITEM, "testmod");
 
-    public static void init() {}
+    public static final Supplier<Item> TEST_ITEM = ITEMS.register("test_item", "Test Item", TestItem::new);
+    public static final Supplier<Item> TEST_ITEM_2 = ITEMS.register("test_item_two", "Test Item Two", TestItem::new);
+
+    public static void init() {
+        ITEMS.init();
+    }
 }
