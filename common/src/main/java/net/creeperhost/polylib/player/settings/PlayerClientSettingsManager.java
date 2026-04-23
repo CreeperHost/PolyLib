@@ -4,6 +4,7 @@ import io.netty.buffer.Unpooled;
 import net.creeperhost.polylib.platform.Services;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Map;
@@ -83,7 +84,7 @@ public final class PlayerClientSettingsManager
     }
 
     /** Called when server receives {@link UpdatePlayerClientSettingC2SPayload}. */
-    public static void applyFromClient(ServerPlayer player, String typeId, byte[] data)
+    public static void applyFromClient(ServerPlayer player, Identifier typeId, byte[] data)
     {
         PlayerClientSettingsRegistry.byId(typeId).ifPresent(type -> {
             UUID uuid = player.getUUID();

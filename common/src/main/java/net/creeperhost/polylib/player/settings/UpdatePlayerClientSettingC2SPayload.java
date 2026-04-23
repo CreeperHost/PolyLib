@@ -9,7 +9,7 @@ import net.minecraft.resources.Identifier;
 /**
  * C2S: client sends an updated PlayerClientSetting value to the server.
  */
-public record UpdatePlayerClientSettingC2SPayload(String typeId, byte[] data)
+public record UpdatePlayerClientSettingC2SPayload(Identifier typeId, byte[] data)
         implements CustomPacketPayload
 {
     public static final Type<UpdatePlayerClientSettingC2SPayload> TYPE = new Type<>(
@@ -18,7 +18,7 @@ public record UpdatePlayerClientSettingC2SPayload(String typeId, byte[] data)
     public static final StreamCodec<ByteBuf, UpdatePlayerClientSettingC2SPayload> CODEC = StreamCodec.of(
             (buf, payload) ->
             {
-                byte[] idBytes = payload.typeId().getBytes(java.nio.charset.StandardCharsets.UTF_8);
+                byte[] idBytes = payload.typeId().toString().getBytes(java.nio.charset.StandardCharsets.UTF_8);
                 buf.writeInt(idBytes.length);
                 buf.writeBytes(idBytes);
                 buf.writeInt(payload.data().length);
@@ -29,7 +29,7 @@ public record UpdatePlayerClientSettingC2SPayload(String typeId, byte[] data)
                 int idLen = buf.readInt();
                 byte[] idBytes = new byte[idLen];
                 buf.readBytes(idBytes);
-                String typeId = new String(idBytes, java.nio.charset.StandardCharsets.UTF_8);
+                Identifier typeId = Identifier.parse(new String(idBytes, java.nio.charset.StandardCharsets.UTF_8));
                 int dataLen = buf.readInt();
                 byte[] data = new byte[dataLen];
                 buf.readBytes(data);

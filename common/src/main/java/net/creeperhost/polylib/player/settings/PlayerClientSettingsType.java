@@ -2,6 +2,7 @@ package net.creeperhost.polylib.player.settings;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -15,7 +16,7 @@ import java.util.function.Supplier;
  */
 public final class PlayerClientSettingsType<T>
 {
-    private final String id;
+    private final Identifier id;
     private final StreamCodec<RegistryFriendlyByteBuf, T> codec;
     private final Supplier<T> defaultFactory;
     private final BroadcastScope scope;
@@ -23,7 +24,7 @@ public final class PlayerClientSettingsType<T>
     /** Optional translation key for this type's human-readable display name. */
     @Nullable private final String displayNameKey;
 
-    PlayerClientSettingsType(String id,
+    PlayerClientSettingsType(Identifier id,
                              StreamCodec<RegistryFriendlyByteBuf, T> codec,
                              Supplier<T> defaultFactory,
                              BroadcastScope scope,
@@ -38,7 +39,7 @@ public final class PlayerClientSettingsType<T>
         this.displayNameKey = displayNameKey;
     }
 
-    public String id()
+    public Identifier id()
     {
         return id;
     }

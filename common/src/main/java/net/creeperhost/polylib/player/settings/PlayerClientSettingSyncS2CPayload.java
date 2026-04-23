@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * S2C: server broadcasts a PlayerClientSetting value update to clients per the type's {@link BroadcastScope}.
  */
-public record PlayerClientSettingSyncS2CPayload(UUID playerUUID, String typeId, byte[] data)
+public record PlayerClientSettingSyncS2CPayload(UUID playerUUID, Identifier typeId, byte[] data)
         implements CustomPacketPayload
 {
     public static final Type<PlayerClientSettingSyncS2CPayload> TYPE = new Type<>(
@@ -23,7 +23,7 @@ public record PlayerClientSettingSyncS2CPayload(UUID playerUUID, String typeId, 
             {
                 buf.writeLong(payload.playerUUID().getMostSignificantBits());
                 buf.writeLong(payload.playerUUID().getLeastSignificantBits());
-                byte[] idBytes = payload.typeId().getBytes(StandardCharsets.UTF_8);
+                byte[] idBytes = payload.typeId().toString().getBytes(StandardCharsets.UTF_8);
                 buf.writeInt(idBytes.length);
                 buf.writeBytes(idBytes);
                 buf.writeInt(payload.data().length);
@@ -37,7 +37,7 @@ public record PlayerClientSettingSyncS2CPayload(UUID playerUUID, String typeId, 
                 int idLen = buf.readInt();
                 byte[] idBytes = new byte[idLen];
                 buf.readBytes(idBytes);
-                String typeId = new String(idBytes, StandardCharsets.UTF_8);
+                Identifier typeId = Identifier.parse(new String(idBytes, StandardCharsets.UTF_8));
                 int dataLen = buf.readInt();
                 byte[] data = new byte[dataLen];
                 buf.readBytes(data);

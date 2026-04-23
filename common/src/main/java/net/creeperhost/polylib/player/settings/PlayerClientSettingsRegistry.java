@@ -1,9 +1,11 @@
 package net.creeperhost.polylib.player.settings;
 
+// TODO: depends on feat/lang-datagen PR being merged — PolyLangContributions lives there
 import net.creeperhost.polylib.data.lang.PolyLangContributions;
 import net.creeperhost.polylib.platform.Services;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -19,7 +21,7 @@ import java.util.function.Supplier;
  */
 public final class PlayerClientSettingsRegistry
 {
-    private static final Map<String, PlayerClientSettingsType<?>> BY_ID = new LinkedHashMap<>();
+    private static final Map<Identifier, PlayerClientSettingsType<?>> BY_ID = new LinkedHashMap<>();
 
     private PlayerClientSettingsRegistry() {}
 
@@ -33,7 +35,7 @@ public final class PlayerClientSettingsRegistry
      * @param copyOnDeath    Whether the value is preserved through player death/respawn
      * @return Typed token — store as a {@code public static final} constant
      */
-    public static <T> PlayerClientSettingsType<T> register(String id,
+    public static <T> PlayerClientSettingsType<T> register(Identifier id,
                                                            StreamCodec<RegistryFriendlyByteBuf, T> codec,
                                                            Supplier<T> defaultFactory,
                                                            BroadcastScope scope,
@@ -55,7 +57,7 @@ public final class PlayerClientSettingsRegistry
      * @param displayNameEnglish Default English text for the display name, or null
      * @return Typed token — store as a {@code public static final} constant
      */
-    public static <T> PlayerClientSettingsType<T> register(String id,
+    public static <T> PlayerClientSettingsType<T> register(Identifier id,
                                                            StreamCodec<RegistryFriendlyByteBuf, T> codec,
                                                            Supplier<T> defaultFactory,
                                                            BroadcastScope scope,
@@ -84,7 +86,7 @@ public final class PlayerClientSettingsRegistry
     }
 
     /** Lookup by namespaced ID — used by packet handlers. */
-    public static Optional<PlayerClientSettingsType<?>> byId(String id)
+    public static Optional<PlayerClientSettingsType<?>> byId(Identifier id)
     {
         return Optional.ofNullable(BY_ID.get(id));
     }

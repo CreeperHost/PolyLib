@@ -3,6 +3,7 @@ package net.creeperhost.polylib.player.settings;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,14 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class PlayerClientSettingsClientCache
 {
     // Outer key: player UUID. Inner key: type ID. Value: raw serialized bytes.
-    private static final Map<UUID, Map<String, byte[]>> RAW = new ConcurrentHashMap<>();
+    private static final Map<UUID, Map<Identifier, byte[]>> RAW = new ConcurrentHashMap<>();
 
     private PlayerClientSettingsClientCache() {}
 
     /**
      * Store raw bytes for a player+type. Called from S2C packet handler.
      */
-    public static void receive(UUID playerUUID, String typeId, byte[] data)
+    public static void receive(UUID playerUUID, Identifier typeId, byte[] data)
     {
         RAW.computeIfAbsent(playerUUID, k -> new ConcurrentHashMap<>()).put(typeId, data);
     }
@@ -33,7 +34,7 @@ public final class PlayerClientSettingsClientCache
      */
     public static <T> T getFor(UUID playerUUID, PlayerClientSettingsType<T> type)
     {
-        Map<String, byte[]> playerMap = RAW.get(playerUUID);
+        Map<Identifier, byte[]> playerMap = RAW.get(playerUUID);
         if (playerMap == null) return type.defaultFactory().get();
         byte[] data = playerMap.get(type.id());
         if (data == null) return type.defaultFactory().get();
