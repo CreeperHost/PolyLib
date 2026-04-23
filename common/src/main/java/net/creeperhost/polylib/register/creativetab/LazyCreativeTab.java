@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@Deprecated
 public class LazyCreativeTab {
 
     private final Identifier registryName;

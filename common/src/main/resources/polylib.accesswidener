@@ -27,3 +27,5 @@ accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
 accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
 mutable field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
 accessible class net/minecraft/client/resources/model/sprite/AtlasManager$AtlasEntry
+accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
+accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
