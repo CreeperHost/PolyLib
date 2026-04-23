@@ -201,21 +201,21 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         return modularGui.charTyped(characterEvent) || super.charTyped(characterEvent);
     }
 
-    //=== AbstractContainerMenu Overrides ===//
+    //=== AbstractContainerMenu Overrides ===/
 
     //TODO
 //    @Override
 //    protected void renderBg(GuiGraphics guiGraphics, float f, int i, int j) {
 //    }
 //
-//    @Override
-//    public void renderSlot(GuiGraphics guiGraphics, Slot slot, int i, int j) {
-//        if (modularGui.vanillaSlotRendering()) {
-//            super.renderSlot(guiGraphics, slot, i, j);
-//        } else {
-//            renderingSlots = true;
-//        }
-//    }
+    @Override
+    public void extractSlot(GuiGraphicsExtractor guiGraphics, Slot slot, int i, int j) {
+        if (modularGui.vanillaSlotRendering()) {
+            super.extractSlot(guiGraphics, slot, i, j);
+        } else {
+            renderingSlots = true;
+        }
+    }
 
     //Modular gui friendly version of the slot render
     @Override

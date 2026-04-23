@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.testmod;
+package net.creeperhost.testmod;
 
 import net.creeperhost.polylib.platform.Services;
 

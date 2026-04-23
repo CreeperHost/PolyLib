@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "testmod",
+  "version": "${version}",
+  "name": "TestMod",
+  "description": "",
+  "authors": [
+    "CreeperHost"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/examplemod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.creeperhost.testmod.TestModFabric"
+    ],
+    "fabric-datagen": [
+      "net.creeperhost.testmod.TestModDataGen"
+    ]
+  },
+  "depends": {
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
