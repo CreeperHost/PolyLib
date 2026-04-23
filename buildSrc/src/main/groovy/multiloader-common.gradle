@@ -29,6 +29,10 @@ repositories {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
+    maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/releases'
+    }
 }
 
 sourcesJar {
@@ -53,6 +57,10 @@ jar {
                 'Built-On-Minecraft'    : minecraft_version
         ])
     }
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 processResources {
