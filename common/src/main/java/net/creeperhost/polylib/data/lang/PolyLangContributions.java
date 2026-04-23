@@ -19,7 +19,7 @@ import java.util.function.BiConsumer;
  *
  * <p>Consumed by {@code PolyLibLangProvider} in PolyLib's NeoForge module during datagen.
  * Mod lang providers should extend {@code PolyLibLangProvider} instead of
- * {@link net.neoforged.neoforge.common.data.LanguageProvider} directly to receive
+ * {@code LanguageProvider} directly to receive
  * all contributions automatically.
  *
  * <p>Thread-safe. First registration wins — later contributions for an existing key are ignored,
