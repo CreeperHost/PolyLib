@@ -32,6 +32,14 @@ neoForge {
             this.file("runs/server").createParentDirectories()
             gameDirectory = this.mkdir(this.file("runs/server"))
         }
+        data {
+            clientData()
+            gameDirectory = this.mkdir(this.file("runs/data"))
+            // Run via: ./gradlew :testmod-neoforge:runData
+            programArguments.addAll '--mod', 'testmod', '--all',
+                '--output', file('src/generated/resources/').absolutePath,
+                '--existing', file('src/main/resources/').absolutePath
+        }
     }
     mods {
         "polylib" {
