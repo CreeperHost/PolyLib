@@ -11,16 +11,16 @@ import net.creeperhost.testmod.init.TestBlocks;
 import net.creeperhost.testmod.init.TestCreativeTabs;
 import net.creeperhost.testmod.init.TestItems;
 import net.creeperhost.testmod.init.TestPlayerData;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 
 public class TestModCommon
 {
     /** Demo: client-side "reduce screen shake" preference synced to nearby players. */
     public static final PlayerClientSettingsType<Boolean> REDUCE_SCREENSHAKE =
         PlayerClientSettingsRegistry.register(
-            "testmod:reduce_screenshake",
+            Identifier.fromNamespaceAndPath("testmod", "reduce_screenshake"),
             StreamCodec.<RegistryFriendlyByteBuf, Boolean>of(
                 (buf, v) -> buf.writeBoolean(v),
                 buf -> buf.readBoolean()
@@ -35,7 +35,7 @@ public class TestModCommon
     /** Demo: server-authoritative ticks-played counter, synced to owner client. */
     public static final PlayerServerDataType<Integer> TICKS_PLAYED =
         PlayerServerDataRegistry.register(
-            "testmod:ticks_played",
+            Identifier.fromNamespaceAndPath("testmod", "ticks_played"),
             Codec.INT,
             StreamCodec.<RegistryFriendlyByteBuf, Integer>of(
                 (buf, v) -> buf.writeVarInt(v),
