@@ -18,8 +18,10 @@ import net.creeperhost.polylib.event.events.server.PolyServerTickEvents;
 import net.creeperhost.polylib.event.events.server.PolySoundEvents;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsManager;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -1674,12 +1676,10 @@ public class NeoForgeEvents
     {
         if (!(event.getEntity() instanceof ServerPlayer sp)) return;
         // getTeleportTransition().newLevel() gives the target ServerLevel; extract its dimension key.
-        net.minecraft.server.level.ServerLevel targetLevel = event.getTeleportTransition().newLevel();
-        net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> originalDim =
-                targetLevel.dimension();
+        ServerLevel targetLevel = event.getTeleportTransition().newLevel();
+        ResourceKey<Level> originalDim = targetLevel.dimension();
         @SuppressWarnings("unchecked")
-        net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>[] dimension =
-                new net.minecraft.resources.ResourceKey[] { originalDim };
+        ResourceKey<net.minecraft.world.level.Level>[] dimension = new ResourceKey[] { originalDim };
         BlockPos[] pos = { null }; // Position override requires rebuilding TeleportTransition — not supported here.
         PolyPlayerEvents.RESPAWN_POSITION.invoker().onRespawnPosition(sp, pos, dimension);
         if (dimension[0] != originalDim)
