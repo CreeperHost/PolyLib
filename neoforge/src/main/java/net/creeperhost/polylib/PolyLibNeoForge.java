@@ -20,6 +20,7 @@ public class PolyLibNeoForge
         PolylibCommon.init();
 
         eventBus.addListener(NeoForgeNetworkHelper::onRegisterPayloads);
+        NeoForgeModBusEvents.register(eventBus);
 
         if (FMLLoader.getCurrent().getDist().isClient()) {
             PolyLibClientNeoForge.init(eventBus);

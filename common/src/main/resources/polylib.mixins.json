@@ -4,9 +4,7 @@
   "package": "net.creeperhost.polylib.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
-  "client": [
-    "MixinMinecraft"
-  ],
+  "client": [],
   "server": [],
   "injectors": {
     "defaultRequire": 1

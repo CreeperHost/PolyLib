@@ -2,6 +2,8 @@ package net.creeperhost.testmod;
 
 import com.mojang.serialization.Codec;
 import net.creeperhost.polylib.platform.Services;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataRegistry;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataType;
 import net.creeperhost.polylib.player.settings.BroadcastScope;
@@ -15,6 +17,7 @@ import net.minecraft.resources.Identifier;
 public class TestModCommon
 {
     public static final String MOD_ID = "testmod";
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     //TODO move these out of the main class
     /** Demo: client-side "reduce screen shake" preference synced to nearby players. */
@@ -53,6 +56,7 @@ public class TestModCommon
         TestCreativeTabs.init();
         TestContainers.init();
         TestEvents.init();
+        TestCommands.init();
 
         if (Services.PLATFORM.isClient()) {
             TestModClientCommon.init();
