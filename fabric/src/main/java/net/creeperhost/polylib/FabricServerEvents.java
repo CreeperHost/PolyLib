@@ -2,6 +2,7 @@ package net.creeperhost.polylib;
 
 // TODO: depends on feat/accessibility PR being merged — AccessibilityPrefsManager lives there
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsManager;
+import net.creeperhost.polylib.event.events.server.PolyPlayerEvents;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsManager;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -25,14 +26,17 @@ public final class FabricServerEvents
             ServerPlayer player = handler.getPlayer();
             PlayerClientSettingsManager.onPlayerLogin(player);
             PlayerServerDataManager.onPlayerLogin(player);
+            PolyPlayerEvents.LOGIN.invoker().onLogin(player);
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
         {
-            UUID uuid = handler.getPlayer().getUUID();
+            ServerPlayer player = handler.getPlayer();
+            UUID uuid = player.getUUID();
             AccessibilityPrefsManager.clearPlayer(uuid);
             PlayerClientSettingsManager.onPlayerLogout(uuid);
             PlayerServerDataManager.onPlayerLogout(uuid);
+            PolyPlayerEvents.LOGOUT.invoker().onLogout(player);
         });
     }
 }

@@ -15,6 +15,8 @@ import net.minecraft.resources.Identifier;
 public class TestModCommon
 {
     public static final String MOD_ID = "testmod";
+
+    //TODO move these out of the main class
     /** Demo: client-side "reduce screen shake" preference synced to nearby players. */
     public static final PlayerClientSettingsType<Boolean> REDUCE_SCREENSHAKE =
         PlayerClientSettingsRegistry.register(
@@ -50,6 +52,7 @@ public class TestModCommon
         TestBlocks.init();
         TestCreativeTabs.init();
         TestContainers.init();
+        TestEvents.init();
 
         if (Services.PLATFORM.isClient()) {
             TestModClientCommon.init();

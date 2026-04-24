@@ -1,6 +1,7 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsManager;
+import net.creeperhost.polylib.event.events.server.PolyPlayerEvents;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsManager;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,16 +24,21 @@ public class NeoForgeEvents
         {
             PlayerClientSettingsManager.onPlayerLogin(sp);
             PlayerServerDataManager.onPlayerLogin(sp);
+            PolyPlayerEvents.LOGIN.invoker().onLogin(sp);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        UUID uuid = event.getEntity().getUUID();
-        AccessibilityPrefsManager.clearPlayer(uuid);
-        PlayerClientSettingsManager.onPlayerLogout(uuid);
-        PlayerServerDataManager.onPlayerLogout(uuid);
+        if (event.getEntity() instanceof ServerPlayer sp)
+        {
+            UUID uuid = sp.getUUID();
+            AccessibilityPrefsManager.clearPlayer(uuid);
+            PlayerClientSettingsManager.onPlayerLogout(uuid);
+            PlayerServerDataManager.onPlayerLogout(uuid);
+            PolyPlayerEvents.LOGOUT.invoker().onLogout(sp);
+        }
     }
 
     @SubscribeEvent
@@ -40,9 +46,9 @@ public class NeoForgeEvents
     {
         if (event.getEntity() instanceof ServerPlayer sp)
         {
-            // UUID is stable across respawn in NeoForge — pass same UUID as both old and new
             PlayerClientSettingsManager.onPlayerRespawn(sp.getUUID(), sp);
             PlayerServerDataManager.onPlayerRespawn(sp.getUUID(), sp);
+            PolyPlayerEvents.RESPAWN.invoker().onRespawn(sp, event.isEndConquered());
         }
     }
 
@@ -53,6 +59,7 @@ public class NeoForgeEvents
                 && event.getEntity() instanceof ServerPlayer tracker)
         {
             PlayerClientSettingsManager.syncTrackingRange(tracked, tracker);
+            PolyPlayerEvents.START_TRACKING.invoker().onStartTracking(tracked, tracker);
         }
     }
 }
