@@ -42,7 +42,6 @@
     "FabricItemUseFinishMixin",
     "FabricItemUseStartMixin",
     "FabricItemUseTickMixin",
-    "FabricLevelSaveMixin",
     "FabricLivingEntityFallMixin",
     "FabricLivingEntityXpMixin",
     "FabricLivingHealMixin",
