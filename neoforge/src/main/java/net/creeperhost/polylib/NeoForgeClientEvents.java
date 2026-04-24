@@ -217,14 +217,11 @@ public class NeoForgeClientEvents
         PolyRenderEvents.GUI_OVERLAY_POST.invoker().onGuiOverlayPost(event.getName(), event.getGuiGraphics(), pt);
     }
 
-    @SubscribeEvent
-    public static void onCustomizeGuiOverlay(net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent event)
-    {
-        // TODO: CUSTOMIZE_HUD_OVERLAY expects (GuiGraphicsExtractor, float, String type, CancelContext)
-        // but CustomizeGuiOverlayEvent only exposes Window — no String overlay-type identifier available.
-        // Re-enable when a mapping from NeoForge overlay types to String identifiers is defined.
-        // PolyGuiEvents.CUSTOMIZE_HUD_OVERLAY.invoker().onCustomizeHudOverlay(...);
-    }
+    // TODO: CUSTOMIZE_HUD_OVERLAY — CustomizeGuiOverlayEvent is abstract; subclasses must be used.
+    // The common interface expects a String overlay-type identifier, but NeoForge only exposes Window here.
+    // Re-enable (against a specific subclass) when a mapping is defined.
+    // @SubscribeEvent
+    // public static void onCustomizeGuiOverlay(CustomizeGuiOverlayEvent event) { ... }
 
     @SubscribeEvent
     public static void onScreenshot(net.neoforged.neoforge.client.event.ScreenshotEvent event)
