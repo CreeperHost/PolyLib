@@ -80,11 +80,20 @@ public final class PlayerServerDataManager
     /**
      * Returns the current value for a player. Server-side only.
      * Returns the type's default if the player has no active store.
+     *
+     * <p><b>Lazy-load:</b> if the store exists but has never seen this type (i.e. the type was
+     * registered after {@code PlayerLoggedInEvent} fired due to Java's lazy class initialisation),
+     * we attempt a single NBT read from the player's persistent data before returning the default.
+     * This makes registration order irrelevant in production and removes the need for mods to call
+     * a no-op {@code init()} method to force-load their registry class.
      */
     public static <T> T get(ServerPlayer player, PlayerServerDataType<T> type)
     {
         PlayerServerDataStore store = STORES.get(player.getUUID());
         if (store == null) return type.defaultFactory().get();
+        // Lazy load: type registered after login (late class init) — pull from NBT now.
+        if (!store.has(type))
+            Services.PLAYER_DATA.loadServerDataForType(player.getUUID(), player, store, type);
         return store.get(type);
     }
 

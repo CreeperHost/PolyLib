@@ -44,4 +44,16 @@ public interface IPlayerDataHelper
      * Must call {@link PlayerServerDataStore#clearDirty()} after a successful save.
      */
     void saveServerData(UUID playerUUID, ServerPlayer player, PlayerServerDataStore store);
+
+    /**
+     * Load the persisted value for a single {@link PlayerServerDataType} into the store.
+     * Called lazily by {@link net.creeperhost.polylib.player.serverdata.PlayerServerDataManager#get}
+     * when a type is accessed that was not present in {@code registeredServerTypes} at login time
+     * (e.g. because the mod class was not yet initialized when {@code PlayerLoggedInEvent} fired).
+     *
+     * <p>If no persisted value exists the store is left unmodified; subsequent {@code store.get()}
+     * will return the type's default via {@code computeIfAbsent}.
+     */
+    <T> void loadServerDataForType(UUID playerUUID, ServerPlayer player,
+                                    PlayerServerDataStore store, PlayerServerDataType<T> type);
 }

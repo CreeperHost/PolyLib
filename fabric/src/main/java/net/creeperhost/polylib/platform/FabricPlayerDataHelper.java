@@ -178,5 +178,16 @@ public class FabricPlayerDataHelper implements IPlayerDataHelper
         if (attachment != null)
             player.setAttached(attachment, store.get(type));
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> void loadServerDataForType(UUID playerUUID, ServerPlayer player,
+                                           PlayerServerDataStore store, PlayerServerDataType<T> type)
+    {
+        AttachmentType<T> attachment = (AttachmentType<T>) serverDataAttachments.get(type.id());
+        if (attachment == null) return;  // type registered after Fabric AttachmentRegistry locked — can't lazy-load
+        T value = player.getAttached(attachment);
+        if (value != null) store.load(type, value);
+    }
 }
 
