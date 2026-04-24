@@ -11,11 +11,11 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-@Mod("testmod")
+@Mod(TestModCommon.MOD_ID)
 public class TestModNeoForge
 {
     public TestModNeoForge(ModContainer container, IEventBus bus) {
-        System.out.println("[TESTMOD-DEBUG] constructor called, dist=" + FMLLoader.getCurrent().getDist());
+        TestModCommon.LOGGER.info("[TESTMOD-DEBUG] constructor called, dist={}", FMLLoader.getCurrent().getDist());
         TestModCommon.init();
 
         if (FMLLoader.getCurrent().getDist().isClient()) {
@@ -35,7 +35,7 @@ public class TestModNeoForge
     }
 
     private static void onGatherData(GatherDataEvent.Client event) {
-        System.out.println("[TESTMOD-DEBUG] onGatherData fired, contributions=" + net.creeperhost.polylib.data.lang.PolyLangContributions.getAll().size());
+        TestModCommon.LOGGER.info("[TESTMOD-DEBUG] onGatherData fired, contributions={}", net.creeperhost.polylib.data.lang.PolyLangContributions.getAll().size());
         event.addProvider(new TestModNeoLangProvider(event.getGenerator().getPackOutput()));
     }
 }

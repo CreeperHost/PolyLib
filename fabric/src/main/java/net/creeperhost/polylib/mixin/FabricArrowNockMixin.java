@@ -1,6 +1,6 @@
 package net.creeperhost.polylib.mixin;
 
-import net.creeperhost.polylib.event.CancelContext;
+import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.events.server.PolyLivingEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

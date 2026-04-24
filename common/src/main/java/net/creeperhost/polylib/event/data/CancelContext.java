@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.event;
+package net.creeperhost.polylib.event.data;
 
 /**
  * Passed to cancellable PolyEvent handlers. Handlers call {@link #cancel()} to stop further propagation.

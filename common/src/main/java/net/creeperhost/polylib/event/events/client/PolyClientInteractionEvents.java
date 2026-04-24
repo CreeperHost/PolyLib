@@ -1,6 +1,6 @@
 package net.creeperhost.polylib.event.events.client;
 
-import net.creeperhost.polylib.event.CancelContext;
+import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

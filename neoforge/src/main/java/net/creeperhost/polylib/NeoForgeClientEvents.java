@@ -2,7 +2,7 @@ package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.client.config.ConfigPanelRegistry;
 import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
-import net.creeperhost.polylib.event.CancelContext;
+import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.events.client.PolyCameraEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientLevelEvents;

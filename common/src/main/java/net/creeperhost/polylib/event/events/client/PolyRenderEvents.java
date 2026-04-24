@@ -1,7 +1,7 @@
 package net.creeperhost.polylib.event.events.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.creeperhost.polylib.event.CancelContext;
+import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;

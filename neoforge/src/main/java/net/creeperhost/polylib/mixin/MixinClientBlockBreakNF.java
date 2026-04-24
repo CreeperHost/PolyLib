@@ -1,6 +1,6 @@
 package net.creeperhost.polylib.mixin;
 
-import net.creeperhost.polylib.event.CancelContext;
+import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

@@ -1,7 +1,7 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsManager;
-import net.creeperhost.polylib.event.CancelContext;
+import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.events.server.PolyBlockEvents;
 import net.creeperhost.polylib.event.events.server.PolyEntityEvents;
 import net.creeperhost.polylib.event.events.server.PolyChunkEvents;
