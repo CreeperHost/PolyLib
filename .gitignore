@@ -23,3 +23,5 @@ eclipse
 run
 runs
 docs/*
+
+.vscode/
