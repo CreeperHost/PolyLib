@@ -6,11 +6,6 @@ import net.creeperhost.polylib.data.serializable.StringData;
 import net.creeperhost.polylib.data.serializable.UUIDData;
 import net.creeperhost.polylib.inventory.items.BlockInventory;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
-import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
-import net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage;
-import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
-import net.creeperhost.polylib.inventory.power.PolyEnergyStorage;
-import net.creeperhost.testmod.TestModCommon;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 
-public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInventoryBlock, PolyEnergyBlock, MenuProvider
+public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInventoryBlock, MenuProvider
 {
     /**
      * A user-editable label stored in NBT and synced to clients.
@@ -50,8 +45,6 @@ public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInv
 
     public final BlockInventory simpleItemInventory = new BlockInventory(this, 1);
     public final BlockInventory outputInv = new BlockInventory(this, 1);
-    public final PolyEnergyStorage energyContainer = new PolyBlockEnergyStorage(this, 1000000);
-
     int progress = 0;
     public IntData testSyncedIntField = register("test_int", new IntData(0), SAVE, SYNC, CLIENT_CONTROL);
 
@@ -117,6 +110,7 @@ public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInv
         simpleItemInventory.deserialize(input);
         outputInv.deserialize(input.childOrEmpty("out_inv"));
     }
+<<<<<<< HEAD
 
     @Override
     public IPolyEnergyStorage getEnergyStorage(@org.jetbrains.annotations.Nullable Direction side) {
@@ -130,4 +124,6 @@ public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInv
         cow.setPos(Vec3.atBottomCenterOf(getBlockPos().above()));
         level.addFreshEntity(cow);
     }
+=======
+>>>>>>> 7912513 (Item Inventories)
 }

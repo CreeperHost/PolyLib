@@ -1,0 +1,16 @@
+package net.creeperhost.polylib.mixin.server.chunkmap;
+
+import net.creeperhost.polylib.chunkmap.server.tracker.PolyChunkTracker;
+
+/**
+ * Internal interface applied to {@link net.minecraft.world.level.TicketStorage}
+ * (and potentially other tracker-holding classes) by PolyLib mixins.
+ *
+ * <p>Allows {@link PolyDistanceManagerMixin} to inject the tracker reference after
+ * {@code DistanceManager} construction without casting to a concrete mixin class.
+ */
+public interface PolyChunkTrackerReference
+{
+    void polylib$setTracker(PolyChunkTracker tracker);
+    PolyChunkTracker polylib$getTracker();
+}

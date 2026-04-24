@@ -105,15 +105,15 @@ public class ScreenInventoryTest extends ContainerGuiProvider<ContainerInventory
                 .constrain(WIDTH, literal(22))
                 .constrain(HEIGHT, literal(16));
 
-        var energyBar = GuiEnergyBar.simpleBar(background);
-        energyBar.container
-                .constrain(LEFT, midPoint(background.get(LEFT), inputSlots.get(LEFT), -6))
-                .constrain(BOTTOM, relative(invLabel.get(TOP), -6))
-                .constrain(WIDTH, literal(18))
-                .constrain(TOP, relative(title.get(BOTTOM), 8));
-        energyBar.primary
-                .setCapacity(() -> (long) menu.maxEnergy.get())
-                .setEnergy(() -> (long) menu.energy.get());
+//        var energyBar = GuiEnergyBar.simpleBar(background);
+//        energyBar.container
+//                .constrain(LEFT, midPoint(background.get(LEFT), inputSlots.get(LEFT), -6))
+//                .constrain(BOTTOM, relative(invLabel.get(TOP), -6))
+//                .constrain(WIDTH, literal(18))
+//                .constrain(TOP, relative(title.get(BOTTOM), 8));
+//        energyBar.primary
+//                .setCapacity(() -> (long) menu.maxEnergy.get())
+//                .setEnergy(() -> (long) menu.energy.get());
 
 
         BlockEntityInventoryTest blockEntity = menu.blockEntity;

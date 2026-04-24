@@ -3,10 +3,6 @@ package net.creeperhost.polylib.neoforge;
 import com.google.common.collect.Iterables;
 import net.creeperhost.polylib.Constants;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
-import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
-import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
-import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyItemWrapper;
-import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -39,9 +35,7 @@ public class NeoForgeInventoryManager
     {
         Constants.LOG.info("=====Registering Capabilities=====");
         for (Item item : BuiltInRegistries.ITEM) {
-            if (item instanceof PolyEnergyItem polyEnergyItem) {
-                event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new PolyNeoEnergyItemWrapper(polyEnergyItem.getEnergyStorage(stack), itemAccess), item);
-            }
+            //TODO this will be use for PolyEnergyItem
         }
 
         for (BlockEntityType<?> blockEntityType : BuiltInRegistries.BLOCK_ENTITY_TYPE)
@@ -64,9 +58,10 @@ public class NeoForgeInventoryManager
                 if (blockEntity instanceof PolyInventoryBlock) {
                     event.registerBlockEntity(Capabilities.Item.BLOCK, blockEntityType, (entity, side) -> getInvWrapper(((PolyInventoryBlock) entity).getContainer(side), side));
                 }
-                if (blockEntity instanceof PolyEnergyBlock) {
-                    event.registerBlockEntity(Capabilities.Energy.BLOCK, blockEntityType, (entity, side) -> ((PolyEnergyBlock) entity).getEnergyStorage(side) == null ? null : new PolyNeoEnergyWrapper(((PolyEnergyBlock) entity).getEnergyStorage(side)));
-                }
+                //TODO
+//                if (blockEntity instanceof PolyEnergyBlock) {
+//                    event.registerBlockEntity(Capabilities.Energy.BLOCK, blockEntityType, (entity, side) -> ((PolyEnergyBlock) entity).getEnergyStorage(side) == null ? null : new PolyNeoEnergyWrapper(((PolyEnergyBlock) entity).getEnergyStorage(side)));
+//                }
 //                if (blockEntity instanceof PolyFluidBlock) {
 //                    event.registerBlockEntity(Capabilities.Fluid.BLOCK, blockEntityType, (entity, side) -> ((PolyFluidBlock) entity).getFluidHandler(side) == null ? null : new PolyNeoFluidWrapper(((PolyFluidBlock) entity).getFluidHandler(side)));
 //                }
