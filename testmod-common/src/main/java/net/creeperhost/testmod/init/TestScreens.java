@@ -1,6 +1,6 @@
 package net.creeperhost.testmod.init;
 
-import net.creeperhost.polylib.register.PolyScreens;
+import net.creeperhost.polylib.registry.PolyScreens;
 import net.creeperhost.testmod.blocks.inventorytestblock.ScreenInventoryTest;
 
 public class TestScreens

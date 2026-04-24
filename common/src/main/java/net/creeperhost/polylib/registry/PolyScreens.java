@@ -1,4 +1,4 @@
-package net.creeperhost.polylib.register;
+package net.creeperhost.polylib.registry;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

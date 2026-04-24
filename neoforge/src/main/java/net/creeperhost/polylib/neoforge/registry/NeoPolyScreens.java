@@ -1,6 +1,6 @@
 package net.creeperhost.polylib.neoforge.registry;
 
-import net.creeperhost.polylib.register.PolyScreens;
+import net.creeperhost.polylib.registry.PolyScreens;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
