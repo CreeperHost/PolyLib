@@ -3,6 +3,10 @@ package net.creeperhost.polylib.mixin;
 import net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
+import net.minecraft.client.multiplayer.LevelLoadTracker;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.TransferState;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.Connection;
 import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.protocol.login.ClientboundCustomQueryPacket;
@@ -12,6 +16,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.time.Duration;
+import java.util.function.Consumer;
 
 /**
  * NeoForge bridge for:
@@ -28,10 +35,10 @@ public abstract class MixinClientLoginNF
     @Shadow @Final private Minecraft minecraft;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void polylib$onLoginInit(Connection connection, Minecraft client, Object serverData,
-                                     Object screen, boolean transfer, Object duration,
-                                     Object statusListener, Object levelTracker,
-                                     Object transferState, CallbackInfo ci)
+    private void polylib$onLoginInit(Connection connection, Minecraft client, ServerData serverData,
+                                     Screen screen, boolean transfer, Duration duration,
+                                     Consumer<?> statusListener, LevelLoadTracker levelTracker,
+                                     TransferState transferState, CallbackInfo ci)
     {
         PolyClientConnectionEvents.CLIENT_LOGIN_INIT.invoker()
                 .onLoginInit((ClientHandshakePacketListenerImpl) (Object) this, client);
