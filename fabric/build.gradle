@@ -11,6 +11,9 @@ dependencies {
     shadow("blue.endless:jankson:1.2.1") { transitive = false }
     // Mod Menu — soft optional dependency; only needed at compile time for ModMenuCompat
     compileOnly "com.terraformersmc:modmenu:${modmenu_version}"
+    compileOnly api('teamreborn:energy:5.0.0') {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 }
 
 loom {

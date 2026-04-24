@@ -1,6 +1,8 @@
 package net.creeperhost.polylib;
 
+import net.creeperhost.polylib.fabric.inventory.energy.NullEnergyManager;
 import net.creeperhost.polylib.init.DataComps;
+import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;

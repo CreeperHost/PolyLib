@@ -2,6 +2,8 @@ package net.creeperhost.testmod.init;
 
 import net.creeperhost.polylib.registry.PolyRegistry;
 import net.creeperhost.testmod.TestModCommon;
+import net.creeperhost.testmod.blocks.creativepower.CreativePowerBlock;
+import net.creeperhost.testmod.blocks.creativepower.CreativePowerBlockEntity;
 import net.creeperhost.testmod.blocks.inventorytestblock.BlockEntityInventoryTest;
 import net.creeperhost.testmod.blocks.inventorytestblock.BlockInventoryTest;
 import net.minecraft.core.registries.Registries;
@@ -19,6 +21,12 @@ public class TestBlocks {
     public static final Supplier<Block> TEST_BLOCK = BLOCKS.registerBlock("test_block", "Test Block", BlockInventoryTest::new);
     public static final Supplier<BlockEntityType<BlockEntityInventoryTest>> TEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("test_block_entity",
             () -> new BlockEntityType<>(BlockEntityInventoryTest::new, Set.of(TEST_BLOCK.get())));
+
+
+    public static final Supplier<Block> CREATIVE_POWER_BLOCK = BLOCKS.registerBlock("creative_power", "Creative Power Block", CreativePowerBlock::new);
+
+    public static final Supplier<BlockEntityType<CreativePowerBlockEntity>> CREATIVE_ENERGY_BLOCK_TILE = BLOCK_ENTITIES.register("creative_power_tile",
+            () -> new BlockEntityType<>(CreativePowerBlockEntity::new, Set.of(CREATIVE_POWER_BLOCK.get())));
 
     public static void init() {
         BLOCKS.init();

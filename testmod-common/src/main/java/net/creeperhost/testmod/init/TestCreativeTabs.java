@@ -21,6 +21,7 @@ public class TestCreativeTabs {
                 output.accept(TestItems.TEST_ITEM.get());
                 output.accept(TestItems.TEST_ITEM_2.get());
                 output.accept(TestItems.TEST_BLOCK.get());
+                output.accept(TestItems.CREATIVE_POWER_BLOCK_ITEM.get());
             }
     );
 

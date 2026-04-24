@@ -30,8 +30,8 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
     public final SlotGroup machineOutputs = createSlotGroup(3, 1, 0, 2);
 
     public final DataSync<Byte> progressSync;
-//    public final DataSync<Integer> energy;
-//    public final DataSync<Integer> maxEnergy;
+    public final DataSync<Integer> energy;
+    public final DataSync<Integer> maxEnergy;
 
     public ContainerInventoryTest(int id, Inventory playerInv, FriendlyByteBuf extraData)
     {
@@ -44,8 +44,8 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
         this.blockEntity = inventoryTestBlock;
 
         progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
-//        energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getEnergyStored());
-//        maxEnergy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getMaxEnergyStored());
+        energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getEnergyStored());
+        maxEnergy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getMaxEnergyStored());
 
         main.addPlayerMain(inventory);
         hotBar.addPlayerBar(inventory);

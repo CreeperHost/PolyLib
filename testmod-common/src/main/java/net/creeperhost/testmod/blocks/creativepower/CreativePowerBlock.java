@@ -1,4 +1,4 @@
-package net.creeperhost.testmod.blocks.inventorytestblock;
+package net.creeperhost.testmod.blocks.creativepower;
 
 import net.creeperhost.polylib.blocks.BlockFacing;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
@@ -10,39 +10,44 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-public class BlockInventoryTest extends BlockFacing
+public class CreativePowerBlock extends BlockFacing
 {
-    public BlockInventoryTest(Properties properties)
+    public CreativePowerBlock(Properties properties)
     {
         super(properties);
     }
 
+    @Nullable
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState)
     {
+        return new CreativePowerBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if(!level.isClientSide() && player.isShiftKeyDown())
         {
-            boolean isEnergyBlock = EnergyManager.isEnergyBlock(level.getBlockEntity(pos), hitResult.getDirection());
-            var power = EnergyManager.getHandler(level.getBlockEntity(pos), hitResult.getDirection());
+            boolean isEnergyBlock = EnergyManager.isEnergyBlock(level.getBlockEntity(blockPos), blockHitResult.getDirection());
+            var power = EnergyManager.getHandler(level.getBlockEntity(blockPos), blockHitResult.getDirection());
             TestModCommon.LOGGER.info("isEnergyBlock " + isEnergyBlock + " Stored " + power.getEnergyStored() + " Max " + power.getMaxEnergyStored());
             return InteractionResult.SUCCESS;
         }
         if (!level.isClientSide())
         {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            Services.REGISTER_HELPER.openMenu((ServerPlayer) player, (MenuProvider) blockEntity, buf -> buf.writeBlockPos(pos));
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            Services.REGISTER_HELPER.openMenu((ServerPlayer) player, (MenuProvider) blockEntity, buf -> buf.writeBlockPos(blockPos));
             return InteractionResult.SUCCESS;
         }
-        return InteractionResult.SUCCESS;
+        return super.useWithoutItem(blockState, level, blockPos, player, blockHitResult);
     }
 
     @Nullable
@@ -51,16 +56,10 @@ public class BlockInventoryTest extends BlockFacing
     {
         return (level1, blockPos, blockState1, blockEntity) ->
         {
-            if(blockEntity instanceof BlockEntityInventoryTest inventoryTestBlock)
+            if (blockEntity instanceof CreativePowerBlockEntity creativePowerBlockEntity)
             {
-                inventoryTestBlock.tick();
+                creativePowerBlockEntity.tick();
             }
         };
-    }
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState)
-    {
-        return new BlockEntityInventoryTest(blockPos, blockState);
     }
 }

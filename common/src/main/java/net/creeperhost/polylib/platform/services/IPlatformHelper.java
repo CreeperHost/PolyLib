@@ -1,5 +1,7 @@
 package net.creeperhost.polylib.platform.services;
 
+import net.creeperhost.polylib.inventory.power.EnergyManager;
+
 import java.nio.file.Path;
 
 public interface IPlatformHelper {
@@ -39,4 +41,6 @@ public interface IPlatformHelper {
     Path getConfigFolder();
 
     boolean isClient();
+
+    EnergyManager getEnergyManager();
 }

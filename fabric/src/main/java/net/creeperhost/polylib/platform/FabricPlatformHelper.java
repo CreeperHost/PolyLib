@@ -1,5 +1,8 @@
 package net.creeperhost.polylib.platform;
 
+import net.creeperhost.polylib.FabricInventoryManager;
+import net.creeperhost.polylib.PolyLibFabric;
+import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.creeperhost.polylib.platform.services.IPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -39,5 +42,10 @@ public class FabricPlatformHelper implements IPlatformHelper
     public boolean isClient()
     {
         return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
+    }
+
+    @Override
+    public EnergyManager getEnergyManager() {
+        return FabricInventoryManager.ENERGY_MANAGER;
     }
 }
