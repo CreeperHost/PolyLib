@@ -48,6 +48,21 @@ public final class TestPlayerData
             false
     );
 
+    /**
+     * A String server data value — tests StringData-equivalent persistence in the player data system.
+     * Synced to the owning player's client and preserved on death.
+     */
+    public static final PlayerServerDataType<String> TEST_NAME = PlayerServerDataRegistry.register(
+            Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "test_name"),
+            Codec.STRING,
+            StreamCodec.of(
+                    (buf, val) -> buf.writeUtf(val),
+                    buf -> buf.readUtf()
+            ),
+            () -> "",
+            true
+    );
+
     public static void init()
     {
         // Static fields are initialised above; this method exists so TestModCommon can

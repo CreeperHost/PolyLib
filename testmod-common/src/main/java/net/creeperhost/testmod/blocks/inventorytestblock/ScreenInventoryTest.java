@@ -4,6 +4,7 @@ import net.creeperhost.polylib.Constants;
 import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
 import net.creeperhost.polylib.client.modulargui.elements.*;
+import net.creeperhost.polylib.client.modulargui.elements.TextInputDialog;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.DynamicTextures;
 import net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvider;
@@ -15,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.UUID;
 import java.util.function.Function;
 
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal;
@@ -125,27 +127,35 @@ public class ScreenInventoryTest extends ContainerGuiProvider<ContainerInventory
                 .constrain(WIDTH, literal(100))
                 .constrain(HEIGHT, literal(15));
 
-//        GuiText tileDataSyncTest = new GuiText(root, () -> Component.literal("Test Data Sync Value: " + blockEntity.testSyncedIntField.getValue()))
-//                .setScroll(false)
-//                .setAlignment(Align.MIN)
-//                .constrain(TOP, relative(clientToServerPacketTest.get(BOTTOM), 2))
-//                .constrain(LEFT, literal(10))
-//                .constrain(WIDTH, literal(100))
-//                .constrain(HEIGHT, literal(8));
-//
-//        GuiButton setValueFromClientTest = GuiButton.vanilla(root, Component.literal("Test Set Value"))
-//                .onPress(() -> {
-//                    TextInputDialog.simpleDialog(root, Component.literal("Enter Number"), String.valueOf(blockEntity.testSyncedIntField.getValue()))
-//                            .setResultCallback(s -> {
-//                                try {
-//                                    blockEntity.sendDataValueToServer(blockEntity.testSyncedIntField, Integer.parseInt(s));
-//                                } catch (Throwable ignored) {}
-//                            });
-//                })
-//                .constrain(TOP, relative(tileDataSyncTest.get(BOTTOM), 2))
-//                .constrain(LEFT, literal(10))
-//                .constrain(WIDTH, literal(100))
-//                .constrain(HEIGHT, literal(15));
+        // StringData test: editable block label, CLIENT_CONTROL sends value to server
+        GuiText labelDisplay = new GuiText(root, () -> Component.literal("Label: " + blockEntity.testLabel.get()))
+                .setScroll(false)
+                .setAlignment(Align.MIN)
+                .constrain(TOP, relative(clientToServerPacketTest.get(BOTTOM), 4))
+                .constrain(LEFT, literal(10))
+                .constrain(WIDTH, literal(200))
+                .constrain(HEIGHT, literal(8));
+
+        GuiButton editLabelButton = GuiButton.vanilla(root, Component.literal("Edit Label"))
+                .onPress(() -> TextInputDialog
+                        .simpleDialog(root, Component.literal("Set Block Label"), blockEntity.testLabel.get())
+                        .setResultCallback(s -> blockEntity.sendDataValueToServer(blockEntity.testLabel, s)))
+                .constrain(TOP, relative(labelDisplay.get(BOTTOM), 2))
+                .constrain(LEFT, literal(10))
+                .constrain(WIDTH, literal(80))
+                .constrain(HEIGHT, literal(15));
+
+        // UUIDData test: read-only display of last player UUID who opened this container
+        new GuiText(root, () -> {
+                    UUID uuid = blockEntity.lastVisitorUUID.get();
+                    return Component.literal("Visitor: " + (uuid != null ? uuid.toString().substring(0, 8) + "..." : "none"));
+                })
+                .setScroll(false)
+                .setAlignment(Align.MIN)
+                .constrain(TOP, relative(editLabelButton.get(BOTTOM), 4))
+                .constrain(LEFT, literal(10))
+                .constrain(WIDTH, literal(200))
+                .constrain(HEIGHT, literal(8));
     }
 
     public static ModularGuiContainer<ContainerInventoryTest> create(ContainerInventoryTest menu, Inventory inventory, Component component)
