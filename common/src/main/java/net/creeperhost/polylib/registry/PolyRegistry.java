@@ -4,6 +4,8 @@ import net.creeperhost.polylib.data.lang.PolyLangContributions;
 import net.creeperhost.polylib.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -148,6 +150,12 @@ public abstract class PolyRegistry<T> {
         PolyLangContributions.contribute(langKeyPrefix + "." + modId + "." + name, defaultEnglish);
         return registerWithKey(name, key ->
                 factory.apply(BlockBehaviour.Properties.of().setId((ResourceKey<Block>) (ResourceKey<?>) key)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public final <M extends AbstractContainerMenu> Supplier<MenuType<M>> registerMenu(String name, IMenuFactory<M> factory) {
+        Supplier<T> typed = () -> (T) Services.REGISTER_HELPER.createMenuType(factory);
+        return (Supplier<MenuType<M>>) register(name, typed);
     }
 
     /**

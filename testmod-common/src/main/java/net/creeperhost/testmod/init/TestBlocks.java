@@ -22,5 +22,6 @@ public class TestBlocks {
 
     public static void init() {
         BLOCKS.init();
+        BLOCK_ENTITIES.init();
     }
 }

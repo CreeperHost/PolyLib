@@ -7,10 +7,7 @@ import net.creeperhost.polylib.player.serverdata.PlayerServerDataType;
 import net.creeperhost.polylib.player.settings.BroadcastScope;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsRegistry;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsType;
-import net.creeperhost.testmod.init.TestBlocks;
-import net.creeperhost.testmod.init.TestCreativeTabs;
-import net.creeperhost.testmod.init.TestItems;
-import net.creeperhost.testmod.init.TestPlayerData;
+import net.creeperhost.testmod.init.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
@@ -52,6 +49,7 @@ public class TestModCommon
         TestItems.init();
         TestBlocks.init();
         TestCreativeTabs.init();
+        TestContainers.init();
 
         if (Services.PLATFORM.isClient()) {
             TestModClientCommon.init();

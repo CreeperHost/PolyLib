@@ -18,6 +18,9 @@
     "main": [
       "net.creeperhost.testmod.TestModFabric"
     ],
+    "client": [
+      "net.creeperhost.testmod.TestModClientFabric"
+    ],
     "fabric-datagen": [
       "net.creeperhost.testmod.TestModDataGen"
     ]
