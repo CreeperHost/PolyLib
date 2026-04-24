@@ -1,6 +1,7 @@
 package net.creeperhost.testmod;
 
 import com.mojang.serialization.Codec;
+import net.creeperhost.polylib.init.DataComps;
 import net.creeperhost.polylib.platform.Services;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,6 +51,7 @@ public class TestModCommon
 
     public static void init()
     {
+        DataComps.registerData();
         TestPlayerData.init();
         TestItems.init();
         TestBlocks.init();

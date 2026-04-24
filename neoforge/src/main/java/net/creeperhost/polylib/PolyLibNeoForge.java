@@ -28,11 +28,12 @@ public class PolyLibNeoForge
             PolyLibClientNeoForge.init(eventBus);
         }
 
-        if (DataComps.isDataEnabled()) {
+        //TODO fix this, Prob move it to the new register system
+//        if (DataComps.isDataEnabled()) {
             COMPONENTS.register("item_toggle_active", () -> DataComps.ITEM_TOGGLE_ACTIVE);
             COMPONENTS.register("item_energy", () -> DataComps.ITEM_ENERGY);
             COMPONENTS.register("item_tile_data", () -> DataComps.ITEM_TILE_DATA);
-        }
+//        }
 
         COMPONENTS.register(eventBus);
     }
