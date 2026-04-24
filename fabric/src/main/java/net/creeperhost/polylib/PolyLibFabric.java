@@ -16,6 +16,7 @@ public class PolyLibFabric implements ModInitializer
         FabricEvents.init();
         PolylibCommon.registerConfig();
         PolylibCommon.init();
+        FabricInventoryManager.init();
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             PolyLibClientFabric.init();

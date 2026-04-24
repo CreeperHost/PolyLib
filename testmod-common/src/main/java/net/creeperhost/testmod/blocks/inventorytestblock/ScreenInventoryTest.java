@@ -19,9 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal;
-import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.match;
-import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.relative;
+import static net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.*;
 import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
 
 public class ScreenInventoryTest extends ContainerGuiProvider<ContainerInventoryTest> implements DynamicTextures
@@ -83,28 +81,28 @@ public class ScreenInventoryTest extends ContainerGuiProvider<ContainerInventory
                 .constrain(RIGHT, relative(inventory.primary.get(RIGHT), 0));
 
         int inputSpacing = 8;
-//        GuiSlots inputSlots = new GuiSlots(background, screenAccess, menu.machineInputs, 1)
-//                .setXSlotSpacing(inputSpacing)
-//                .setEmptyIcon(slot -> PolyTextures.get("slots/dust"))
-//                .constrain(LEFT, match(inventory.primary.get(LEFT)))
-//                .constrain(BOTTOM, midPoint(title.get(TOP), invLabel.get(TOP)));
-//
-//        GuiSlots outSlots = new GuiSlots(background, screenAccess, menu.machineOutputs, 1)
-//                .setXSlotSpacing(inputSpacing)
-//                .setEmptyIcon(slot -> PolyTextures.get("slots/dust"))
-//                .constrain(RIGHT, match(inventory.primary.get(RIGHT)))
-//                .constrain(BOTTOM, midPoint(title.get(TOP), invLabel.get(TOP)));
+        GuiSlots inputSlots = new GuiSlots(background, screenAccess, menu.machineInputs, 1)
+                .setXSlotSpacing(inputSpacing)
+                .setEmptyIcon(slot -> PolyTextures.get("slots/dust"))
+                .constrain(LEFT, match(inventory.primary.get(LEFT)))
+                .constrain(BOTTOM, midPoint(title.get(TOP), invLabel.get(TOP)));
 
-//        GuiProgressIcon progress = new GuiProgressIcon(background)
-//                .setBackground(PolyTextures.get("widgets/progress_arrow_empty"))
-//                .setAnimated(PolyTextures.get("widgets/progress_arrow_full"))
-//                .setProgress(() -> menu.progressSync.get() / 100D)
-//                .setTooltipSingle(() -> Component.literal(menu.progressSync.get() + "%"))
-//                .setTooltipDelay(0)
-//                .constrain(TOP, midPoint(inputSlots.get(TOP), inputSlots.get(BOTTOM), -8))
-//                .constrain(LEFT, midPoint(background.get(LEFT), background.get(RIGHT), -11))
-//                .constrain(WIDTH, literal(22))
-//                .constrain(HEIGHT, literal(16));
+        GuiSlots outSlots = new GuiSlots(background, screenAccess, menu.machineOutputs, 1)
+                .setXSlotSpacing(inputSpacing)
+                .setEmptyIcon(slot -> PolyTextures.get("slots/dust"))
+                .constrain(RIGHT, match(inventory.primary.get(RIGHT)))
+                .constrain(BOTTOM, midPoint(title.get(TOP), invLabel.get(TOP)));
+
+        GuiProgressIcon progress = new GuiProgressIcon(background)
+                .setBackground(PolyTextures.get("widgets/progress_arrow_empty"))
+                .setAnimated(PolyTextures.get("widgets/progress_arrow_full"))
+                .setProgress(() -> menu.progressSync.get() / 100D)
+                .setTooltipSingle(() -> Component.literal(menu.progressSync.get() + "%"))
+                .setTooltipDelay(0)
+                .constrain(TOP, midPoint(inputSlots.get(TOP), inputSlots.get(BOTTOM), -8))
+                .constrain(LEFT, midPoint(background.get(LEFT), background.get(RIGHT), -11))
+                .constrain(WIDTH, literal(22))
+                .constrain(HEIGHT, literal(16));
 
 //        var energyBar = GuiEnergyBar.simpleBar(background);
 //        energyBar.container
@@ -116,8 +114,6 @@ public class ScreenInventoryTest extends ContainerGuiProvider<ContainerInventory
 //                .setCapacity(() -> (long) menu.maxEnergy.get())
 //                .setEnergy(() -> (long) menu.energy.get());
 
-
-        //net.creeperhost.polylib.data.DataManagedBlock Test
 
         BlockEntityInventoryTest blockEntity = menu.blockEntity;
         GuiButton clientToServerPacketTest = GuiButton.vanilla(root, Component.literal("Send Test Packet"))

@@ -29,7 +29,7 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
     public final SlotGroup machineInputs = createSlotGroup(3, 1, 0, 2);//zone id is 3, Quick move to zone 1, then 0, then 2
     public final SlotGroup machineOutputs = createSlotGroup(3, 1, 0, 2);
 
-//    public final DataSync<Byte> progressSync;
+    public final DataSync<Byte> progressSync;
 //    public final DataSync<Integer> energy;
 //    public final DataSync<Integer> maxEnergy;
 
@@ -43,7 +43,7 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
         super(TestContainers.TEST_INVENTORY_CONTAINER.get(), id, playerInv);
         this.blockEntity = inventoryTestBlock;
 
-//        progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
+        progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
 //        energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getEnergyStored());
 //        maxEnergy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getMaxEnergyStored());
 
@@ -53,8 +53,8 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
         armor.addPlayerArmor(inventory);
         offhand.addPlayerOffhand(inventory);
 
-//        machineInputs.addSlots(1, 0, index -> new PolySlot(blockEntity.simpleItemInventory, index));
-//        machineOutputs.addAllSlots(blockEntity.getOutputContainer(), (container, integer) -> new PolySlot(container, integer).output());
+        machineInputs.addSlots(1, 0, index -> new PolySlot(blockEntity.simpleItemInventory, index));
+        machineOutputs.addAllSlots(blockEntity.getOutputContainer(), (container, integer) -> new PolySlot(container, integer).output());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.init.DataComps;
+import net.creeperhost.polylib.neoforge.NeoForgeInventoryManager;
 import net.creeperhost.polylib.platform.NeoForgeNetworkHelper;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +22,7 @@ public class PolyLibNeoForge
 
         eventBus.addListener(NeoForgeNetworkHelper::onRegisterPayloads);
         NeoForgeModBusEvents.register(eventBus);
+        NeoForgeInventoryManager.init(eventBus);
 
         if (FMLLoader.getCurrent().getDist().isClient()) {
             PolyLibClientNeoForge.init(eventBus);

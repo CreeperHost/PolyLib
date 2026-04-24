@@ -10,8 +10,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 
 public class BlockInventoryTest extends BlockFacing
@@ -38,6 +41,19 @@ public class BlockInventoryTest extends BlockFacing
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType)
+    {
+        return (level1, blockPos, blockState1, blockEntity) ->
+        {
+            if(blockEntity instanceof BlockEntityInventoryTest inventoryTestBlock)
+            {
+                inventoryTestBlock.tick();
+            }
+        };
     }
 
     @Override
