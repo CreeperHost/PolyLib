@@ -1662,9 +1662,11 @@ public class NeoForgeEvents
     @SubscribeEvent
     public static void onCanContinueSleeping(CanContinueSleepingEvent event)
     {
-        Player.BedSleepingProblem[] result = { event.getProblem() };
-        PolyPlayerEvents.CAN_CONTINUE_SLEEPING.invoker().onCanContinueSleeping((Player) event.getEntity(), result);
-        if (result[0] != null) event.setContinueSleeping(false);
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            Player.BedSleepingProblem[] result = {event.getProblem()};
+            PolyPlayerEvents.CAN_CONTINUE_SLEEPING.invoker().onCanContinueSleeping(serverPlayer, result);
+            if (result[0] != null) event.setContinueSleeping(false);
+        }
     }
 
     @SubscribeEvent
