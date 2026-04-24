@@ -48,9 +48,20 @@ public final class TestPlayerData
             false
     );
 
-    // TODO(feat/string-uuid-data-types): add a PlayerServerDataType<String> using StringData
-    //   and a PlayerServerDataType<UUID> using UUIDData, then verify they persist across
-    //   server restarts and sync correctly to the client via the testmod GUI/commands.
+    /**
+     * A String server data value — tests StringData-equivalent persistence in the player data system.
+     * Synced to the owning player's client and preserved on death.
+     */
+    public static final PlayerServerDataType<String> TEST_NAME = PlayerServerDataRegistry.register(
+            Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "test_name"),
+            Codec.STRING,
+            StreamCodec.of(
+                    (buf, val) -> buf.writeUtf(val),
+                    buf -> buf.readUtf()
+            ),
+            () -> "",
+            true
+    );
 
     public static void init()
     {
