@@ -15,11 +15,9 @@ public class MixinScreenshotFabric {
 
     @Inject(method = "grab(Ljava/io/File;Ljava/lang/String;Lcom/mojang/blaze3d/pipeline/RenderTarget;Ljava/util/function/Consumer;)V", at = @At("HEAD"), cancellable = true)
     private static void onGrabScreenshot(File file, String string, com.mojang.blaze3d.pipeline.RenderTarget renderTarget, java.util.function.Consumer<Component> consumer, CallbackInfo ci) {
-        // Screenshot event is tricky to inject exactly where image is captured. 
-        // We will pass null for NativeImage initially and a dummy file, since Fabric doesn't expose this natively without capturing the image.
-        // For parity, we will just fire the event before the grab.
+        // Screenshot event fires before the grab; NativeImage is not available at this injection point.
         net.creeperhost.polylib.event.CancelContext ctx = new net.creeperhost.polylib.event.CancelContext();
-        PolyGuiEvents.SCREENSHOT.invoker().onScreenshot(null, file, ctx);
+        PolyGuiEvents.SCREENSHOT.invoker().onScreenshot(file, ctx);
         if (ctx.isCancelled()) {
             ci.cancel();
         }

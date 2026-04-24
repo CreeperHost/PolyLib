@@ -17,7 +17,8 @@ public class MixinHeartTypeFabric {
         
         net.creeperhost.polylib.event.events.client.PolyHeartType polyType = switch (originalType) {
             case NORMAL -> net.creeperhost.polylib.event.events.client.PolyHeartType.NORMAL;
-            case POISONED -> net.creeperhost.polylib.event.events.client.PolyHeartType.POISONED;
+            // TODO: Gui.HeartType.POISONED does not exist in MC 26.1.2 — re-enable when available
+            // case POISONED -> net.creeperhost.polylib.event.events.client.PolyHeartType.POISONED;
             case WITHERED -> net.creeperhost.polylib.event.events.client.PolyHeartType.WITHERED;
             case ABSORBING -> net.creeperhost.polylib.event.events.client.PolyHeartType.ABSORBING;
             case FROZEN -> net.creeperhost.polylib.event.events.client.PolyHeartType.FROZEN;
@@ -30,7 +31,8 @@ public class MixinHeartTypeFabric {
         if (result[0] != polyType) {
             Gui.HeartType newType = switch (result[0]) {
                 case NORMAL -> Gui.HeartType.NORMAL;
-                case POISONED -> Gui.HeartType.POISONED;
+                // TODO: Gui.HeartType.POISONED does not exist in MC 26.1.2 — re-enable when available
+                // case POISONED -> Gui.HeartType.POISONED;
                 case WITHERED -> Gui.HeartType.WITHERED;
                 case ABSORBING -> Gui.HeartType.ABSORBING;
                 case FROZEN -> Gui.HeartType.FROZEN;
