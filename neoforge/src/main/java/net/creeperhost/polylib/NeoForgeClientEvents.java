@@ -1,7 +1,5 @@
 package net.creeperhost.polylib;
 
-import net.creeperhost.polylib.client.config.ConfigPanelRegistry;
-import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
 import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.events.client.PolyCameraEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents;
@@ -13,14 +11,13 @@ import net.creeperhost.polylib.event.events.client.PolyInputEvents;
 import net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents;
 import net.creeperhost.polylib.event.events.client.PolyGuiEvents;
 import net.creeperhost.polylib.event.events.client.PolyRenderEvents;
-import net.creeperhost.polylib.event.events.client.PolyRenderStateEvents;
 import net.creeperhost.polylib.event.events.client.PolyScreenEvents;
 import net.creeperhost.polylib.event.events.client.PolyTooltipEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
@@ -41,61 +38,6 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 @EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
 public class NeoForgeClientEvents
 {
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void eventInitScreenEvent(ScreenEvent.Init.Post event)
-    {
-        ModularGuiInjector.initPost(event.getScreen());
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void event(ClientTickEvent.Post event)
-    {
-        ModularGuiInjector.tick(Minecraft.getInstance());
-        ConfigPanelRegistry.tickKeybinds();
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void eventGuiRenderPost(ScreenEvent.Render.Post event)
-    {
-        ModularGuiInjector.renderPost(event.getScreen(), event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onKeyPressed(ScreenEvent.KeyPressed.Post event)
-    {
-        ModularGuiInjector.keyPressed(event.getScreen().getMinecraft(), event.getScreen(), event.getKeyEvent());
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onKeyReleased(ScreenEvent.KeyReleased.Post event)
-    {
-        ModularGuiInjector.keyReleased(event.getScreen().getMinecraft(), event.getScreen(), event.getKeyEvent());
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onCharTyped(ScreenEvent.CharacterTyped.Post event)
-    {
-        ModularGuiInjector.charTyped(event.getScreen().getMinecraft(), event.getScreen(), event.getCharacterEvent());
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void mouseScrolled(ScreenEvent.MouseScrolled.Post event)
-    {
-        ModularGuiInjector.mouseScrolled(event.getScreen().getMinecraft(), event.getScreen(), event.getMouseX(), event.getMouseY(), event.getScrollDeltaX(), event.getScrollDeltaY());
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void mouseClicked(ScreenEvent.MouseButtonPressed.Post event)
-    {
-        ModularGuiInjector.mouseClicked(event.getScreen().getMinecraft(), event.getScreen(), event.getMouseButtonEvent(), true);
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void mouseReleased(ScreenEvent.MouseButtonReleased.Post event)
-    {
-        ModularGuiInjector.mouseReleased(event.getScreen().getMinecraft(), event.getScreen(), event.getMouseButtonEvent());
-    }
-
     // -------------------------------------------------------------------------
     // PolyLib client events
     // -------------------------------------------------------------------------
@@ -416,7 +358,7 @@ public class NeoForgeClientEvents
     @SubscribeEvent
     public static void onScreenOpened(ScreenEvent.Init.Post event)
     {
-        net.minecraft.client.gui.screens.Screen s = event.getScreen();
+        Screen s = event.getScreen();
         PolyScreenEvents.SCREEN_OPENED.invoker().onScreenOpened(s.getMinecraft(), s, s.width, s.height);
     }
 

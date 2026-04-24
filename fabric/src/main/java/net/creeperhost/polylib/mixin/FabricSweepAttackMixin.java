@@ -20,12 +20,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Player.class)
 public abstract class FabricSweepAttackMixin
 {
-    @Inject(method = "attack",
-            at = @At(value = "INVOKE",
-                     target = "Lnet/minecraft/world/entity/player/Player;sweepAttack()V"))
-    private void polylib$onSweepAttack(Entity target, CallbackInfo ci)
-    {
-        CancelContext ctx = new CancelContext();
-        PolyPlayerEvents.SWEEP_ATTACK.invoker().onSweepAttack((Player) (Object) this, target, ctx);
-    }
+    //TODO
+//    @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;sweepAttack()V"))
+//    private void polylib$onSweepAttack(Entity target, CallbackInfo ci)
+//    {
+//        CancelContext ctx = new CancelContext();
+//        PolyPlayerEvents.SWEEP_ATTACK.invoker().onSweepAttack((Player) (Object) this, target, ctx);
+//    }
 }

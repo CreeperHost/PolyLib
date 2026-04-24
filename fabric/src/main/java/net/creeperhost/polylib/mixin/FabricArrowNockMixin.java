@@ -21,8 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class FabricArrowNockMixin
 {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    private void polylib$onBowUse(Level level, Player player, InteractionHand hand,
-                                   CallbackInfoReturnable<InteractionResult> cir)
+    private void polylib$onBowUse(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir)
     {
         if (player instanceof ServerPlayer sp)
         {

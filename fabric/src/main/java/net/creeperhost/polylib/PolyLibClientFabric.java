@@ -1,8 +1,6 @@
 package net.creeperhost.polylib;
 
-import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
 import net.creeperhost.polylib.event.data.CancelContext;
-import net.creeperhost.polylib.event.events.client.PolyCameraEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientBlockEntityEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientChunkEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents;
@@ -27,7 +25,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.player.LocalPlayer;
 import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
@@ -45,22 +42,6 @@ public class PolyLibClientFabric
     public static void init()
     {
         PolyLibNetwork.initClient();
-
-        ClientTickEvents.END_CLIENT_TICK.register(ModularGuiInjector::tick);
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            ModularGuiInjector.initPost(screen);
-            ScreenEvents.afterExtract(screen).register(ModularGuiInjector::renderPost);
-            ScreenKeyboardEvents.afterKeyPress(screen).register((screen1, event)
-                    -> ModularGuiInjector.keyPressed(Minecraft.getInstance(), screen1, event));
-            ScreenKeyboardEvents.afterKeyRelease(screen).register((screen1, event)
-                    -> ModularGuiInjector.keyReleased(Minecraft.getInstance(), screen1, event));
-            ScreenMouseEvents.afterMouseClick(screen).register((screen1, event, consumed)
-                    -> ModularGuiInjector.mouseClicked(Minecraft.getInstance(), screen1, event, consumed));
-            ScreenMouseEvents.afterMouseRelease(screen).register((screen1, event, consumed)
-                    -> ModularGuiInjector.mouseReleased(Minecraft.getInstance(), screen1, event));
-            ScreenMouseEvents.afterMouseScroll(screen).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount, consumed)
-                    -> ModularGuiInjector.mouseScrolled(Minecraft.getInstance(), screen1, mouseX, mouseY, horizontalAmount, verticalAmount));
-        });
 
         // ── T19: Screen Lifecycle, Tick, Input (Fabric) ────────────────────────
         ScreenEvents.BEFORE_INIT.register((mc, screen, w, h) -> {

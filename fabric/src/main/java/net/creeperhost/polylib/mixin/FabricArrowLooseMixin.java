@@ -18,16 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BowItem.class)
 public abstract class FabricArrowLooseMixin
 {
-    @Inject(method = "releaseUsing", at = @At("HEAD"), cancellable = true)
-    private void polylib$onReleaseUsing(ItemStack stack, Level level, LivingEntity entity,
-                                         int timeLeft, CallbackInfo ci)
-    {
-        if (entity instanceof ServerPlayer sp)
-        {
-            int charge = BowItem.MAX_DRAW_DURATION - timeLeft;
-            CancelContext ctx = new CancelContext();
-            PolyLivingEvents.ARROW_LOOSE.invoker().onArrowLoose(sp, stack, charge, ctx);
-            if (ctx.isCancelled()) ci.cancel();
-        }
-    }
+    //TODO
+//    @Inject(method = "releaseUsing", at = @At("HEAD"), cancellable = true)
+//    private void polylib$onReleaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft, CallbackInfo ci)
+//    {
+//        if (entity instanceof ServerPlayer sp)
+//        {
+//            int charge = BowItem.MAX_DRAW_DURATION - timeLeft;
+//            CancelContext ctx = new CancelContext();
+//            PolyLivingEvents.ARROW_LOOSE.invoker().onArrowLoose(sp, stack, charge, ctx);
+//            if (ctx.isCancelled()) ci.cancel();
+//        }
+//    }
 }

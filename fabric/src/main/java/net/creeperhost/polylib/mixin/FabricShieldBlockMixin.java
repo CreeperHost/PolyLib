@@ -19,15 +19,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class FabricShieldBlockMixin
 {
-    @Inject(method = "isDamageSourceBlocked",
-            at = @At("RETURN"), cancellable = true)
-    private void polylib$onShieldBlock(DamageSource source, CallbackInfoReturnable<Boolean> cir)
-    {
-        if (!cir.getReturnValue()) return; // Only intercept when vanilla says "blocked"
-        LivingEntity self = (LivingEntity) (Object) this;
-        if (!(self.level() instanceof ServerLevel)) return;
-        CancelContext ctx = new CancelContext();
-        PolyLivingEvents.SHIELD_BLOCK.invoker().onShieldBlock(self, source, 0f, ctx);
-        if (ctx.isCancelled()) cir.setReturnValue(false);
-    }
+    //TODO
+//    @Inject(method = "isDamageSourceBlocked",
+//            at = @At("RETURN"), cancellable = true)
+//    private void polylib$onShieldBlock(DamageSource source, CallbackInfoReturnable<Boolean> cir)
+//    {
+//        if (!cir.getReturnValue()) return; // Only intercept when vanilla says "blocked"
+//        LivingEntity self = (LivingEntity) (Object) this;
+//        if (!(self.level() instanceof ServerLevel)) return;
+//        CancelContext ctx = new CancelContext();
+//        PolyLivingEvents.SHIELD_BLOCK.invoker().onShieldBlock(self, source, 0f, ctx);
+//        if (ctx.isCancelled()) cir.setReturnValue(false);
+//    }
 }

@@ -17,15 +17,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerGameMode.class)
 public abstract class FabricPlayerGameModeMixin
 {
-    @Shadow
-    protected ServerPlayer player;
-
-    @Inject(method = "changeGameModeForPlayer", at = @At("HEAD"), cancellable = true)
-    private void polylib$onChangeGameMode(GameType gameType, CallbackInfo ci)
-    {
-        GameType current = ((ServerPlayerGameMode) (Object) this).getGameModeForPlayer();
-        CancelContext ctx = new CancelContext();
-        PolyPlayerEvents.CHANGE_GAME_MODE.invoker().onChangeGameMode(player, current, gameType, ctx);
-        if (ctx.isCancelled()) ci.cancel();
-    }
+    //TODO
+//    @Shadow
+//    protected ServerPlayer player;
+//
+//    @Inject(method = "changeGameModeForPlayer", at = @At("HEAD"), cancellable = true)
+//    private void polylib$onChangeGameMode(GameType gameType, CallbackInfo ci)
+//    {
+//        GameType current = ((ServerPlayerGameMode) (Object) this).getGameModeForPlayer();
+//        CancelContext ctx = new CancelContext();
+//        PolyPlayerEvents.CHANGE_GAME_MODE.invoker().onChangeGameMode(player, current, gameType, ctx);
+//        if (ctx.isCancelled()) ci.cancel();
+//    }
 }

@@ -14,17 +14,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayer.class)
 public abstract class FabricPlayerLoadSaveMixin
 {
-    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
-    private void polylib$onLoad(CompoundTag tag, CallbackInfo ci)
-    {
-        ServerPlayer self = (ServerPlayer)(Object) this;
-        PolyPlayerEvents.PLAYER_LOAD.invoker().onPlayerFile(self, self.getStringUUID());
-    }
-
-    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    private void polylib$onSave(CompoundTag tag, CallbackInfo ci)
-    {
-        ServerPlayer self = (ServerPlayer)(Object) this;
-        PolyPlayerEvents.PLAYER_SAVE.invoker().onPlayerFile(self, self.getStringUUID());
-    }
+    //TODO
+//    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+//    private void polylib$onLoad(CompoundTag tag, CallbackInfo ci)
+//    {
+//        ServerPlayer self = (ServerPlayer)(Object) this;
+//        PolyPlayerEvents.PLAYER_LOAD.invoker().onPlayerFile(self, self.getStringUUID());
+//    }
+//
+//    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+//    private void polylib$onSave(CompoundTag tag, CallbackInfo ci)
+//    {
+//        ServerPlayer self = (ServerPlayer)(Object) this;
+//        PolyPlayerEvents.PLAYER_SAVE.invoker().onPlayerFile(self, self.getStringUUID());
+//    }
 }

@@ -2,6 +2,7 @@ package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.config.ConfigBuilder;
 import net.creeperhost.polylib.config.PolyConfig;
+import net.creeperhost.polylib.init.InternalEventListener;
 import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.creeperhost.polylib.platform.Services;
 
@@ -13,6 +14,7 @@ public class PolylibCommon
     public static void init()
     {
         PolyLibNetwork.init();
+        InternalEventListener.init();
         if (Services.PLATFORM.isClient()) {
             PolyLibClient.init();
         }

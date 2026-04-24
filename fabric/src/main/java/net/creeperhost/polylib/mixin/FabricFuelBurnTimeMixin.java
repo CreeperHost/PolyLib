@@ -14,11 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractFurnaceBlockEntity.class)
 public abstract class FabricFuelBurnTimeMixin
 {
-    @Inject(method = "getBurnDuration", at = @At("RETURN"), cancellable = true)
-    private void polylib$onGetBurnDuration(net.minecraft.world.item.crafting.RecipeType<?> recipeType, ItemStack stack, net.minecraft.world.level.block.entity.FuelValues fuelValues, CallbackInfoReturnable<Integer> cir)
-    {
-        int[] time = { cir.getReturnValue() };
-        PolyItemEvents.FUEL_BURN_TIME.invoker().onFuelBurnTime(stack, time);
-        cir.setReturnValue(time[0]);
-    }
+    //TODO
+//    @Inject(method = "getBurnDuration", at = @At("RETURN"), cancellable = true)
+//    private void polylib$onGetBurnDuration(net.minecraft.world.item.crafting.RecipeType<?> recipeType, ItemStack stack, net.minecraft.world.level.block.entity.FuelValues fuelValues, CallbackInfoReturnable<Integer> cir)
+//    {
+//        int[] time = { cir.getReturnValue() };
+//        PolyItemEvents.FUEL_BURN_TIME.invoker().onFuelBurnTime(stack, time);
+//        cir.setReturnValue(time[0]);
+//    }
 }

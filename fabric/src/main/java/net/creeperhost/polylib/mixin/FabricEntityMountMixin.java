@@ -16,15 +16,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public abstract class FabricEntityMountMixin
 {
-    @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;Z)Z", at = @At("HEAD"), cancellable = true)
-    private void polylib$onStartRiding(Entity vehicle, boolean force, CallbackInfoReturnable<Boolean> cir)
-    {
-        Entity self = (Entity) (Object) this;
-        if (self.level() instanceof ServerLevel)
-        {
-            CancelContext ctx = new CancelContext();
-            PolyEntityEvents.MOUNT.invoker().onMount(self, vehicle, true, ctx);
-            if (ctx.isCancelled()) cir.setReturnValue(false);
-        }
-    }
+    //TODO
+//    @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;Z)Z", at = @At("HEAD"), cancellable = true)
+//    private void polylib$onStartRiding(Entity vehicle, boolean force, CallbackInfoReturnable<Boolean> cir)
+//    {
+//        Entity self = (Entity) (Object) this;
+//        if (self.level() instanceof ServerLevel)
+//        {
+//            CancelContext ctx = new CancelContext();
+//            PolyEntityEvents.MOUNT.invoker().onMount(self, vehicle, true, ctx);
+//            if (ctx.isCancelled()) cir.setReturnValue(false);
+//        }
+//    }
 }

@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Level.class)
 public abstract class FabricBlockEntityLifecycleMixin
 {
-    @Inject(method = "addBlockEntity", at = @At("RETURN"))
-    private void polylib$onAddBlockEntity(BlockEntity blockEntity, CallbackInfoReturnable<Boolean> cir)
-    {
-        if (cir.getReturnValue())
-        {
-            PolyBlockEntityEvents.BLOCK_ENTITY_LOAD.invoker().onBlockEntityLoad(blockEntity);
-        }
-    }
+//    @Inject(method = "addBlockEntity", at = @At("RETURN"))
+//    private void polylib$onAddBlockEntity(BlockEntity blockEntity, CallbackInfoReturnable<Boolean> cir)
+//    {
+//        if (cir.getReturnValue())
+//        {
+//            PolyBlockEntityEvents.BLOCK_ENTITY_LOAD.invoker().onBlockEntityLoad(blockEntity);
+//        }
+//    }
 
     @Inject(method = "removeBlockEntity", at = @At("HEAD"))
     private void polylib$onRemoveBlockEntity(net.minecraft.core.BlockPos pos, CallbackInfo ci)

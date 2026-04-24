@@ -17,13 +17,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerStatsCounter.class)
 public abstract class FabricStatAwardMixin
 {
-    @Shadow private ServerPlayer player;
-
-    @Inject(method = "setValue", at = @At("HEAD"), cancellable = true)
-    private void polylib$onSetValue(ServerPlayer player, Stat<?> stat, int value, CallbackInfo ci)
-    {
-        CancelContext ctx = new CancelContext();
-        PolyPlayerEvents.STAT_AWARD.invoker().onStatAward(player, stat, value, ctx);
-        if (ctx.isCancelled()) ci.cancel();
-    }
+    //TODO
+//    @Shadow private ServerPlayer player;
+//
+//    @Inject(method = "setValue", at = @At("HEAD"), cancellable = true)
+//    private void polylib$onSetValue(ServerPlayer player, Stat<?> stat, int value, CallbackInfo ci)
+//    {
+//        CancelContext ctx = new CancelContext();
+//        PolyPlayerEvents.STAT_AWARD.invoker().onStatAward(player, stat, value, ctx);
+//        if (ctx.isCancelled()) ci.cancel();
+//    }
 }

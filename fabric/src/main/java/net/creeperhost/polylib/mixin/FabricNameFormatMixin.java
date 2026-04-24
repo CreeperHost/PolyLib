@@ -15,12 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayer.class)
 public abstract class FabricNameFormatMixin
 {
-    @Inject(method = "getDisplayName", at = @At("RETURN"), cancellable = true)
-    private void polylib$onGetDisplayName(CallbackInfoReturnable<Component> cir)
-    {
-        ServerPlayer self = (ServerPlayer)(Object) this;
-        Component[] name = { cir.getReturnValue() };
-        PolyPlayerEvents.NAME_FORMAT.invoker().onNameFormat(self, name);
-        cir.setReturnValue(name[0]);
-    }
+    //TODO
+//    @Inject(method = "getDisplayName", at = @At("RETURN"), cancellable = true)
+//    private void polylib$onGetDisplayName(CallbackInfoReturnable<Component> cir)
+//    {
+//        ServerPlayer self = (ServerPlayer)(Object) this;
+//        Component[] name = { cir.getReturnValue() };
+//        PolyPlayerEvents.NAME_FORMAT.invoker().onNameFormat(self, name);
+//        cir.setReturnValue(name[0]);
+//    }
 }

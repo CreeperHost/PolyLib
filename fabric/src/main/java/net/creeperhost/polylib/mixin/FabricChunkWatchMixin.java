@@ -18,11 +18,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ChunkMap.class)
 public abstract class FabricChunkWatchMixin
 {
-    @Final @Shadow ServerLevel level;
-
-    @Inject(method = "playerLoadedChunk", at = @At("HEAD"))
-    private void polylib$onPlayerLoadedChunk(ServerPlayer player, net.minecraft.network.protocol.Packet<?>[] packets, LevelChunk chunk, CallbackInfo ci)
-    {
-        PolyChunkEvents.CHUNK_WATCH.invoker().onWatch(player, chunk.getPos(), level);
-    }
+    //TODO
+//    @Final @Shadow ServerLevel level;
+//
+//    @Inject(method = "playerLoadedChunk", at = @At("HEAD"))
+//    private void polylib$onPlayerLoadedChunk(ServerPlayer player, net.minecraft.network.protocol.Packet<?>[] packets, LevelChunk chunk, CallbackInfo ci)
+//    {
+//        PolyChunkEvents.CHUNK_WATCH.invoker().onWatch(player, chunk.getPos(), level);
+//    }
 }
