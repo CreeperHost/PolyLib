@@ -10,18 +10,13 @@ import net.creeperhost.polylib.inventory.power.IPolyEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyStorage;
-import net.creeperhost.testmod.TestModCommon;
 import net.creeperhost.testmod.init.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,7 +25,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 
@@ -121,13 +115,5 @@ public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInv
     @Override
     public IPolyEnergyStorage getEnergyStorage(@org.jetbrains.annotations.Nullable Direction side) {
         return energyContainer;
-    }
-
-    @Override
-    public void handlePacketFromClient(ServerPlayer player, int id, FriendlyByteBuf buf) {
-        TestModCommon.LOGGER.info("Message from client! {}", player);
-        Cow cow = new Cow(EntityType.COW, level);
-        cow.setPos(Vec3.atBottomCenterOf(getBlockPos().above()));
-        level.addFreshEntity(cow);
     }
 }
