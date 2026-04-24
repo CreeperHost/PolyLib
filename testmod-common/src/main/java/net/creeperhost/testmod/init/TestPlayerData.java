@@ -48,6 +48,10 @@ public final class TestPlayerData
             false
     );
 
+    // TODO(feat/string-uuid-data-types): add a PlayerServerDataType<String> using StringData
+    //   and a PlayerServerDataType<UUID> using UUIDData, then verify they persist across
+    //   server restarts and sync correctly to the client via the testmod GUI/commands.
+
     public static void init()
     {
         // Static fields are initialised above; this method exists so TestModCommon can
