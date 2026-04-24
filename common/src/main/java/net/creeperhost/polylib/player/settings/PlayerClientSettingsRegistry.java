@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.player.settings;
 
+// TODO: depends on feat/lang-datagen PR being merged — PolyLangContributions lives there
 import net.creeperhost.polylib.data.lang.PolyLangContributions;
 import net.creeperhost.polylib.platform.Services;
 import net.minecraft.network.RegistryFriendlyByteBuf;

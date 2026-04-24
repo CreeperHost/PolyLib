@@ -74,8 +74,19 @@ loom {
             ideConfigGenerated(true)
             runDir('runs/server')
         }
+        datagen {
+            client()
+            setConfigName('Fabric Testmod Datagen')
+            ideConfigGenerated(true)
+            runDir('runs/datagen')
+            property "fabric-api.datagen"
+            property "fabric-api.datagen.modid", "testmod"
+            property "fabric-api.datagen.output-dir", file("src/generated/resources").absolutePath
+        }
     }
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements', 'includeInternal', 'modCompileClasspath'].each { variant ->

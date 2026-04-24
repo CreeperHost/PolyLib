@@ -1,6 +1,7 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
+import net.creeperhost.polylib.client.config.ConfigPanelRegistry;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -22,6 +23,7 @@ public class NeoForgeClientEvents
     public static void event(ClientTickEvent.Post event)
     {
         ModularGuiInjector.tick(Minecraft.getInstance());
+        ConfigPanelRegistry.tickKeybinds();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

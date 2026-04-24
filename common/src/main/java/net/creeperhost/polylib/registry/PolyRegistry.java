@@ -4,7 +4,13 @@ import net.creeperhost.polylib.data.lang.PolyLangContributions;
 import net.creeperhost.polylib.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class PolyRegistry<T> {
@@ -63,6 +69,93 @@ public abstract class PolyRegistry<T> {
     {
         PolyLangContributions.contribute(langKeyPrefix + "." + modId + "." + name, defaultEnglish);
         return register(name, supplier);
+    }
+
+    /**
+     * Registers a new object, passing its {@link ResourceKey} to the factory before construction.
+     *
+     * <p>Use this (or the {@link #registerItem}/{@link #registerBlock} helpers) whenever the
+     * object needs its registry key at construction time. On NeoForge this is required for
+     * {@link Item} and {@link Block} so that {@code Item.Properties#setId} /
+     * {@code BlockBehaviour.Properties#setId} can be called before the constructor runs.
+     *
+     * @param name    Registry name (path)
+     * @param factory Factory that receives the entry's {@code ResourceKey} and returns the object
+     * @return A supplier returning the registered object
+     */
+    public abstract <I extends T> Supplier<I> registerWithKey(String name, Function<ResourceKey<T>, ? extends I> factory);
+
+    /**
+     * Registers an {@link Item} subclass, automatically injecting the registry key into
+     * {@link Item.Properties} via {@code setId()} before the constructor runs.
+     *
+     * <p>Use this instead of {@link #register(String, Supplier)} for all item registrations so
+     * that NeoForge's item-id requirement is satisfied.
+     *
+     * @param name    Registry name (path), e.g. {@code "void_blade"}
+     * @param factory Constructor reference or lambda accepting pre-keyed {@link Item.Properties}
+     * @return A supplier returning the registered item
+     */
+    @SuppressWarnings("unchecked")
+    public final <I extends T> Supplier<I> registerItem(String name, Function<Item.Properties, ? extends I> factory)
+    {
+        return registerWithKey(name, key ->
+                factory.apply(new Item.Properties().setId((ResourceKey<Item>) (ResourceKey<?>) key)));
+    }
+
+    /**
+     * Registers an {@link Item} subclass with a default English translation, automatically
+     * injecting the registry key into {@link Item.Properties} via {@code setId()}.
+     *
+     * @param name           Registry name (path), e.g. {@code "void_blade"}
+     * @param defaultEnglish Default English display name, e.g. {@code "Void Blade"}
+     * @param factory        Constructor reference or lambda accepting pre-keyed {@link Item.Properties}
+     * @return A supplier returning the registered item
+     */
+    @SuppressWarnings("unchecked")
+    public final <I extends T> Supplier<I> registerItem(String name, String defaultEnglish, Function<Item.Properties, ? extends I> factory)
+    {
+        PolyLangContributions.contribute(langKeyPrefix + "." + modId + "." + name, defaultEnglish);
+        return registerWithKey(name, key ->
+                factory.apply(new Item.Properties().setId((ResourceKey<Item>) (ResourceKey<?>) key)));
+    }
+
+    /**
+     * Registers a {@link Block} subclass, automatically injecting the registry key into
+     * {@link BlockBehaviour.Properties} via {@code setId()} before the constructor runs.
+     *
+     * @param name    Registry name (path), e.g. {@code "copper_ore"}
+     * @param factory Constructor reference or lambda accepting pre-keyed {@link BlockBehaviour.Properties}
+     * @return A supplier returning the registered block
+     */
+    @SuppressWarnings("unchecked")
+    public final <I extends T> Supplier<I> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends I> factory)
+    {
+        return registerWithKey(name, key ->
+                factory.apply(BlockBehaviour.Properties.of().setId((ResourceKey<Block>) (ResourceKey<?>) key)));
+    }
+
+    /**
+     * Registers a {@link Block} subclass with a default English translation, automatically
+     * injecting the registry key into {@link BlockBehaviour.Properties} via {@code setId()}.
+     *
+     * @param name           Registry name (path), e.g. {@code "copper_ore"}
+     * @param defaultEnglish Default English display name, e.g. {@code "Copper Ore"}
+     * @param factory        Constructor reference or lambda accepting pre-keyed {@link BlockBehaviour.Properties}
+     * @return A supplier returning the registered block
+     */
+    @SuppressWarnings("unchecked")
+    public final <I extends T> Supplier<I> registerBlock(String name, String defaultEnglish, Function<BlockBehaviour.Properties, ? extends I> factory)
+    {
+        PolyLangContributions.contribute(langKeyPrefix + "." + modId + "." + name, defaultEnglish);
+        return registerWithKey(name, key ->
+                factory.apply(BlockBehaviour.Properties.of().setId((ResourceKey<Block>) (ResourceKey<?>) key)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public final <M extends AbstractContainerMenu> Supplier<MenuType<M>> registerMenu(String name, IMenuFactory<M> factory) {
+        Supplier<T> typed = () -> (T) Services.REGISTER_HELPER.createMenuType(factory);
+        return (Supplier<MenuType<M>>) register(name, typed);
     }
 
     /**

@@ -1,18 +1,21 @@
 package net.creeperhost.testmod.init;
 
 import net.creeperhost.polylib.registry.PolyRegistry;
+import net.creeperhost.testmod.TestModCommon;
 import net.creeperhost.testmod.items.TestItem;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 
 import java.util.function.Supplier;
 
 public class TestItems
 {
-    public static final PolyRegistry<Item> ITEMS = PolyRegistry.create(Registries.ITEM, "testmod");
+    public static final PolyRegistry<Item> ITEMS = PolyRegistry.create(Registries.ITEM, TestModCommon.MOD_ID);
 
-    public static final Supplier<Item> TEST_ITEM = ITEMS.register("test_item", "Test Item", TestItem::new);
-    public static final Supplier<Item> TEST_ITEM_2 = ITEMS.register("test_item_two", "Test Item Two", TestItem::new);
+    public static final Supplier<Item> TEST_ITEM = ITEMS.registerItem("test_item", "Test Item", TestItem::new);
+    public static final Supplier<Item> TEST_ITEM_2 = ITEMS.registerItem("test_item_two", "Test Item Two", TestItem::new);
+    public static final Supplier<Item> TEST_BLOCK = ITEMS.registerItem("test_block", "Test Block", props -> new BlockItem(TestBlocks.TEST_BLOCK.get(), props));
 
     public static void init() {
         ITEMS.init();

@@ -9,6 +9,7 @@ import net.minecraft.resources.Identifier;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class FabricPolyRegistry<T> extends PolyRegistry<T> {
@@ -31,10 +32,19 @@ public class FabricPolyRegistry<T> extends PolyRegistry<T> {
 
     @Override
     @SuppressWarnings("unchecked")
+    public <I extends T> Supplier<I> registerWithKey(String name, Function<ResourceKey<T>, ? extends I> factory) {
+        ResourceKey<T> key = ResourceKey.create(registryKey, Identifier.fromNamespaceAndPath(modId, name));
+        Supplier<I> memoized = Suppliers.memoize(() -> factory.apply(key));
+        entries.put(name, (Supplier<? extends T>) memoized);
+        return memoized;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public void init() {
-        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.getValue(registryKey.registry());
+        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.getValue(registryKey.identifier());
         if (registry == null) {
-            throw new IllegalStateException("Failed to find registry for key: " + registryKey.registry());
+            throw new IllegalStateException("Failed to find registry for key: " + registryKey.identifier());
         }
         
         entries.forEach((name, supplier) -> {

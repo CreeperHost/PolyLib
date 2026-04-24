@@ -203,6 +203,13 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
 
     //=== AbstractContainerMenu Overrides ===//
 
+    @Override
+    protected void extractMenuBackground(GuiGraphicsExtractor graphics, int x, int y, int width, int height)
+    {
+
+    }
+
+
     //TODO
 //    @Override
 //    protected void renderBg(GuiGraphics guiGraphics, float f, int i, int j) {

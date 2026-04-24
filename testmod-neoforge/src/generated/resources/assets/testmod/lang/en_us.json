@@ -1,0 +1,8 @@
+{
+  "block.testmod.test_block": "Test Block",
+  "item.testmod.test_block": "Test Block",
+  "item.testmod.test_item": "Test Item",
+  "item.testmod.test_item_two": "Test Item Two",
+  "itemGroup.testmod.test_tab": "Test Tab",
+  "testmod.setting.reduce_screenshake": "Reduce Screen Shake"
+}

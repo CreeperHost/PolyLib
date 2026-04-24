@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class NeoPolyRegistry<T> extends PolyRegistry<T> {
@@ -15,10 +16,12 @@ public class NeoPolyRegistry<T> extends PolyRegistry<T> {
     // Keeps track of all created registries so they can be bulk-attached to the ModEventBus
     private static final List<NeoPolyRegistry<?>> ALL_REGISTRIES = new ArrayList<>();
     
+    private final ResourceKey<? extends Registry<T>> registryKey;
     private final DeferredRegister<T> deferredRegister;
 
     public NeoPolyRegistry(ResourceKey<? extends Registry<T>> registryKey, String modId) {
         super(registryKey, modId);
+        this.registryKey = registryKey;
         this.deferredRegister = DeferredRegister.create(registryKey, modId);
         ALL_REGISTRIES.add(this);
     }
@@ -27,6 +30,11 @@ public class NeoPolyRegistry<T> extends PolyRegistry<T> {
     public <I extends T> Supplier<I> register(String name, Supplier<I> supplier) {
         // Delegate directly to NeoForge's DeferredRegister
         return deferredRegister.register(name, supplier);
+    }
+
+    @Override
+    public <I extends T> Supplier<I> registerWithKey(String name, Function<ResourceKey<T>, ? extends I> factory) {
+        return deferredRegister.register(name, key -> factory.apply(ResourceKey.create(registryKey, key)));
     }
 
     @Override
