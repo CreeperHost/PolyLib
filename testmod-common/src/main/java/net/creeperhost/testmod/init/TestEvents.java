@@ -29,9 +29,11 @@ import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
 public class TestEvents
 {
+    private static boolean testEvents = false;
 
     public static void init()
     {
+        if (!testEvents) return;
         // --- Existing player events ---
 
         PolyPlayerEvents.LOGIN.register(player -> LOGGER.info("[TestMod] {} joined. Ticks played: {}", player.getScoreboardName(), PlayerServerDataManager.get(player, TestModCommon.TICKS_PLAYED)));
@@ -175,7 +177,7 @@ public class TestEvents
                 LOGGER.info("[TestMod] LIVING_HEAL: {} healed {} hp", entity.getType().toShortString(), amount));
 
         PolyLivingEvents.CHANGE_TARGET.register((entity, newTarget, ctx) ->
-                LOGGER.info("[TestMod] CHANGE_TARGET: {} -> {}", entity.getType().toShortString(), newTarget.getType().toShortString()));
+                LOGGER.info("[TestMod] CHANGE_TARGET: {} -> {}", entity.getType().toShortString(), newTarget != null ? newTarget.getType().toShortString(): "No new target"));
 
         PolyLivingEvents.CONVERSION_PRE.register((entity, ctx) ->
                 LOGGER.info("[TestMod] CONVERSION_PRE: {} is about to convert", entity.getType().toShortString()));
