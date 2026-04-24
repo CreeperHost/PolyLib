@@ -15,7 +15,7 @@ public class MixinScreenCharTypedFabric {
         Screen screen = (Screen) (Object) this;
         
         // Allow event (cancellable)
-        net.creeperhost.polylib.event.CancelContext ctx = new net.creeperhost.polylib.event.CancelContext();
+        net.creeperhost.polylib.event.data.CancelContext ctx = new net.creeperhost.polylib.event.data.CancelContext();
         PolyScreenEvents.SCREEN_CHAR_TYPED_ALLOW.invoker().onScreenCharTypedAllow(screen, codePoint, modifiers, ctx);
         if (ctx.isCancelled()) {
             cir.setReturnValue(false);

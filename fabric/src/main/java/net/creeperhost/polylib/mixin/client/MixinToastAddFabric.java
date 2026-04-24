@@ -13,7 +13,7 @@ public class MixinToastAddFabric {
 
     @Inject(method = "addToast", at = @At("HEAD"), cancellable = true)
     private void onAddToast(Toast toast, CallbackInfo ci) {
-        net.creeperhost.polylib.event.CancelContext ctx = new net.creeperhost.polylib.event.CancelContext();
+        net.creeperhost.polylib.event.data.CancelContext ctx = new net.creeperhost.polylib.event.data.CancelContext();
         PolyGuiEvents.TOAST_ADD.invoker().onToastAdd(toast, ctx);
         if (ctx.isCancelled()) {
             ci.cancel();

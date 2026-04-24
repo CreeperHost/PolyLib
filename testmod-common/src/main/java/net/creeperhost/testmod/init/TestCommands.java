@@ -27,8 +27,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
 /**
  * /polytest <group> — in-game commands to actively trigger each PolyLib event group.
@@ -44,8 +43,6 @@ import org.apache.logging.log4j.Logger;
  */
 public final class TestCommands
 {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private TestCommands() {}
 
     public static void init()

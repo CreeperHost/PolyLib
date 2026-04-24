@@ -25,13 +25,10 @@ import net.creeperhost.polylib.event.events.server.PolyRegistryEvents;
 import net.creeperhost.polylib.event.events.server.PolyVillageEvents;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
 import net.creeperhost.testmod.TestModCommon;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
 public class TestEvents
 {
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public static void init()
     {

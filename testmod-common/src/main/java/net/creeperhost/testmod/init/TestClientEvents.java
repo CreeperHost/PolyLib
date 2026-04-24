@@ -19,8 +19,7 @@ import net.creeperhost.polylib.event.events.server.PolyRegistryEvents;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
 /**
  * Registers test handlers for all client-side PolyLib events.
@@ -28,7 +27,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class TestClientEvents
 {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public static void init()
     {
