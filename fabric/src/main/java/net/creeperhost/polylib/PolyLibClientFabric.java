@@ -41,6 +41,7 @@ public class PolyLibClientFabric
 {
     public static void init()
     {
+        FabricEventsClient.init();
         PolyLibNetwork.initClient();
 
         // ── T19: Screen Lifecycle, Tick, Input (Fabric) ────────────────────────

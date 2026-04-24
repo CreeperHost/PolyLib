@@ -99,7 +99,6 @@
     "client.MixinItemInHandRendererHandFabric",
     "client.MixinItemInHandRendererArmFabric",
     "client.MixinItemFrameRendererFabric",
-    "client.MixinGuiRenderFabric",
     "client.MixinToastAddFabric",
     "client.MixinScreenshotFabric",
     "client.MixinHeartTypeFabric",

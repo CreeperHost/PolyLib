@@ -13,6 +13,7 @@ public class PolyLibFabric implements ModInitializer
     @Override
     public void onInitialize()
     {
+        FabricEvents.init();
         PolylibCommon.registerConfig();
         PolylibCommon.init();
 
