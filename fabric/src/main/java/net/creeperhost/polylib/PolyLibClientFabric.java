@@ -250,7 +250,7 @@ public class PolyLibClientFabric
             CancelContext ctx = new CancelContext();
             PolyClientInteractionEvents.CLIENT_PRE_ATTACK.invoker()
                     .onPreAttack(client, player, clickCount, ctx);
-            return !ctx.isCancelled();
+            return ctx.isCancelled();
         });
 
         // ── T17-A: Frame events ───────────────────────────────────────────────────
