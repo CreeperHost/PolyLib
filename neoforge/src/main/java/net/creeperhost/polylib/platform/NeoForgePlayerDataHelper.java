@@ -161,5 +161,19 @@ public class NeoForgePlayerDataHelper implements IPlayerDataHelper
                     persistent.put(key, wrapper);
                 });
     }
+
+    @Override
+    public <T> void loadServerDataForType(UUID playerUUID, ServerPlayer player,
+                                           PlayerServerDataStore store, PlayerServerDataType<T> type)
+    {
+        String key = SDATA_PREFIX + type.id().toString();
+        Tag raw = player.getPersistentData().get(key);
+        if (raw instanceof CompoundTag wrapper)
+        {
+            Tag inner = wrapper.get("v");
+            if (inner != null)
+                loadServerTyped(type, inner, store);
+        }
+    }
 }
 
