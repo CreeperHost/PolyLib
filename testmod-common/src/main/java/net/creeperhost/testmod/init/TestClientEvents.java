@@ -30,6 +30,7 @@ public class TestClientEvents
 
     public static void init()
     {
+        if(!TestEvents.testEvents) return;
         // =====================================================================
         // Client tick events
         // =====================================================================

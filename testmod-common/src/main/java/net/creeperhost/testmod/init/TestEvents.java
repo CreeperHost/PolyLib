@@ -29,7 +29,7 @@ import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
 public class TestEvents
 {
-    private static boolean testEvents = false;
+    public static boolean testEvents = false;
 
     public static void init()
     {
