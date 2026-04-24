@@ -53,6 +53,7 @@ public class TestModCommon
         TestCreativeTabs.init();
         TestContainers.init();
         TestEvents.init();
+        TestCommands.init();
 
         if (Services.PLATFORM.isClient()) {
             TestModClientCommon.init();

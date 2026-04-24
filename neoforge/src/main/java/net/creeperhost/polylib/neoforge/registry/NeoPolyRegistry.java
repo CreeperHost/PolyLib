@@ -1,8 +1,12 @@
 package net.creeperhost.polylib.neoforge.registry;
 
+import net.creeperhost.polylib.data.lang.PolyLangContributions;
 import net.creeperhost.polylib.registry.PolyRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -41,6 +45,20 @@ public class NeoPolyRegistry<T> extends PolyRegistry<T> {
     public void init() {
         // No-op on NeoForge. The items are already in the DeferredRegister queue.
         // We attach them to the bus via registerToBus() below instead.
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Supplier<CreativeModeTab> registerCreativeTab(String name, String defaultEnglish,
+            Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
+        String key = "itemGroup." + modId + "." + name;
+        PolyLangContributions.contribute(key, defaultEnglish);
+        Supplier<T> typed = () -> (T) CreativeModeTab.builder()
+                .title(Component.translatable(key))
+                .icon(icon)
+                .displayItems(displayItems)
+                .build();
+        return (Supplier<CreativeModeTab>) register(name, typed);
     }
 
     /**

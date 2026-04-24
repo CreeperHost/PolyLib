@@ -2,14 +2,10 @@ package net.creeperhost.polylib.platform;
 
 import io.netty.buffer.Unpooled;
 import net.creeperhost.polylib.platform.services.IRegisterHelper;
-import net.creeperhost.polylib.register.creativetab.ICreativeTabOutput;
-import net.creeperhost.polylib.register.creativetab.LazyCreativeTab;
 import net.creeperhost.polylib.registry.IMenuFactory;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -19,7 +15,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
 
 import java.util.function.Consumer;
 
@@ -64,24 +59,5 @@ public class FabricRegisterHelper implements IRegisterHelper {
                 return menuProvider.getDisplayName();
             }
         });
-    }
-
-    @Override
-    public LazyCreativeTab registerCreativeTab(LazyCreativeTab tab) {
-        CreativeModeTab creativeTab = FabricCreativeModeTab.builder()
-                .title(tab.getTitle())
-                .icon(tab.getIcon())
-                .displayItems((params, output) -> {
-                    ICreativeTabOutput wrapper = new ICreativeTabOutput() {
-                        @Override
-                        public void accept(net.minecraft.world.level.ItemLike item) { output.accept(item); }
-                        @Override
-                        public void accept(net.minecraft.world.item.ItemStack stack) { output.accept(stack); }
-                    };
-                    tab.getPopulator().accept(wrapper);
-                })
-                .build();
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, tab.getRegistryName(), creativeTab);
-        return tab;
     }
 }

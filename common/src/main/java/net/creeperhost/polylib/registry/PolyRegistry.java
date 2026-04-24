@@ -6,7 +6,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -156,6 +158,39 @@ public abstract class PolyRegistry<T> {
     public final <M extends AbstractContainerMenu> Supplier<MenuType<M>> registerMenu(String name, IMenuFactory<M> factory) {
         Supplier<T> typed = () -> (T) Services.REGISTER_HELPER.createMenuType(factory);
         return (Supplier<MenuType<M>>) register(name, typed);
+    }
+
+    /**
+     * Registers a {@link CreativeModeTab}, automatically contributing the default English
+     * title translation using the standard {@code itemGroup.<modId>.<name>} key.
+     *
+     * <p>On NeoForge this delegates to the underlying {@link net.neoforged.neoforge.registries.DeferredRegister}
+     * and is flushed when {@code NeoPolyRegistry.registerToBus(bus)} is called in the mod constructor.
+     * On Fabric, {@link #init()} must be called from {@code ModInitializer.onInitialize()}.
+     *
+     * <p><b>Usage:</b>
+     * <pre>{@code
+     * public static final PolyRegistry<CreativeModeTab> TABS =
+     *     PolyRegistry.create(Registries.CREATIVE_MODE_TAB, MY_MOD_ID);
+     *
+     * public static final Supplier<CreativeModeTab> MY_TAB = TABS.registerCreativeTab(
+     *     "my_tab", "My Mod",
+     *     () -> new ItemStack(Items.DIAMOND),
+     *     (params, output) -> output.accept(MyItems.MY_ITEM.get())
+     * );
+     * }</pre>
+     *
+     * @param name           Registry name (path), e.g. {@code "main"}
+     * @param defaultEnglish Default English display name, e.g. {@code "My Mod"}
+     * @param icon           Icon supplier
+     * @param displayItems   Display items generator — receives {@code (params, output)} and calls
+     *                       {@code output.accept(item)} to populate the tab
+     * @return A supplier returning the registered tab
+     */
+    public Supplier<CreativeModeTab> registerCreativeTab(String name, String defaultEnglish,
+            Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
+        throw new UnsupportedOperationException(
+                "registerCreativeTab must be called on a platform-specific PolyRegistry instance.");
     }
 
     /**

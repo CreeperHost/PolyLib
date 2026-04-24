@@ -1,11 +1,16 @@
 package net.creeperhost.polylib.fabric.registry;
 
 import com.google.common.base.Suppliers;
+import net.creeperhost.polylib.data.lang.PolyLangContributions;
 import net.creeperhost.polylib.registry.PolyRegistry;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -50,5 +55,24 @@ public class FabricPolyRegistry<T> extends PolyRegistry<T> {
         entries.forEach((name, supplier) -> {
             Registry.register(registry, Identifier.fromNamespaceAndPath(modId, name), supplier.get());
         });
+    }
+
+    /**
+     * Overrides the base implementation to use {@link FabricCreativeModeTab#builder()} instead of
+     * {@link net.minecraft.world.item.CreativeModeTab#builder()}. Fabric requires its own builder
+     * so that the tab participates in Fabric API's display-item events.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public Supplier<CreativeModeTab> registerCreativeTab(String name, String defaultEnglish,
+            Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
+        String key = "itemGroup." + modId + "." + name;
+        PolyLangContributions.contribute(key, defaultEnglish);
+        Supplier<T> typed = () -> (T) FabricCreativeModeTab.builder()
+                .title(Component.translatable(key))
+                .icon(icon)
+                .displayItems(displayItems)
+                .build();
+        return (Supplier<CreativeModeTab>) register(name, typed);
     }
 }
