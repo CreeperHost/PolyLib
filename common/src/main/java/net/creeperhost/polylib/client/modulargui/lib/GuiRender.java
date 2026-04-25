@@ -4,6 +4,8 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
+import net.creeperhost.polylib.platform.Services;
+import net.creeperhost.polylib.platform.services.IClientHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -1289,9 +1291,8 @@ public class GuiRender {
     }
 
     public void toolTipWithImage(List<Component> tooltip, Optional<TooltipComponent> tooltipImage, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        //TODO
-//        List<ClientTooltipComponent> list = PolyLibClient.postGatherTooltipComponents(this.tooltipStack, tooltip, tooltipImage, (int) mouseX, guiWidth(), guiHeight(), font());
-//        this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        List<ClientTooltipComponent> list = Services.CLIENT.postGatherTooltipComponents(this.tooltipStack, tooltip, tooltipImage, (int) mouseX, guiWidth(), guiHeight(), font());
+        this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
     }
 
     public void renderTooltip(Component message, double mouseX, double mouseY) {
@@ -1299,15 +1300,13 @@ public class GuiRender {
     }
 
     public void renderTooltip(Component message, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        //TODO
-//        List<ClientTooltipComponent> list = PolyLibClient.postGatherTooltipComponents(this.tooltipStack, List.of(message), Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
-//        this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        List<ClientTooltipComponent> list = Services.CLIENT.postGatherTooltipComponents(this.tooltipStack, List.of(message), Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
     }
 
     public void componentTooltip(List<Component> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        //TODO
-//        List<ClientTooltipComponent> components = PolyLibClient.postGatherTooltipComponents(this.tooltipStack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
-//        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        List<ClientTooltipComponent> components = Services.CLIENT.postGatherTooltipComponents(this.tooltipStack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
     }
 
     public void componentTooltip(List<? extends FormattedText> tooltips, double mouseX, double mouseY, ItemStack stack) {
@@ -1320,9 +1319,8 @@ public class GuiRender {
 
     public void componentTooltip(List<? extends FormattedText> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ItemStack stack) {
         this.tooltipStack = stack;
-        //TODO
-//        List<ClientTooltipComponent> components = PolyLibClient.postGatherTooltipComponents(stack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
-//        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
+        List<ClientTooltipComponent> components = Services.CLIENT.postGatherTooltipComponents(stack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
         this.tooltipStack = ItemStack.EMPTY;
     }
 
@@ -1348,42 +1346,41 @@ public class GuiRender {
     }
 
     private void renderTooltipInternal(List<ClientTooltipComponent> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ClientTooltipPositioner positioner) {
-        //TODO
-//        if (!tooltips.isEmpty()) {
-//            PolyLibClient.ToolTipResult event = PolyLibClient.postRenderTooltipPre(this.tooltipStack, wrapped, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
-//            if (event.canceled()) return;
-//
-//            int width = 0;
-//            int height = tooltips.size() == 1 ? -2 : 0;
-//            for (ClientTooltipComponent line : tooltips) {
-//                width = Math.max(width, line.getWidth(event.getFont()));
-//                height += line.getHeight(font());
-//            }
-//
-//            Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
-//            int xPos = position.x();
-//            int yPos = Math.max(position.y(), 3); //Default positioner allows negative y-pos for some reason...
-//
-//            wrapped.pose().pushMatrix();
-//            PolyLibClient.ToolTipColour colour = PolyLibClient.postTooltipColour(tooltipStack, wrapped, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
-//            toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
-//            int linePos = yPos;
-//
-//            for (int i = 0; i < tooltips.size(); ++i) {
-//                ClientTooltipComponent component = tooltips.get(i);
-//                component.extractText(wrapped, event.getFont(), xPos, linePos);
-//                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
-//            }
-//
-//            linePos = yPos;
-//
-//            for (int i = 0; i < tooltips.size(); ++i) {
-//                ClientTooltipComponent component = tooltips.get(i);
-//                component.extractImage(event.getFont(), xPos, linePos, width, height, wrapped);
-//                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
-//            }
-//            wrapped.pose().popMatrix();
-//        }
+        if (!tooltips.isEmpty()) {
+            IClientHelper.ToolTipResult event = Services.CLIENT.postRenderTooltipPre(this.tooltipStack, wrapped, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
+            if (event.canceled()) return;
+
+            int width = 0;
+            int height = tooltips.size() == 1 ? -2 : 0;
+            for (ClientTooltipComponent line : tooltips) {
+                width = Math.max(width, line.getWidth(event.getFont()));
+                height += line.getHeight(font());
+            }
+
+            Vector2ic position = positioner.positionTooltip(guiWidth(), guiHeight(), event.getX(), event.getY(), width, height);
+            int xPos = position.x();
+            int yPos = Math.max(position.y(), 3); //Default positioner allows negative y-pos for some reason...
+
+            wrapped.pose().pushMatrix();
+            IClientHelper.ToolTipColour colour = Services.CLIENT.postTooltipColour(tooltipStack, wrapped, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
+            toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
+            int linePos = yPos;
+
+            for (int i = 0; i < tooltips.size(); ++i) {
+                ClientTooltipComponent component = tooltips.get(i);
+                component.extractText(wrapped, event.getFont(), xPos, linePos);
+                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
+            }
+
+            linePos = yPos;
+
+            for (int i = 0; i < tooltips.size(); ++i) {
+                ClientTooltipComponent component = tooltips.get(i);
+                component.extractImage(event.getFont(), xPos, linePos, width, height, wrapped);
+                linePos += component.getHeight(font()) + (i == 0 ? 2 : 0);
+            }
+            wrapped.pose().popMatrix();
+        }
     }
 
     public void renderComponentHoverEffect(@Nullable Style style, int mouseX, int mouseY) {

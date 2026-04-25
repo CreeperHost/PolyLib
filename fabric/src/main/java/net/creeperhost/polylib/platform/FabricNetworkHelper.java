@@ -1,7 +1,6 @@
 package net.creeperhost.polylib.platform;
 
 import io.netty.buffer.Unpooled;
-// TODO: depends on feat/accessibility PR being merged - AccessibilityPrefs classes live there
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsC2SPayload;
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsManager;
 import net.creeperhost.polylib.network.PolyLibNetwork;
