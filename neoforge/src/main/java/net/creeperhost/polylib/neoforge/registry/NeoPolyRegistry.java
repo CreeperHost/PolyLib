@@ -62,10 +62,27 @@ public class NeoPolyRegistry<T> extends PolyRegistry<T> {
     }
 
     /**
-     * Explicitly called from the Mod constructor: NeoPolyRegistry.registerToBus(eventBus);
+     * Call from your mod constructor, passing both the event bus and your mod ID so that only
+     * registries belonging to your mod are attached.
+     *
+     * <pre>{@code NeoPolyRegistry.registerToBus(bus, MyMod.MOD_ID);}</pre>
      */
+    public static void registerToBus(IEventBus modEventBus, String modId) {
+        List<NeoPolyRegistry<?>> copy = new ArrayList<>(ALL_REGISTRIES);
+        for (NeoPolyRegistry<?> registry : copy) {
+            if (registry.modId.equals(modId)) {
+                registry.deferredRegister.register(modEventBus);
+            }
+        }
+    }
+
+    /**
+     * @deprecated Use {@link #registerToBus(IEventBus, String)} to avoid cross-mod registration conflicts.
+     */
+    @Deprecated
     public static void registerToBus(IEventBus modEventBus) {
-        for (NeoPolyRegistry<?> registry : ALL_REGISTRIES) {
+        List<NeoPolyRegistry<?>> copy = new ArrayList<>(ALL_REGISTRIES);
+        for (NeoPolyRegistry<?> registry : copy) {
             registry.deferredRegister.register(modEventBus);
         }
     }

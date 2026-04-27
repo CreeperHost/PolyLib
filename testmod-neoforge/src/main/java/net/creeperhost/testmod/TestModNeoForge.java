@@ -13,7 +13,7 @@ public class TestModNeoForge
     public TestModNeoForge(ModContainer container, IEventBus bus) {
         TestModCommon.LOGGER.info("[TESTMOD-DEBUG] constructor called, dist={}", FMLLoader.getCurrent().getDist());
         TestModCommon.init();
-        NeoPolyRegistry.registerToBus(bus);
+        NeoPolyRegistry.registerToBus(bus, TestModCommon.MOD_ID);
 
         if (FMLLoader.getCurrent().getDist().isClient()) {
             NeoPolyScreens.registerToBus(bus);
