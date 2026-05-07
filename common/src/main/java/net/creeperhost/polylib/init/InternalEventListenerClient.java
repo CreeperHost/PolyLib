@@ -2,6 +2,7 @@ package net.creeperhost.polylib.init;
 
 import net.creeperhost.polylib.client.config.ConfigPanelRegistry;
 import net.creeperhost.polylib.client.modulargui.ModularGuiInjector;
+import net.creeperhost.polylib.client.screen.chunkmap.PolyChunkMapKeys;
 import net.creeperhost.polylib.event.events.client.PolyClientTickEvents;
 import net.creeperhost.polylib.event.events.client.PolyScreenEvents;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ public class InternalEventListenerClient
         PolyClientTickEvents.CLIENT_TICK_END.register(client -> {
             ModularGuiInjector.tick(client);
             ConfigPanelRegistry.tickKeybinds();
+            PolyChunkMapKeys.tick();
         });
         PolyScreenEvents.SCREEN_RENDER_POST.register(ModularGuiInjector::renderPost);
         PolyScreenEvents.SCREEN_KEY_PRESS_AFTER.register((screen, keyCode, scanCode, modifiers) -> {

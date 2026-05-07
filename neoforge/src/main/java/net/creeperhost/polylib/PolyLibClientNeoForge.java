@@ -1,8 +1,11 @@
 package net.creeperhost.polylib;
 
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
+import net.creeperhost.polylib.client.screen.chunkmap.PolyChunkMapKeys;
+import net.creeperhost.polylib.debug.neoforge.NeoForgeDebugBridge;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterTextureAtlasesEvent;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
@@ -12,6 +15,11 @@ public class PolyLibClientNeoForge
     {
         eventBus.addListener(PolyLibClientNeoForge::atlasStitched);
         eventBus.addListener(PolyLibClientNeoForge::registerTextureAtlas);
+        // F3 debug screen entry system — NeoForge bridge
+        eventBus.addListener(NeoForgeDebugBridge::onRegisterDebugEntries);
+        // Chunk map keybind
+        eventBus.addListener((RegisterKeyMappingsEvent e) ->
+                e.register(PolyChunkMapKeys.OPEN_CHUNK_MAP));
     }
 
     private static void registerTextureAtlas(RegisterTextureAtlasesEvent event) {
@@ -25,3 +33,4 @@ public class PolyLibClientNeoForge
         }
     }
 }
+

@@ -46,6 +46,6 @@ public class FabricPlatformHelper implements IPlatformHelper
 
     @Override
     public EnergyManager getEnergyManager() {
-        return FabricInventoryManager.ENERGY_MANAGER;
+        return null; // No Fabric energy backend registered in this build
     }
 }
