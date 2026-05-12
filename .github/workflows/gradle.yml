@@ -33,7 +33,7 @@ jobs:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         run: |
           chmod +x ./gradlew
-          ./gradlew build publish --stacktrace --no-daemon
+          ./gradlew build publish publishUnified --stacktrace --no-daemon
       - name: Release
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
