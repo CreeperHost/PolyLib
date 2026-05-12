@@ -7,7 +7,7 @@
     <a href="https://github.com/CreeperHost/PolyLib/commits/master"><img alt="activity" src="https://img.shields.io/github/last-commit/CreeperHost/PolyLib" ></a>
 </p>
 
-## From Minecraft 26.1.2 we have changed up our version numbers, Everything from this point on will be version 2+ eg: 2.0.4 this is due to us moving away from Architectury api
+## From Minecraft 26.1.2 we have changed up our version numbers, Everything from this point on will be minecraft_version-version 2+ eg: 26.1.2-2.0.4 this is due to us moving away from Architectury api
 
 
 # PolyLib
