@@ -2,7 +2,11 @@ plugins {
     id "com.gradleup.shadow" version "9.2.2"
     id 'multiloader-loader'
     id 'net.fabricmc.fabric-loom'
+    id "me.shedaniel.unified-publishing"
 }
+
+def ENV = System.getenv()
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -80,6 +84,62 @@ sourceSets.configureEach {
         configurations.named("$variant") {
             attributes {
                 attribute(loaderAttribute, 'fabric')
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-fabric"
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        if (ENV.CREEPERHOST_MAVEN_TOKEN) {
+            maven {
+                url "https://maven.creeperhost.net/release"
+                credentials {
+                    username = "githubci"
+                    password = "${ENV.CREEPERHOST_MAVEN_TOKEN}"
+                }
+            }
+        }
+    }
+}
+
+unifiedPublishing {
+    project {
+        displayName = "$rootProject.version [Fabric]"
+        releaseType = "$rootProject.artifact_type"
+        changelog = ""
+        gameVersions = ["$rootProject.minecraft_version"]
+        gameLoaders = ["fabric"]
+        mainPublication tasks.shadowJar
+        relations {
+            depends {
+                curseforge = "fabric-api"
+                modrinth = "fabric-api"
+            }
+        }
+
+        var CURSE_API_KEY = project.findProperty("CURSE_API_KEY") ?: System.getenv("CURSE_API_KEY")
+        if (CURSE_API_KEY != null) {
+            curseforge {
+                token = CURSE_API_KEY
+                id = rootProject.curseforge_id
+            }
+        }
+
+        var MODRINTH_TOKEN = project.findProperty("MODRINTH_TOKEN") ?: System.getenv("MODRINTH_TOKEN")
+        if (MODRINTH_TOKEN != null) {
+            modrinth {
+                token = MODRINTH_TOKEN
+                id = rootProject.modrinth_id
+                version = "$project.version"
             }
         }
     }

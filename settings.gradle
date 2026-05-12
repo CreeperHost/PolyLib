@@ -13,6 +13,7 @@ pluginManagement {
                 includeGroupAndSubgroups('net.fabricmc')
             }
         }
+        maven { url "https://maven.architectury.dev/" }
     }
 }
 

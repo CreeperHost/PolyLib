@@ -26,6 +26,10 @@ repositories {
         filter { includeGroupAndSubgroups('org.spongepowered') }
     }
     maven {
+        name = 'CreeperHost'
+        url = 'https://maven.creeperhost.net'
+    }
+    maven {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
