@@ -101,9 +101,8 @@ sourceSets.configureEach {
 
 publishing {
     publications {
-        mavenForge(MavenPublication) {
+        named('mavenJava', MavenPublication) {
             artifactId = rootProject.archives_base_name + "-neoforge"
-            from components.java
         }
     }
 

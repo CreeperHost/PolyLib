@@ -91,9 +91,8 @@ sourceSets.configureEach {
 
 publishing {
     publications {
-        mavenFabric(MavenPublication) {
+        named('mavenJava', MavenPublication) {
             artifactId = rootProject.archives_base_name + "-fabric"
-            from components.java
         }
     }
 
