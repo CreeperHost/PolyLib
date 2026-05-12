@@ -93,6 +93,7 @@ publishing {
     publications {
         named('mavenJava', MavenPublication) {
             artifactId = rootProject.archives_base_name + "-fabric"
+            version = "${rootProject.minecraft_version}-${rootProject.version}"
         }
     }
 

@@ -103,6 +103,7 @@ publishing {
     publications {
         named('mavenJava', MavenPublication) {
             artifactId = rootProject.archives_base_name + "-neoforge"
+            version = "${rootProject.minecraft_version}-${rootProject.version}"
         }
     }
 
