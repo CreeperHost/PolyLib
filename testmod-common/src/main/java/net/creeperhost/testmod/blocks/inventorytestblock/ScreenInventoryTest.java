@@ -90,6 +90,7 @@ public class ScreenInventoryTest extends ContainerGuiProvider<ContainerInventory
         GuiSlots outSlots = new GuiSlots(background, screenAccess, menu.machineOutputs, 1)
                 .setXSlotSpacing(inputSpacing)
                 .setEmptyIcon(slot -> PolyTextures.get("slots/dust"))
+                .setTooltip(Component.literal("I'm a slot"))
                 .constrain(RIGHT, match(inventory.primary.get(RIGHT)))
                 .constrain(BOTTOM, midPoint(title.get(TOP), invLabel.get(TOP)));
 
