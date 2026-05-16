@@ -10,7 +10,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.world.level.Level;
@@ -19,6 +21,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import net.creeperhost.polylib.PolyLibClient;
+import net.creeperhost.polylib.chunkmap.client.PolyChunkMapConfig;
 
 /**
  * Full-screen chunk-map viewer.
@@ -50,6 +54,13 @@ public class PolyChunkMapScreen extends Screen
     private static final int COL_HEADER_BG         = 0xCC000000;
     private static final int COL_HEADER_TEXT       = 0xFFFFFFFF;
 
+    // Ticket Colours
+    private static final int COL_TICKET_PLAYER     = 0xFF22CC44;
+    private static final int COL_TICKET_FORCED     = 0xFFCC2222;
+    private static final int COL_TICKET_PEARL      = 0xFFAA22CC;
+    private static final int COL_TICKET_PORTAL     = 0xFFCC8822;
+    private static final int COL_TICKET_UNKNOWN    = 0xFF666666;
+
     private static final int HEADER_HEIGHT = 20;
     private static final int FOOTER_HEIGHT = 12;
 
@@ -70,7 +81,6 @@ public class PolyChunkMapScreen extends Screen
 
     // ── Hover state ───────────────────────────────────────────────────────────
     private @Nullable PolyChunkMapData hoveredChunk = null;
-    private int tooltipX, tooltipY;
 
     public PolyChunkMapScreen()
     {
@@ -86,6 +96,52 @@ public class PolyChunkMapScreen extends Screen
             cameraChunkX = mc.player.getX() / 16.0;
             cameraChunkZ = mc.player.getZ() / 16.0;
         }
+
+        // Send a request to the server to start sending chunk map data.
+        Services.NETWORK.sendToServer(new net.creeperhost.polylib.chunkmap.common.network.PolyChunkMapStartPayload(java.util.List.of(mc.level.dimension())));
+        
+        int btnWidth = 100;
+        int btnHeight = 20;
+        int startX = 5;
+        int startY = height - FOOTER_HEIGHT + 4;
+
+        addRenderableWidget(net.minecraft.client.gui.components.Button.builder(
+                net.minecraft.network.chat.Component.literal("Mode: " + PolyLibClient.chunkMapConfig.renderMode.name()),
+                btn -> {
+                    PolyLibClient.chunkMapConfig.renderMode = PolyLibClient.chunkMapConfig.renderMode == PolyChunkMapConfig.RenderMode.STATUS
+                            ? PolyChunkMapConfig.RenderMode.TICKETS : PolyChunkMapConfig.RenderMode.STATUS;
+                    btn.setMessage(net.minecraft.network.chat.Component.literal("Mode: " + PolyLibClient.chunkMapConfig.renderMode.name()));
+                }).bounds(startX, startY, btnWidth, btnHeight).build());
+
+        startX += btnWidth + 5;
+        addRenderableWidget(net.minecraft.client.gui.components.Button.builder(
+                net.minecraft.network.chat.Component.literal("Overlay: " + PolyLibClient.chunkMapConfig.minimapDisplayMode.name()),
+                btn -> {
+                    PolyChunkMapConfig.MinimapDisplayMode[] modes = PolyChunkMapConfig.MinimapDisplayMode.values();
+                    int next = (PolyLibClient.chunkMapConfig.minimapDisplayMode.ordinal() + 1) % modes.length;
+                    PolyLibClient.chunkMapConfig.minimapDisplayMode = modes[next];
+                    btn.setMessage(net.minecraft.network.chat.Component.literal("Overlay: " + PolyLibClient.chunkMapConfig.minimapDisplayMode.name()));
+                }).bounds(startX, startY, btnWidth + 20, btnHeight).build());
+
+        int yOffset = 5;
+        addRenderableWidget(net.minecraft.client.gui.components.Button.builder(
+                Component.literal("Minimap Zoom: " + String.format("%.1fx", zoom)),
+                btn -> {
+                    if (PolyLibClient.chunkMapConfig != null) {
+                        double nextZoom = PolyLibClient.chunkMapConfig.minimapZoom + 0.5;
+                        if (nextZoom > 3.0) nextZoom = 0.5;
+                        PolyLibClient.chunkMapConfig.minimapZoom = nextZoom;
+                        btn.setMessage(Component.literal("Minimap Zoom: " + String.format("%.1fx", nextZoom)));
+                    }
+                }
+        ).bounds(width - btnWidth - 10, yOffset, btnWidth, btnHeight).build());
+        yOffset += btnHeight + 4;
+        
+        addRenderableWidget(net.minecraft.client.gui.components.Button.builder(
+                Component.literal("Edit Overlay Pos"),
+                btn -> Minecraft.getInstance().setScreen(new PolyChunkMapEditOverlayScreen(this))
+        ).bounds(width - btnWidth - 10, yOffset, btnWidth, btnHeight).build());
+        yOffset += btnHeight + 4;
     }
 
     // ── Close ─────────────────────────────────────────────────────────────────
@@ -94,6 +150,9 @@ public class PolyChunkMapScreen extends Screen
     public void onClose()
     {
         Services.NETWORK.sendToServer(PolyChunkMapStopPayload.stopAll());
+        if (net.creeperhost.polylib.PolyLibClient.chunkMapConfigBuilder != null) {
+            net.creeperhost.polylib.PolyLibClient.chunkMapConfigBuilder.save();
+        }
         super.onClose();
     }
 
@@ -120,51 +179,8 @@ public class PolyChunkMapScreen extends Screen
         // ── Background
         gfx.fill(0, mapTop, width, mapBottom, COL_BG);
 
-        // ── Chunk rectangles
-        hoveredChunk = null;
-        for (PolyChunkMapData c : chunks.values())
-        {
-            int px = chunkToScreenX(c.position().x());
-            int pz = chunkToScreenY(c.position().z());
-            int size = Math.max(1, (int) zoom);
-
-            // clip to map area
-            if (px + size < 0 || px > width || pz + size < mapTop || pz > mapBottom)
-                continue;
-
-            int colour = colourForStatus(c.status());
-            gfx.fill(px, pz, px + size, pz + size, colour);
-
-            if (c.unloading())
-                gfx.fill(px, pz, px + size, pz + size, COL_UNLOADING_OVERLAY);
-
-            // Hover detection
-            if (mouseX >= px && mouseX < px + size && mouseY >= pz && mouseY < pz + size
-                    && mouseY >= mapTop && mouseY < mapBottom)
-            {
-                hoveredChunk = c;
-                tooltipX = mouseX;
-                tooltipY = mouseY;
-                // bright 1-px border
-                gfx.fill(px - 1, pz - 1,      px + size + 1, pz,          0xFFFFFFFF);
-                gfx.fill(px - 1, pz + size,    px + size + 1, pz + size + 1, 0xFFFFFFFF);
-                gfx.fill(px - 1, pz,            px,            pz + size,   0xFFFFFFFF);
-                gfx.fill(px + size, pz,         px + size + 1, pz + size,   0xFFFFFFFF);
-            }
-        }
-
-        // ── Player crosshair
-        if (mc.player != null)
-        {
-            int px = chunkToScreenX((int) Math.floor(mc.player.getX() / 16.0));
-            int pz = chunkToScreenY((int) Math.floor(mc.player.getZ() / 16.0));
-            if (pz >= mapTop && pz < mapBottom)
-            {
-                int sz = Math.max(1, (int) zoom);
-                gfx.fill(px - 2,      pz + sz / 2,     px + sz + 2,     pz + sz / 2 + 1, COL_PLAYER);
-                gfx.fill(px + sz / 2, pz - 2,          px + sz / 2 + 1, pz + sz + 2,     COL_PLAYER);
-            }
-        }
+        // ── Chunk Grid and Player
+        hoveredChunk = net.creeperhost.polylib.chunkmap.client.PolyChunkGridRenderer.renderGrid(gfx, chunks, zoom, cameraChunkX, cameraChunkZ, 0, mapTop, width, mapBottom, mouseX, mouseY, true);
 
         // ── Header bar
         gfx.fill(0, 0, width, HEADER_HEIGHT, COL_HEADER_BG);
@@ -174,29 +190,41 @@ public class PolyChunkMapScreen extends Screen
                 + "  Server: " + serverStatus
                 + "  Chunks: " + chunks.size()
                 + "  Zoom: " + String.format("%.0f", zoom) + "px"
-                + "  [Scroll] Zoom  [Drag] Pan  [Esc] Close";
+                + "  [Scroll] Zoom  [Drag] Pan  [T] Ticket Mode  [S] Status Mode  [Esc] Close";
         gfx.text(font, header, 4, (HEADER_HEIGHT - 8) / 2, COL_HEADER_TEXT, false);
 
         // ── Footer bar
         gfx.fill(0, mapBottom, width, height, COL_HEADER_BG);
 
+        // ── Render widgets (Options button)
+        super.extractRenderState(gfx, mouseX, mouseY, partialTick);
+
         // ── Tooltip (must be last so it renders on top)
         if (hoveredChunk != null)
-            renderChunkTooltip(gfx, hoveredChunk, tooltipX, tooltipY);
+            renderChunkTooltip(gfx, hoveredChunk, mouseX, mouseY, font);
     }
 
-    private void renderChunkTooltip(GuiGraphicsExtractor gfx, PolyChunkMapData c, int mx, int my)
+    private void renderChunkTooltip(GuiGraphicsExtractor gfx, PolyChunkMapData c, int mx, int my, net.minecraft.client.gui.Font font)
     {
-        List<String> lines = new ArrayList<>();
-        lines.add("Chunk " + c.position().x() + ", " + c.position().z());
-        lines.add("Status: " + c.status().name());
-        if (c.stage() != null)
-            lines.add("Stage:  " + c.stage().getName());
-        if (c.unloading())
-            lines.add("§cUnloading§r");
-        lines.add("Tickets: " + c.tickets().size());
-        for (PolyChunkTicket t : c.tickets())
-            lines.add("  " + PolyChunkMapCodecs.ticketTypeName(t.type()) + " lv=" + t.ticketLevel());
+        List<String> lines = new java.util.ArrayList<>();
+        lines.add(String.format("Chunk [%d, %d]", c.position().x(), c.position().z()));
+        lines.add("Stage: " + (c.stage() == null ? "None" : c.stage().getName()));
+
+        int statusLevel = c.statusLevel();
+        if (c.unloading()) {
+            lines.add(String.format("Unloading (Level %d)", statusLevel));
+        } else {
+            lines.add(String.format("Status: Level %d", statusLevel));
+        }
+
+        if (c.tickets().isEmpty()) {
+            lines.add("  No tickets");
+        } else {
+            for (PolyChunkTicket t : c.tickets()) {
+                String tName = net.creeperhost.polylib.chunkmap.common.data.PolyChunkMapCodecs.ticketTypeName(t.type());
+                lines.add(String.format("  %s (Lvl %d)", tName, t.ticketLevel()));
+            }
+        }
 
         int tw = lines.stream().mapToInt(font::width).max().orElse(0) + 8;
         int th = lines.size() * (font.lineHeight + 2) + 6;
@@ -204,28 +232,33 @@ public class PolyChunkMapScreen extends Screen
         int tx = Math.min(mx + 6, width  - tw - 2);
         int ty = Math.min(my + 6, height - th - 2);
 
+        gfx.pose().pushMatrix();
+        
         gfx.fill(tx - 1, ty - 1, tx + tw + 1, ty + th + 1, 0xFF000000);
         gfx.fill(tx, ty, tx + tw, ty + th, 0xC0111111);
 
         int lineY = ty + 3;
         for (String line : lines)
         {
-            gfx.text(font, line, tx + 4, lineY, 0xFFFFFF, false);
+            gfx.text(font, line, tx + 4, lineY, 0xFFFFFFFF, false);
             lineY += font.lineHeight + 2;
         }
+        
+        gfx.pose().popMatrix();
     }
+
 
     // ── Coordinate helpers ─────────────────────────────────────────────────────
 
     private int chunkToScreenX(int cx)
     {
-        return (int) ((cx - cameraChunkX) * zoom + width / 2.0);
+        return (int) Math.floor((cx - cameraChunkX) * zoom + width / 2.0);
     }
 
     private int chunkToScreenY(int cz)
     {
         int mapCentreY = HEADER_HEIGHT + (height - HEADER_HEIGHT - FOOTER_HEIGHT) / 2;
-        return (int) ((cz - cameraChunkZ) * zoom + mapCentreY);
+        return (int) Math.floor((cz - cameraChunkZ) * zoom + mapCentreY);
     }
 
     private double screenXToChunk(double sx)
@@ -240,6 +273,21 @@ public class PolyChunkMapScreen extends Screen
     }
 
     // ── Input ─────────────────────────────────────────────────────────────────
+
+    @Override
+    public boolean keyPressed(KeyEvent event)
+    {
+        if (PolyLibClient.chunkMapConfig != null) {
+            if (event.key() == org.lwjgl.glfw.GLFW.GLFW_KEY_T) {
+                PolyLibClient.chunkMapConfig.renderMode = PolyChunkMapConfig.RenderMode.TICKETS;
+                return true;
+            } else if (event.key() == org.lwjgl.glfw.GLFW.GLFW_KEY_S) {
+                PolyLibClient.chunkMapConfig.renderMode = PolyChunkMapConfig.RenderMode.STATUS;
+                return true;
+            }
+        }
+        return super.keyPressed(event);
+    }
 
     @Override
     public boolean mouseScrolled(double mx, double my, double scrollX, double scrollY)
@@ -306,4 +354,31 @@ public class PolyChunkMapScreen extends Screen
             case INACCESSIBLE   -> COL_INACCESSIBLE;
         };
     }
+
+    public static int colourForTickets(List<PolyChunkTicket> tickets)
+    {
+        if (tickets == null || tickets.isEmpty()) return COL_BG;
+        // Find the strongest ticket (lowest level)
+        PolyChunkTicket dominant = tickets.get(0);
+        for (PolyChunkTicket t : tickets) {
+            if (t.ticketLevel() < dominant.ticketLevel()) {
+                dominant = t;
+            }
+        }
+
+        String typeName = net.creeperhost.polylib.chunkmap.common.data.PolyChunkMapCodecs.ticketTypeName(dominant.type());
+        Identifier id = net.minecraft.resources.Identifier.tryParse(typeName);
+        if (id == null) return COL_TICKET_UNKNOWN;
+
+        return switch (id.getPath()) {
+            case "player" -> COL_TICKET_PLAYER;
+            case "player_spawn", "spawn_search" -> 0xFFBFFF00; // ChunkDebug colours
+            case "forced" -> COL_TICKET_FORCED;
+            case "ender_pearl" -> COL_TICKET_PEARL;
+            case "portal" -> COL_TICKET_PORTAL;
+            case "dragon" -> 0xFFCC00CC; // ChunkDebug colours
+            default -> COL_TICKET_UNKNOWN;
+        };
+    }
 }
+

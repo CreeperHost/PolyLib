@@ -25,7 +25,17 @@
     "MixinLevelRendererAllChangedNF",
     "MixinCapeLayerNF"
   ],
-  "server": [],
+  "server": [
+    "server.chunkmap.PolyServerLevelMixin",
+    "server.chunkmap.PolyChunkMapMixin",
+    "server.chunkmap.PolyChunkMapAccessor",
+    "server.chunkmap.PolyChunkHolderMixin",
+    "server.chunkmap.PolyServerChunkCacheMixin",
+    "server.chunkmap.PolyDistanceManagerAccessor",
+    "server.chunkmap.PolyTicketStorageMixin",
+    "server.chunkmap.PolyPlayerListMixin",
+    "server.chunkmap.PolyGameRulesBootstrapMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

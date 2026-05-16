@@ -59,13 +59,9 @@ public final class PolyChunkMapKeys
         }
     }
 
-    /**
-     * Opens the chunk-map screen, sending a subscription request to the server
-     * if access has not yet been granted.
-     */
     public static void open(Minecraft mc)
     {
-        if (!PolyChunkMapClient.isPermitted())
+        if (PolyChunkMapClient.isPermitted())
         {
             // Request chunk data for the current dimension
             Services.NETWORK.sendToServer(

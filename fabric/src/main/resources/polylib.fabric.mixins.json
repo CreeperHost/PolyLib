@@ -102,9 +102,21 @@
     "client.MixinScreenshotFabric",
     "client.MixinHeartTypeFabric",
     "client.MixinScreenCharTypedFabric",
-    "client.MixinAbstractContainerScreenFabric"
+    "client.MixinAbstractContainerScreenFabric",
+    "client.FabricDebugEntriesMixin",
+    "client.EntryMapAccessor"
   ],
-  "server": [],
+  "server": [
+    "server.chunkmap.PolyServerLevelMixin",
+    "server.chunkmap.PolyChunkMapMixin",
+    "server.chunkmap.PolyChunkMapAccessor",
+    "server.chunkmap.PolyChunkHolderMixin",
+    "server.chunkmap.PolyServerChunkCacheMixin",
+    "server.chunkmap.PolyDistanceManagerAccessor",
+    "server.chunkmap.PolyTicketStorageMixin",
+    "server.chunkmap.PolyPlayerListMixin",
+    "server.chunkmap.PolyGameRulesBootstrapMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

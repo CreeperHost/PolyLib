@@ -94,9 +94,12 @@ public class ConfigBuilder
     {
         try
         {
-            ConfigData data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
-            CONFIG_DATA.set(data);
+            ConfigData data = CONFIG_DATA.get();
+            if (data == null) data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
 
+            if (CONFIG_PATH.getParent() != null) {
+                CONFIG_PATH.getParent().toFile().mkdirs();
+            }
             FileWriter fileWriter = new FileWriter(CONFIG_PATH.toFile());
             fileWriter.write(saveConfig());
             fileWriter.close();
@@ -114,6 +117,9 @@ public class ConfigBuilder
             //            ConfigData data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
             CONFIG_DATA.set(data);
 
+            if (CONFIG_PATH.getParent() != null) {
+                CONFIG_PATH.getParent().toFile().mkdirs();
+            }
             FileWriter fileWriter = new FileWriter(CONFIG_PATH.toFile());
             fileWriter.write(saveConfig());
             fileWriter.close();

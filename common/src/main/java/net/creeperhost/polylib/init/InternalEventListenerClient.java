@@ -16,6 +16,7 @@ public class InternalEventListenerClient
     public static void init()
     {
         PolyScreenEvents.SCREEN_OPENED.register((mc, screen, width, height) -> ModularGuiInjector.initPost(screen));
+        PolyScreenEvents.SCREEN_CLOSING.register(ModularGuiInjector::clearGui);
         PolyClientTickEvents.CLIENT_TICK_END.register(client -> {
             ModularGuiInjector.tick(client);
             ConfigPanelRegistry.tickKeybinds();

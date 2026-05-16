@@ -16,4 +16,7 @@ public class PolyConfig extends ConfigData {
     @Comment ("Controls whether the keyboard shortcut for each registered config panel is enabled. Keys are mod IDs.")
     public java.util.Map<String, Boolean> configPanelKeybinds = new java.util.HashMap<>();
 
+    @Comment ("Force enables the Chunk Map feature even if no dependent mod requests it.")
+    public boolean forceEnableChunkMap = false;
+
 }

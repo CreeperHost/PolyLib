@@ -25,5 +25,8 @@ public class PolylibCommon
         Constants.LOG.info("Registering Common Config");
         configBuilder = new ConfigBuilder(Constants.MOD_ID + ".json", Services.PLATFORM.getConfigFolder().resolve(Constants.MOD_ID + ".json"), PolyConfig.class);
         configData = (PolyConfig) configBuilder.getConfigData();
+        if (configData.forceEnableChunkMap) {
+            PolyFeatures.enableChunkMap();
+        }
     }
 }
