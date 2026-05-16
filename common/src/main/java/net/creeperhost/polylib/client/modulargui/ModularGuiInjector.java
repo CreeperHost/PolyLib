@@ -40,7 +40,6 @@ public class ModularGuiInjector<T extends Screen> {
                 .orElse(null);
         if (key == null) return;
 
-        System.out.println("[ModularGuiInjector] Found key for screen: " + screen.getClass().getName());
         activeGui = new ModularGui(providerMap.get(key).apply(unsafeCast(screen)));
         activeGui.setScreen(screen);
         activeGui.onScreenInit(Minecraft.getInstance(), Minecraft.getInstance().font, screen.width, screen.height);
@@ -58,13 +57,8 @@ public class ModularGuiInjector<T extends Screen> {
         return (T) object;
     }
 
-    private static boolean loggedRender = false;
     public static void renderPost(Screen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         if (activeGui == null) return;
-        if (!loggedRender) {
-            System.out.println("[ModularGuiInjector] Rendering activeGui!");
-            loggedRender = true;
-        }
         GuiRender render = new GuiRender(graphics);
 //        if (screen instanceof AbstractContainerScreen<?>) {
 //            render.pose().translate(0, 0, 275); //Ensure we render on top of inventory stacks.
