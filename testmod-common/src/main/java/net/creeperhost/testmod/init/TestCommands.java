@@ -1,16 +1,29 @@
 package net.creeperhost.testmod.init;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import net.creeperhost.polylib.chat.ChatChannel;
+import net.creeperhost.polylib.chat.ChatMember;
+import net.creeperhost.polylib.chat.ChatRouter;
+import net.creeperhost.polylib.chat.RichChatMessage;
 import net.creeperhost.polylib.event.events.server.PolyServerCommandEvents;
+import net.creeperhost.polylib.inventory.power.EnergyManager;
+import net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem;
+import net.creeperhost.polylib.player.serverdata.offline.OfflinePlayerDataAccessor;
+import net.creeperhost.testmod.TestModCommon;
+import net.creeperhost.testmod.blocks.mirror.MirrorContainer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -27,6 +40,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
+import java.util.UUID;
 import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
 /**
@@ -91,6 +105,29 @@ public final class TestCommands
                 .then(Commands.literal("multiplace").executes(TestCommands::testMultiPlace))
                 .then(Commands.literal("brewing").executes(TestCommands::testBrewing))
                 .then(Commands.literal("help").executes(TestCommands::testHelp))
+                // PR10: energy query
+                .then(Commands.literal("energy").executes(TestCommands::testEnergy))
+                // PR12: player inventory mirror container
+                .then(Commands.literal("mirror").executes(TestCommands::testMirror))
+                // PR17: chunk map screen hint
+                .then(Commands.literal("chunkmap").executes(TestCommands::testChunkMap))
+                // PR18: offline player data
+                .then(Commands.literal("offlinedata")
+                        .then(Commands.argument("player", StringArgumentType.word())
+                                .executes(TestCommands::testOfflineData)))
+                // PR22: chat system
+                .then(Commands.literal("chat")
+                        .then(Commands.literal("list").executes(TestCommands::testChatList))
+                        .then(Commands.literal("join")
+                                .then(Commands.argument("channel", StringArgumentType.word())
+                                        .executes(TestCommands::testChatJoin)))
+                        .then(Commands.literal("leave")
+                                .then(Commands.argument("channel", StringArgumentType.word())
+                                        .executes(TestCommands::testChatLeave)))
+                        .then(Commands.literal("say")
+                                .then(Commands.argument("channel", StringArgumentType.word())
+                                        .then(Commands.argument("message", StringArgumentType.greedyString())
+                                                .executes(TestCommands::testChatSay)))))
         );
     }
 
@@ -957,6 +994,226 @@ public final class TestCommands
         src.sendSuccess(() -> Component.literal("  §fTier 1: §7living, block, effects, entity, explosion, conversion, tick, spawn, sleep, bow, xp"), false);
         src.sendSuccess(() -> Component.literal("  §fTier 3+: §7damage, fall, attack, equip, projectile, lightning, teleport, breed, split, piston, noteblock, fluid, portal, gamemode, setspawn, item, useitem, multiplace, brewing"), false);
         src.sendSuccess(() -> Component.literal("  §fInfo: §7passive (auto-firing events), manual (gameplay-required events), help"), false);
+        src.sendSuccess(() -> Component.literal("  §fPR extras: §7energy, mirror, chunkmap, offlinedata <player>, chat list/join/leave/say"), false);
+        return 1;
+    }
+
+    // =========================================================================
+    // PR10 — Energy power
+    // =========================================================================
+
+    // ----- /polytest energy -----
+    // Demonstrates EnergyManager.getHandler(ItemStack) — hold an energy item
+
+    private static int testEnergy(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            ServerPlayer player = src.getPlayerOrException();
+            ItemStack held = player.getMainHandItem();
+            IPolyEnergyStorageItem handler = EnergyManager.getHandler(held);
+            if (handler == null)
+            {
+                src.sendFailure(Component.literal("[polytest] energy: hold an item that implements IPolyEnergyStorageItem (or PolyEnergyItem)"));
+                return 0;
+            }
+            long stored = handler.getEnergyStored();
+            long max    = handler.getMaxEnergyStored();
+            src.sendSuccess(() -> Component.literal("[polytest] energy: " + stored + " / " + max + " FE — EnergyManager.getHandler() OK"), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] energy: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // =========================================================================
+    // PR12 — PlayerInventoryMirrorContainer
+    // =========================================================================
+
+    // ----- /polytest mirror -----
+    // Opens the MirrorContainer screen — all 41 player slots backed by PlayerInventoryMirrorContainer
+
+    private static int testMirror(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            ServerPlayer player = src.getPlayerOrException();
+            player.openMenu(new SimpleMenuProvider(
+                    (id, inv, p) -> new MirrorContainer(id, inv),
+                    Component.literal("Mirror Test")));
+            src.sendSuccess(() -> Component.literal("[polytest] mirror: opened — all 41 slots backed by PlayerInventoryMirrorContainer"), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] mirror: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // =========================================================================
+    // PR17 — PolyChunkMapScreen
+    // =========================================================================
+
+    // ----- /polytest chunkmap -----
+    // PolyChunkMapScreen is a client-only GUI; this command prints the keybind hint
+
+    private static int testChunkMap(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        src.sendSuccess(() -> Component.literal("[polytest] chunkmap: Press KP_1 (numpad 1) to open PolyChunkMapScreen on the client"), false);
+        src.sendSuccess(() -> Component.literal("The screen shows loaded/tracked chunks around the player in real time"), false);
+        return 1;
+    }
+
+    // =========================================================================
+    // PR18 — OfflinePlayerDataAccessor
+    // =========================================================================
+
+    // ----- /polytest offlinedata <player> -----
+    // Reads TICKS_PLAYED for a named player (works whether online or offline)
+
+    private static int testOfflineData(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        String name = StringArgumentType.getString(ctx, "player");
+        MinecraftServer server = ctx.getSource().getServer();
+
+        // Try online players first
+        ServerPlayer online = server.getPlayerList().getPlayers().stream()
+                .filter(p -> p.getScoreboardName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+
+        if (online != null)
+        {
+            Integer ticks = OfflinePlayerDataAccessor.get(server, online.getUUID(), TestModCommon.TICKS_PLAYED);
+            src.sendSuccess(() -> Component.literal("[polytest] offlinedata: " + name + " (online) TICKS_PLAYED=" + ticks), false);
+            return 1;
+        }
+
+        // Try usercache for offline players
+        server.getProfileCache().get(name).ifPresentOrElse(
+                profile ->
+                {
+                    Integer ticks = OfflinePlayerDataAccessor.get(server, profile.getId(), TestModCommon.TICKS_PLAYED);
+                    src.sendSuccess(() -> Component.literal("[polytest] offlinedata: " + name + " (offline) TICKS_PLAYED=" + ticks), false);
+                },
+                () -> src.sendFailure(Component.literal("[polytest] offlinedata: player '" + name + "' not found in usercache"))
+        );
+        return 1;
+    }
+
+    // =========================================================================
+    // PR22 — ChatRouter / ChatChannel
+    // =========================================================================
+
+    // ----- /polytest chat list -----
+    // Lists all currently registered chat channels and their member counts
+
+    private static int testChatList(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        java.util.Collection<ChatChannel> channels = ChatRouter.getInstance().getActiveChannels();
+        src.sendSuccess(() -> Component.literal("[polytest] chat: " + channels.size() + " channel(s) registered:"), false);
+        if (channels.isEmpty())
+        {
+            src.sendSuccess(() -> Component.literal("  (none — use /polytest chat join <channel> to create one)"), false);
+        }
+        for (ChatChannel ch : channels)
+        {
+            src.sendSuccess(() -> Component.literal("  - " + ch.getChannelId() + " (" + ch.getMembers().size() + " members)"), false);
+        }
+        return 1;
+    }
+
+    // ----- /polytest chat join <channel> -----
+    // Registers channel if absent, then adds the player as a member
+
+    private static int testChatJoin(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            String channelName = StringArgumentType.getString(ctx, "channel");
+            Identifier id = Identifier.fromNamespaceAndPath("testmod", channelName);
+            ServerPlayer player = src.getPlayerOrException();
+
+            ChatChannel ch = ChatRouter.getInstance().getChannel(id);
+            if (ch == null)
+            {
+                ch = new ChatChannel(id, Component.literal(channelName), true);
+                ChatRouter.getInstance().registerChannel(ch);
+                src.sendSuccess(() -> Component.literal("[polytest] chat join: created channel " + id), false);
+            }
+            ch.addMember(new ChatMember(player.getUUID(), player.getDisplayName(), null, true));
+            final ChatChannel finalCh = ch;
+            src.sendSuccess(() -> Component.literal("[polytest] chat join: " + player.getScoreboardName() + " joined " + finalCh.getChannelId()), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] chat join: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // ----- /polytest chat leave <channel> -----
+    // Removes the player from the named channel
+
+    private static int testChatLeave(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            String channelName = StringArgumentType.getString(ctx, "channel");
+            Identifier id = Identifier.fromNamespaceAndPath("testmod", channelName);
+            ServerPlayer player = src.getPlayerOrException();
+
+            ChatChannel ch = ChatRouter.getInstance().getChannel(id);
+            if (ch == null)
+            {
+                src.sendFailure(Component.literal("[polytest] chat leave: channel '" + channelName + "' not found"));
+                return 0;
+            }
+            ch.removeMember(player.getUUID());
+            src.sendSuccess(() -> Component.literal("[polytest] chat leave: " + player.getScoreboardName() + " left " + id), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] chat leave: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // ----- /polytest chat say <channel> <message> -----
+    // Routes a RichChatMessage to the named channel via ChatRouter
+
+    private static int testChatSay(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            String channelName = StringArgumentType.getString(ctx, "channel");
+            String message     = StringArgumentType.getString(ctx, "message");
+            Identifier id      = Identifier.fromNamespaceAndPath("testmod", channelName);
+            ServerPlayer player = src.getPlayerOrException();
+
+            boolean routed = ChatRouter.getInstance().routeMessage(id,
+                    RichChatMessage.create(Component.literal(message), player.getDisplayName()));
+            if (!routed)
+            {
+                src.sendFailure(Component.literal("[polytest] chat say: channel '" + channelName + "' not found — join it first"));
+                return 0;
+            }
+            src.sendSuccess(() -> Component.literal("[polytest] chat say: message sent to " + id), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] chat say: " + e.getMessage()));
+        }
         return 1;
     }
 }

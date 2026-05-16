@@ -1,5 +1,10 @@
 package net.creeperhost.testmod.init;
 
+import net.creeperhost.polylib.chat.ChatChannel;
+import net.creeperhost.polylib.chat.ChatRouter;
+import net.creeperhost.polylib.chat.client.FloatingChatWindow;
+import net.creeperhost.polylib.client.modulargui.ModularGuiScreen;
+import net.creeperhost.polylib.client.screen.chunkmap.PolyChunkMapScreen;
 import net.creeperhost.polylib.event.events.client.PolyCameraEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientBlockEntityEvents;
 import net.creeperhost.polylib.event.events.client.PolyClientChunkEvents;
@@ -16,6 +21,12 @@ import net.creeperhost.polylib.event.events.client.PolyRenderEvents;
 import net.creeperhost.polylib.event.events.client.PolyRenderStateEvents;
 import net.creeperhost.polylib.event.events.client.PolyTooltipEvents;
 import net.creeperhost.polylib.event.events.server.PolyRegistryEvents;
+import net.creeperhost.testmod.screens.ScreenCanvasDemo;
+import net.creeperhost.testmod.screens.ScreenFuzzySearchDemo;
+import net.creeperhost.testmod.screens.ScreenNodeGraphDemo;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
+import org.lwjgl.glfw.GLFW;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -103,6 +114,66 @@ public class TestClientEvents
         {
             if (action == 1) // 1 = press
                 LOGGER.info("[TestMod] INPUT_KEY: key={} scan={} mods={}", key, scanCode, modifiers);
+        });
+
+        // ── Demo screen openers (numpad keys, only when no screen is active) ───
+        // KP_1 → Chunk Map Screen (PR17)
+        // KP_2 → Fuzzy Search Demo (PR19)
+        // KP_3 → Pannable Canvas + Window Demo (PR20)
+        // KP_4 → Node Graph Demo (PR21)
+        // KP_5 → Chat Window Demo (PR22)
+        PolyInputEvents.INPUT_KEY.register((key, scanCode, action, modifiers) ->
+        {
+            if (action != 1) return; // press only
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.screen != null) return; // never steal input from an open screen
+
+            if (key == GLFW.GLFW_KEY_KP_1)
+            {
+                // PR17: open PolyChunkMapScreen (chunk map viewer)
+                LOGGER.info("[TestMod] Opening PolyChunkMapScreen via KP_1");
+                mc.setScreen(new PolyChunkMapScreen());
+            }
+            else if (key == GLFW.GLFW_KEY_KP_2)
+            {
+                // PR19: open GuiFuzzySearch demo
+                LOGGER.info("[TestMod] Opening ScreenFuzzySearchDemo via KP_2");
+                mc.setScreen(new ScreenFuzzySearchDemo());
+            }
+            else if (key == GLFW.GLFW_KEY_KP_3)
+            {
+                // PR20: open GuiPannableCanvas + GuiWindow demo
+                LOGGER.info("[TestMod] Opening ScreenCanvasDemo via KP_3");
+                mc.setScreen(new ScreenCanvasDemo());
+            }
+            else if (key == GLFW.GLFW_KEY_KP_4)
+            {
+                // PR21: open GuiNodeCanvas demo
+                LOGGER.info("[TestMod] Opening ScreenNodeGraphDemo via KP_4");
+                mc.setScreen(new ScreenNodeGraphDemo());
+            }
+            else if (key == GLFW.GLFW_KEY_KP_5)
+            {
+                // PR22: open FloatingChatWindow for the testmod channel
+                Identifier testChannelId = Identifier.fromNamespaceAndPath("testmod", "test_channel");
+                ChatChannel channel = ChatRouter.getInstance().getChannel(testChannelId);
+                if (channel != null)
+                {
+                    LOGGER.info("[TestMod] Opening FloatingChatWindow via KP_5");
+                    mc.setScreen(new ModularGuiScreen(gui -> {
+                        gui.initFullscreenGui();
+                        FloatingChatWindow win = new FloatingChatWindow(gui.getRoot(), channel);
+                        win.constrain(net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.LEFT,   net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal(40))
+                           .constrain(net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.TOP,    net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal(40))
+                           .constrain(net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.WIDTH,  net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal(280))
+                           .constrain(net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.HEIGHT, net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint.literal(200));
+                    }));
+                }
+                else
+                {
+                    LOGGER.warn("[TestMod] KP_5: chat channel 'testmod:test_channel' not found — was TestModClientCommon.init() called?");
+                }
+            }
         });
 
         // Mouse button: only log press (action==1)

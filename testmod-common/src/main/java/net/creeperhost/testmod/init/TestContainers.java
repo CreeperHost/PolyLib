@@ -9,6 +9,8 @@ import net.minecraft.world.inventory.MenuType;
 
 import java.util.function.Supplier;
 
+import net.creeperhost.testmod.blocks.mirror.MirrorContainer;
+
 public class TestContainers
 {
     public static final PolyRegistry<MenuType<?>> CONTAINERS = PolyRegistry.create(Registries.MENU, TestModCommon.MOD_ID);
@@ -17,6 +19,9 @@ public class TestContainers
 
     public static final Supplier<MenuType<PowerContainer>> CREATIVE_POWER_CONTAINER =
             CONTAINERS.registerMenu("creative_power_container", PowerContainer::new);
+
+    public static final Supplier<MenuType<MirrorContainer>> MIRROR_CONTAINER =
+            CONTAINERS.registerMenu("mirror_container", MirrorContainer::new);
 
 
 
