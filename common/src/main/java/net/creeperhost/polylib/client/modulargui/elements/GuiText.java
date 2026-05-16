@@ -217,7 +217,7 @@ public class GuiText extends GuiElement<GuiText> implements ForegroundRender {
             stack.pushMatrix();
             render.translate(xMin() + rotatePoint.x(), yMin() + rotatePoint.y());
 //            stack.mulPose(Axis.ZP.rotationDegrees(rotation.get().floatValue()));
-            stack.rotate(rotation.get().floatValue());
+            stack.rotate((float) Math.toRadians(rotation.get().floatValue()));
             render.translate(-xMin() - rotatePoint.x(), -yMin() - rotatePoint.y());
         }
 

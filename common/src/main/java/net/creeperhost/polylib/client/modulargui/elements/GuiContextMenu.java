@@ -30,6 +30,9 @@ public class GuiContextMenu extends GuiElement<GuiContextMenu> {
     private boolean closeOnOutsideClick = true;
     private boolean actionOnClick = false;
     private boolean pressed = false;
+    // Sub-menu support
+    private final Map<Supplier<Component>, GuiContextMenu> subMenus = new LinkedHashMap<>();
+    private GuiContextMenu openSubMenu = null;
 
     public GuiContextMenu(ModularGui gui) {
         super(gui.getRoot());
@@ -86,6 +89,18 @@ public class GuiContextMenu extends GuiElement<GuiContextMenu> {
         return addOption(label, () -> List.of(tooltip), action);
     }
 
+    /**
+     * Adds a menu item that opens a child context menu on hover.
+     * The label has " ▶" appended automatically.
+     */
+    public GuiContextMenu addSubMenu(Supplier<Component> label, GuiContextMenu subMenu) {
+        Supplier<Component> labelWithArrow = () -> label.get().copy().append(" ▶");
+        subMenus.put(labelWithArrow, subMenu);
+        options.put(labelWithArrow, () -> {});
+        rebuildButtons();
+        return this;
+    }
+
     private void rebuildButtons() {
         buttons.forEach(this::removeChild);
         buttons.clear();
@@ -113,7 +128,56 @@ public class GuiContextMenu extends GuiElement<GuiContextMenu> {
             buttons.add(button);
             height += button.ySize();
         }
+        // Reset open sub-menu when buttons are rebuilt
+        closeOpenSubMenu();
         constrain(HEIGHT, literal(height + 3));
+    }
+
+    @Override
+    public void tick(double mouseX, double mouseY) {
+        super.tick(mouseX, mouseY);
+        // Check which sub-menu button is hovered and open/close accordingly
+        for (int i = 0; i < buttons.size(); i++) {
+            GuiButton btn = buttons.get(i);
+            GuiContextMenu sub = null;
+            // Find the label for this button index
+            int idx = 0;
+            for (Supplier<Component> key : subMenus.keySet()) {
+                // options has all labels; buttons are in insertion order
+                // Match by index in the options map
+                if (idx == i) { sub = subMenus.get(key); break; }
+                idx++;
+            }
+            // Actually correlate by checking each option key order
+            // Rebuild a lookup: buttons index -> sub
+            break; // handled below
+        }
+        // Simpler: iterate options in order, track index
+        int i = 0;
+        for (Supplier<Component> key : options.keySet()) {
+            GuiContextMenu sub = subMenus.get(key);
+            if (sub != null && i < buttons.size()) {
+                GuiButton btn = buttons.get(i);
+                if (btn.isMouseOver() && openSubMenu != sub) {
+                    closeOpenSubMenu();
+                    openSubMenu = sub;
+                    double subX = xMin() + xSize();
+                    double subY = yMin() + (btn.yMin() - yMin());
+                    sub.setNormalizedPos(subX, subY);
+                    getModularGui().getRoot().addChild(sub);
+                }
+            } else if (sub == null && i < buttons.size() && buttons.get(i).isMouseOver() && openSubMenu != null) {
+                closeOpenSubMenu();
+            }
+            i++;
+        }
+    }
+
+    private void closeOpenSubMenu() {
+        if (openSubMenu != null) {
+            try { getModularGui().getRoot().removeChild(openSubMenu); } catch (Exception ignored) {}
+            openSubMenu = null;
+        }
     }
 
     @Override
@@ -152,6 +216,7 @@ public class GuiContextMenu extends GuiElement<GuiContextMenu> {
     }
 
     public void close() {
+        closeOpenSubMenu();
         getParent().removeChild(this);
     }
 
