@@ -21,8 +21,10 @@ public class TestItems
 
     public static final Supplier<Item> POWERED_ITEM = ITEMS.registerItem("powered_item", "Powered Item", ItemPowered::new);
 
+
     public static final Supplier<Item> TEST_BLOCK = ITEMS.registerItem("test_block", "Test Block", props -> new BlockItem(TestBlocks.TEST_BLOCK.get(), props));
     public static final Supplier<Item> CREATIVE_POWER_BLOCK_ITEM = ITEMS.registerItem("creative_power_blockitem", "Creative Power block", props -> new BlockItem(TestBlocks.CREATIVE_POWER_BLOCK.get(), props));
+    public static final Supplier<Item> MULTIBLOCK_ITEM = ITEMS.registerItem("multiblock_test_block", "Multiblock block", props -> new BlockItem(TestBlocks.MULTIBLOCK_BLOCK.get(), props));
 
     public static void init() {
         ITEMS.init();

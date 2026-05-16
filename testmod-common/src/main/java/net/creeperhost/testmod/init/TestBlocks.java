@@ -6,6 +6,8 @@ import net.creeperhost.testmod.blocks.creativepower.CreativePowerBlock;
 import net.creeperhost.testmod.blocks.creativepower.CreativePowerBlockEntity;
 import net.creeperhost.testmod.blocks.inventorytestblock.BlockEntityInventoryTest;
 import net.creeperhost.testmod.blocks.inventorytestblock.BlockInventoryTest;
+import net.creeperhost.testmod.blocks.multiblock.BlockTestMultiblockBlock;
+import net.creeperhost.testmod.blocks.multiblock.TestMultiBlockBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,9 +26,12 @@ public class TestBlocks {
 
 
     public static final Supplier<Block> CREATIVE_POWER_BLOCK = BLOCKS.registerBlock("creative_power", "Creative Power Block", CreativePowerBlock::new);
-
     public static final Supplier<BlockEntityType<CreativePowerBlockEntity>> CREATIVE_ENERGY_BLOCK_TILE = BLOCK_ENTITIES.register("creative_power_tile",
             () -> new BlockEntityType<>(CreativePowerBlockEntity::new, Set.of(CREATIVE_POWER_BLOCK.get())));
+
+    public static final Supplier<Block> MULTIBLOCK_BLOCK = BLOCKS.registerBlock("multiblock_test_block", "Multiblock Block", BlockTestMultiblockBlock::new);
+    public static final Supplier<BlockEntityType<TestMultiBlockBlockEntity>> MULTIBLOCK_TEST_TILE = BLOCK_ENTITIES.register("multiblock_tile",
+            () -> new BlockEntityType<>(TestMultiBlockBlockEntity::new, Set.of(MULTIBLOCK_BLOCK.get())));
 
     public static void init() {
         BLOCKS.init();

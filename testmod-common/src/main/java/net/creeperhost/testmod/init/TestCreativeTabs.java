@@ -23,6 +23,7 @@ public class TestCreativeTabs {
                 output.accept(TestItems.TEST_BLOCK.get());
                 output.accept(TestItems.CREATIVE_POWER_BLOCK_ITEM.get());
                 output.accept(TestItems.POWERED_ITEM.get());
+                output.accept(TestItems.MULTIBLOCK_ITEM.get());
             }
     );
 
