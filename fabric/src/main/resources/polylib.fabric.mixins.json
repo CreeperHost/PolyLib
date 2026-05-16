@@ -84,10 +84,8 @@
     "MixinMobSpawnContextFabric"
   ],
   "client": [
-    "AtlasManagerMixin",
     "FabricClientBlockBreakBeforeMixin",
     "FabricClientBlockBreakCanceledMixin",
-    "TextureAtlasMixin",
     "client.FabricKeyInputMixin",
     "client.FabricMouseInputMixin",
     "client.MixinGameRendererRenderStartFabric",

@@ -1,9 +1,7 @@
 package net.creeperhost.polylib.client.modulargui.sprite;
 
 import net.creeperhost.polylib.Constants;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.Identifier;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -25,15 +23,8 @@ import java.util.function.Supplier;
  */
 public class PolyTextures {
 
-    public static final Identifier TEXTURE_ID = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/atlas/gui.png");
-    public static final Identifier DEFINITION_LOCATION = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "gui");
-    private static TextureAtlas ATLAS;
+    public static final Identifier TEXTURE_ID = Identifier.parse("minecraft:gui");
     private static final Map<String, Material> MATERIAL_CACHE = new HashMap<>();
-
-
-    public static void setAtlas(TextureAtlas atlas) {
-        ATLAS = atlas;
-    }
 
 
     /**
@@ -56,15 +47,7 @@ public class PolyTextures {
         return () -> get(texture.get());
     }
 
-    /**
-     * Use this to retrieve a new uncached material for the specified gui texture.
-     * Feel free to hold onto the returned material.
-     * Storing it somewhere is more efficient than recreating it every render frame.
-     *
-     * @param texture The texture path relative to "modid:gui/"
-     * @return A new Material for the specified gui texture.
-     */
     public static Material getUncached(String texture) {
-        return new Material(ATLAS.location(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "gui/" + texture), ATLAS::getSprite);
+        return new Material(TEXTURE_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "gui/" + texture), id -> net.minecraft.client.Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TEXTURE_ID).getSprite(id));
     }
 }
