@@ -93,6 +93,7 @@ public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInv
 
     @Override
     public Container getContainer(@org.jetbrains.annotations.Nullable Direction side) {
+        if (side == Direction.DOWN) return outputInv;
         return this.simpleItemInventory;
     }
 
