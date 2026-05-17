@@ -4,22 +4,46 @@ import net.creeperhost.polylib.client.modulargui.lib.container.DataSync;
 import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.containers.DataManagerContainer;
 import net.creeperhost.polylib.containers.ModularGuiContainerMenu;
+import net.creeperhost.polylib.containers.network.ContainerSyncProtocol;
 import net.creeperhost.polylib.containers.slots.PolySlot;
 import net.creeperhost.polylib.data.DataManagerBlock;
 import net.creeperhost.polylib.data.serializable.ByteData;
 import net.creeperhost.polylib.data.serializable.IntData;
+import net.creeperhost.testmod.TestModCommon;
 import net.creeperhost.testmod.init.TestContainers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ContainerInventoryTest extends ModularGuiContainerMenu implements DataManagerContainer
 {
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * Tests server→client typed sync: server sends an energy snapshot string on open;
+     * client logs receipt and bounces it back via CLIENT_ECHO.
+     */
+    public static final ContainerSyncProtocol.SyncPayloadType<String> SERVER_HELLO =
+            new ContainerSyncProtocol.SyncPayloadType<>(
+                    Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "container_sync_test/server_hello"),
+                    ByteBufCodecs.STRING_UTF8.cast());
+
+    /**
+     * Tests client→server typed sync: client echoes the server hello string back.
+     */
+    public static final ContainerSyncProtocol.SyncPayloadType<String> CLIENT_ECHO =
+            new ContainerSyncProtocol.SyncPayloadType<>(
+                    Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "container_sync_test/client_echo"),
+                    ByteBufCodecs.STRING_UTF8.cast());
     public final BlockEntityInventoryTest blockEntity;
     public final SlotGroup main = createSlotGroup(0, 1, 3); //zone id is 0, Quick move to zone 1, then 3
     public final SlotGroup hotBar = createSlotGroup(0, 1, 3);
@@ -46,6 +70,14 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
         progressSync = new DataSync<>(this, new ByteData(), () -> (byte) blockEntity.progress);
         energy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getEnergyStored());
         maxEnergy = new DataSync<>(this, new IntData(), () -> (int) blockEntity.energyContainer.getMaxEnergyStored());
+
+        // ContainerSyncProtocol test: client receives SERVER_HELLO and bounces it back as CLIENT_ECHO
+        syncProtocol.registerClientHandler(SERVER_HELLO, (player, msg) -> {
+            LOGGER.info("[ContainerSyncTest] Client received SERVER_HELLO: '{}'", msg);
+            syncProtocol.sendToServer(containerId, CLIENT_ECHO, "echo: " + msg);
+        });
+        syncProtocol.registerServerHandler(CLIENT_ECHO, (player, msg) ->
+                LOGGER.info("[ContainerSyncTest] Server received CLIENT_ECHO from {}: '{}'", player.getName().getString(), msg));
 
         main.addPlayerMain(inventory);
         hotBar.addPlayerBar(inventory);
