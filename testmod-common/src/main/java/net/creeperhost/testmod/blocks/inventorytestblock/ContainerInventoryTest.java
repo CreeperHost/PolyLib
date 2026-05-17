@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -45,6 +46,7 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
                     Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "container_sync_test/client_echo"),
                     ByteBufCodecs.STRING_UTF8.cast());
     public final BlockEntityInventoryTest blockEntity;
+    private boolean initialSyncSent = false;
     public final SlotGroup main = createSlotGroup(0, 1, 3); //zone id is 0, Quick move to zone 1, then 3
     public final SlotGroup hotBar = createSlotGroup(0, 1, 3);
     public final SlotGroup armor = createSlotGroup(1, 3, 0); //zone id is 1, Quick move to zone 3, then 0
@@ -87,6 +89,17 @@ public class ContainerInventoryTest extends ModularGuiContainerMenu implements D
 
         machineInputs.addSlots(1, 0, index -> new PolySlot(blockEntity.simpleItemInventory, index));
         machineOutputs.addAllSlots(blockEntity.getOutputContainer(), (container, integer) -> new PolySlot(container, integer).output());
+    }
+
+    @Override
+    public void broadcastChanges() {
+        super.broadcastChanges();
+        if (!initialSyncSent && inventory.player instanceof ServerPlayer serverPlayer) {
+            initialSyncSent = true;
+            String hello = "energy=" + (int) blockEntity.energyContainer.getEnergyStored() + "/" + (int) blockEntity.energyContainer.getMaxEnergyStored();
+            LOGGER.info("[ContainerSyncTest] Server sending SERVER_HELLO: '{}' containerId={}", hello, containerId);
+            syncProtocol.sendToClient(serverPlayer, containerId, SERVER_HELLO, hello);
+        }
     }
 
     @Override

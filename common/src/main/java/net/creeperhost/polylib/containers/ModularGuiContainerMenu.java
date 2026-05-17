@@ -149,7 +149,7 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      */
     public void handlePacketFromClient(Player player, int packetId, RegistryFriendlyByteBuf packet) {
         if (packetId == 254) {
-            syncProtocol.handleClientPacket(player, packet);
+            syncProtocol.handleServerPacket(player, packet);
         }
     }
 
@@ -169,7 +169,7 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      */
     public void handlePacketFromServer(Player player, int packetId, RegistryFriendlyByteBuf packet) {
         if (packetId == 254) {
-            syncProtocol.handleServerPacket(player, packet);
+            syncProtocol.handleClientPacket(player, packet);
             return;
         }
         if (packetId == 255) {
