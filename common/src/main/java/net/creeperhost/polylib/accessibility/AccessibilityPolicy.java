@@ -16,8 +16,8 @@ public enum AccessibilityPolicy
      * Server configuration may clamp or override the player's preference at runtime.
      * Use for purely cosmetic or input-mode toggles.
      * <p>
-     * This policy can be upgraded to {@link #PLAYER_OVERRIDES_SERVER} at runtime by setting
-     * {@code radicalAccessibility = true} in {@code polylib.json5}.
+     * Note: radical accessibility is always active in PolyLib, so in practice
+     * all preferences are treated as {@link #PLAYER_OVERRIDES_SERVER}.
      */
     RESPECTS_SERVER_CONFIG
 }

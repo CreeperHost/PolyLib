@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.accessibility;
 
-import net.creeperhost.polylib.PolylibCommon;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.options.AccessibilityOptionsScreen;
 
@@ -99,39 +98,27 @@ public final class AccessibilityOptionsRegistry
     }
 
     /**
-     * Returns the effective policy for the given key, taking into account
-     * {@code PolyConfig.radicalAccessibility}.
+     * Returns the effective policy for the given key.
      * <p>
-     * When {@code radicalAccessibility} is enabled, all entries are treated as
-     * {@link AccessibilityPolicy#PLAYER_OVERRIDES_SERVER} regardless of registration.
+     * Radical accessibility is always active — all registered preferences
+     * are treated as {@link AccessibilityPolicy#PLAYER_OVERRIDES_SERVER}
+     * so servers cannot override a player's accessibility choices.
      */
     public static AccessibilityPolicy effectivePolicy(String key)
     {
-        if (PolylibCommon.configData != null && PolylibCommon.configData.radicalAccessibility)
-        {
-            return AccessibilityPolicy.PLAYER_OVERRIDES_SERVER;
-        }
-        for (Entry e : ENTRIES)
-        {
-            if (e.key().equals(key)) return e.policy();
-        }
         return AccessibilityPolicy.PLAYER_OVERRIDES_SERVER;
     }
 
     /**
-     * Returns all registered keys whose effective policy is {@link AccessibilityPolicy#PLAYER_OVERRIDES_SERVER}.
-     * Used by the server-side handler to decide which preference values to accept unconditionally.
+     * Returns all registered keys. Radical accessibility is always active,
+     * so all keys are synced — the player's value is always authoritative.
      */
     public static Set<String> getServerSyncedKeys()
     {
         Set<String> keys = new LinkedHashSet<>();
-        boolean radical = PolylibCommon.configData != null && PolylibCommon.configData.radicalAccessibility;
         for (Entry e : ENTRIES)
         {
-            if (radical || e.policy() == AccessibilityPolicy.PLAYER_OVERRIDES_SERVER)
-            {
-                keys.add(e.key());
-            }
+            keys.add(e.key());
         }
         return keys;
     }
