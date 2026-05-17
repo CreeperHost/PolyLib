@@ -11,6 +11,9 @@ import net.creeperhost.polylib.player.settings.PlayerClientSettingsStore;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsType;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +21,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -188,6 +192,32 @@ public class FabricPlayerDataHelper implements IPlayerDataHelper
         if (attachment == null) return;  // type registered after Fabric AttachmentRegistry locked — can't lazy-load
         T value = player.getAttached(attachment);
         if (value != null) store.load(type, value);
+    }
+
+    // Fabric stores AttachmentType values in the player .dat file under "fabric:attachments"
+    private static final String FABRIC_ATTACHMENTS_KEY = "fabric:attachments";
+
+    @Override
+    public <T> Optional<T> readOfflineServerData(CompoundTag playerNbt, PlayerServerDataType<T> type)
+    {
+        Identifier attachId = Identifier.fromNamespaceAndPath(Constants.MOD_ID,
+                "sdata/" + type.id().getNamespace() + "/" + type.id().getPath());
+        CompoundTag attachments = playerNbt.getCompound(FABRIC_ATTACHMENTS_KEY).orElse(null);
+        if (attachments == null) return Optional.empty();
+        Tag raw = attachments.get(attachId.toString());
+        if (raw == null) return Optional.empty();
+        return type.nbtCodec().parse(NbtOps.INSTANCE, raw).result();
+    }
+
+    @Override
+    public <T> void writeOfflineServerData(CompoundTag playerNbt, PlayerServerDataType<T> type, T value)
+    {
+        Identifier attachId = Identifier.fromNamespaceAndPath(Constants.MOD_ID,
+                "sdata/" + type.id().getNamespace() + "/" + type.id().getPath());
+        CompoundTag attachments = playerNbt.getCompound(FABRIC_ATTACHMENTS_KEY).orElseGet(CompoundTag::new);
+        type.nbtCodec().encodeStart(NbtOps.INSTANCE, value).result().ifPresent(tag ->
+                attachments.put(attachId.toString(), tag));
+        playerNbt.put(FABRIC_ATTACHMENTS_KEY, attachments);
     }
 }
 

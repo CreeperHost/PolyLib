@@ -1,14 +1,20 @@
 package net.creeperhost.testmod.init;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.creeperhost.polylib.event.events.server.PolyServerCommandEvents;
+import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
+import net.creeperhost.polylib.player.serverdata.offline.OfflinePlayerDataAccessor;
+import net.creeperhost.testmod.TestModCommon;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,6 +33,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
+import java.util.UUID;
 import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
 /**
@@ -91,6 +98,13 @@ public final class TestCommands
                 .then(Commands.literal("multiplace").executes(TestCommands::testMultiPlace))
                 .then(Commands.literal("brewing").executes(TestCommands::testBrewing))
                 .then(Commands.literal("help").executes(TestCommands::testHelp))
+                // offline player data test
+                .then(Commands.literal("offlinedata")
+                        .then(Commands.literal("set")
+                                .then(Commands.argument("value", IntegerArgumentType.integer())
+                                        .executes(TestCommands::testOfflineDataSet)))
+                        .then(Commands.argument("player", StringArgumentType.word())
+                                .executes(TestCommands::testOfflineData)))
         );
     }
 
@@ -957,6 +971,67 @@ public final class TestCommands
         src.sendSuccess(() -> Component.literal("  §fTier 1: §7living, block, effects, entity, explosion, conversion, tick, spawn, sleep, bow, xp"), false);
         src.sendSuccess(() -> Component.literal("  §fTier 3+: §7damage, fall, attack, equip, projectile, lightning, teleport, breed, split, piston, noteblock, fluid, portal, gamemode, setspawn, item, useitem, multiplace, brewing"), false);
         src.sendSuccess(() -> Component.literal("  §fInfo: §7passive (auto-firing events), manual (gameplay-required events), help"), false);
+        src.sendSuccess(() -> Component.literal("  §fOffline: §7offlinedata set <n>  |  offlinedata <name|uuid>"), false);
         return 1;
+    }
+
+    // =========================================================================
+    // Offline player data
+    // =========================================================================
+
+    // ----- /polytest offlinedata set <value> -----
+    // Writes TICKS_PLAYED for the calling player so the read can be verified
+
+    private static int testOfflineDataSet(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        int value = IntegerArgumentType.getInteger(ctx, "value");
+        try
+        {
+            ServerPlayer player = src.getPlayerOrException();
+            PlayerServerDataManager.set(player, TestModCommon.TICKS_PLAYED, value);
+            src.sendSuccess(() -> Component.literal("[polytest] offlinedata: TICKS_PLAYED set to " + value + " — run /polytest offlinedata " + player.getScoreboardName() + " to verify"), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] offlinedata set: must be a player: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // ----- /polytest offlinedata <player> -----
+    // Reads TICKS_PLAYED from the player's server data (works even when offline)
+
+    private static int testOfflineData(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        String name = StringArgumentType.getString(ctx, "player");
+        MinecraftServer server = ctx.getSource().getServer();
+
+        // Try online players first
+        ServerPlayer online = server.getPlayerList().getPlayers().stream()
+                .filter(p -> p.getScoreboardName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+
+        if (online != null)
+        {
+            Integer ticks = OfflinePlayerDataAccessor.get(server, online.getUUID(), TestModCommon.TICKS_PLAYED);
+            src.sendSuccess(() -> Component.literal("[polytest] offlinedata: " + name + " (online) TICKS_PLAYED=" + ticks), false);
+            return 1;
+        }
+
+        // Try parsing the argument as a UUID directly (for offline player testing)
+        try
+        {
+            UUID uuid = UUID.fromString(name);
+            Integer ticks = OfflinePlayerDataAccessor.get(server, uuid, TestModCommon.TICKS_PLAYED);
+            src.sendSuccess(() -> Component.literal("[polytest] offlinedata: " + uuid + " (offline/uuid) TICKS_PLAYED=" + ticks), false);
+            return 1;
+        }
+        catch (IllegalArgumentException ignored) {}
+
+        src.sendFailure(Component.literal("[polytest] offlinedata: '" + name + "' is not online. Pass a UUID string to test offline lookup."));
+        return 0;
     }
 }
