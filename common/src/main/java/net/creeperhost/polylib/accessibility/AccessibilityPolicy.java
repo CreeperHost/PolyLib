@@ -17,7 +17,7 @@ public enum AccessibilityPolicy
      * Use for purely cosmetic or input-mode toggles.
      * <p>
      * Note: radical accessibility is always active in PolyLib, so in practice
-     * all preferences are treated as {@link #PLAYER_OVERRIDES_SERVER}.
+     * all PolyLib-registered preferences are treated as {@link #PLAYER_OVERRIDES_SERVER}.
      */
     RESPECTS_SERVER_CONFIG
 }
