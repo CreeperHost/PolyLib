@@ -1,12 +1,11 @@
 package net.creeperhost.polylib.player.serverdata.offline;
 
+import net.creeperhost.polylib.platform.Services;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,9 +29,9 @@ import java.util.function.Consumer;
  *
  * <h2>Offline players</h2>
  * Data is read from / written to the player's {@code .dat} file at
- * {@code <world>/playerdata/<uuid>.dat}.  On NeoForge, PolyLib persists
- * server-data values inside the player's {@code ForgeData} compound under keys
- * of the form {@code polylib_sdata.<typeId>}.
+ * {@code <world>/playerdata/<uuid>.dat}.  The exact NBT structure used is
+ * platform-specific: NeoForge stores data inside the {@code ForgeData} compound;
+ * Fabric uses the {@code fabric:attachments} compound.
  *
  * <h2>Thread safety</h2>
  * Must be called from the server tick thread.  No locking is performed because
@@ -59,12 +58,6 @@ public final class OfflinePlayerDataAccessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OfflinePlayerDataAccessor.class);
 
-    /** Key inside the player .dat CompoundTag where NeoForge stores getPersistentData(). */
-    private static final String FORGE_DATA_KEY = "ForgeData";
-
-    /** Key prefix PolyLib uses for server-data types inside ForgeData. */
-    private static final String SDATA_PREFIX = "polylib_sdata.";
-
     private OfflinePlayerDataAccessor() {}
 
     // ── Public API ────────────────────────────────────────────────────────────
@@ -81,8 +74,8 @@ public final class OfflinePlayerDataAccessor {
         ServerPlayer online = server.getPlayerList().getPlayer(uuid);
         if (online != null) return PlayerServerDataManager.get(online, type);
 
-        return readForgeData(server, uuid)
-                .map(fd -> readTyped(fd, type).orElse(type.defaultFactory().get()))
+        return readPlayerNbt(server, uuid)
+                .map(nbt -> Services.PLAYER_DATA.readOfflineServerData(nbt, type).orElse(type.defaultFactory().get()))
                 .orElse(type.defaultFactory().get());
     }
 
@@ -99,7 +92,7 @@ public final class OfflinePlayerDataAccessor {
             PlayerServerDataManager.set(online, type, value);
             return true;
         }
-        return modifyFile(server, uuid, fd -> writeTyped(fd, type, value));
+        return modifyFile(server, uuid, nbt -> Services.PLAYER_DATA.writeOfflineServerData(nbt, type, value));
     }
 
     /**
@@ -119,21 +112,20 @@ public final class OfflinePlayerDataAccessor {
             consumer.accept(new OnlineView(online));
             return true;
         }
-        return modifyFile(server, uuid, fd -> consumer.accept(new FileView(fd)));
+        return modifyFile(server, uuid, nbt -> consumer.accept(new FileView(nbt)));
     }
 
     // ── File I/O ──────────────────────────────────────────────────────────────
 
     /**
-     * Load the {@code ForgeData} tag from a player's .dat file without writing
-     * back.  Returns empty if the file does not exist or cannot be read.
+     * Load the raw player NBT CompoundTag from disk without writing back.
+     * Returns empty if the file does not exist or cannot be read.
      */
-    private static Optional<CompoundTag> readForgeData(MinecraftServer server, UUID uuid) {
+    private static Optional<CompoundTag> readPlayerNbt(MinecraftServer server, UUID uuid) {
         Path file = resolvePlayerFile(server, uuid);
         if (!Files.exists(file)) return Optional.empty();
         try (var in = Files.newInputStream(file)) {
-            CompoundTag playerNbt = NbtIo.readCompressed(in, NbtAccounter.unlimitedHeap());
-            return playerNbt.getCompound(FORGE_DATA_KEY).map(fd -> fd);
+            return Optional.of(NbtIo.readCompressed(in, NbtAccounter.unlimitedHeap()));
         } catch (IOException e) {
             LOGGER.warn("[OfflinePlayerDataAccessor] Failed to read {}: {}", file, e.getMessage());
             return Optional.empty();
@@ -141,7 +133,7 @@ public final class OfflinePlayerDataAccessor {
     }
 
     /**
-     * Load → mutate → write the {@code ForgeData} tag for an offline player.
+     * Load → mutate → write the player NBT for an offline player.
      * If the file does not exist or a read/write error occurs, logs a warning
      * and returns {@code false}.
      */
@@ -153,10 +145,7 @@ public final class OfflinePlayerDataAccessor {
         }
         try (var in = Files.newInputStream(file)) {
             CompoundTag playerNbt = NbtIo.readCompressed(in, NbtAccounter.unlimitedHeap());
-            // Get existing ForgeData or create a new one
-            CompoundTag forgeData = playerNbt.getCompound(FORGE_DATA_KEY).orElseGet(CompoundTag::new);
-            mutation.accept(forgeData);
-            playerNbt.put(FORGE_DATA_KEY, forgeData);
+            mutation.accept(playerNbt);
             NbtIo.writeCompressed(playerNbt, file);
             return true;
         } catch (IOException e) {
@@ -166,33 +155,13 @@ public final class OfflinePlayerDataAccessor {
     }
 
     /**
-     * Resolves the path to a player's .dat file.
-     * NeoForge stores player data at {@code <level_root>/playerdata/<uuid>.dat}.
+     * Resolves the path to a player's .dat file at
+     * {@code <level_root>/playerdata/<uuid>.dat}.
      */
     private static Path resolvePlayerFile(MinecraftServer server, UUID uuid) {
         return server.getWorldPath(LevelResource.ROOT)
                 .resolve("playerdata")
                 .resolve(uuid.toString() + ".dat");
-    }
-
-    // ── Codec helpers (mirrors NeoForgePlayerDataHelper private methods) ───────
-
-    private static <T> Optional<T> readTyped(CompoundTag forgeData, PlayerServerDataType<T> type) {
-        String key = SDATA_PREFIX + type.id().toString();
-        Tag raw = forgeData.get(key);
-        if (!(raw instanceof CompoundTag wrapper)) return Optional.empty();
-        Tag inner = wrapper.get("v");
-        if (inner == null) return Optional.empty();
-        return type.nbtCodec().parse(NbtOps.INSTANCE, inner).result();
-    }
-
-    private static <T> void writeTyped(CompoundTag forgeData, PlayerServerDataType<T> type, T value) {
-        String key = SDATA_PREFIX + type.id().toString();
-        type.nbtCodec().encodeStart(NbtOps.INSTANCE, value).result().ifPresent(tag -> {
-            CompoundTag wrapper = new CompoundTag();
-            wrapper.put("v", tag);
-            forgeData.put(key, wrapper);
-        });
     }
 
     // ── OfflinePlayerData view implementations ────────────────────────────────
@@ -217,25 +186,26 @@ public final class OfflinePlayerDataAccessor {
     }
 
     /**
-     * Offline view: reads from / writes to an in-memory {@link CompoundTag}.
-     * The {@link OfflinePlayerDataAccessor#modifyFile} caller saves the tag to
+     * Offline view: reads from / writes to an in-memory player NBT
+     * {@link CompoundTag}.  The {@link #modifyFile} caller writes it back to
      * disk after the consumer returns.
      */
     private static final class FileView implements OfflinePlayerData {
-        private final CompoundTag forgeData;
+        private final CompoundTag playerNbt;
 
-        FileView(CompoundTag forgeData) { this.forgeData = forgeData; }
+        FileView(CompoundTag playerNbt) { this.playerNbt = playerNbt; }
 
         @Override public boolean isOnline() { return false; }
 
         @Override
         public <T> T get(PlayerServerDataType<T> type) {
-            return readTyped(forgeData, type).orElse(type.defaultFactory().get());
+            return Services.PLAYER_DATA.readOfflineServerData(playerNbt, type).orElse(type.defaultFactory().get());
         }
 
         @Override
         public <T> void set(PlayerServerDataType<T> type, T value) {
-            writeTyped(forgeData, type, value);
+            Services.PLAYER_DATA.writeOfflineServerData(playerNbt, type, value);
         }
     }
 }
+

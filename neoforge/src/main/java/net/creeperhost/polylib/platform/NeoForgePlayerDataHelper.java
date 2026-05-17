@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -174,6 +175,35 @@ public class NeoForgePlayerDataHelper implements IPlayerDataHelper
             if (inner != null)
                 loadServerTyped(type, inner, store);
         }
+    }
+
+    // NeoForge stores getPersistentData() under "ForgeData" inside the player .dat file
+    private static final String FORGE_DATA_KEY = "ForgeData";
+
+    @Override
+    public <T> Optional<T> readOfflineServerData(CompoundTag playerNbt, PlayerServerDataType<T> type)
+    {
+        CompoundTag forgeData = playerNbt.getCompound(FORGE_DATA_KEY).orElse(null);
+        if (forgeData == null) return Optional.empty();
+        String key = SDATA_PREFIX + type.id().toString();
+        Tag raw = forgeData.get(key);
+        if (!(raw instanceof CompoundTag wrapper)) return Optional.empty();
+        Tag inner = wrapper.get("v");
+        if (inner == null) return Optional.empty();
+        return type.nbtCodec().parse(NbtOps.INSTANCE, inner).result();
+    }
+
+    @Override
+    public <T> void writeOfflineServerData(CompoundTag playerNbt, PlayerServerDataType<T> type, T value)
+    {
+        CompoundTag forgeData = playerNbt.getCompound(FORGE_DATA_KEY).orElseGet(CompoundTag::new);
+        String key = SDATA_PREFIX + type.id().toString();
+        type.nbtCodec().encodeStart(NbtOps.INSTANCE, value).result().ifPresent(tag -> {
+            CompoundTag wrapper = new CompoundTag();
+            wrapper.put("v", tag);
+            forgeData.put(key, wrapper);
+        });
+        playerNbt.put(FORGE_DATA_KEY, forgeData);
     }
 }
 

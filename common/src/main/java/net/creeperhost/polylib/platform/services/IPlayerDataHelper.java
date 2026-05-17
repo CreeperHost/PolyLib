@@ -4,8 +4,10 @@ import net.creeperhost.polylib.player.serverdata.PlayerServerDataStore;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataType;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsStore;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsType;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -56,4 +58,21 @@ public interface IPlayerDataHelper
      */
     <T> void loadServerDataForType(UUID playerUUID, ServerPlayer player,
                                     PlayerServerDataStore store, PlayerServerDataType<T> type);
+
+    /**
+     * Read a single server-data type from a raw player NBT CompoundTag (for offline player access).
+     * The {@code playerNbt} is the top-level tag loaded from {@code <world>/playerdata/<uuid>.dat}.
+     * Platform impls read from their own storage key inside that tag
+     * (e.g. {@code ForgeData} on NeoForge, {@code fabric:attachments} on Fabric).
+     *
+     * @return the decoded value, or empty if no value is stored for this type
+     */
+    <T> Optional<T> readOfflineServerData(CompoundTag playerNbt, PlayerServerDataType<T> type);
+
+    /**
+     * Write a single server-data type into a raw player NBT CompoundTag (for offline player access).
+     * The {@code playerNbt} is the top-level tag that will be written back to
+     * {@code <world>/playerdata/<uuid>.dat}.
+     */
+    <T> void writeOfflineServerData(CompoundTag playerNbt, PlayerServerDataType<T> type, T value);
 }

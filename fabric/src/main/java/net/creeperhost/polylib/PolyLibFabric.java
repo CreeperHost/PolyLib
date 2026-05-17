@@ -16,6 +16,7 @@ public class PolyLibFabric implements ModInitializer
     public void onInitialize()
     {
         FabricEvents.init();
+        FabricServerEvents.register();
         PolylibCommon.registerConfig();
         PolylibCommon.init();
         FabricInventoryManager.init();
