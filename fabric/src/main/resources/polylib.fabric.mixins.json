@@ -100,7 +100,9 @@
     "client.MixinScreenshotFabric",
     "client.MixinHeartTypeFabric",
     "client.MixinScreenCharTypedFabric",
-    "client.MixinAbstractContainerScreenFabric"
+    "client.MixinAbstractContainerScreenFabric",
+    "client.FabricDebugEntriesMixin",
+    "client.EntryMapAccessor"
   ],
   "server": [],
   "injectors": {
