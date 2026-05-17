@@ -309,6 +309,40 @@ public class GuiButton extends GuiElement<GuiButton> {
     }
 
     /**
+     * Creates a vanilla vertical tab with a "press" animation and rotated text.
+     */
+    public static GuiButton vanillaVerticalTab(@NotNull GuiParent<?> parent, Component label, Runnable onPress) {
+        return vanillaVerticalTab(parent, label == null ? null : () -> label).onPress(onPress);
+    }
+
+    /**
+     * Creates a vanilla vertical tab with a "press" animation and rotated text.
+     */
+    public static GuiButton vanillaVerticalTab(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label) {
+        GuiButton button = new GuiButton(parent);
+        GuiTexture texture = new GuiTexture(button, PolyTextures.getter(() -> button.toggleState() || button.isPressed() ? "dynamic/button_pressed" : "dynamic/button_vanilla"));
+        texture.dynamicTexture();
+        GuiRectangle highlight = new GuiRectangle(button).border(() -> button.isMouseOver() ? 0xFFFFFFFF : 0);
+
+        Constraints.bind(texture, button);
+        Constraints.bind(highlight, button);
+
+        if (label != null) {
+            GuiText text = new GuiText(button, label);
+            text.setRotation(-90.0D);
+            text.constrain(WIDTH, Constraint.dynamic(() -> (double) Minecraft.getInstance().font.width(label.get())));
+            text.constrain(HEIGHT, Constraint.literal(14));
+            
+            text.constrain(LEFT, Constraint.dynamic(() -> button.xMin() + (button.xSize() / 2) - (text.xSize() / 2) + (button.isPressed() ? 1 : 0)));
+            text.constrain(TOP, Constraint.dynamic(() -> button.yMin() + (button.ySize() / 2) - (text.ySize() / 2) + (button.isPressed() ? 1 : 0)));
+            
+            button.setLabel(text);
+        }
+
+        return button;
+    }
+
+    /**
      * Super simple button that is just a coloured rectangle with a label.
      */
     public static GuiButton flatColourButton(@NotNull GuiParent<?> parent, @Nullable Supplier<Component> label, Function<Boolean, Integer> buttonColour) {
