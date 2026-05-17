@@ -47,6 +47,12 @@ public class ModularGuiInjector<T extends Screen> {
         prevMouseY = activeGui.computeMouseY();
     }
 
+    public static void clearGui(Screen screen) {
+        if (activeGui != null && activeGui.getScreen() == screen) {
+            activeGui = null;
+        }
+    }
+
     public static <T> T unsafeCast(@Nullable Object object) {
         return (T) object;
     }

@@ -27,6 +27,3 @@ include('common')
 include('fabric')
 include('neoforge')
 
-//include('testmod-common')
-//include('testmod-fabric')
-//include('testmod-neoforge')
