@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import net.creeperhost.polylib.containers.network.PolyContainerSyncProtocol;
+
 /**
  * The base abstract ContainerMenu for all modular gui containers.
  * <p>
@@ -33,6 +35,8 @@ import java.util.function.Consumer;
  */
 public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public final PolyContainerSyncProtocol syncProtocol = new PolyContainerSyncProtocol(this);
 
     public final Inventory inventory;
     public final List<SlotGroup> slotGroups = new ArrayList<>();
@@ -144,7 +148,9 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * Requires a client to server packet handler to be installed via {@link #setClientToServerPacketHandler(Consumer)}
      */
     public void handlePacketFromClient(Player player, int packetId, RegistryFriendlyByteBuf packet) {
-
+        if (packetId == 254) {
+            syncProtocol.handleClientPacket(player, packet);
+        }
     }
 
     public static void handlePacketFromServer(Player player, RegistryFriendlyByteBuf packet) {
@@ -162,6 +168,10 @@ public abstract class ModularGuiContainerMenu extends AbstractContainerMenu {
      * Don't forget to call super if you plan on using the {@link DataSync} system.
      */
     public void handlePacketFromServer(Player player, int packetId, RegistryFriendlyByteBuf packet) {
+        if (packetId == 254) {
+            syncProtocol.handleServerPacket(player, packet);
+            return;
+        }
         if (packetId == 255) {
             int index = packet.readByte() & 0xFF;
             if (dataSyncs.size() > index) {
