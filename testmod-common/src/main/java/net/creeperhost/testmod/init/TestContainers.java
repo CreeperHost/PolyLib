@@ -4,6 +4,7 @@ import net.creeperhost.polylib.registry.PolyRegistry;
 import net.creeperhost.testmod.TestModCommon;
 import net.creeperhost.testmod.blocks.creativepower.PowerContainer;
 import net.creeperhost.testmod.blocks.inventorytestblock.ContainerInventoryTest;
+import net.creeperhost.testmod.blocks.mirror.MirrorContainer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 
@@ -17,6 +18,9 @@ public class TestContainers
 
     public static final Supplier<MenuType<PowerContainer>> CREATIVE_POWER_CONTAINER =
             CONTAINERS.registerMenu("creative_power_container", PowerContainer::new);
+
+    public static final Supplier<MenuType<MirrorContainer>> MIRROR_CONTAINER =
+            CONTAINERS.registerMenu("mirror_container", MirrorContainer::new);
 
 
 

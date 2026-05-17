@@ -5,9 +5,11 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.creeperhost.polylib.event.events.server.PolyServerCommandEvents;
+import net.creeperhost.polylib.platform.Services;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
 import net.creeperhost.polylib.player.serverdata.offline.OfflinePlayerDataAccessor;
 import net.creeperhost.testmod.TestModCommon;
+import net.creeperhost.testmod.blocks.mirror.MirrorContainer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -17,6 +19,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -105,6 +109,8 @@ public final class TestCommands
                                         .executes(TestCommands::testOfflineDataSet)))
                         .then(Commands.argument("player", StringArgumentType.word())
                                 .executes(TestCommands::testOfflineData)))
+                // player inventory mirror test
+                .then(Commands.literal("mirror").executes(TestCommands::testMirror))
         );
     }
 
@@ -972,6 +978,33 @@ public final class TestCommands
         src.sendSuccess(() -> Component.literal("  §fTier 3+: §7damage, fall, attack, equip, projectile, lightning, teleport, breed, split, piston, noteblock, fluid, portal, gamemode, setspawn, item, useitem, multiplace, brewing"), false);
         src.sendSuccess(() -> Component.literal("  §fInfo: §7passive (auto-firing events), manual (gameplay-required events), help"), false);
         src.sendSuccess(() -> Component.literal("  §fOffline: §7offlinedata set <n>  |  offlinedata <name|uuid>"), false);
+        src.sendSuccess(() -> Component.literal("  §fMirror: §7mirror"), false);
+        return 1;
+    }
+
+    // =========================================================================
+    // Player Inventory Mirror
+    // =========================================================================
+
+    // ----- /polytest mirror -----
+    // Opens a screen backed by PlayerInventoryMirrorContainer showing all 41 player slots
+
+    private static int testMirror(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            ServerPlayer player = src.getPlayerOrException();
+            MenuProvider provider = new SimpleMenuProvider(
+                    (id, inv, p) -> new MirrorContainer(id, inv),
+                    Component.literal("Mirror Test"));
+            Services.REGISTER_HELPER.openMenu(player, provider, buf -> {});
+            src.sendSuccess(() -> Component.literal("[polytest] mirror: opened — all 41 slots backed by PlayerInventoryMirrorContainer"), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] mirror: " + e.getMessage()));
+        }
         return 1;
     }
 
