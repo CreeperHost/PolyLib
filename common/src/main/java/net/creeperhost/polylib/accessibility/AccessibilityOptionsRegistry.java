@@ -99,26 +99,29 @@ public final class AccessibilityOptionsRegistry
 
     /**
      * Returns the effective policy for the given key.
-     * <p>
-     * Radical accessibility is always active — all registered preferences
-     * are treated as {@link AccessibilityPolicy#PLAYER_OVERRIDES_SERVER}
-     * so servers cannot override a player's accessibility choices.
      */
     public static AccessibilityPolicy effectivePolicy(String key)
     {
+        for (Entry e : ENTRIES)
+        {
+            if (e.key().equals(key)) return e.policy();
+        }
         return AccessibilityPolicy.PLAYER_OVERRIDES_SERVER;
     }
 
     /**
-     * Returns all registered keys. Radical accessibility is always active,
-     * so all keys are synced — the player's value is always authoritative.
+     * Returns all registered keys whose effective policy is {@link AccessibilityPolicy#PLAYER_OVERRIDES_SERVER}.
+     * Used by the server-side handler to decide which preference values to accept unconditionally.
      */
     public static Set<String> getServerSyncedKeys()
     {
         Set<String> keys = new LinkedHashSet<>();
         for (Entry e : ENTRIES)
         {
-            keys.add(e.key());
+            if (e.policy() == AccessibilityPolicy.PLAYER_OVERRIDES_SERVER)
+            {
+                keys.add(e.key());
+            }
         }
         return keys;
     }
