@@ -88,7 +88,12 @@ public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInv
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player)
     {
         lastVisitorUUID.set(player.getUUID());
-        return new ContainerInventoryTest(i, inventory, this);
+        ContainerInventoryTest menu = new ContainerInventoryTest(i, inventory, this);
+        if (player instanceof ServerPlayer serverPlayer) {
+            String hello = "energy=" + (int) energyContainer.getEnergyStored() + "/" + (int) energyContainer.getMaxEnergyStored();
+            menu.syncProtocol.sendToClient(serverPlayer, i, ContainerInventoryTest.SERVER_HELLO, hello);
+        }
+        return menu;
     }
 
     @Override
