@@ -25,3 +25,5 @@ runs
 docs/*
 
 .vscode/
+.agents/
+AGENTS.md

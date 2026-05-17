@@ -1,6 +1,5 @@
 package net.creeperhost.polylib.accessibility;
 
-import net.creeperhost.polylib.PolylibCommon;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.options.AccessibilityOptionsScreen;
 
@@ -99,18 +98,10 @@ public final class AccessibilityOptionsRegistry
     }
 
     /**
-     * Returns the effective policy for the given key, taking into account
-     * {@code PolyConfig.radicalAccessibility}.
-     * <p>
-     * When {@code radicalAccessibility} is enabled, all entries are treated as
-     * {@link AccessibilityPolicy#PLAYER_OVERRIDES_SERVER} regardless of registration.
+     * Returns the effective policy for the given key.
      */
     public static AccessibilityPolicy effectivePolicy(String key)
     {
-        if (PolylibCommon.configData != null && PolylibCommon.configData.radicalAccessibility)
-        {
-            return AccessibilityPolicy.PLAYER_OVERRIDES_SERVER;
-        }
         for (Entry e : ENTRIES)
         {
             if (e.key().equals(key)) return e.policy();
@@ -125,10 +116,9 @@ public final class AccessibilityOptionsRegistry
     public static Set<String> getServerSyncedKeys()
     {
         Set<String> keys = new LinkedHashSet<>();
-        boolean radical = PolylibCommon.configData != null && PolylibCommon.configData.radicalAccessibility;
         for (Entry e : ENTRIES)
         {
-            if (radical || e.policy() == AccessibilityPolicy.PLAYER_OVERRIDES_SERVER)
+            if (e.policy() == AccessibilityPolicy.PLAYER_OVERRIDES_SERVER)
             {
                 keys.add(e.key());
             }
