@@ -4,6 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import net.creeperhost.polylib.chat.ChatChannel;
+import net.creeperhost.polylib.chat.ChatMember;
+import net.creeperhost.polylib.chat.ChatRouter;
+import net.creeperhost.polylib.chat.RichChatMessage;
 import net.creeperhost.polylib.event.events.server.PolyServerCommandEvents;
 import net.creeperhost.polylib.platform.Services;
 import net.creeperhost.polylib.player.serverdata.PlayerServerDataManager;
@@ -17,10 +21,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -111,6 +116,19 @@ public final class TestCommands
                                 .executes(TestCommands::testOfflineData)))
                 // player inventory mirror test
                 .then(Commands.literal("mirror").executes(TestCommands::testMirror))
+                // chat system test commands
+                .then(Commands.literal("chat")
+                        .then(Commands.literal("list").executes(TestCommands::testChatList))
+                        .then(Commands.literal("join")
+                                .then(Commands.argument("channel", StringArgumentType.word())
+                                        .executes(TestCommands::testChatJoin)))
+                        .then(Commands.literal("leave")
+                                .then(Commands.argument("channel", StringArgumentType.word())
+                                        .executes(TestCommands::testChatLeave)))
+                        .then(Commands.literal("say")
+                                .then(Commands.argument("channel", StringArgumentType.word())
+                                        .then(Commands.argument("message", StringArgumentType.greedyString())
+                                                .executes(TestCommands::testChatSay)))))
         );
     }
 
@@ -979,6 +997,7 @@ public final class TestCommands
         src.sendSuccess(() -> Component.literal("  §fInfo: §7passive (auto-firing events), manual (gameplay-required events), help"), false);
         src.sendSuccess(() -> Component.literal("  §fOffline: §7offlinedata set <n>  |  offlinedata <name|uuid>"), false);
         src.sendSuccess(() -> Component.literal("  §fMirror: §7mirror"), false);
+        src.sendSuccess(() -> Component.literal("  §fChat: §7chat list/join/leave/say — press KP_5 to open window"), false);
         return 1;
     }
 
@@ -1004,6 +1023,117 @@ public final class TestCommands
         catch (Exception e)
         {
             src.sendFailure(Component.literal("[polytest] mirror: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // =========================================================================
+    // Chat System
+    // =========================================================================
+
+    // ----- /polytest chat list -----
+    private static int testChatList(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        java.util.Collection<ChatChannel> channels = ChatRouter.getInstance().getActiveChannels();
+        src.sendSuccess(() -> Component.literal("[polytest] chat: " + channels.size() + " channel(s) registered:"), false);
+        if (channels.isEmpty())
+        {
+            src.sendSuccess(() -> Component.literal("  (none — use /polytest chat join <channel> to create one)"), false);
+        }
+        for (ChatChannel ch : channels)
+        {
+            src.sendSuccess(() -> Component.literal("  - " + ch.getChannelId() + " (" + ch.getMembers().size() + " members)"), false);
+        }
+        return 1;
+    }
+
+    // ----- /polytest chat join <channel> -----
+    private static int testChatJoin(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            String channelName = StringArgumentType.getString(ctx, "channel");
+            Identifier id = Identifier.fromNamespaceAndPath("testmod", channelName);
+            ServerPlayer player = src.getPlayerOrException();
+
+            ChatChannel ch = ChatRouter.getInstance().getChannel(id);
+            if (ch == null)
+            {
+                ch = new ChatChannel(id, Component.literal(channelName), true);
+                ChatRouter.getInstance().registerChannel(ch);
+                src.sendSuccess(() -> Component.literal("[polytest] chat join: created channel " + id), false);
+            }
+            ch.addMember(new ChatMember(player.getUUID(), player.getDisplayName(), null, true));
+            final ChatChannel finalCh = ch;
+            src.sendSuccess(() -> Component.literal("[polytest] chat join: " + player.getScoreboardName() + " joined " + finalCh.getChannelId()), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] chat join: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // ----- /polytest chat leave <channel> -----
+    private static int testChatLeave(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            String channelName = StringArgumentType.getString(ctx, "channel");
+            Identifier id = Identifier.fromNamespaceAndPath("testmod", channelName);
+            ServerPlayer player = src.getPlayerOrException();
+
+            ChatChannel ch = ChatRouter.getInstance().getChannel(id);
+            if (ch == null)
+            {
+                src.sendFailure(Component.literal("[polytest] chat leave: channel '" + channelName + "' not found"));
+                return 0;
+            }
+            ch.removeMember(player.getUUID());
+            src.sendSuccess(() -> Component.literal("[polytest] chat leave: " + player.getScoreboardName() + " left " + id), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] chat leave: " + e.getMessage()));
+        }
+        return 1;
+    }
+
+    // ----- /polytest chat say <channel> <message> -----
+    private static int testChatSay(CommandContext<CommandSourceStack> ctx)
+    {
+        CommandSourceStack src = ctx.getSource();
+        try
+        {
+            String channelName = StringArgumentType.getString(ctx, "channel");
+            String message     = StringArgumentType.getString(ctx, "message");
+            Identifier id      = Identifier.fromNamespaceAndPath("testmod", channelName);
+            ServerPlayer player = src.getPlayerOrException();
+
+            ChatChannel ch = ChatRouter.getInstance().getChannel(id);
+            if (ch == null)
+            {
+                src.sendFailure(Component.literal("[polytest] chat say: channel '" + channelName + "' not found — join it first"));
+                return 0;
+            }
+            ChatRouter.getInstance().routeMessage(id, RichChatMessage.create(Component.literal(message), player.getDisplayName()));
+            // Deliver as system messages so online members can see them in vanilla chat
+            Component formatted = Component.literal("[" + channelName + "] ")
+                    .append(player.getDisplayName())
+                    .append(Component.literal(": " + message));
+            for (ChatMember member : ch.getMembers())
+            {
+                ServerPlayer online = src.getServer().getPlayerList().getPlayer(member.memberId());
+                if (online != null) online.sendSystemMessage(formatted);
+            }
+            src.sendSuccess(() -> Component.literal("[polytest] chat say: message routed to " + id), false);
+        }
+        catch (Exception e)
+        {
+            src.sendFailure(Component.literal("[polytest] chat say: " + e.getMessage()));
         }
         return 1;
     }

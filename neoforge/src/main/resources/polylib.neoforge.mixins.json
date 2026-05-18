@@ -23,7 +23,9 @@
     "MixinMinecraftSetLevelNF",
     "MixinLevelRendererBlockOutlineNF",
     "MixinLevelRendererAllChangedNF",
-    "MixinCapeLayerNF"
+    "MixinCapeLayerNF",
+    "MixinChatComponentNF",
+    "MixinChatScreenNF"
   ],
   "server": [],
   "injectors": {

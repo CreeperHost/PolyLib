@@ -1,5 +1,7 @@
 package net.creeperhost.polylib;
 
+import net.creeperhost.polylib.chat.client.ChatNotifications;
+import net.creeperhost.polylib.chat.client.tab.ChatTabInjection;
 import net.creeperhost.polylib.init.InternalEventListenerClient;
 import net.creeperhost.polylib.platform.Services;
 import net.minecraft.client.Minecraft;
@@ -10,6 +12,8 @@ public class PolyLibClient
     public static void init()
     {
         InternalEventListenerClient.init();
+        ChatTabInjection.init();
+        ChatNotifications.init();
     }
 
     public static Player getClientPlayer()
