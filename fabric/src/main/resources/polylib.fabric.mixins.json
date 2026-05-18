@@ -102,7 +102,9 @@
     "client.MixinScreenCharTypedFabric",
     "client.MixinAbstractContainerScreenFabric",
     "client.FabricDebugEntriesMixin",
-    "client.EntryMapAccessor"
+    "client.EntryMapAccessor",
+    "client.FabricChatComponentMixin",
+    "client.FabricChatScreenMixin"
   ],
   "server": [],
   "injectors": {

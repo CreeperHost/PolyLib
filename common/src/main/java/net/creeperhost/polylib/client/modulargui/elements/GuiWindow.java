@@ -36,7 +36,8 @@ public class GuiWindow extends GuiManipulable {
 
         this.titleText = new GuiText(headerBar);
         this.titleText.constrain(GeoParam.LEFT, Constraint.relative(headerBar.get(GeoParam.LEFT), 4))
-                      .constrain(GeoParam.TOP, Constraint.relative(headerBar.get(GeoParam.TOP), 2))
+                      .constrain(GeoParam.TOP, Constraint.match(headerBar.get(GeoParam.TOP)))
+                      .constrain(GeoParam.BOTTOM, Constraint.match(headerBar.get(GeoParam.BOTTOM)))
                       .setShadow(true);
 
         this.closeButton = new GuiButton(headerBar);
@@ -44,9 +45,13 @@ public class GuiWindow extends GuiManipulable {
                         .constrain(GeoParam.TOP, Constraint.relative(headerBar.get(GeoParam.TOP), 2))
                         .constrain(GeoParam.WIDTH, Constraint.literal(10))
                         .constrain(GeoParam.HEIGHT, Constraint.literal(10));
+        // Right edge of title stops just before the close button
+        this.titleText.constrain(GeoParam.RIGHT, Constraint.relative(this.closeButton.get(GeoParam.LEFT), -2));
         GuiText closeLabel = new GuiText(this.closeButton, net.minecraft.network.chat.Component.literal("x"));
-        closeLabel.constrain(GeoParam.LEFT, Constraint.relative(this.closeButton.get(GeoParam.LEFT), 2))
-                  .constrain(GeoParam.TOP, Constraint.relative(this.closeButton.get(GeoParam.TOP), 0));
+        closeLabel.constrain(GeoParam.LEFT, Constraint.match(this.closeButton.get(GeoParam.LEFT)))
+                  .constrain(GeoParam.TOP, Constraint.match(this.closeButton.get(GeoParam.TOP)))
+                  .constrain(GeoParam.RIGHT, Constraint.match(this.closeButton.get(GeoParam.RIGHT)))
+                  .constrain(GeoParam.BOTTOM, Constraint.match(this.closeButton.get(GeoParam.BOTTOM)));
         this.closeButton.setLabel(closeLabel);
 
         // Use the header bar as the drag handle

@@ -21,6 +21,10 @@ public class ChatWindowLayout {
     private boolean isPinned;
     private boolean isHidden;
     
+    private DisplayMode displayMode = DisplayMode.FLOATING;
+    private boolean minimized = false;
+    private SnapCorner snapCorner = null;  // null = free position
+
     // Which channels are docked in this window (for tabs)
     private final List<Identifier> tabbedChannels = new ArrayList<>();
     // Which tab is currently active/visible
@@ -86,6 +90,15 @@ public class ChatWindowLayout {
         isHidden = hidden;
     }
 
+    public DisplayMode getDisplayMode() { return displayMode; }
+    public void setDisplayMode(DisplayMode mode) { this.displayMode = mode; }
+
+    public boolean isMinimized() { return minimized; }
+    public void setMinimized(boolean minimized) { this.minimized = minimized; }
+
+    public SnapCorner getSnapCorner() { return snapCorner; }
+    public void setSnapCorner(SnapCorner snapCorner) { this.snapCorner = snapCorner; }
+
     public List<Identifier> getTabbedChannels() {
         return tabbedChannels;
     }
@@ -114,5 +127,11 @@ public class ChatWindowLayout {
         if (tabbedChannels.contains(activeTab)) {
             this.activeTab = activeTab;
         }
+    }
+
+    public enum DisplayMode {
+        FLOATING,
+        DOCKED_TOP,
+        DOCKED_SIDE
     }
 }

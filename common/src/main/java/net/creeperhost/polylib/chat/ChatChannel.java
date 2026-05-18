@@ -81,6 +81,15 @@ public class ChatChannel {
         this.messageListeners.remove(listener);
     }
 
+    private boolean mentionPulseEnabled = true;
+    private boolean vanillaMentionNotification = true;
+
+    public boolean isMentionPulseEnabled() { return mentionPulseEnabled; }
+    public void setMentionPulseEnabled(boolean enabled) { this.mentionPulseEnabled = enabled; }
+
+    public boolean isVanillaMentionNotification() { return vanillaMentionNotification; }
+    public void setVanillaMentionNotification(boolean enabled) { this.vanillaMentionNotification = enabled; }
+
     private Consumer<String> messageSubmitHandler;
 
     public void setSubmitHandler(Consumer<String> handler) {

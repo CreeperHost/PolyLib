@@ -56,9 +56,15 @@ public class PolyLibClientFabric
             PolyScreenEvents.SCREEN_OPENED.invoker().onScreenOpened(mc, screen, w, h);
             
             ScreenEvents.remove(screen).register(s -> PolyScreenEvents.SCREEN_CLOSING.invoker().onScreenClosing(s));
-            
+
             ScreenEvents.beforeTick(screen).register(s -> PolyScreenEvents.SCREEN_TICK_BEFORE.invoker().onScreenTickBefore(s));
             ScreenEvents.afterTick(screen).register(s -> PolyScreenEvents.SCREEN_TICK_AFTER.invoker().onScreenTickAfter(s));
+
+            // Screen render events — required by ModularGuiInjector to draw injected GUIs
+            ScreenEvents.beforeExtract(screen).register((s, gg, mx, my, pt) ->
+                    PolyScreenEvents.SCREEN_RENDER_PRE.invoker().onScreenRenderPre(s, gg, mx, my, pt));
+            ScreenEvents.afterExtract(screen).register((s, gg, mx, my, pt) ->
+                    PolyScreenEvents.SCREEN_RENDER_POST.invoker().onScreenRenderPost(s, gg, mx, my, pt));
 
             // Keyboard
             ScreenKeyboardEvents.allowKeyPress(screen).register((s, ke) -> {

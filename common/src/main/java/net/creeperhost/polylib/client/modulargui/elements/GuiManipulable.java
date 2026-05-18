@@ -440,6 +440,8 @@ public class GuiManipulable extends GuiElement<GuiManipulable> implements Conten
     //TODO, In v2 these were made available for elements that extend GuiManipulable, In v3 i probably just want to add listener hooks.
     protected void onManipulated(double mouseX, double mouseY) {}
 
+    protected boolean isDraggingPosition() { return isDragging && dragPos; }
+
     protected boolean onStartManipulation(double mouseX, double mouseY) {
         return false;
     }
