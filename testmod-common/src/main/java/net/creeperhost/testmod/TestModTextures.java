@@ -42,7 +42,7 @@ public class TestModTextures
      * The material will cache the first render type it is used with.
      * Instead use {@link #getUncached(String)}
      *
-     * @param texture The texture path relative to "modid:gui/"
+     * @param texture The texture path relative to "modid:"
      */
     public static Material get(String texture) {
         return MATERIAL_CACHE.computeIfAbsent(TestModCommon.MOD_ID + ":" + texture, e -> getUncached(texture));
@@ -61,9 +61,9 @@ public class TestModTextures
      * Feel free to hold onto the returned material.
      * Storing it somewhere is more efficient than recreating it every render frame.
      *
-     * @param texture The texture path relative to "modid:gui/"
+     * @param texture The texture path relative to "modid:"
      * @return A new Material for the specified gui texture.
      */
     public static Material getUncached(String texture) {
-        return new Material(ATLAS.location(), Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, "gui/" + texture), ATLAS::getSprite);
+        return new Material(ATLAS.location(), Identifier.fromNamespaceAndPath(TestModCommon.MOD_ID, texture), ATLAS::getSprite);
     }}

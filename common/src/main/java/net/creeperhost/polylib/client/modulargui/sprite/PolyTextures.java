@@ -48,6 +48,6 @@ public class PolyTextures {
     }
 
     public static Material getUncached(String texture) {
-        return new Material(TEXTURE_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "gui/" + texture), id -> net.minecraft.client.Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TEXTURE_ID).getSprite(id));
+        return new Material(TEXTURE_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, texture), id -> net.minecraft.client.Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TEXTURE_ID).getSprite(id));
     }
 }
