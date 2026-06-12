@@ -383,7 +383,7 @@ public class NeoForgeEvents
     @SubscribeEvent
     public static void onLivingDamagePost(LivingDamageEvent.Post event)
     {
-        PolyLivingEvents.DAMAGE_POST.invoker().onDamagePost(event.getEntity(), event.getSource(), event.getNewDamage());
+        PolyLivingEvents.DAMAGE_POST.invoker().onDamagePost(event.getEntity(), event.getSource(), event.getHealthDamage());
     }
 
     @SubscribeEvent
