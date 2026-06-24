@@ -1,0 +1,36 @@
+accessWidener   v2  official
+
+transitive-accessible field net/minecraft/world/inventory/Slot x I
+transitive-mutable field net/minecraft/world/inventory/Slot x I
+transitive-accessible field net/minecraft/world/inventory/Slot y I
+transitive-mutable field net/minecraft/world/inventory/Slot y I
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageWidth I
+transitive-mutable field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageWidth I
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I
+transitive-mutable field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen draggingItem Lnet/minecraft/world/item/ItemStack;
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen isSplittingStack Z
+
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftingRemainder I
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackData Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData;
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen clickedSlot Lnet/minecraft/world/inventory/Slot;
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftingType I
+transitive-accessible class net/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftSlots Ljava/util/Set;
+transitive-accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen recalculateQuickCraftRemaining ()V
+transitive-accessible field net/minecraft/client/gui/GuiGraphicsExtractor minecraft Lnet/minecraft/client/Minecraft;
+transitive-accessible method net/minecraft/client/gui/GuiGraphicsExtractor innerBlit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V
+transitive-accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (Lnet/minecraft/world/inventory/Slot;)Lnet/minecraft/world/inventory/Slot;
+transitive-accessible field net/minecraft/client/gui/components/AbstractSelectionList defaultEntryHeight I
+transitive-mutable field net/minecraft/client/gui/components/AbstractSelectionList defaultEntryHeight I
+transitive-accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
+transitive-accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
+transitive-mutable field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
+transitive-accessible class net/minecraft/client/resources/model/sprite/AtlasManager$AtlasEntry
+transitive-accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
+transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
+
+transitive-accessible class net/minecraft/world/item/CreativeModeTab$Output
+transitive-accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+transitive-accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
+transitive-accessible class net/minecraft/client/gui/Gui$HeartType

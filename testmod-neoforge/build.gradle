@@ -14,10 +14,6 @@ configurations {
 
 neoForge {
     version = neoforge_version
-    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.from(at.absolutePath)
-    }
     runs {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
@@ -53,6 +49,7 @@ neoForge {
 
 dependencies {
     compileOnly project(':neoforge')
+    accessTransformers(project(':neoforge'))
     runtimeOnly "blue.endless:jankson:1.2.1"
     compileOnly(project(':common')) {
         def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
