@@ -31,7 +31,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -142,7 +142,7 @@ public final class TestCommands
         {
             ServerPlayer player = src.getPlayerOrException();
             player.heal(4.0f);  // fires HEAL
-            player.knockback(1.0, 1.0, 0.0);  // fires KNOCKBACK
+            player.knockback(1.0, 1.0, 0.0, player.damageSources().generic(), 0.0f);  // fires KNOCKBACK
             src.sendSuccess(() -> Component.literal("[polytest] living: heal + knockback fired — check server log"), false);
             src.sendSuccess(() -> Component.literal("Give yourself a Totem and take fatal damage to test USE_TOTEM"), false);
         }
@@ -232,7 +232,7 @@ public final class TestCommands
             Vec3 pos = player.position().add(2, 0, 0);
 
             // Spawn zombie — fires ENTITY_TICK once it ticks, JOIN_LEVEL on add
-            Entity zombie = EntityType.ZOMBIE.create(level, EntitySpawnReason.COMMAND);
+            Entity zombie = EntityTypes.ZOMBIE.create(level, EntitySpawnReason.COMMAND);
             if (zombie != null)
             {
                 zombie.setPos(pos.x, pos.y, pos.z);
@@ -241,7 +241,7 @@ public final class TestCommands
             }
 
             // Spawn pig and mount it — fires MOUNT
-            Entity pig = EntityType.PIG.create(level, EntitySpawnReason.COMMAND);
+            Entity pig = EntityTypes.PIG.create(level, EntitySpawnReason.COMMAND);
             if (pig != null)
             {
                 pig.setPos(pos.x + 2, pos.y, pos.z);
@@ -294,7 +294,7 @@ public final class TestCommands
             ServerLevel level = src.getLevel();
             Vec3 pos = player.position().add(2, 0, 2);
 
-            Entity zombie = EntityType.ZOMBIE.create(level, EntitySpawnReason.COMMAND);
+            Entity zombie = EntityTypes.ZOMBIE.create(level, EntitySpawnReason.COMMAND);
             if (zombie != null)
             {
                 zombie.setPos(pos.x, pos.y, pos.z);
@@ -348,7 +348,7 @@ public final class TestCommands
             Vec3 pos = player.position().add(3, 0, 0);
 
             // Spawn a skeleton — triggers FINALIZE_SPAWN when it spawns (Mob.finalizeSpawn)
-            Entity skeleton = EntityType.SKELETON.create(level, EntitySpawnReason.COMMAND);
+            Entity skeleton = EntityTypes.SKELETON.create(level, EntitySpawnReason.COMMAND);
             if (skeleton != null)
             {
                 skeleton.setPos(pos.x, pos.y, pos.z);
@@ -466,7 +466,7 @@ public final class TestCommands
             Vec3 pos = player.position().add(2, 0, 0);
 
             // Spawn a zombie with 1 HP so one hit kills it
-            Entity zombie = EntityType.ZOMBIE.create(level, EntitySpawnReason.COMMAND);
+            Entity zombie = EntityTypes.ZOMBIE.create(level, EntitySpawnReason.COMMAND);
             if (zombie instanceof net.minecraft.world.entity.LivingEntity living)
             {
                 zombie.setPos(pos.x, pos.y, pos.z);
@@ -526,7 +526,7 @@ public final class TestCommands
             level.setBlock(wallPos, Blocks.STONE.defaultBlockState(), 3);
 
             // Shoot an arrow toward the wall
-            Entity arrowEntity = EntityType.ARROW.create(level, EntitySpawnReason.COMMAND);
+            Entity arrowEntity = EntityTypes.ARROW.create(level, EntitySpawnReason.COMMAND);
             Vec3 look = player.getLookAngle();
             if (arrowEntity instanceof Projectile arrowProj)
             {
@@ -558,7 +558,7 @@ public final class TestCommands
             Vec3 pos = player.position().add(3, 0, 3);
 
             // Spawn a pig as the strike target
-            Entity pig = EntityType.PIG.create(level, EntitySpawnReason.COMMAND);
+            Entity pig = EntityTypes.PIG.create(level, EntitySpawnReason.COMMAND);
             if (pig != null)
             {
                 pig.setPos(pos.x, pos.y, pos.z);
@@ -566,7 +566,7 @@ public final class TestCommands
             }
 
             // Create lightning bolt at that position
-            LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+            LightningBolt bolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, level);
             bolt.setPos(pos.x, pos.y, pos.z);
             level.addFreshEntity(bolt);
 
@@ -592,7 +592,7 @@ public final class TestCommands
             Vec3 spawnPos = player.position().add(2, 0, 0);
 
             // Spawn an enderman and teleport it — fires TELEPORT
-            Entity enderman = EntityType.ENDERMAN.create(level, EntitySpawnReason.COMMAND);
+            Entity enderman = EntityTypes.ENDERMAN.create(level, EntitySpawnReason.COMMAND);
             if (enderman != null)
             {
                 enderman.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
@@ -625,7 +625,7 @@ public final class TestCommands
             // Spawn two adult pigs and put them in love mode — fires BABY_SPAWN when baby is created
             for (int i = 0; i < 2; i++)
             {
-                Entity pig = EntityType.PIG.create(level, EntitySpawnReason.COMMAND);
+                Entity pig = EntityTypes.PIG.create(level, EntitySpawnReason.COMMAND);
                 if (pig instanceof Animal p)
                 {
                     p.setPos(pos.x + i, pos.y, pos.z);
@@ -656,8 +656,8 @@ public final class TestCommands
             Vec3 pos = player.position().add(3, 0, 0);
 
             // Spawn a large slime (size 4) — fires MOB_SPLIT when killed
-            Entity slime = EntityType.SLIME.create(level, EntitySpawnReason.COMMAND);
-            if (slime instanceof net.minecraft.world.entity.monster.Slime s)
+            Entity slime = EntityTypes.SLIME.create(level, EntitySpawnReason.COMMAND);
+            if (slime instanceof net.minecraft.world.entity.monster.cubemob.Slime s)
             {
                 s.setPos(pos.x, pos.y, pos.z);
                 s.setSize(4, true); // large slime — will split when killed

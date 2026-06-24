@@ -113,7 +113,7 @@ public class TestModClientCommon
         {
             if (action != 1) return; // press only
             Minecraft mc = Minecraft.getInstance();
-            if (mc.screen != null) return;
+            if (mc.gui.screen() != null) return;
 
             // ------------------------------------------------------------------
             // KP_5 — open all channels as floating windows (Plan B test)
@@ -121,7 +121,7 @@ public class TestModClientCommon
             if (key == GLFW.GLFW_KEY_KP_5)
             {
                 LOGGER.info("[TestMod] KP_5: opening FloatingChatWindow for all channels");
-                mc.setScreen(new ModularGuiScreen(gui ->
+                mc.gui.setScreen(new ModularGuiScreen(gui ->
                 {
                     gui.initFullscreenGui();
                     int offset = 0;

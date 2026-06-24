@@ -16,7 +16,7 @@ public class TestModNeoForgeClient
         NeoForgeConfigHelper.register(
                 container,
                 parent -> new ConfirmScreen(
-                        confirmed -> Minecraft.getInstance().setScreen(parent),
+                        confirmed -> Minecraft.getInstance().gui.setScreen(parent),
                         Component.literal("Testmod"),
                         Component.literal("No config screen registered yet."),
                         Component.literal("OK"),

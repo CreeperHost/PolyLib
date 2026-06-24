@@ -8,14 +8,8 @@ transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractC
 transitive-mutable field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageWidth I
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I
 transitive-mutable field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I
-transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen draggingItem Lnet/minecraft/world/item/ItemStack;
-transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen isSplittingStack Z
-
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftingRemainder I
-transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen snapbackData Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData;
-transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen clickedSlot Lnet/minecraft/world/inventory/Slot;
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftingType I
-transitive-accessible class net/minecraft/client/gui/screens/inventory/AbstractContainerScreen$SnapbackData
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen quickCraftSlots Ljava/util/Set;
 transitive-accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen recalculateQuickCraftRemaining ()V
 transitive-accessible field net/minecraft/client/gui/GuiGraphicsExtractor minecraft Lnet/minecraft/client/Minecraft;
@@ -33,4 +27,4 @@ transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityTy
 transitive-accessible class net/minecraft/world/item/CreativeModeTab$Output
 transitive-accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 transitive-accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
-transitive-accessible class net/minecraft/client/gui/Gui$HeartType
+transitive-accessible class net/minecraft/client/gui/Hud$HeartType

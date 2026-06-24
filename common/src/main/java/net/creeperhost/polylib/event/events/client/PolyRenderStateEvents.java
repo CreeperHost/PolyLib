@@ -12,7 +12,7 @@ public final class PolyRenderStateEvents
      * model rebuild, graphics settings change, etc.). Listeners should release
      * any caches that reference baked models or texture-atlas sprites.
      * <p>
-     * NeoForge: mixin on {@code LevelRenderer#allChanged} at RETURN<br>
+     * NeoForge: mixin on {@code LevelRenderer#invalidateCompiledGeometry} at RETURN<br>
      * Fabric: {@code InvalidateRenderStateCallback.EVENT}
      */
     public static final PolyEvent<Invalidate> INVALIDATE_RENDER_STATE = PolyEvent.create(

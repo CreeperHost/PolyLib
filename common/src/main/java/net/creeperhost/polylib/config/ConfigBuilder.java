@@ -3,11 +3,14 @@ package net.creeperhost.polylib.config;
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.JsonObject;
+import net.creeperhost.polylib.Constants;
 import net.creeperhost.polylib.platform.Services;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ConfigBuilder
@@ -71,7 +74,8 @@ public class ConfigBuilder
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Constants.LOG.warn("Failed to load config {}, backing it up and writing defaults", CONFIG_PATH, e);
+            recoverInvalidConfig();
         }
     }
 
@@ -86,7 +90,8 @@ public class ConfigBuilder
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Constants.LOG.warn("Failed to load config {}, backing it up and writing defaults", CONFIG_PATH, e);
+            recoverInvalidConfig();
         }
     }
 
@@ -95,7 +100,8 @@ public class ConfigBuilder
         try
         {
             ConfigData data = CONFIG_DATA.get();
-            if (data == null) data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
+            if (data == null) data = createDefaultData();
+            CONFIG_DATA.set(data);
 
             if (CONFIG_PATH.getParent() != null) {
                 CONFIG_PATH.getParent().toFile().mkdirs();
@@ -151,5 +157,28 @@ public class ConfigBuilder
     public ConfigData getConfigData()
     {
         return CONFIG_DATA.get();
+    }
+
+    private ConfigData createDefaultData() throws ReflectiveOperationException
+    {
+        return (ConfigData) CONFIG_DATA_CLASS.getDeclaredConstructor().newInstance();
+    }
+
+    private void recoverInvalidConfig()
+    {
+        try
+        {
+            if (CONFIG_PATH.toFile().exists())
+            {
+                Path backup = CONFIG_PATH.resolveSibling(CONFIG_PATH.getFileName() + ".invalid");
+                Files.move(CONFIG_PATH, backup, StandardCopyOption.REPLACE_EXISTING);
+            }
+            CONFIG_DATA.set(createDefaultData());
+            save();
+        }
+        catch (Exception recoverException)
+        {
+            recoverException.printStackTrace();
+        }
     }
 }

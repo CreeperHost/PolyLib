@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion = "${neoforge_loader_version_range}"
 issueTrackerURL = "https://github.com/CreeperHost/PolyLib/issues"
 license = "Insert License Here"
 
@@ -17,4 +17,18 @@ modId = "polylib"
 type="required"
 versionRange = "[2.0.0,)"
 ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.testmod]]
+modId = "neoforge"
+type="required"
+versionRange = "[${neoforge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.testmod]]
+modId = "minecraft"
+type="required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
 side = "BOTH"

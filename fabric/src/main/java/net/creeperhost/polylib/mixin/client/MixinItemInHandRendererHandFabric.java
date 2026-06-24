@@ -15,12 +15,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Fabric bridge for {@link PolyEntityRenderEvents#RENDER_HAND}.
- * Injects at the head of {@code ItemInHandRenderer#renderArmWithItem} (private method).
+ * Injects at the head of {@code ItemInHandRenderer#submitArmWithItem} (private method).
  */
 @Mixin(ItemInHandRenderer.class)
 public abstract class MixinItemInHandRendererHandFabric
 {
-    @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "submitArmWithItem", at = @At("HEAD"), cancellable = true, remap = false)
     private void polylib$onRenderArmWithItem(AbstractClientPlayer player,
                                               float partialTick,
                                               float equipProgress,

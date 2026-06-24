@@ -3,7 +3,6 @@ package net.creeperhost.polylib.client.modulargui.sprite;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -58,8 +57,8 @@ public class Material {
     /**
      * Convenience method to create a vertex consumer using this material's render type.
      */
-    public VertexConsumer buffer(MultiBufferSource buffers, Function<Identifier, RenderType> typeBuilder) {
-        return buffers.getBuffer(renderType(typeBuilder));
+    public VertexConsumer buffer(Function<RenderType, VertexConsumer> bufferSource, Function<Identifier, RenderType> typeBuilder) {
+        return bufferSource.apply(renderType(typeBuilder));
     }
 
     /**

@@ -184,7 +184,7 @@ public final class ConfigPanelRegistry
     {
         Minecraft mc = Minecraft.getInstance();
         if (mc == null) return;
-        if (mc.screen != null) return;
+        if (mc.gui.screen() != null) return;
 
         for (ConfigPanelEntry entry : ENTRIES.values())
         {
@@ -193,7 +193,7 @@ public final class ConfigPanelRegistry
             if (!isKeybindEnabled(entry.modId())) continue;
             while (km.consumeClick())
             {
-                mc.setScreen(entry.createScreen(null));
+                mc.gui.setScreen(entry.createScreen(null));
             }
         }
     }

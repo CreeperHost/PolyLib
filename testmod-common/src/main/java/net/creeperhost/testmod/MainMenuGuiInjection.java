@@ -6,7 +6,6 @@ import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.components.Renderable;
@@ -59,7 +58,7 @@ public class MainMenuGuiInjection implements GuiProvider
         GuiTexture disc = new GuiTexture(dvd.getContentElement(), Material.fromRawTexture(Identifier.withDefaultNamespace("textures/item/music_disc_13.png")));
         Constraints.bind(disc, dvd.getContentElement());
         dvd.start();
-        dvd.onBounce(bounce -> disc.setColour(0xFF000000 | ChatFormatting.getById(1 + (bounce % 15)).getColor()));
+        dvd.onBounce(bounce -> disc.setColour(0xFF000000 | Color.HSBtoRGB((bounce % 15) / 15F, 1F, 1F)));
         GuiText text = new GuiText(dvd.getContentElement(), Component.literal("DVD"));
         Constraints.size(text, 100, 8);
         Constraints.placeInside(text, dvd.getContentElement(), Constraints.LayoutPos.BOTTOM_CENTER, 0, -8);

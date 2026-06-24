@@ -20,7 +20,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -127,7 +127,7 @@ public class BlockEntityInventoryTest extends PolyBlockEntity implements PolyInv
     @Override
     public void handlePacketFromClient(ServerPlayer player, int id, FriendlyByteBuf buf) {
         TestModCommon.LOGGER.info("Message from client! {}", player);
-        Cow cow = new Cow(EntityType.COW, level);
+        Cow cow = new Cow(EntityTypes.COW, level);
         cow.setPos(Vec3.atBottomCenterOf(getBlockPos().above()));
         level.addFreshEntity(cow);
     }
