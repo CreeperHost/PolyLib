@@ -214,6 +214,13 @@ public class ModularGuiContainer<T extends AbstractContainerMenu> extends Abstra
         }
     }
 
+    @Override
+    protected void extractSlots(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        if (modularGui.vanillaSlotRendering()) {
+            super.extractSlots(guiGraphics, mouseX, mouseY);
+        }
+    }
+
     //Modular gui friendly version of the slot render
     @Override
     public void renderSlot(GuiRender render, Slot slot) {

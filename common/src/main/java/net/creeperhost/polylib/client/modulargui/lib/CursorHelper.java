@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFWImage;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +21,11 @@ import java.util.Map;
  */
 public class CursorHelper {
 
-    public static final Identifier DRAG = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/drag.png");
-    public static final Identifier RESIZE_H = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_h.png");
-    public static final Identifier RESIZE_V = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_v.png");
-    public static final Identifier RESIZE_TRBL = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_diag_trbl.png");
-    public static final Identifier RESIZE_TLBR = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/cursors/resize_diag_tlbr.png");
+    public static final Identifier DRAG = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/sprites/cursors/drag.png");
+    public static final Identifier RESIZE_H = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/sprites/cursors/resize_h.png");
+    public static final Identifier RESIZE_V = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/sprites/cursors/resize_v.png");
+    public static final Identifier RESIZE_TRBL = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/sprites/cursors/resize_diag_trbl.png");
+    public static final Identifier RESIZE_TLBR = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/sprites/cursors/resize_diag_tlbr.png");
     private static Map<Identifier, Long> cursors = new HashMap<>();
     private static Identifier active = null;
 
@@ -38,11 +39,23 @@ public class CursorHelper {
 
     private static long createCursor(Identifier resource) {
         try {
-            BufferedImage bufferedimage = ImageIO.read(Minecraft.getInstance().getResourceManager().getResource(resource).get().open());
+            var resourceOptional = Minecraft.getInstance().getResourceManager().getResource(resource);
+            if (resourceOptional.isEmpty()) {
+                Constants.LOG.warn("Unable to find cursor resource {}", resource);
+                return 0;
+            }
+            BufferedImage bufferedimage;
+            try (InputStream stream = resourceOptional.get().open()) {
+                bufferedimage = ImageIO.read(stream);
+            }
+            if (bufferedimage == null) {
+                Constants.LOG.warn("Unable to read cursor image {}", resource);
+                return 0;
+            }
             GLFWImage glfwImage = imageToGLFWImage(bufferedimage);
             return GLFW.glfwCreateCursor(glfwImage, 16, 16);
         } catch (Exception e) {
-            e.printStackTrace();
+            Constants.LOG.warn("Unable to create cursor {}", resource, e);
         }
         return 0;
     }
