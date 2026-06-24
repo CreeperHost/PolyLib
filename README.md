@@ -28,17 +28,17 @@ repositories {
 ```gradle
 // Common
 dependencies {
-    implementation "net.creeperhost:polylib-fabric:VERSION"
+    implementation "net.creeperhost.polylib:polylib-fabric:VERSION"
 }
 
 // Fabric
 dependencies {
-    implementation "net.creeperhost:polylib-fabric:VERSION"
+    implementation "net.creeperhost.polylib:polylib-fabric:VERSION"
 }
 
 // NeoForge
 dependencies {
-    implementation "net.creeperhost:polylib-neoforge:VERSION"
+    implementation "net.creeperhost.polylib:polylib-neoforge:VERSION"
     //Load Polylib accessTransformers in dev, not needed for fabric
     accessTransformers("net.creeperhost.polylib:polylib-neoforge:${polylib_version}")
 }
