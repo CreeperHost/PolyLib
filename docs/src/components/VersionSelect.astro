@@ -1,0 +1,74 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<div class="poly-version-select" data-base={base}>
+  <label for="poly-version">Version</label>
+  <select id="poly-version" aria-label="Select documentation version">
+    <option value="latest">Latest</option>
+  </select>
+</div>
+
+<script>
+  const root = document.querySelector('.poly-version-select');
+  const select = document.getElementById('poly-version');
+
+  if (root instanceof HTMLElement && select instanceof HTMLSelectElement) {
+    const base = root.dataset.base || '/';
+    const normalizeBase = base.endsWith('/') ? base : `${base}/`;
+    const docsRoot = normalizeBase.replace(/(?:latest|versions\/[^/]+)\/$/, '');
+    const versionsUrl = `${docsRoot}versions.json`;
+
+    const stripVersionPrefix = (pathname) => {
+      let path = pathname;
+      if (path.startsWith(docsRoot)) path = path.slice(docsRoot.length);
+      path = path.replace(/^\/+/, '');
+      if (path.startsWith('latest/')) return path.slice('latest/'.length);
+      const versionMatch = path.match(/^versions\/[^/]+\/(.*)$/);
+      if (versionMatch) return versionMatch[1];
+      return path;
+    };
+
+    const currentFromPath = (pathname) => {
+      let path = pathname;
+      if (path.startsWith(docsRoot)) path = path.slice(docsRoot.length);
+      path = path.replace(/^\/+/, '');
+      const versionMatch = path.match(/^versions\/([^/]+)\//);
+      if (path === 'latest' || path.startsWith('latest/')) return 'latest';
+      return versionMatch ? versionMatch[1] : 'latest';
+    };
+
+    fetch(versionsUrl)
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error('No versions.json')))
+      .then((data) => {
+        const versions = Array.isArray(data.versions) ? data.versions : [];
+        const current = currentFromPath(window.location.pathname);
+
+        select.innerHTML = '';
+        const latest = document.createElement('option');
+        latest.value = 'latest';
+        latest.textContent = data.latest ? `Latest (${data.latest})` : 'Latest';
+        select.append(latest);
+
+        for (const version of versions) {
+          const option = document.createElement('option');
+          option.value = version.version;
+          option.textContent = version.version;
+          select.append(option);
+        }
+
+        select.value = current;
+      })
+      .catch(() => {
+        select.value = 'latest';
+      });
+
+    select.addEventListener('change', () => {
+      const relativePath = stripVersionPrefix(window.location.pathname) || '';
+      const target = select.value === 'latest'
+        ? `${docsRoot}latest/${relativePath}`
+        : `${docsRoot}versions/${select.value}/${relativePath}`;
+      window.location.assign(target);
+    });
+  }
+</script>

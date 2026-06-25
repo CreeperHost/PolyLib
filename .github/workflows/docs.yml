@@ -1,0 +1,117 @@
+name: Release Documentation
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version folder to publish, defaults to the current ref name'
+        required: false
+        default: ''
+      update_latest:
+        description: 'Also update /latest/ and root machine-readable files'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout release source
+        uses: actions/checkout@v4
+
+      - name: Checkout selected PolyLib source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref_name }}
+          path: .release-source
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
+
+      - name: Install docs dependencies
+        working-directory: docs
+        run: pnpm install --frozen-lockfile
+
+      - name: Build docs
+        working-directory: docs
+        env:
+          GITHUB_REF_NAME: ${{ github.event.inputs.tag || github.ref_name }}
+          POLYLIB_SOURCE_DIR: ${{ github.workspace }}/.release-source
+          ASTRO_TELEMETRY_DISABLED: 1
+          DOCS_BASE: /PolyLib/latest
+        run: pnpm run build
+
+      - name: Restore published docs branch
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: .pages
+
+      - name: Initialize published docs branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -d .pages/.git ]; then
+            rm -rf .pages
+            mkdir .pages
+            git -C .pages init
+            git -C .pages checkout -b gh-pages
+            git -C .pages remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          fi
+
+      - name: Prepare versioned Pages artifact
+        env:
+          DOCS_TAG: ${{ github.event.inputs.tag || github.ref_name }}
+          UPDATE_LATEST: ${{ github.event_name == 'push' || github.event.inputs.update_latest == 'true' }}
+        run: node docs/scripts/prepare-pages.mjs --tag "$DOCS_TAG" --dist docs/dist --out .pages --update-latest "$UPDATE_LATEST"
+
+      - name: Store generated docs history
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git -C .pages config user.name "github-actions[bot]"
+          git -C .pages config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C .pages remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git -C .pages add .
+          if ! git -C .pages diff --cached --quiet; then
+            git -C .pages commit -m "Publish docs for ${DOCS_TAG}"
+            git -C .pages push origin gh-pages
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .pages
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
