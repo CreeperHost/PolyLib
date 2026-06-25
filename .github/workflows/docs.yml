@@ -91,6 +91,7 @@ jobs:
       - name: Store generated docs history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCS_TAG: ${{ github.event.inputs.tag || github.ref_name }}
         run: |
           git -C .pages config user.name "github-actions[bot]"
           git -C .pages config user.email "41898282+github-actions[bot]@users.noreply.github.com"
