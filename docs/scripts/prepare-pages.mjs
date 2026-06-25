@@ -44,7 +44,6 @@ if (updateLatest) {
   await writeFile(path.join(out, 'index.html'), redirectHtml('/PolyLib/latest/'));
 
   await rm(path.join(out, 'font'), { recursive: true, force: true });
-  await cp(path.join(latestDir, 'font'), path.join(out, 'font'), { recursive: true });
 
   await rm(path.join(out, 'llms-full.txt'), { force: true });
   for (const file of ['llms.txt', 'api-index.json']) {

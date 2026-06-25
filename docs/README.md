@@ -12,4 +12,4 @@ pnpm run dev
 pnpm run build
 ```
 
-The generator reads the Java sources from `common`, `fabric`, and `neoforge`, then writes release-specific reference pages plus `api-index.json`, `llms.txt`, and `llms-full.txt`.
+The generator reads the Java sources from `common`, `fabric`, and `neoforge`, then writes release-specific reference pages plus `api-index.json` and `llms.txt`.
