@@ -33,21 +33,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout release source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Checkout selected PolyLib source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.tag || github.ref_name }}
           path: .release-source
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.7.0
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
@@ -67,22 +67,19 @@ jobs:
         run: pnpm run build
 
       - name: Restore published docs branch
-        uses: actions/checkout@v4
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: .pages
-
-      - name: Initialize published docs branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ ! -d .pages/.git ]; then
-            rm -rf .pages
-            mkdir .pages
-            git -C .pages init
-            git -C .pages checkout -b gh-pages
-            git -C .pages remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          rm -rf .pages
+          mkdir .pages
+          git -C .pages init
+          git -C .pages remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          if git -C .pages fetch --depth=1 origin gh-pages; then
+            git -C .pages checkout -B gh-pages FETCH_HEAD
+          else
+            git -C .pages checkout --orphan gh-pages
+            git -C .pages rm -rf . >/dev/null 2>&1 || true
           fi
 
       - name: Prepare versioned Pages artifact
@@ -101,7 +98,7 @@ jobs:
           git -C .pages add .
           if ! git -C .pages diff --cached --quiet; then
             git -C .pages commit -m "Publish docs for ${DOCS_TAG}"
-            git -C .pages push origin gh-pages
+            git -C .pages push origin HEAD:gh-pages
           fi
 
       - name: Configure Pages
