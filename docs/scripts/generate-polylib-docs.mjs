@@ -353,7 +353,7 @@ description: Generated package reference for ${packageEntry.name}.
 
 ## Types
 
-${classes.map((type) => `- [${type.name}](../../classes/${type.qualifiedName.replaceAll('.', '/')}/) <span class="api-chip">${type.kind}</span>`).join('\n')}
+${classes.map((type) => `- [${type.name}](../../classes/${typeRoute(type)}/) <span class="api-chip">${type.kind}</span>`).join('\n')}
 `);
   }
 }
@@ -361,7 +361,7 @@ ${classes.map((type) => `- [${type.name}](../../classes/${type.qualifiedName.rep
 async function writeClassPages(classes) {
   const classRoot = path.join(generatedRoot, 'classes');
   for (const type of classes) {
-    const file = path.join(classRoot, ...type.qualifiedName.split('.')) + '.mdx';
+    const file = path.join(classRoot, ...typeRouteSegments(type)) + '.mdx';
     await mkdir(path.dirname(file), { recursive: true });
     await writeFile(file, `---
 title: ${yamlString(type.name)}
@@ -395,9 +395,25 @@ async function writeEventPages(events) {
   await mkdir(eventRoot, { recursive: true });
 
   const byGroup = Map.groupBy ? Map.groupBy(events, (event) => event.declaringType) : groupBy(events, (event) => event.declaringType);
+  const groups = [...byGroup.entries()]
+    .map(([declaringType, groupEvents]) => ({
+      declaringType,
+      groupName: declaringType.split('.').at(-1),
+      groupEvents,
+    }))
+    .sort((a, b) => a.groupName.localeCompare(b.groupName));
 
-  for (const [declaringType, groupEvents] of byGroup.entries()) {
-    const groupName = declaringType.split('.').at(-1);
+  await writeFile(path.join(eventRoot, 'index.mdx'), `---
+title: Event Groups
+description: Generated event group reference for PolyLib.
+---
+
+These pages are generated from the PolyLib event declarations during the docs build.
+
+${groups.map((group) => `- [${group.groupName}](./${eventGroupRoute(group.groupName)}/) <span class="api-chip">${group.groupEvents.length} events</span>\n  <span class="api-muted">${escapeHtml(group.declaringType)}</span>`).join('\n')}
+`);
+
+  for (const { declaringType, groupEvents, groupName } of groups) {
     const file = path.join(eventRoot, `${safeFileName(groupName)}.mdx`);
     await writeFile(file, `---
 title: ${yamlString(groupName)}
@@ -555,6 +571,18 @@ function groupBy(items, keyFn) {
 
 function safeFileName(value) {
   return value.replace(/[^A-Za-z0-9_.-]/g, '-');
+}
+
+function typeRoute(type) {
+  return typeRouteSegments(type).join('/');
+}
+
+function typeRouteSegments(type) {
+  return type.qualifiedName.split('.').map((segment) => segment.toLowerCase());
+}
+
+function eventGroupRoute(groupName) {
+  return safeFileName(groupName).toLowerCase();
 }
 
 function slugId(value) {
