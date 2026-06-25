@@ -11,17 +11,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by brandon3055 on 19/02/2024
+ * {@link AbstractDataStore} implementation for enum values.
+ * <p>
+ * Values are encoded to tags by enum ordinal index and to network buffers with
+ * Minecraft's enum codec helpers. Enum types with more than 255 constants are not supported.
+ *
+ * @param <T> the enum type stored by this data object
  */
 public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
     private final Class<T> enumClass;
     public Map<Integer, T> indexToValue = new HashMap<>();
     public Map<T, Integer> valueToIndex = new HashMap<>();
 
+    /**
+     * Creates an enum data store using the declaring class of the default value.
+     *
+     * @param defaultValue the initial value, used to infer the enum class
+     */
     public EnumData(@NotNull T defaultValue) {
         this(defaultValue.getDeclaringClass(), defaultValue);
     }
 
+    /**
+     * Creates an enum data store.
+     *
+     * @param enumClass    the enum class this data store accepts
+     * @param defaultValue the initial value, or null
+     */
     public EnumData(Class<T> enumClass, @Nullable T defaultValue) {
         super(defaultValue);
         this.enumClass = enumClass;
@@ -66,10 +82,16 @@ public class EnumData<T extends Enum<T>> extends AbstractDataStore<T> {
         }
     }
 
+    /**
+     * @return true when the stored enum value is null
+     */
     public boolean isNull() {
         return value == null;
     }
 
+    /**
+     * @return true when the stored enum value is not null
+     */
     public boolean notNull() {
         return value != null;
     }

@@ -16,6 +16,7 @@ dependencies {
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.5.3'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.5.3'
     implementation project(':common')
+    accessTransformers(project(':neoforge'))
 }
 
 configurations {

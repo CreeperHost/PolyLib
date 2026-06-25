@@ -6,12 +6,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 
+/**
+ * Server-side chunk lifecycle and player chunk-watch events.
+ */
 public final class PolyChunkEvents
 {
     public static final PolyEvent<Load> CHUNK_LOAD = PolyEvent.create(handlers -> (level, chunk) -> handlers.forEach(h -> h.onLoad(level, chunk)));
     public static final PolyEvent<Unload> CHUNK_UNLOAD = PolyEvent.create(handlers -> (level, chunk) -> handlers.forEach(h -> h.onUnload(level, chunk)));
 
-    // ── Tier 10 ───────────────────────────────────────────────────────────────
 
     /**
      * Fired when a player starts watching (tracking) a chunk.
@@ -57,4 +59,3 @@ public final class PolyChunkEvents
         void onUnWatch(ServerPlayer player, ChunkPos pos, ServerLevel level);
     }
 }
-

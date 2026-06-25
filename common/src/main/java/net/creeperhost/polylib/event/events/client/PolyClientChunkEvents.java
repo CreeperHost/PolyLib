@@ -4,6 +4,9 @@ import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.chunk.LevelChunk;
 
+/**
+ * Client-side chunk lifecycle events.
+ */
 public final class PolyClientChunkEvents
 {
     /**
@@ -26,12 +29,18 @@ public final class PolyClientChunkEvents
 
     private PolyClientChunkEvents() {}
 
+    /**
+     * Callback fired when a chunk loads on the client.
+     */
     @FunctionalInterface
     public interface ChunkLoad
     {
         void onChunkLoad(ClientLevel level, LevelChunk chunk);
     }
 
+    /**
+     * Callback fired when a chunk unloads on the client.
+     */
     @FunctionalInterface
     public interface ChunkUnload
     {

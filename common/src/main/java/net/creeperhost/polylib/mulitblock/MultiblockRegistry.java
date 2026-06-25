@@ -7,6 +7,12 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * Global registry that maps loaded levels to their active multiblock registries.
+ * <p>
+ * Platform hooks should notify this class when parts load or unload, chunks finish
+ * loading, worlds unload, and server ticks begin.
+ */
 public class MultiblockRegistry
 {
     // World > WorldRegistry map

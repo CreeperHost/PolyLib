@@ -4,6 +4,9 @@ import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+/**
+ * Client-side block entity lifecycle events.
+ */
 public final class PolyClientBlockEntityEvents
 {
     /**
@@ -27,12 +30,18 @@ public final class PolyClientBlockEntityEvents
 
     private PolyClientBlockEntityEvents() {}
 
+    /**
+     * Callback fired when a block entity is loaded into a client level.
+     */
     @FunctionalInterface
     public interface BlockEntityLoad
     {
         void onBlockEntityLoad(BlockEntity blockEntity, ClientLevel level);
     }
 
+    /**
+     * Callback fired when a block entity is unloaded from a client level.
+     */
     @FunctionalInterface
     public interface BlockEntityUnload
     {

@@ -5,14 +5,22 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for a boolean value.
  */
 public class BooleanData extends AbstractDataStore<Boolean> {
 
+    /**
+     * Creates a boolean data store with a default value of false.
+     */
     public BooleanData() {
         super(false);
     }
 
+    /**
+     * Creates a boolean data store.
+     *
+     * @param defaultValue the initial value
+     */
     public BooleanData(boolean defaultValue) {
         super(defaultValue);
     }
@@ -40,7 +48,7 @@ public class BooleanData extends AbstractDataStore<Boolean> {
     /**
      * Invert the value stored in this {@link BooleanData} and return the result.
      *
-     * @return the nwe stored value.
+     * @return the new stored value
      */
     public boolean invert() {
         return set(!value);

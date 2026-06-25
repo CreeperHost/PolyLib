@@ -12,6 +12,10 @@ import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.server.MinecraftServer;
 import java.util.List;
 
+/**
+ * Server-level events for load, unload, save, sleep completion, game rule changes,
+ * difficulty changes, and potential mob spawn lists.
+ */
 public final class PolyLevelEvents
 {
     public static final PolyEvent<Load> LEVEL_LOAD = PolyEvent.create(handlers -> level -> handlers.forEach(h -> h.onLoad(level)));
@@ -28,7 +32,6 @@ public final class PolyLevelEvents
     public static final PolyEvent<SleepFinished> SLEEP_FINISHED = PolyEvent.create(
             handlers -> level -> handlers.forEach(h -> h.onSleepFinished(level)));
 
-    // ── Tier 8 ────────────────────────────────────────────────────────────────
 
     /**
      * Fired when a game rule value changes. Informational.
@@ -48,7 +51,6 @@ public final class PolyLevelEvents
     public static final PolyEvent<DifficultyChange> DIFFICULTY_CHANGE = PolyEvent.create(
             handlers -> (difficulty, oldDifficulty) -> handlers.forEach(h -> h.onDifficultyChange(difficulty, oldDifficulty)));
 
-    // ── Tier 9 ────────────────────────────────────────────────────────────────
 
     /**
      * Fired when gathering potential spawn entries for a chunk. Modify the list to add/remove spawns.

@@ -6,9 +6,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+/**
+ * Controller base for rectangular-prism multiblocks.
+ * <p>
+ * Validation checks the controller's bounding box against min/max dimensions and
+ * then validates every coordinate as frame, side, top, bottom, or interior.
+ */
 public abstract class RectangularMultiblockControllerBase extends MultiblockControllerBase
 {
 
+    /**
+     * Creates a rectangular multiblock controller for a level.
+     *
+     * @param world the level containing the multiblock
+     */
     protected RectangularMultiblockControllerBase(Level world)
     {
         super(world);

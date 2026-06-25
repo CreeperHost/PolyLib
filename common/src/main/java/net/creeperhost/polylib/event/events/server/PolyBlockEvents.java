@@ -22,6 +22,10 @@ import java.util.EnumSet;
 
 import java.util.List;
 
+/**
+ * Server-side block events for breaking, placing, growth, fluid behavior, drops,
+ * neighbor notifications, pistons, and note blocks.
+ */
 public final class PolyBlockEvents
 {
     /**
@@ -97,7 +101,6 @@ public final class PolyBlockEvents
     {
     }
 
-    // ── Tier 3 events ───────────────────────────────────────────────────────
 
     /**
      * Fired when a Nether portal frame is about to generate portal blocks.
@@ -233,7 +236,6 @@ public final class PolyBlockEvents
         void onFluidSource(LevelAccessor level, BlockPos pos, CancelContext ctx);
     }
 
-    // ── Tier 8 ────────────────────────────────────────────────────────────────
 
     /**
      * Fired when a broken block is computing its drops. Modify the {@code drops} list to change results.
@@ -273,7 +275,6 @@ public final class PolyBlockEvents
         void onEntityMultiPlace(ServerLevel level, Entity entity, BlockState placedState, CancelContext ctx);
     }
 
-    // ── Tier 12 ────────────────────────────────────────────────────────────────
 
     /**
      * Fired when a flowing fluid places a solid block (obsidian, cobblestone, etc.). Cancellable.

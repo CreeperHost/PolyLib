@@ -3,6 +3,9 @@ package net.creeperhost.polylib.event.events.server;
 import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.server.level.ServerPlayer;
 
+/**
+ * Server-side player tick events.
+ */
 public final class PolyPlayerTickEvents
 {
     /** Fired at the start of each server-side player tick. */

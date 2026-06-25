@@ -16,6 +16,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Base implementation for block entities that participate in a multiblock controller.
+ * <p>
+ * Handles controller attachment, detachment, save-delegate state, visited state,
+ * neighbor discovery, and registry notifications. Concrete parts supply machine
+ * lifecycle behavior and the controller type they create.
+ */
 public abstract class MultiblockBlockEntityBase extends IMultiblockPart
 {
     private MultiblockControllerBase controller;
@@ -24,6 +31,13 @@ public abstract class MultiblockBlockEntityBase extends IMultiblockPart
     private boolean saveMultiblockData;
 //    private CompoundTag cachedMultiblockData;
 
+    /**
+     * Creates a multiblock block entity base.
+     *
+     * @param tileEntityTypeIn the block entity type
+     * @param blockPos         this part's world position
+     * @param blockState       this part's block state
+     */
     public MultiblockBlockEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)
     {
         super(tileEntityTypeIn, blockPos, blockState);

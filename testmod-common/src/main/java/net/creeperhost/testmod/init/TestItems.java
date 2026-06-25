@@ -24,6 +24,7 @@ public class TestItems
 
     public static final Supplier<Item> TEST_BLOCK = ITEMS.registerItem("test_block", "Test Block", props -> new BlockItem(TestBlocks.TEST_BLOCK.get(), props));
     public static final Supplier<Item> CREATIVE_POWER_BLOCK_ITEM = ITEMS.registerItem("creative_power_blockitem", "Creative Power block", props -> new BlockItem(TestBlocks.CREATIVE_POWER_BLOCK.get(), props));
+    public static final Supplier<Item> FLUID_TANK_BLOCK_ITEM = ITEMS.registerItem("fluid_tank", "Fluid Tank", props -> new BlockItem(TestBlocks.FLUID_TANK_BLOCK.get(), props));
     public static final Supplier<Item> MULTIBLOCK_ITEM = ITEMS.registerItem("multiblock_test_block", "Multiblock block", props -> new BlockItem(TestBlocks.MULTIBLOCK_BLOCK.get(), props));
 
     public static void init() {

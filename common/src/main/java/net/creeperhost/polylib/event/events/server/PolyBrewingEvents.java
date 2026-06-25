@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
  */
 public final class PolyBrewingEvents
 {
-    // ── Tier 22 ───────────────────────────────────────────────────────────────
 
     /**
      * Fired before a brewing operation completes.
@@ -47,7 +46,6 @@ public final class PolyBrewingEvents
 
     private PolyBrewingEvents() {}
 
-    // ── Tier 22 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface BrewPre

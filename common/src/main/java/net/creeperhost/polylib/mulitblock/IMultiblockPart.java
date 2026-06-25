@@ -9,31 +9,86 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Set;
 
+/**
+ * Base block entity contract for a block that can participate in a multiblock structure.
+ * <p>
+ * Parts are responsible for finding neighboring parts, attaching to compatible
+ * controllers, tracking validation visits, and receiving machine lifecycle callbacks.
+ */
 public abstract class IMultiblockPart extends BlockEntity implements MenuProvider
 {
+    /**
+     * Distance marker used when no valid graph distance is available.
+     */
     public static final int INVALID_DISTANCE = Integer.MAX_VALUE;
 
+    /**
+     * Creates a multiblock part block entity.
+     *
+     * @param tileEntityTypeIn the block entity type
+     * @param blockPos         this part's world position
+     * @param blockState       this part's block state
+     */
     public IMultiblockPart(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)
     {
         super(tileEntityTypeIn, blockPos, blockState);
     }
 
+    /**
+     * @return true when this part is attached to a controller
+     */
     public abstract boolean isConnected();
 
+    /**
+     * @return the controller this part is currently attached to
+     */
     public abstract MultiblockControllerBase getMultiblockController();
 
+    /**
+     * @return this part's position in the world
+     */
     public abstract BlockPos getWorldLocation();
 
+    /**
+     * Called when this part attaches to a controller.
+     *
+     * @param newController the controller this part joined
+     */
     public abstract void onAttached(MultiblockControllerBase newController);
 
+    /**
+     * Called when this part detaches from a controller.
+     *
+     * @param multiblockController the controller this part left
+     */
     public abstract void onDetached(MultiblockControllerBase multiblockController);
 
+    /**
+     * Called when this part was separated from a controller during graph splitting.
+     *
+     * @param oldController     the previous controller
+     * @param oldControllerSize the size of the previous controller before splitting
+     * @param newControllerSize the size of this part's new controller group
+     */
     public abstract void onOrphaned(MultiblockControllerBase oldController, int oldControllerSize, int newControllerSize);
 
+    /**
+     * Creates a new controller instance for this part's multiblock type.
+     *
+     * @return a new controller
+     */
     public abstract MultiblockControllerBase createNewMultiblock();
 
+    /**
+     * @return the controller class this part is compatible with
+     */
     public abstract Class<? extends MultiblockControllerBase> getMultiblockControllerType();
 
+    /**
+     * Called when this part's controller is assimilated into another controller.
+     *
+     * @param newController the controller that now owns this part
+     */
     public abstract void onAssimilated(MultiblockControllerBase newController);
 
 
@@ -155,6 +210,9 @@ public abstract class IMultiblockPart extends BlockEntity implements MenuProvide
      */
     public abstract void onMultiblockDataAssimilated();
 
+    /**
+     * @return true if this block entity has been invalidated and should be ignored
+     */
     public boolean isInvalid()
     {
         return false;

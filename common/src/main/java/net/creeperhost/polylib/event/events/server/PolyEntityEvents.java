@@ -12,6 +12,10 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 
+/**
+ * Server-side entity events for ticking, level changes, mounting, teleporting,
+ * projectile impacts, mob griefing, and invulnerability checks.
+ */
 public final class PolyEntityEvents
 {
     /**
@@ -20,7 +24,6 @@ public final class PolyEntityEvents
      */
     public static final PolyEvent<EntityTick> ENTITY_TICK = PolyEvent.create(handlers -> entity -> handlers.forEach(h -> h.onEntityTick(entity)));
 
-    // ── Tier 15 ───────────────────────────────────────────────────────────────
 
     /**
      * Fired after an entity's tick method completes. Completes the entity tick pair.
@@ -148,7 +151,6 @@ public final class PolyEntityEvents
         }
     });
 
-    // ── Tier 22 ───────────────────────────────────────────────────────────────
 
     /**
      * Fires when the engine checks whether an entity is invulnerable to a damage source.
@@ -250,7 +252,6 @@ public final class PolyEntityEvents
         public void setCanGrief(boolean value) { this.canGrief = value; }
     }
 
-    // ── Tier 15 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface EntityTickEnd
@@ -258,7 +259,6 @@ public final class PolyEntityEvents
         void onEntityTickEnd(Entity entity);
     }
 
-    // ── Tier 22 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface InvulnerabilityCheck

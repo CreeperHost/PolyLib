@@ -6,9 +6,21 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
+/**
+ * Client-to-server container payload.
+ *
+ * @param data encoded container packet bytes
+ */
 public record ContainerServerPayload(byte[] data) implements CustomPacketPayload {
+    /**
+     * Payload type id for client-to-server container packets.
+     */
     public static final Type<ContainerServerPayload> TYPE = new Type<>(
             Identifier.fromNamespaceAndPath(Constants.MOD_ID, "container_packet_server"));
+
+    /**
+     * Codec that stores the encoded payload length followed by the payload bytes.
+     */
     public static final StreamCodec<ByteBuf, ContainerServerPayload> CODEC = StreamCodec.of(
             (buf, p) -> { buf.writeInt(p.data.length); buf.writeBytes(p.data); },
             buf -> { byte[] d = new byte[buf.readInt()]; buf.readBytes(d); return new ContainerServerPayload(d); });

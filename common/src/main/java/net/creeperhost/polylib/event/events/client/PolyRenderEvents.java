@@ -6,6 +6,9 @@ import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 
+/**
+ * Client render events for common world and GUI render stages.
+ */
 public final class PolyRenderEvents
 {
     /**
@@ -85,24 +88,36 @@ public final class PolyRenderEvents
     {
     }
 
+    /**
+     * Callback for world render stages that expose a pose stack.
+     */
     @FunctionalInterface
     public interface RenderLevel
     {
         void onRender(PoseStack poseStack);
     }
 
+    /**
+     * Callback for whole-GUI render stages.
+     */
     @FunctionalInterface
     public interface RenderGui
     {
         void onRenderGui(GuiGraphicsExtractor graphics, float partialTick);
     }
 
+    /**
+     * Callback fired before a HUD overlay layer renders.
+     */
     @FunctionalInterface
     public interface GuiOverlayPre
     {
         void onGuiOverlayPre(Identifier layerId, GuiGraphicsExtractor graphics, float partialTick, CancelContext ctx);
     }
 
+    /**
+     * Callback fired after a HUD overlay layer renders.
+     */
     @FunctionalInterface
     public interface GuiOverlayPost
     {

@@ -14,10 +14,18 @@ import net.minecraft.world.level.storage.ValueOutput;
  */
 public class StringData extends AbstractDataStore<String> {
 
+    /**
+     * Creates a string data store with an empty default value.
+     */
     public StringData() {
         super("");
     }
 
+    /**
+     * Creates a string data store.
+     *
+     * @param defaultValue the initial value, or an empty string when null
+     */
     public StringData(String defaultValue) {
         super(defaultValue == null ? "" : defaultValue);
     }

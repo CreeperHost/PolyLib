@@ -15,7 +15,6 @@ import net.minecraft.world.phys.Vec3;
  */
 public final class PolyVillageEvents
 {
-    // ── Tier 22 ───────────────────────────────────────────────────────────────
 
     /**
      * Fired when the game attempts to spawn a zombie siege in a village.
@@ -35,7 +34,6 @@ public final class PolyVillageEvents
 
     private PolyVillageEvents() {}
 
-    // ── Tier 22 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface SiegeSpawn

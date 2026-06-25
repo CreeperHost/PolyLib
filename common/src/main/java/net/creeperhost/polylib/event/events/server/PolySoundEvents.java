@@ -7,6 +7,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 
+/**
+ * Server-side sound events.
+ */
 public final class PolySoundEvents
 {
     /**

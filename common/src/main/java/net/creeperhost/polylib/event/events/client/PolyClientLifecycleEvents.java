@@ -5,6 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Client lifecycle events for startup, shutdown, and active level changes.
+ */
 public final class PolyClientLifecycleEvents
 {
     /**
@@ -27,19 +30,24 @@ public final class PolyClientLifecycleEvents
 
     private PolyClientLifecycleEvents() {}
 
+    /**
+     * Callback fired when the Minecraft client has started.
+     */
     @FunctionalInterface
     public interface ClientStarted
     {
         void onClientStarted(Minecraft client);
     }
 
+    /**
+     * Callback fired while the Minecraft client is stopping.
+     */
     @FunctionalInterface
     public interface ClientStopping
     {
         void onClientStopping(Minecraft client);
     }
 
-    // ── Tier 17-C ─────────────────────────────────────────────────────────────
 
     /**
      * Fired after the client's active level reference changes — on join, dimension
@@ -52,6 +60,9 @@ public final class PolyClientLifecycleEvents
     public static final PolyEvent<ClientLevelChanged> CLIENT_LEVEL_CHANGED = PolyEvent.create(
             handlers -> (client, level) -> handlers.forEach(h -> h.onClientLevelChanged(client, level)));
 
+    /**
+     * Callback fired after the active client level changes.
+     */
     @FunctionalInterface
     public interface ClientLevelChanged
     {

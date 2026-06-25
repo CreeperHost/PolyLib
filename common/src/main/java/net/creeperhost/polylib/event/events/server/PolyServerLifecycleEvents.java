@@ -11,13 +11,16 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.util.Set;
 
+/**
+ * Server lifecycle events for startup, shutdown, reloads, datapack sync,
+ * login/configuration negotiation, game tests, and reload listener ordering.
+ */
 public final class PolyServerLifecycleEvents
 {
     public static final PolyEvent<Started> SERVER_STARTED = PolyEvent.create(handlers -> server -> handlers.forEach(h -> h.onStarted(server)));
     public static final PolyEvent<Stopping> SERVER_STOPPING = PolyEvent.create(handlers -> server -> handlers.forEach(h -> h.onStopping(server)));
     public static final PolyEvent<Stopped> SERVER_STOPPED = PolyEvent.create(handlers -> server -> handlers.forEach(h -> h.onStopped(server)));
 
-    // ── Tier 8 ─────────────────────────────────────────────────────────────────
 
     /**
      * Fired when data packs sync to a player (or all players on login/reload).
@@ -47,7 +50,6 @@ public final class PolyServerLifecycleEvents
     public static final PolyEvent<ReloadEnd> RELOAD_END = PolyEvent.create(
             handlers -> (server, rm, success) -> handlers.forEach(h -> h.onReloadEnd(server, rm, success)));
 
-    // ── Tier 15 ───────────────────────────────────────────────────────────────
 
     /**
      * Fires after all server levels have been fully set up.
@@ -101,7 +103,6 @@ public final class PolyServerLifecycleEvents
     public static final PolyEvent<PlayerNegotiation> PLAYER_NEGOTIATION = PolyEvent.create(
             handlers -> connection -> handlers.forEach(h -> h.onPlayerNegotiation(connection)));
 
-    // ── Tier 22 ───────────────────────────────────────────────────────────────
 
     /**
      * Fires on the NeoForge Mod Bus when resource reload listeners are being sorted.
@@ -152,7 +153,6 @@ public final class PolyServerLifecycleEvents
         void onReloadEnd(MinecraftServer server, ResourceManager rm, boolean success);
     }
 
-    // ── Tier 15 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface AfterSetup
@@ -215,7 +215,6 @@ public final class PolyServerLifecycleEvents
         void onPlayerNegotiation(Connection connection);
     }
 
-    // ── Tier 22 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface SortReloadListeners

@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
  */
 public final class PolyLevelRenderEvents
 {
-    // ── Tier 17-A: Frame events ───────────────────────────────────────────────
 
     /**
      * Fired at the very start of each rendered frame, before any level geometry
@@ -39,7 +38,6 @@ public final class PolyLevelRenderEvents
     public static final PolyEvent<RenderFrameEnd> RENDER_FRAME_END = PolyEvent.create(
             handlers -> mc -> handlers.forEach(h -> h.onRenderFrameEnd(mc)));
 
-    // ── Tier 17-B: Level render stage events ─────────────────────────────────
 
     /**
      * Fired after the sky layer has been rendered.
@@ -146,12 +144,18 @@ public final class PolyLevelRenderEvents
 
     // ── SAM interfaces ────────────────────────────────────────────────────────
 
+    /**
+     * Callback fired at the start of a rendered frame.
+     */
     @FunctionalInterface
     public interface RenderFrameStart
     {
         void onRenderFrameStart(Minecraft client);
     }
 
+    /**
+     * Callback fired at the end of a rendered frame.
+     */
     @FunctionalInterface
     public interface RenderFrameEnd
     {

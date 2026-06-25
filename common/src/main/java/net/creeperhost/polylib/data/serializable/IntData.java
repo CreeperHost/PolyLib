@@ -5,14 +5,22 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for an integer value.
  */
 public class IntData extends AbstractDataStore<Integer> {
 
+    /**
+     * Creates an integer data store with a default value of zero.
+     */
     public IntData() {
         super(0);
     }
 
+    /**
+     * Creates an integer data store.
+     *
+     * @param defaultValue the initial value
+     */
     public IntData(int defaultValue) {
         super(defaultValue);
     }

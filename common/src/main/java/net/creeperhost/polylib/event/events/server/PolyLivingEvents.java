@@ -20,6 +20,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
+/**
+ * Server-side living entity events covering damage, death, healing, targeting,
+ * equipment, item use, spawning, breathing, projectile selection, and combat hooks.
+ */
 public final class PolyLivingEvents
 {
     /**
@@ -210,7 +214,6 @@ public final class PolyLivingEvents
 
     private PolyLivingEvents() {}
 
-    // ── Tier 3 events ───────────────────────────────────────────────────────
 
     /**
      * Fired when a living entity changes an equipment slot (armour, hand, etc.).
@@ -532,7 +535,6 @@ public final class PolyLivingEvents
         void onSwapItems(LivingEntity entity, ItemStack toMainHand, ItemStack toOffHand, CancelContext ctx);
     }
 
-    // ── Tier 9 ────────────────────────────────────────────────────────────────
 
     /**
      * Fired when determining the cluster size for a mob spawn. Modify {@code size} field to change.
@@ -576,7 +578,6 @@ public final class PolyLivingEvents
     public static final PolyEvent<ArmorHurt> ARMOR_HURT = PolyEvent.create(
             handlers -> (entity, source, ctx) -> handlers.forEach(h -> h.onArmorHurt(entity, source, ctx)));
 
-    // ── Tier 10 ───────────────────────────────────────────────────────────────
 
     /**
      * Fired to determine if a living entity may begin elytra gliding. Modify {@code result[0]} to override.
@@ -587,7 +588,6 @@ public final class PolyLivingEvents
     public static final PolyEvent<ElytraAllow> ELYTRA_ALLOW = PolyEvent.create(
             handlers -> (entity, result) -> handlers.forEach(h -> h.onElytraAllow(entity, result)));
 
-    // ── Tier 15 ───────────────────────────────────────────────────────────────
 
     /**
      * Allows modifying the XP value dropped when a living entity is killed.
@@ -681,7 +681,6 @@ public final class PolyLivingEvents
         public void setRefillAirAmount(int refillAirAmount) { this.refillAirAmount = refillAirAmount; }
     }
 
-    // ── Tier 15 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface MobKillXp

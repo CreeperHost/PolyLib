@@ -5,14 +5,22 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for a byte value.
  */
 public class ByteData extends AbstractDataStore<Byte> {
 
+    /**
+     * Creates a byte data store with a default value of zero.
+     */
     public ByteData() {
         super((byte) 0);
     }
 
+    /**
+     * Creates a byte data store.
+     *
+     * @param defaultValue the initial value
+     */
     public ByteData(byte defaultValue) {
         super(defaultValue);
     }

@@ -3,6 +3,9 @@ package net.creeperhost.polylib.event.events.client;
 import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.player.LocalPlayer;
 
+/**
+ * Client camera events for FOV and camera orientation customization.
+ */
 public final class PolyCameraEvents
 {
     /**
@@ -27,12 +30,18 @@ public final class PolyCameraEvents
 
     private PolyCameraEvents() {}
 
+    /**
+     * Callback for modifying the camera FOV multiplier.
+     */
     @FunctionalInterface
     public interface FovModifier
     {
         void onComputeFov(LocalPlayer player, float[] fovHolder);
     }
 
+    /**
+     * Callback for modifying camera yaw, pitch, and roll.
+     */
     @FunctionalInterface
     public interface CameraSetup
     {

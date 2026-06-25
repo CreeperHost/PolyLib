@@ -41,7 +41,6 @@ public final class PolySpawnEvents
     public static final PolyEvent<MobDespawn> MOB_DESPAWN = PolyEvent.create(
             handlers -> (mob, ctx) -> handlers.forEach(h -> h.onMobDespawn(mob, ctx)));
 
-    // ── Tier 15 ───────────────────────────────────────────────────────────────
 
     /**
      * Fires immediately when a mob enters the world (before finalizeSpawn / equipment assignment).
@@ -68,7 +67,6 @@ public final class PolySpawnEvents
         void onMobDespawn(Mob mob, DespawnContext ctx);
     }
 
-    // ── Tier 15 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface MobSpawnContext

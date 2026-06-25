@@ -2,9 +2,13 @@ package net.creeperhost.polylib.neoforge;
 
 import com.google.common.collect.Iterables;
 import net.creeperhost.polylib.Constants;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidBlock;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidItem;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyBlock;
 import net.creeperhost.polylib.inventory.power.PolyEnergyItem;
+import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidItemWrapper;
+import net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyItemWrapper;
 import net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper;
 import net.minecraft.core.BlockPos;
@@ -42,6 +46,9 @@ public class NeoForgeInventoryManager
             if (item instanceof PolyEnergyItem polyEnergyItem) {
                 event.registerItem(Capabilities.Energy.ITEM, (stack, itemAccess) -> new PolyNeoEnergyItemWrapper(polyEnergyItem.getEnergyStorage(stack), itemAccess), item);
             }
+            if (item instanceof PolyFluidItem polyFluidItem) {
+                event.registerItem(Capabilities.Fluid.ITEM, (stack, context) -> new PolyNeoFluidItemWrapper(polyFluidItem.getFluidStorage(stack), context), item);
+            }
         }
 
         for (BlockEntityType<?> blockEntityType : BuiltInRegistries.BLOCK_ENTITY_TYPE)
@@ -67,9 +74,9 @@ public class NeoForgeInventoryManager
                 if (blockEntity instanceof PolyEnergyBlock) {
                     event.registerBlockEntity(Capabilities.Energy.BLOCK, blockEntityType, (entity, side) -> ((PolyEnergyBlock) entity).getEnergyStorage(side) == null ? null : new PolyNeoEnergyWrapper(((PolyEnergyBlock) entity).getEnergyStorage(side)));
                 }
-//                if (blockEntity instanceof PolyFluidBlock) {
-//                    event.registerBlockEntity(Capabilities.Fluid.BLOCK, blockEntityType, (entity, side) -> ((PolyFluidBlock) entity).getFluidHandler(side) == null ? null : new PolyNeoFluidWrapper(((PolyFluidBlock) entity).getFluidHandler(side)));
-//                }
+                if (blockEntity instanceof PolyFluidBlock) {
+                    event.registerBlockEntity(Capabilities.Fluid.BLOCK, blockEntityType, (entity, side) -> ((PolyFluidBlock) entity).getFluidStorage(side) == null ? null : new PolyNeoFluidWrapper(((PolyFluidBlock) entity).getFluidStorage(side)));
+                }
             } catch (Exception e) {
                 Constants.LOG.error("Error injecting capabilities", e);
             }

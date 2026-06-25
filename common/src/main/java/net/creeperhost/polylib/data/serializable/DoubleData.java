@@ -5,14 +5,22 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for a double value.
  */
 public class DoubleData extends AbstractDataStore<Double> {
 
+    /**
+     * Creates a double data store with a default value of zero.
+     */
     public DoubleData() {
         super(0D);
     }
 
+    /**
+     * Creates a double data store.
+     *
+     * @param defaultValue the initial value
+     */
     public DoubleData(double defaultValue) {
         super(defaultValue);
     }

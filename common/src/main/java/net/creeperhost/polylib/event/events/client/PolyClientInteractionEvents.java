@@ -8,6 +8,9 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * Client-side interaction events for block breaking and attack input.
+ */
 public final class PolyClientInteractionEvents
 {
     /**

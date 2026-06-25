@@ -6,18 +6,36 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for an {@link ItemStack}.
+ * <p>
+ * Stored stacks are copied on assignment, and equality is checked with
+ * {@link ItemStack#matches(ItemStack, ItemStack)} so stack components are compared
+ * using Minecraft's item stack matching rules.
  */
 public class StackData extends AbstractDataStore<ItemStack> {
 
+    /**
+     * Creates an item stack data store with {@link ItemStack#EMPTY}.
+     */
     public StackData() {
         super(ItemStack.EMPTY);
     }
 
+    /**
+     * Creates an item stack data store.
+     *
+     * @param defaultValue the initial stack
+     */
     public StackData(ItemStack defaultValue) {
         super(defaultValue);
     }
 
+    /**
+     * Stores a copy of the supplied stack when it differs from the current stack and passes validation.
+     *
+     * @param value the requested new stack
+     * @return the stack currently stored after validation
+     */
     @Override
     public ItemStack set(ItemStack value) {
         if (!ItemStack.matches(value, this.value) && validator.test(value)) {

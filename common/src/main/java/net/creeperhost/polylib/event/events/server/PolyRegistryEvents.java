@@ -9,7 +9,6 @@ import net.creeperhost.polylib.event.PolyEvent;
  */
 public final class PolyRegistryEvents
 {
-    // ── Tier 15 ───────────────────────────────────────────────────────────────
 
     /**
      * Fires when registry integer IDs are remapped during world load
@@ -36,7 +35,6 @@ public final class PolyRegistryEvents
         void onRegistryIdRemap(Object remapState);
     }
 
-    // ── Tier 22 ───────────────────────────────────────────────────────────────
 
     /**
      * Fires when a dimension's world generation attributes are being modified.

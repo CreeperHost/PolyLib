@@ -8,11 +8,17 @@ public final class CancelContext
 {
     private boolean cancelled = false;
 
+    /**
+     * Marks this event dispatch as cancelled.
+     */
     public void cancel()
     {
         cancelled = true;
     }
 
+    /**
+     * @return true when a handler has cancelled this context
+     */
     public boolean isCancelled()
     {
         return cancelled;

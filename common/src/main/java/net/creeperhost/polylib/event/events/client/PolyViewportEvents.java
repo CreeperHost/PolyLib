@@ -62,6 +62,9 @@ public final class PolyViewportEvents
 
     private PolyViewportEvents() {}
 
+    /**
+     * Callback for mutating the computed fog color.
+     */
     @FunctionalInterface
     public interface ComputeFogColor
     {
@@ -69,6 +72,9 @@ public final class PolyViewportEvents
         void onComputeFogColor(Camera camera, float[] rgb);
     }
 
+    /**
+     * Callback for mutating fog near and far planes.
+     */
     @FunctionalInterface
     public interface RenderFog
     {
@@ -76,6 +82,9 @@ public final class PolyViewportEvents
         void onRenderFog(Camera camera, float[] params);
     }
 
+    /**
+     * Callback for mutating the absolute field of view.
+     */
     @FunctionalInterface
     public interface ComputeFov
     {
@@ -83,6 +92,9 @@ public final class PolyViewportEvents
         void onComputeFov(float[] fov);
     }
 
+    /**
+     * Callback for mutating third-person camera distance.
+     */
     @FunctionalInterface
     public interface ComputeCameraDistance
     {

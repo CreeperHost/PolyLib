@@ -2,6 +2,7 @@ package net.creeperhost.polylib.platform;
 
 import net.creeperhost.polylib.FabricInventoryManager;
 import net.creeperhost.polylib.PolyLibFabric;
+import net.creeperhost.polylib.inventory.fluid.FluidManager;
 import net.creeperhost.polylib.inventory.power.EnergyManager;
 import net.creeperhost.polylib.platform.services.IPlatformHelper;
 import net.fabricmc.api.EnvType;
@@ -47,5 +48,10 @@ public class FabricPlatformHelper implements IPlatformHelper
     @Override
     public EnergyManager getEnergyManager() {
         return FabricInventoryManager.ENERGY_MANAGER;
+    }
+
+    @Override
+    public FluidManager getFluidManager() {
+        return FabricInventoryManager.FLUID_MANAGER;
     }
 }

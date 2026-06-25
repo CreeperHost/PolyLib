@@ -5,6 +5,9 @@ import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 
+/**
+ * Server-side mob effect events for applying, adding, removing, and expiring effects.
+ */
 public final class PolyMobEffectEvents
 {
     /**

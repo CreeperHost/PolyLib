@@ -3,6 +3,9 @@ package net.creeperhost.polylib.event.events.client;
 import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.player.LocalPlayer;
 
+/**
+ * Client-side local player connection events.
+ */
 public final class PolyClientPlayerEvents
 {
     /**
@@ -27,12 +30,18 @@ public final class PolyClientPlayerEvents
     {
     }
 
+    /**
+     * Callback fired when the local player logs in.
+     */
     @FunctionalInterface
     public interface Login
     {
         void onLogin(LocalPlayer player);
     }
 
+    /**
+     * Callback fired when the local player logs out.
+     */
     @FunctionalInterface
     public interface Logout
     {

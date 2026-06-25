@@ -12,8 +12,18 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+/**
+ * Base controller for a connected multiblock machine.
+ * <p>
+ * A controller owns a set of connected parts, validates whether those parts form a
+ * complete machine, manages assembly state transitions, handles controller merges
+ * and splits, and delegates persistence/network description data to one save part.
+ */
 public abstract class MultiblockControllerBase
 {
+    /**
+     * Dimension limit value used by controllers that do not bound a dimension.
+     */
     public static final short DIMENSION_UNBOUNDED = -1;
 
     // Multiblock stuff - do not mess with

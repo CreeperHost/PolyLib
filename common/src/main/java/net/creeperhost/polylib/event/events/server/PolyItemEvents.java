@@ -10,9 +10,12 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
+/**
+ * Server-side item events for use lifecycle, item entities, crafting stations,
+ * fuel checks, inventory stacking, and anvil results.
+ */
 public final class PolyItemEvents
 {
-    // ── Tier 4: Item use lifecycle ───────────────────────────────────────────
 
     /**
      * Fired when a living entity starts using an item (bow draw, eating, etc.).
@@ -204,7 +207,6 @@ public final class PolyItemEvents
         public void setMaterialCost(int materialCost) { this.materialCost = materialCost; }
     }
 
-    // ── Tier 10: Fuel ────────────────────────────────────────────────────────
 
     /**
      * Fired to query how long an item burns as fuel. Modify {@code burnTime[0]} to change.
@@ -222,7 +224,6 @@ public final class PolyItemEvents
         void onFuelBurnTime(ItemStack stack, int[] burnTime);
     }
 
-    // ── Tier 13 ───────────────────────────────────────────────────────────────
 
     /**
      * Fired when a player drags/stacks one inventory item onto another. Informational only.

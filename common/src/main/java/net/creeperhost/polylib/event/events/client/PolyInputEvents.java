@@ -2,6 +2,9 @@ package net.creeperhost.polylib.event.events.client;
 
 import net.creeperhost.polylib.event.PolyEvent;
 
+/**
+ * Client input events for keyboard and mouse button activity.
+ */
 public final class PolyInputEvents
 {
     /**
@@ -26,12 +29,18 @@ public final class PolyInputEvents
 
     private PolyInputEvents() {}
 
+    /**
+     * Callback fired for keyboard key input.
+     */
     @FunctionalInterface
     public interface KeyInput
     {
         void onKeyInput(int key, int scanCode, int action, int modifiers);
     }
 
+    /**
+     * Callback fired for mouse button input.
+     */
     @FunctionalInterface
     public interface MouseInput
     {

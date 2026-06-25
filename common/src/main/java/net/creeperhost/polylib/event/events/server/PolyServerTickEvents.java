@@ -4,6 +4,9 @@ import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 
+/**
+ * Server and server-level tick events.
+ */
 public final class PolyServerTickEvents
 {
     public static final PolyEvent<TickStart> TICK_START = PolyEvent.create(handlers -> server -> handlers.forEach(h -> h.onTickStart(server)));

@@ -3,6 +3,9 @@ package net.creeperhost.polylib.event.events.client;
 import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 
+/**
+ * Client-side level load and unload events.
+ */
 public final class PolyClientLevelEvents
 {
     /**
@@ -25,12 +28,18 @@ public final class PolyClientLevelEvents
 
     private PolyClientLevelEvents() {}
 
+    /**
+     * Callback fired when a client level is loaded.
+     */
     @FunctionalInterface
     public interface LevelLoad
     {
         void onLoad(ClientLevel level);
     }
 
+    /**
+     * Callback fired when a client level is unloaded.
+     */
     @FunctionalInterface
     public interface LevelUnload
     {

@@ -5,14 +5,22 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for a long value.
  */
 public class LongData extends AbstractDataStore<Long> {
 
+    /**
+     * Creates a long data store with a default value of zero.
+     */
     public LongData() {
         super(0L);
     }
 
+    /**
+     * Creates a long data store.
+     *
+     * @param defaultValue the initial value
+     */
     public LongData(long defaultValue) {
         super(defaultValue);
     }

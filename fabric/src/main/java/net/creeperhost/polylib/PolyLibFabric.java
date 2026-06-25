@@ -28,6 +28,7 @@ public class PolyLibFabric implements ModInitializer
         if (DataComps.isDataEnabled()) {
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_toggle_active"), DataComps.ITEM_TOGGLE_ACTIVE);
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_energy"), DataComps.ITEM_ENERGY);
+            Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_fluid"), DataComps.ITEM_FLUID);
             Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item_tile_data"), DataComps.ITEM_TILE_DATA);
         }
     }

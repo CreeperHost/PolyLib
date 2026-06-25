@@ -17,10 +17,18 @@ import java.util.UUID;
  */
 public class UUIDData extends AbstractDataStore<@Nullable UUID> {
 
+    /**
+     * Creates a UUID data store with a null default value.
+     */
     public UUIDData() {
         super(null);
     }
 
+    /**
+     * Creates a UUID data store.
+     *
+     * @param defaultValue the initial value, or null
+     */
     public UUIDData(@Nullable UUID defaultValue) {
         super(defaultValue);
     }

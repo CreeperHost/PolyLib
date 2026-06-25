@@ -17,7 +17,12 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 /**
- * Created by brandon3055 on 04/04/2024
+ * Simple {@link Container} implementation for inventories owned by a {@link BlockEntity}.
+ * <p>
+ * This inventory stores its contents in a fixed-size {@link NonNullList}, marks the
+ * owning block entity dirty whenever its contents change, and serializes its items
+ * through {@link ContainerHelper}. It also supports a global stack validator and
+ * per-slot validators for menu and automation checks.
  */
 public class BlockInventory implements Container, Serializable, ContainerHelpers {
 
@@ -29,31 +34,69 @@ public class BlockInventory implements Container, Serializable, ContainerHelpers
     private final NonNullList<ItemStack> items;
     private int maxStackSize = 64;
 
+    /**
+     * Creates a block inventory with the supplied slot count.
+     *
+     * @param blockEntity the block entity that owns this inventory
+     * @param size        the number of inventory slots
+     */
     public BlockInventory(BlockEntity blockEntity, int size) {
         this.items = NonNullList.withSize(size, ItemStack.EMPTY);
         this.blockEntity = blockEntity;
     }
 
+    /**
+     * Sets the maximum stack size accepted by this inventory.
+     *
+     * @param maxStackSize the maximum number of items allowed in one slot
+     * @return this inventory
+     */
     public BlockInventory setMaxStackSize(int maxStackSize) {
         this.maxStackSize = maxStackSize;
         return this;
     }
 
+    /**
+     * Sets a global validator used by {@link #canPlaceItem(int, ItemStack)} when
+     * no per-slot validator is registered for the target slot.
+     *
+     * @param stackValidator predicate receiving the slot index and stack
+     * @return this inventory
+     */
     public BlockInventory setStackValidator(BiPredicate<Integer, ItemStack> stackValidator) {
         this.stackValidator = stackValidator;
         return this;
     }
 
+    /**
+     * Sets a global stack-only validator used by {@link #canPlaceItem(int, ItemStack)}
+     * when no per-slot validator is registered for the target slot.
+     *
+     * @param stackValidator predicate receiving the stack
+     * @return this inventory
+     */
     public BlockInventory setStackValidator(Predicate<ItemStack> stackValidator) {
         this.stackValidator = (integer, stack) -> stackValidator.test(stack);
         return this;
     }
 
+    /**
+     * Sets a validator for a specific slot.
+     * <p>
+     * Slot validators take priority over the global stack validator.
+     *
+     * @param slot      the slot index to validate
+     * @param validator predicate receiving the stack being inserted
+     * @return this inventory
+     */
     public BlockInventory setSlotValidator(int slot, Predicate<ItemStack> validator) {
         slotValidators.put(slot, validator);
         return this;
     }
 
+    /**
+     * @return the block entity that owns this inventory
+     */
     public BlockEntity getBlockEntity() {
         return blockEntity;
     }
@@ -120,7 +163,6 @@ public class BlockInventory implements Container, Serializable, ContainerHelpers
     public void serialize(ValueOutput output) {
         ContainerHelper.saveAllItems(output, items);
     }
-
 
     @Override
     public int getMaxStackSize() {

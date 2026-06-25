@@ -7,6 +7,12 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Client screen lifecycle, rendering, keyboard, mouse, and text-input events.
+ * <p>
+ * The {@code Allow} callbacks receive a {@link CancelContext}; cancelling them
+ * suppresses the matching vanilla screen input action.
+ */
 public final class PolyScreenEvents {
 
     // Lifecycle

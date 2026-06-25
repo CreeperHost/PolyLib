@@ -5,14 +5,22 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for a short value.
  */
 public class ShortData extends AbstractDataStore<Short> {
 
+    /**
+     * Creates a short data store with a default value of zero.
+     */
     public ShortData() {
         super((short) 0);
     }
 
+    /**
+     * Creates a short data store.
+     *
+     * @param defaultValue the initial value
+     */
     public ShortData(short defaultValue) {
         super(defaultValue);
     }

@@ -9,6 +9,9 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
+/**
+ * Server-side explosion events for start, detonation, and entity knockback.
+ */
 public final class PolyExplosionEvents
 {
     /**

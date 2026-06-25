@@ -8,6 +8,12 @@ import net.minecraft.world.level.chunk.LevelChunk;
 
 import java.util.*;
 
+/**
+ * Per-level registry that tracks multiblock controllers and pending part changes.
+ * <p>
+ * This class processes orphaned parts, controller merges, disconnections, dead
+ * controllers, and delayed part attachment caused by chunk loading.
+ */
 public class MultiblockWorldRegistry
 {
     private Level worldObj;
@@ -39,6 +45,11 @@ public class MultiblockWorldRegistry
     private Object partsAwaitingChunkLoadMutex;
     private Object orphanedPartsMutex;
 
+    /**
+     * Creates a registry for one level.
+     *
+     * @param world the level tracked by this registry
+     */
     public MultiblockWorldRegistry(final Level world)
     {
         worldObj = world;

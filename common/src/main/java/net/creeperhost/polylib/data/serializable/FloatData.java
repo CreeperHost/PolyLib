@@ -5,14 +5,22 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Created by brandon3055 on 09/09/2023
+ * {@link AbstractDataStore} implementation for a float value.
  */
 public class FloatData extends AbstractDataStore<Float> {
 
+    /**
+     * Creates a float data store with a default value of zero.
+     */
     public FloatData() {
         super(0F);
     }
 
+    /**
+     * Creates a float data store.
+     *
+     * @param defaultValue the initial value
+     */
     public FloatData(float defaultValue) {
         super(defaultValue);
     }

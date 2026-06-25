@@ -8,11 +8,25 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * Base part implementation for rectangular multiblocks.
+ * <p>
+ * Tracks this part's position within the controller bounding box and the outward
+ * facing direction for face parts. Concrete implementations provide validation
+ * rules for frame, side, top, bottom, and interior positions.
+ */
 public abstract class RectangularMultiblockTileEntityBase extends MultiblockBlockEntityBase
 {
     PartPosition position;
     Direction outwards;
 
+    /**
+     * Creates a rectangular multiblock part.
+     *
+     * @param tileEntityTypeIn the block entity type
+     * @param blockPos         this part's world position
+     * @param blockState       this part's block state
+     */
     public RectangularMultiblockTileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)
     {
         super(tileEntityTypeIn, blockPos, blockState);
@@ -22,11 +36,17 @@ public abstract class RectangularMultiblockTileEntityBase extends MultiblockBloc
     }
 
     // Positional Data
+    /**
+     * @return the outward direction for face parts, or null for interior/frame parts
+     */
     public Direction getOutwardsDir()
     {
         return outwards;
     }
 
+    /**
+     * @return this part's position classification inside the rectangular machine
+     */
     public PartPosition getPartPosition()
     {
         return position;
@@ -58,6 +78,12 @@ public abstract class RectangularMultiblockTileEntityBase extends MultiblockBloc
     }
 
     // Positional helpers
+    /**
+     * Recomputes this part's position classification and outward direction.
+     *
+     * @param minCoord the controller minimum bounding-box coordinate
+     * @param maxCoord the controller maximum bounding-box coordinate
+     */
     public void recalculateOutwardsDirection(BlockPos minCoord, BlockPos maxCoord)
     {
         outwards = null;
@@ -118,13 +144,28 @@ public abstract class RectangularMultiblockTileEntityBase extends MultiblockBloc
     }
 
     // /// Validation Helpers (IMultiblockPart)
+    /**
+     * Validates this part for a frame or corner position.
+     */
     public abstract void isGoodForFrame() throws MultiblockValidationException;
 
+    /**
+     * Validates this part for a side-wall position.
+     */
     public abstract void isGoodForSides() throws MultiblockValidationException;
 
+    /**
+     * Validates this part for a top-face position.
+     */
     public abstract void isGoodForTop() throws MultiblockValidationException;
 
+    /**
+     * Validates this part for a bottom-face position.
+     */
     public abstract void isGoodForBottom() throws MultiblockValidationException;
 
+    /**
+     * Validates this part for an interior position.
+     */
     public abstract void isGoodForInterior() throws MultiblockValidationException;
 }

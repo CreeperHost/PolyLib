@@ -4,6 +4,9 @@ import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
+/**
+ * Client and client-level tick events.
+ */
 public final class PolyClientTickEvents
 {
     /** Fired at the start of each client tick. */
@@ -26,24 +29,36 @@ public final class PolyClientTickEvents
     {
     }
 
+    /**
+     * Callback fired at the start of a client-level tick.
+     */
     @FunctionalInterface
     public interface LevelTickStart
     {
         void onTickStart(ClientLevel level);
     }
 
+    /**
+     * Callback fired at the start of a client tick.
+     */
     @FunctionalInterface
     public interface TickStart
     {
         void onTickStart(Minecraft client);
     }
 
+    /**
+     * Callback fired at the end of a client tick.
+     */
     @FunctionalInterface
     public interface TickEnd
     {
         void onTickEnd(Minecraft client);
     }
 
+    /**
+     * Callback fired at the end of a client-level tick.
+     */
     @FunctionalInterface
     public interface LevelTickEnd
     {

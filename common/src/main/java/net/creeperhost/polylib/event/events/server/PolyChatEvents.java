@@ -62,7 +62,6 @@ public final class PolyChatEvents
         void onCommandExecute(CommandSourceStack source, String[] command, CancelContext ctx);
     }
 
-    // ── Tier 22 ───────────────────────────────────────────────────────────────
 
     /**
      * Gate event: return {@code false} from any handler to suppress a system/game message
@@ -104,7 +103,6 @@ public final class PolyChatEvents
                 for (var h : handlers) h.onChatDecorate(player, message);
             });
 
-    // ── Tier 22 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface AllowGameMessage

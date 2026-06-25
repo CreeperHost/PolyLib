@@ -4,6 +4,9 @@ import net.creeperhost.polylib.event.PolyEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
 
+/**
+ * Client-side entity lifecycle events.
+ */
 public final class PolyClientEntityEvents
 {
     /**
@@ -27,12 +30,18 @@ public final class PolyClientEntityEvents
 
     private PolyClientEntityEvents() {}
 
+    /**
+     * Callback fired when an entity is added to a client level.
+     */
     @FunctionalInterface
     public interface EntityLoad
     {
         void onEntityLoad(Entity entity, ClientLevel level);
     }
 
+    /**
+     * Callback fired when an entity is removed from a client level.
+     */
     @FunctionalInterface
     public interface EntityUnload
     {

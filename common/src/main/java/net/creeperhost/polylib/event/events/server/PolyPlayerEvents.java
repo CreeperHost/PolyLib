@@ -28,6 +28,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Server-side player events for connection lifecycle, interaction, inventory,
+ * experience, dimensions, permissions, advancements, trading, and persistence hooks.
+ */
 public final class PolyPlayerEvents
 {
     // --- Existing events ---
@@ -88,7 +92,6 @@ public final class PolyPlayerEvents
     /** Fired when a player closes a container/menu. */
     public static final PolyEvent<ContainerClose> CONTAINER_CLOSE = PolyEvent.create(handlers -> (player, container) -> handlers.forEach(h -> h.onContainerClose(player, container)));
 
-    // --- Tier 2 events ---
 
     /**
      * Fired after a player changes dimension. Informational — not cancellable.
@@ -358,7 +361,6 @@ public final class PolyPlayerEvents
         void onSetSpawn(ServerPlayer player, BlockPos pos, ResourceKey<Level> dimension, boolean forced, CancelContext ctx);
     }
 
-    // ── Tier 7: Player interaction extended ──────────────────────────────────
 
     /**
      * Fired to compute how fast a player breaks a block. Modify {@code speed[0]} to change.
@@ -471,7 +473,6 @@ public final class PolyPlayerEvents
     public static final PolyEvent<ItemSmelted> ITEM_SMELTED = PolyEvent.create(
             handlers -> (player, stack) -> handlers.forEach(h -> h.onItemSmelted(player, stack)));
 
-    // ── Tier 8: Player extended ───────────────────────────────────────────────
 
     /**
      * Fired when a statistic is being awarded to a player. Cancel to prevent the award.
@@ -488,7 +489,6 @@ public final class PolyPlayerEvents
         }
     });
 
-    // ── Tier 9: Mob/NPC extended ──────────────────────────────────────────────
 
     /**
      * Fired when a player trades with a villager or wandering trader. Informational only.
@@ -514,7 +514,6 @@ public final class PolyPlayerEvents
         }
     });
 
-    // ── Tier 10: Name / Save ─────────────────────────────────────────────────
 
     /**
      * Fired to format a player's display name. Modify {@code name[0]} to override.
@@ -561,7 +560,6 @@ public final class PolyPlayerEvents
     public static final PolyEvent<BrewedPotion> BREWED_POTION = PolyEvent.create(
             handlers -> (player, stack) -> handlers.forEach(h -> h.onBrewedPotion(player, stack)));
 
-    // ── Tier 15 ───────────────────────────────────────────────────────────────
 
     /**
      * Fires after a player has successfully picked up an item entity.
@@ -574,7 +572,6 @@ public final class PolyPlayerEvents
             handlers -> (player, itemEntity, stack) ->
                     handlers.forEach(h -> h.onItemPickupPost(player, itemEntity, stack)));
 
-    // ── Tier 11 ───────────────────────────────────────────────────────────────
 
     /**
      * Fired when a player stops tracking an entity (complement to {@link #START_TRACKING}).
@@ -665,7 +662,6 @@ public final class PolyPlayerEvents
     public static final PolyEvent<AdvancementRevoke> ADVANCEMENT_REVOKE = PolyEvent.create(
             handlers -> (player, advancement) -> handlers.forEach(h -> h.onAdvancementRevoke(player, advancement)));
 
-    // ── Tier 7 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface BreakSpeed
@@ -729,7 +725,6 @@ public final class PolyPlayerEvents
         void onItemSmelted(Player player, ItemStack stack);
     }
 
-    // ── Tier 8 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface StatAward
@@ -737,7 +732,6 @@ public final class PolyPlayerEvents
         void onStatAward(Player player, Stat<?> stat, int value, CancelContext ctx);
     }
 
-    // ── Tier 9 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface TradeWithVillager
@@ -751,7 +745,6 @@ public final class PolyPlayerEvents
         void onPhantomSpawn(ServerPlayer player, CancelContext ctx);
     }
 
-    // ── Tier 10 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface NameFormat
@@ -780,7 +773,6 @@ public final class PolyPlayerEvents
         void onBrewedPotion(Player player, ItemStack stack);
     }
 
-    // ── Tier 15 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface ItemPickupPost
@@ -793,7 +785,6 @@ public final class PolyPlayerEvents
         void onItemPickupPost(Player player, ItemEntity itemEntity, ItemStack stack);
     }
 
-    // ── Tier 11 interfaces ────────────────────────────────────────────────────
 
     @FunctionalInterface
     public interface StopTracking
@@ -855,4 +846,3 @@ public final class PolyPlayerEvents
         void onAdvancementRevoke(ServerPlayer player, AdvancementHolder advancement);
     }
 }
-
