@@ -1,0 +1,10 @@
+---
+title: Networking
+description: PolyLib network payloads and platform services.
+---
+
+PolyLib routes common networking through `PolyLibNetwork` and `INetworkHelper`.
+
+The common code builds payloads and delegates actual send and registration behavior to the active loader implementation. This keeps container packets, tile data packets, and client/server sync helpers available to common code.
+
+Look under the generated `network`, `network.packets`, and `platform.services` package pages for release-specific signatures.

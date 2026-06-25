@@ -1,0 +1,15 @@
+packages:
+  - .
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+
+minimumReleaseAgeExclude:
+  - '@astrojs/markdown-satteri'
+  - '@astrojs/starlight'
+  - astro
+
+allowBuilds:
+  esbuild: true
+  sharp: true
