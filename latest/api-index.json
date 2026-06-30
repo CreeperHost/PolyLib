@@ -2,9 +2,9 @@
   "project": {
     "name": "PolyLib",
     "version": "2.0.9",
-    "minecraftVersion": "26.1.2",
-    "releaseTag": "multi/26.1.2",
-    "generatedAt": "2026-06-25T12:59:13.162Z"
+    "minecraftVersion": "26.2",
+    "releaseTag": "26.2",
+    "generatedAt": "2026-06-30T15:24:11.913Z"
   },
   "packages": [
     {
@@ -12172,7 +12172,7 @@
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/client/modulargui/ModularGuiContainer.java",
       "summary": "Container screen implementation for `ModularGui`.",
-      "methodCount": 32,
+      "methodCount": 33,
       "fieldCount": 1,
       "methods": [
         {
@@ -12361,10 +12361,18 @@
         },
         {
           "name": "extractSlot",
-          "visibility": "public",
+          "visibility": "protected",
           "returnType": "void",
-          "parameters": "GuiGraphicsExtractor guiGraphics, Slot slot, int i, int j",
-          "signature": "public void extractSlot(GuiGraphicsExtractor guiGraphics, Slot slot, int i, int j)",
+          "parameters": "GuiGraphicsExtractor guiGraphics, Slot slot, int mouseX, int mouseY",
+          "signature": "protected void extractSlot(GuiGraphicsExtractor guiGraphics, Slot slot, int mouseX, int mouseY)",
+          "javadoc": ""
+        },
+        {
+          "name": "extractSlots",
+          "visibility": "protected",
+          "returnType": "void",
+          "parameters": "GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY",
+          "signature": "protected void extractSlots(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY)",
           "javadoc": ""
         },
         {
@@ -12809,8 +12817,8 @@
           "name": "buffer",
           "visibility": "public",
           "returnType": "VertexConsumer",
-          "parameters": "MultiBufferSource buffers, Function<Identifier, RenderType> typeBuilder",
-          "signature": "public VertexConsumer buffer(MultiBufferSource buffers, Function<Identifier, RenderType> typeBuilder)",
+          "parameters": "Function<RenderType, VertexConsumer> bufferSource, Function<Identifier, RenderType> typeBuilder",
+          "signature": "public VertexConsumer buffer(Function<RenderType, VertexConsumer> bufferSource, Function<Identifier, RenderType> typeBuilder)",
           "javadoc": "Convenience method to create a vertex consumer using this material's render type."
         },
         {
@@ -16478,7 +16486,7 @@
         {
           "name": "RENDER_HAND",
           "type": "PolyEvent<RenderHand>",
-          "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#renderArmWithItem` at HEAD (cancellable)"
+          "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#submitArmWithItem` at HEAD (cancellable)"
         },
         {
           "name": "RENDER_ARM",
@@ -16741,7 +16749,7 @@
         {
           "name": "INVALIDATE_RENDER_STATE",
           "type": "PolyEvent<Invalidate>",
-          "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#allChanged` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`"
+          "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#invalidateCompiledGeometry` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`"
         }
       ]
     },
@@ -20870,7 +20878,7 @@
       "loader": "fabric",
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/client/MixinItemInHandRendererHandFabric.java",
-      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#renderArmWithItem` (private method).",
+      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#submitArmWithItem` (private method).",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -22178,7 +22186,7 @@
       "loader": "neoforge",
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/mixin/MixinLevelRendererAllChangedNF.java",
-      "summary": "NeoForge bridge for `PolyRenderStateEvents#INVALIDATE_RENDER_STATE`.\n\nFires after `LevelRenderer#allChanged()` completes — this method is called whenever render state must be fully rebuilt (resource reload, graphics settings change, etc.).",
+      "summary": "NeoForge bridge for `PolyRenderStateEvents#INVALIDATE_RENDER_STATE`.\n\nFires after `LevelRenderer#invalidateCompiledGeometry` completes. In 26.2 this replaced the old full render-state rebuild hook.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -22191,7 +22199,7 @@
       "loader": "neoforge",
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/mixin/MixinLevelRendererBlockOutlineNF.java",
-      "summary": "NeoForge bridge for `PolyLevelRenderEvents#BEFORE_BLOCK_OUTLINE`.\n\nInjects at the head of `LevelRenderer#extractBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.",
+      "summary": "NeoForge bridge for `PolyLevelRenderEvents#BEFORE_BLOCK_OUTLINE`.\n\nInjects at the head of `LevelRenderer#submitBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -28462,7 +28470,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_HAND",
       "declaringType": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyEntityRenderEvents.java",
-      "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#renderArmWithItem` at HEAD (cancellable)",
+      "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#submitArmWithItem` at HEAD (cancellable)",
       "method": {
         "name": "onRenderHand",
         "returnType": "void",
@@ -29146,7 +29154,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.client.PolyRenderStateEvents.INVALIDATE_RENDER_STATE",
       "declaringType": "net.creeperhost.polylib.event.events.client.PolyRenderStateEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyRenderStateEvents.java",
-      "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#allChanged` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`",
+      "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#invalidateCompiledGeometry` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`",
       "method": {
         "name": "onInvalidate",
         "returnType": "void",

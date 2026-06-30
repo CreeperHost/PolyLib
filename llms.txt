@@ -2,10 +2,10 @@
 
 > PolyLib is a Minecraft library mod by CreeperHost. These docs include human guides, generated Java API reference, and release-specific metadata.
 
-Generated for multi/26.1.2 on 2026-06-25T12:59:13.176Z.
+Generated for 26.2 on 2026-06-30T15:24:11.927Z.
 
-Version: multi/26.1.2
-Minecraft: 26.1.2
+Version: 26.2
+Minecraft: 26.2
 Java: 25
 Loaders: common, Fabric, NeoForge
 
@@ -844,7 +844,7 @@ Because `register(Identifier, DebugScreenEntry)` is private-static, we obtain th
 - net.creeperhost.polylib.mixin.client.MixinHeartTypeFabric (class, fabric): No summary.
 - net.creeperhost.polylib.mixin.client.MixinItemFrameRendererFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ITEM_IN_FRAME`. Injects at the head of `ItemFrameRenderer#submit`.
 - net.creeperhost.polylib.mixin.client.MixinItemInHandRendererArmFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ARM`. Injects at the head of `ItemInHandRenderer#renderPlayerArm` (private method).
-- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererHandFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#renderArmWithItem` (private method).
+- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererHandFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#submitArmWithItem` (private method).
 - net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPostFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_POST`, `PolyEntityRenderEvents#RENDER_PLAYER_POST`.
 - net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPreFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_PRE`, `PolyEntityRenderEvents#RENDER_PLAYER_PRE`.
 
@@ -969,10 +969,10 @@ Note: the `target` parameter is the primary attack target (not each swept entity
 - net.creeperhost.polylib.mixin.MixinItemPickupPostFabric (class, fabric): Fabric bridge for `PolyPlayerEvents#ITEM_PICKUP_POST`. Fires after `ItemEntity#playerTouch` returns (item has been picked up).
 - net.creeperhost.polylib.mixin.MixinLevelRendererAllChangedNF (class, neoforge): NeoForge bridge for `PolyRenderStateEvents#INVALIDATE_RENDER_STATE`.
 
-Fires after `LevelRenderer#allChanged()` completes — this method is called whenever render state must be fully rebuilt (resource reload, graphics settings change, etc.).
+Fires after `LevelRenderer#invalidateCompiledGeometry` completes. In 26.2 this replaced the old full render-state rebuild hook.
 - net.creeperhost.polylib.mixin.MixinLevelRendererBlockOutlineNF (class, neoforge): NeoForge bridge for `PolyLevelRenderEvents#BEFORE_BLOCK_OUTLINE`.
 
-Injects at the head of `LevelRenderer#extractBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.
+Injects at the head of `LevelRenderer#submitBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.
 - net.creeperhost.polylib.mixin.MixinMinecraftRun (class, neoforge): NeoForge bridge for `PolyClientLifecycleEvents#CLIENT_STARTED`. Fires exactly once when the game loop begins (first call to `Minecraft#run`).
 - net.creeperhost.polylib.mixin.MixinMinecraftSetLevelNF (class, neoforge): NeoForge bridge for `PolyClientLifecycleEvents#CLIENT_LEVEL_CHANGED`.
 

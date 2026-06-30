@@ -91,7 +91,7 @@
 									<div class="sl-markdown-content">
 										<div class="api-meta-grid"><div><strong>Declaring Type</strong><span class="api-chip">net.creeperhost.polylib.event.events.client.PolyRenderStateEvents</span></div><div><strong>Events</strong>1</div></div><h2 id="invalidate-render-state" class="api-event-title"><code>INVALIDATE_RENDER_STATE</code></h2><div class="api-event-meta"><span><strong>Handler</strong><span class="api-chip">Invalidate</span></span><span><strong>Cancellable</strong>No</span></div>
 <p>Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.</p>
-<p>NeoForge: mixin on <code dir="auto">LevelRenderer#allChanged</code> at RETURN</p>
+<p>NeoForge: mixin on <code dir="auto">LevelRenderer#invalidateCompiledGeometry</code> at RETURN</p>
 <p>Fabric: <code dir="auto">InvalidateRenderStateCallback.EVENT</code></p>
 <div class="expressive-code"><link rel="stylesheet" href="/PolyLib/latest/_astro/ec.v4551.css"><script type="module" src="/PolyLib/latest/_astro/ec.0vx5m.js"></script><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="java"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">void</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">onInvalidate</span><span style="--0:#D9F5DD;--1:#111111">()</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="void onInvalidate()"><div></div></button></div></figure></div>
 									</div>
