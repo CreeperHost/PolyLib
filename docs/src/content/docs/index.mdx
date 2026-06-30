@@ -1,0 +1,42 @@
+---
+title: PolyLib
+description: Developer documentation and generated API reference for PolyLib.
+---
+
+PolyLib is a Minecraft modding library for shared loader abstractions, events, registration, Modular GUI, networking, data sync, and accessibility helpers.
+
+## Install
+
+PolyLib is published to the CreeperHost Maven repository.
+
+```gradle
+repositories {
+    maven { url "https://maven.creeperhost.net" }
+}
+
+dependencies {
+    implementation "net.creeperhost.polylib:polylib-fabric:VERSION"
+    implementation "net.creeperhost.polylib:polylib-neoforge:VERSION"
+}
+```
+
+Use the version selector in the header when you need documentation for a specific released build.
+
+## Docs By Task
+
+- [Getting started](./getting-started/) covers dependency setup and the main documentation areas.
+- [Registries](./concepts/registries/) explains cross-loader registration helpers.
+- [Events](./concepts/events/) documents PolyLib's loader-neutral event bridge.
+- [Modular GUI](./concepts/modular-gui/) covers GUI layout and elements.
+- [Data sync](./concepts/data-sync/) covers container and block-entity state synchronization.
+- [Networking](./concepts/networking/) covers packet helpers and shared networking concepts.
+- [Accessibility](./concepts/accessibility/) covers options and accessibility policy helpers.
+
+## Generated Reference
+
+The [generated reference](./reference/) is rebuilt from source for each release. It includes package pages, public types, public members, and generated event entries.
+
+Tool-friendly documentation files are published alongside the site:
+
+- [`llms.txt`](./llms.txt) for a compact Markdown context file.
+- [`api-index.json`](./api-index.json) for structured class, package, method, field, and event metadata.

@@ -1,0 +1,27 @@
+---
+title: Release Versioning
+description: How the published documentation maps to release tags.
+---
+
+Each GitHub release tag publishes a matching documentation snapshot.
+
+```text
+/latest/
+/versions/<release-tag>/
+/versions.json
+```
+
+The version selector in the header reads `versions.json` and keeps readers on the same page when switching versions where possible. `latest/` is refreshed on every release tag, while older version folders are preserved.
+
+This means examples, generated API pages, and machine-readable files can be tied back to the exact PolyLib release that produced them.
+
+## Backfilling Older Versions
+
+Older release tags can be published from the GitHub Actions tab:
+
+1. Open the `Release Documentation` workflow.
+2. Choose `Run workflow`.
+3. Enter the release tag to publish.
+4. Leave `update_latest` as `false` for historical backfills.
+
+Manual backfills add or replace `/versions/<release-tag>/` without moving `/latest/`.

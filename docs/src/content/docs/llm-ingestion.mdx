@@ -1,0 +1,20 @@
+---
+title: Machine-Readable Docs
+description: Structured documentation files for tools, search indexes, and editor assistants.
+---
+
+Each release publishes a plain-text Markdown context file and a structured JSON index alongside the website. They are useful for editor assistants, documentation search, release tooling, or anything else that needs a compact view of the PolyLib API.
+
+| File | Purpose |
+| --- | --- |
+| [`llms.txt`](../llms.txt) | A Markdown context file with the documentation map, packages, events, and public type summaries. |
+| [`api-index.json`](../api-index.json) | A structured JSON index of generated packages, classes, methods, fields, and events. |
+
+These links stay inside the selected documentation version. On a release snapshot, they resolve under that release folder:
+
+```text
+/versions/<release-tag>/llms.txt
+/versions/<release-tag>/api-index.json
+```
+
+The root-level copies always follow the latest published release.

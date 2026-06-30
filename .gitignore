@@ -17,12 +17,19 @@ out
 # gradle
 build
 .gradle
+node_modules/
 
 # other
 eclipse
 run
 runs
-docs/*
+docs/dist/
+docs/node_modules/
+docs/.astro/
+docs/src/content/docs/reference/generated/
+docs/public/api-index.json
+docs/public/llms.txt
+docs/public/llms-full.txt
 
 .vscode/
 .agents/

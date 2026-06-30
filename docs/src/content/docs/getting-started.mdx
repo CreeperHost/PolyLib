@@ -1,0 +1,26 @@
+---
+title: Getting Started
+description: Add PolyLib to a mod and find the main documentation areas.
+---
+
+PolyLib is published to the CreeperHost Maven repository for Fabric and NeoForge builds.
+
+```gradle
+repositories {
+    maven { url "https://maven.creeperhost.net" }
+}
+
+dependencies {
+    implementation "net.creeperhost.polylib:polylib-fabric:VERSION"
+    implementation "net.creeperhost.polylib:polylib-neoforge:VERSION"
+}
+```
+
+For a new mod, start with the concept pages that match what you are building:
+
+- [Registries](../concepts/registries/) for cross-loader registration helpers.
+- [Events](../concepts/events/) for PolyLib's loader-neutral event bridge.
+- [Modular GUI](../concepts/modular-gui/) for GUI layout and elements.
+- [Data sync](../concepts/data-sync/) for container and block-entity state.
+
+The generated [reference](../reference/) is rebuilt from the release source so it follows the selected version.
