@@ -2,10 +2,10 @@
 
 > PolyLib is a Minecraft library mod by CreeperHost. These docs include human guides, generated Java API reference, and release-specific metadata.
 
-Generated for 26.2 on 2026-06-30T15:24:11.927Z.
+Generated for 26.1.2-2.0.10 on 2026-07-01T21:02:57.742Z.
 
-Version: 26.2
-Minecraft: 26.2
+Version: 26.1.2-2.0.10
+Minecraft: 26.1.2
 Java: 25
 Loaders: common, Fabric, NeoForge
 
@@ -37,7 +37,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.client.gif: 3 public types (common)
 - net.creeperhost.polylib.client.model: 1 public types (common)
 - net.creeperhost.polylib.client.modulargui: 4 public types (common)
-- net.creeperhost.polylib.client.modulargui.elements: 27 public types (common)
+- net.creeperhost.polylib.client.modulargui.elements: 28 public types (common)
 - net.creeperhost.polylib.client.modulargui.lib: 15 public types (common)
 - net.creeperhost.polylib.client.modulargui.lib.container: 4 public types (common)
 - net.creeperhost.polylib.client.modulargui.lib.geometry: 13 public types (common)
@@ -53,7 +53,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.containers.slots: 4 public types (common)
 - net.creeperhost.polylib.data: 2 public types (common)
 - net.creeperhost.polylib.data.lang: 1 public types (common)
-- net.creeperhost.polylib.data.serializable: 12 public types (common)
+- net.creeperhost.polylib.data.serializable: 13 public types (common)
 - net.creeperhost.polylib.datagen: 2 public types (fabric, neoforge)
 - net.creeperhost.polylib.debug: 4 public types (common)
 - net.creeperhost.polylib.debug.neoforge: 1 public types (neoforge)
@@ -63,10 +63,12 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.event.events.server: 23 public types (common)
 - net.creeperhost.polylib.fabric.inventory: 2 public types (fabric)
 - net.creeperhost.polylib.fabric.inventory.energy: 6 public types (fabric)
+- net.creeperhost.polylib.fabric.inventory.fluid: 5 public types (fabric)
 - net.creeperhost.polylib.fabric.registry: 2 public types (fabric)
 - net.creeperhost.polylib.helpers: 12 public types (common)
 - net.creeperhost.polylib.init: 3 public types (common)
 - net.creeperhost.polylib.inventory: 1 public types (common)
+- net.creeperhost.polylib.inventory.fluid: 9 public types (common)
 - net.creeperhost.polylib.inventory.items: 4 public types (common)
 - net.creeperhost.polylib.inventory.power: 8 public types (common)
 - net.creeperhost.polylib.items: 1 public types (common)
@@ -76,6 +78,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.mulitblock: 6 public types (common)
 - net.creeperhost.polylib.mulitblock.rectangular: 3 public types (common)
 - net.creeperhost.polylib.neoforge: 1 public types (neoforge)
+- net.creeperhost.polylib.neoforge.inventory.fluid: 5 public types (neoforge)
 - net.creeperhost.polylib.neoforge.inventory.power: 5 public types (neoforge)
 - net.creeperhost.polylib.neoforge.registry: 3 public types (neoforge)
 - net.creeperhost.polylib.network: 1 public types (common)
@@ -471,6 +474,9 @@ Create or reuse a `KeyMapping.Category` via `KeyMapping.Category.register(Identi
 - net.creeperhost.polylib.client.modulargui.elements.GuiElement (class, common): No summary.
 - net.creeperhost.polylib.client.modulargui.elements.GuiEnergyBar (class, common): No summary.
 - net.creeperhost.polylib.client.modulargui.elements.GuiEntityRenderer (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiFluidTank (class, common): Modular GUI element that renders a single PolyLib fluid tank.
+
+The tank accepts `PolyFluidStack` suppliers so container screens can bind it directly to synced fluid data.
 - net.creeperhost.polylib.client.modulargui.elements.GuiFuzzyFinder (class, common): A search-based context menu overlay (Fuzzy Finder) for visual scripting. Allows users to type to filter a list of available nodes or options.
 - net.creeperhost.polylib.client.modulargui.elements.GuiFuzzySearch (class, common): No summary.
 - net.creeperhost.polylib.client.modulargui.elements.GuiInfoPanel (class, common): No summary.
@@ -629,12 +635,28 @@ Usage (NeoForge mod constructor) `public MyMod(ModContainer container, IEventBus
 - net.creeperhost.polylib.containers.DataManagerContainer (interface, common): If you wish to send messages from a client gui to the server via `DataManagerBlock`, Then the gui's container must implement this interface.
 - net.creeperhost.polylib.containers.ModularGuiContainerMenu (class, common): The base abstract ContainerMenu for all modular gui containers.
 - net.creeperhost.polylib.containers.network.ContainerSyncProtocol (interface, common): Protocol adapter for synchronizing data between server and client containers. Replaces the need for raw byte buffer manipulation and manual packet ID assignments.
-- net.creeperhost.polylib.containers.network.PolyContainerSyncProtocol (class, common): No summary.
-- net.creeperhost.polylib.containers.PolyBlockContainerMenu (class, common): No summary.
-- net.creeperhost.polylib.containers.slots.PolySlot (class, common): A fully configurable inventory slot. If there is anything this slot can not do... Let me know.
-- net.creeperhost.polylib.containers.slots.SlotInput (class, common): No summary.
-- net.creeperhost.polylib.containers.slots.SlotOutput (class, common): No summary.
-- net.creeperhost.polylib.containers.slots.SlotTag (class, common): No summary.
+- net.creeperhost.polylib.containers.network.PolyContainerSyncProtocol (class, common): Default `ContainerSyncProtocol` implementation used by `ModularGuiContainerMenu`.
+
+This protocol sends typed payloads through the container packet channel using packet id `254` as the routing id. The payload type id is written next, then the payload is encoded with the `SyncPayloadType#codec()` registered for that id.
+
+Handlers must be registered on the receiving side before packets arrive. Unknown payload ids are ignored rather than decoded.
+- net.creeperhost.polylib.containers.PolyBlockContainerMenu (class, common): Base container menu for block-entity backed modular GUIs.
+
+This binds a `ModularGuiContainerMenu` to a `PolyBlockEntity`, provides the `DataManagerContainer` bridge used by PolyLib's data manager packets, and handles the standard open, close, and access-distance checks for the backing tile.
+- net.creeperhost.polylib.containers.slots.PolySlot (class, common): A fully configurable inventory slot.
+
+Use this when a menu needs slot behavior beyond vanilla `Slot` checks, such as dynamic enablement, custom insertion rules, stack limits, pickup restrictions, or callbacks when a player changes the slot contents.
+
+Configuration methods return this slot so they can be chained during menu setup.
+
+If there is anything this slot can not do... Let me know.
+- net.creeperhost.polylib.containers.slots.SlotInput (class, common): Basic input slot for menu layouts that want an explicit input-slot type.
+
+This currently behaves the same as a vanilla `Slot`; use `PolySlot` when custom validation, stack limits, or active-state behavior is needed.
+- net.creeperhost.polylib.containers.slots.SlotOutput (class, common): Output-only slot.
+
+Players can take items from this slot, but `#mayPlace(ItemStack)` always returns false so items cannot be inserted directly.
+- net.creeperhost.polylib.containers.slots.SlotTag (class, common): Slot that only accepts items contained in a configured item tag.
 - net.creeperhost.polylib.data.DataManagerBlock (interface, common): This interface must be implemented on any BlockEntity that wishes to use the `TileDataManager` system.
 - net.creeperhost.polylib.data.lang.PolyLangContributions (class, common): Central store for PolyLib-managed default English translation strings.
 
@@ -646,15 +668,24 @@ Consumed by `PolyLibLangProvider` in PolyLib's NeoForge module during datagen. M
 
 Thread-safe. First registration wins — later contributions for an existing key are ignored, allowing mods to override PolyLib defaults by contributing earlier.
 - net.creeperhost.polylib.data.serializable.AbstractDataStore (class, common): The base class of a simple general purpose serializable data system.
-- net.creeperhost.polylib.data.serializable.BooleanData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.ByteData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.DoubleData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.EnumData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.FloatData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.IntData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.LongData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.ShortData (class, common): No summary.
-- net.creeperhost.polylib.data.serializable.StackData (class, common): No summary.
+
+A data store owns one value, tracks whether that value needs to be synchronized or saved, and defines the byte-buffer and tag serialization used by `TileDataManager`.
+- net.creeperhost.polylib.data.serializable.BooleanData (class, common): `AbstractDataStore` implementation for a boolean value.
+- net.creeperhost.polylib.data.serializable.ByteData (class, common): `AbstractDataStore` implementation for a byte value.
+- net.creeperhost.polylib.data.serializable.DoubleData (class, common): `AbstractDataStore` implementation for a double value.
+- net.creeperhost.polylib.data.serializable.EnumData (class, common): `AbstractDataStore` implementation for enum values.
+
+Values are encoded to tags by enum ordinal index and to network buffers with Minecraft's enum codec helpers. Enum types with more than 255 constants are not supported.
+- net.creeperhost.polylib.data.serializable.FloatData (class, common): `AbstractDataStore` implementation for a float value.
+- net.creeperhost.polylib.data.serializable.FluidData (class, common): `AbstractDataStore` implementation for a `PolyFluidStack`.
+
+Stored fluid stacks are copied on assignment, and equality is checked using `PolyFluidStack#equals(Object)` so fluid, amount, and component data all participate in dirty-state detection.
+- net.creeperhost.polylib.data.serializable.IntData (class, common): `AbstractDataStore` implementation for an integer value.
+- net.creeperhost.polylib.data.serializable.LongData (class, common): `AbstractDataStore` implementation for a long value.
+- net.creeperhost.polylib.data.serializable.ShortData (class, common): `AbstractDataStore` implementation for a short value.
+- net.creeperhost.polylib.data.serializable.StackData (class, common): `AbstractDataStore` implementation for an `ItemStack`.
+
+Stored stacks are copied on assignment, and equality is checked with `ItemStack)` so stack components are compared using Minecraft's item stack matching rules.
 - net.creeperhost.polylib.data.serializable.StringData (class, common): `AbstractDataStore` wrapping a single `String` value.
 
 NBT: stored via `ValueOutput.putString` / `ValueInput.getStringOr`. Network: sent via `buf.writeUtf` / `buf.readUtf`.
@@ -698,32 +729,36 @@ Obtain via `PolyDebugRegistry#register` and store as a `public static final` con
 
 Registration must happen before the debug screen is first opened — typically in your mod's client initialiser or static init. On NeoForge this registry is consumed by `net.creeperhost.polylib.debug.neoforge.NeoForgeDebugBridge` during the `RegisterDebugEntriesEvent` (mod bus). On Fabric it is consumed by the `FabricDebugEntriesMixin` injected into `DebugScreenEntries`. Minimal usage example `// In your mod client init: public static final PolyDebugEntryType MY_ENTRY = PolyDebugRegistry.register( Identifier.fromNamespaceAndPath("mymod", "my_info"), displayer -> displayer.addLine("MyMod: " + getSomeValue()), true, // ON by default true, // included in the Default profile false, // not in the Performance profile "debug.mymod.my_info", // i18n key "My Info" // English fallback for datagen ); `
 - net.creeperhost.polylib.event.data.CancelContext (class, common): Passed to cancellable PolyEvent handlers. Handlers call `#cancel()` to stop further propagation. The combiner for cancellable events must check `#isCancelled()` after each handler and short-circuit.
-- net.creeperhost.polylib.event.events.client.PolyCameraEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyClientBlockEntityEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyClientChunkEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyCameraEvents (class, common): Client camera events for FOV and camera orientation customization.
+- net.creeperhost.polylib.event.events.client.PolyClientBlockEntityEvents (class, common): Client-side block entity lifecycle events.
+- net.creeperhost.polylib.event.events.client.PolyClientChunkEvents (class, common): Client-side chunk lifecycle events.
 - net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents (class, common): Client-side connection lifecycle events (play, login, configuration channels).
 
 `@Nullable Object sender` parameters accept a Fabric `PacketSender` on Fabric; NeoForge adapters pass `null`.
-- net.creeperhost.polylib.event.events.client.PolyClientEntityEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyClientLevelEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyClientLifecycleEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyClientPlayerEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyClientTickEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientEntityEvents (class, common): Client-side entity lifecycle events.
+- net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents (class, common): Client-side interaction events for block breaking and attack input.
+- net.creeperhost.polylib.event.events.client.PolyClientLevelEvents (class, common): Client-side level load and unload events.
+- net.creeperhost.polylib.event.events.client.PolyClientLifecycleEvents (class, common): Client lifecycle events for startup, shutdown, and active level changes.
+- net.creeperhost.polylib.event.events.client.PolyClientPlayerEvents (class, common): Client-side local player connection events.
+- net.creeperhost.polylib.event.events.client.PolyClientTickEvents (class, common): Client and client-level tick events.
 - net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents (class, common): Client-side entity and world-object rendering events.
 
 All events in this class use MC render-state objects (`LivingEntityRenderState`, `AvatarRenderState`, etc.) rather than live entity references, reflecting the MC 26.1.2 extract-then-submit pipeline.
-- net.creeperhost.polylib.event.events.client.PolyGuiEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyHeartType (enum, common): No summary.
-- net.creeperhost.polylib.event.events.client.PolyInputEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents (class, common): Client GUI and HUD rendering events.
+
+Events ending in `Pre` or carrying a `CancelContext` may be cancelled to suppress the corresponding GUI action or render layer.
+- net.creeperhost.polylib.event.events.client.PolyHeartType (enum, common): Cross-loader heart render types used by `PolyGuiEvents#PLAYER_HEART_TYPE`.
+- net.creeperhost.polylib.event.events.client.PolyInputEvents (class, common): Client input events for keyboard and mouse button activity.
 - net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents (class, common): Client-side level rendering stage events.
 
 All SAMs receive the `Minecraft` instance as their sole typed parameter; loader-specific context objects (PoseStack, Camera, etc.) are intentionally omitted to keep the API loader-agnostic.
 
 Stages with no Fabric native equivalent are fired only on NeoForge (NeoForge-primary). Stages with no NeoForge native equivalent are fired only on Fabric (Fabric-primary). Cross-loader stages are fired on both.
-- net.creeperhost.polylib.event.events.client.PolyRenderEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents (class, common): Client render events for common world and GUI render stages.
 - net.creeperhost.polylib.event.events.client.PolyRenderStateEvents (class, common): Events related to client render state validity.
-- net.creeperhost.polylib.event.events.client.PolyScreenEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents (class, common): Client screen lifecycle, rendering, keyboard, mouse, and text-input events.
+
+The `Allow` callbacks receive a `CancelContext`; cancelling them suppresses the matching vanilla screen input action.
 - net.creeperhost.polylib.event.events.client.PolyTooltipEvents (class, common): Client-side tooltip events.
 - net.creeperhost.polylib.event.events.client.PolyViewportEvents (class, common): Client-side viewport events: fog, FOV, and camera distance.
 
@@ -731,26 +766,26 @@ All events in this class are NeoForge-primary — no Fabric native equivalents e
 
 Note: Camera-angle modification is covered by `PolyCameraEvents#CAMERA_SETUP` (already wired in T16). FOV modifier (multiplier) is covered by `PolyCameraEvents#FOV_MODIFIER` (already wired in T16).
 - net.creeperhost.polylib.event.events.server.PolyBlockEntityEvents (class, common): Events related to block entity lifecycle (load / unload).
-- net.creeperhost.polylib.event.events.server.PolyBlockEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents (class, common): Server-side block events for breaking, placing, growth, fluid behavior, drops, neighbor notifications, pistons, and note blocks.
 - net.creeperhost.polylib.event.events.server.PolyBrewingEvents (class, common): Events related to brewing stand operations.
 
 NeoForge: `PotionBrewEvent.Pre` / `PotionBrewEvent.Post`
 
 Fabric: mixin into `BrewingStandBlockEntity#doTick`
 - net.creeperhost.polylib.event.events.server.PolyChatEvents (class, common): Events related to player chat messages and command execution.
-- net.creeperhost.polylib.event.events.server.PolyChunkEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyChunkEvents (class, common): Server-side chunk lifecycle and player chunk-watch events.
 - net.creeperhost.polylib.event.events.server.PolyDataEvents (class, common): Events related to data/resource loading.
 
 Note: `REGISTER_COMMANDS` is located in `PolyServerCommandEvents`.
 - net.creeperhost.polylib.event.events.server.PolyEnchantEvents (class, common): Events related to enchanting mechanics.
-- net.creeperhost.polylib.event.events.server.PolyEntityEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyExplosionEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyItemEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyLevelEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyLivingEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyMobEffectEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyPlayerEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyPlayerTickEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents (class, common): Server-side entity events for ticking, level changes, mounting, teleporting, projectile impacts, mob griefing, and invulnerability checks.
+- net.creeperhost.polylib.event.events.server.PolyExplosionEvents (class, common): Server-side explosion events for start, detonation, and entity knockback.
+- net.creeperhost.polylib.event.events.server.PolyItemEvents (class, common): Server-side item events for use lifecycle, item entities, crafting stations, fuel checks, inventory stacking, and anvil results.
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents (class, common): Server-level events for load, unload, save, sleep completion, game rule changes, difficulty changes, and potential mob spawn lists.
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents (class, common): Server-side living entity events covering damage, death, healing, targeting, equipment, item use, spawning, breathing, projectile selection, and combat hooks.
+- net.creeperhost.polylib.event.events.server.PolyMobEffectEvents (class, common): Server-side mob effect events for applying, adding, removing, and expiring effects.
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents (class, common): Server-side player events for connection lifecycle, interaction, inventory, experience, dimensions, permissions, advancements, trading, and persistence hooks.
+- net.creeperhost.polylib.event.events.server.PolyPlayerTickEvents (class, common): Server-side player tick events.
 - net.creeperhost.polylib.event.events.server.PolyRegistryEvents (class, common): Events related to registry operations.
 
 Tier 15 — `REGISTRY_ID_REMAP` added in Tier 15.
@@ -759,14 +794,14 @@ Tier 15 — `REGISTRY_ID_REMAP` added in Tier 15.
 NeoForge: `RegisterCommandsEvent`
 
 Fabric: `CommandRegistrationCallback`
-- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents (class, common): No summary.
-- net.creeperhost.polylib.event.events.server.PolyServerTickEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents (class, common): Server lifecycle events for startup, shutdown, reloads, datapack sync, login/configuration negotiation, game tests, and reload listener ordering.
+- net.creeperhost.polylib.event.events.server.PolyServerTickEvents (class, common): Server and server-level tick events.
 - net.creeperhost.polylib.event.events.server.PolySleepEvents (class, common): Events related to entity sleeping behaviour.
 
 NeoForge: `CanPlayerSleepEvent`; start/stop via mixin
 
 Fabric: `EntitySleepEvents.START_SLEEPING`, `STOP_SLEEPING`, `ALLOW_SLEEPING`
-- net.creeperhost.polylib.event.events.server.PolySoundEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolySoundEvents (class, common): Server-side sound events.
 - net.creeperhost.polylib.event.events.server.PolySpawnEvents (class, common): Events related to mob spawning and despawning.
 
 NeoForge: `FinalizeSpawnEvent`, `MobDespawnEvent`
@@ -777,13 +812,28 @@ Fabric: mixins into `Mob#finalizeSpawn` and `Mob#checkDespawn`
 NeoForge: `VillageSiegeEvent`
 
 Fabric: mixin into `VillageSiege#tick`
-- net.creeperhost.polylib.event.PolyEvent (class, common): No summary.
+- net.creeperhost.polylib.event.PolyEvent (class, common): Lightweight event container used by PolyLib's cross-loader event API.
+
+Each event stores registered handlers and exposes a combined invoker generated by the supplied combiner. Event holder classes define the combiner behavior for each event, including whether listeners are all called, whether a boolean result is aggregated, or whether a `CancelContext` short-circuits dispatch.
 - net.creeperhost.polylib.fabric.inventory.energy.FabricEnergyManager (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.energy.FabricPolyEnergyItemWrapper (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.energy.FabricPolyEnergyWrapper (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.energy.NullEnergyManager (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.energy.PolyFabricEnergyItemWrapper (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.energy.PolyFabricEnergyWrapper (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.fluid.FabricFluidManager (class, fabric): Fabric implementation of `FluidManager`.
+
+Wraps Fabric Transfer `Storage` instances in PolyLib's common fluid storage interfaces.
+- net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidItemWrapper (class, fabric): Item variant of `FabricPolyFluidWrapper`.
+
+Exposes Fabric item fluid storage through PolyLib's item storage contract and returns the current container stack from the Fabric item context.
+- net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidWrapper (class, fabric): Wraps a Fabric Transfer fluid storage as an `IPolyFluidStorage`.
+- net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidItemWrapper (class, fabric): Item variant of `PolyFabricFluidWrapper`.
+
+After mutating the PolyLib storage, this wrapper updates the Fabric item context so callers receive the modified container stack.
+- net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper (class, fabric): Exposes an `IPolyFluidStorage` as Fabric Transfer fluid storage.
+
+Fabric transactions are backed by snapshots of the PolyLib storage contents.
 - net.creeperhost.polylib.fabric.inventory.InitialContentsContainerItemContext (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.ItemStackStorage (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.registry.FabricPolyRegistry (class, fabric): No summary.
@@ -807,7 +857,30 @@ Fabric: mixin into `VillageSiege#tick`
 - net.creeperhost.polylib.init.DataComps (class, common): No summary.
 - net.creeperhost.polylib.init.InternalEventListener (class, common): No summary.
 - net.creeperhost.polylib.init.InternalEventListenerClient (class, common): No summary.
-- net.creeperhost.polylib.inventory.items.BlockInventory (class, common): No summary.
+- net.creeperhost.polylib.inventory.fluid.FluidManager (interface, common): Platform fluid access and convenience utilities.
+
+All PolyLib fluid amounts are expressed in droplets. One bucket is `#BUCKET` droplets and one millibucket is `#MILLIBUCKET` droplets.
+- net.creeperhost.polylib.inventory.fluid.IPolyFluidStorage (interface, common): Common fluid storage contract used by PolyLib across loaders.
+
+All amounts are expressed in droplets. Platform wrappers convert as needed when bridging to native Fabric or NeoForge transfer APIs.
+- net.creeperhost.polylib.inventory.fluid.IPolyFluidStorageItem (interface, common): Fluid storage backed by an `ItemStack`.
+
+Platform item fluid APIs may replace the container stack after mutation, so callers should read `#getContainer()` after fill or drain operations.
+- net.creeperhost.polylib.inventory.fluid.PolyBlockFluidStorage (class, common): Block entity backed fluid storage.
+
+Calls `BlockEntity#setChanged()` whenever the stored fluid changes.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidBlock (interface, common): Implement on block entities that expose PolyLib fluid storage.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidItem (interface, common): Implement on items that expose PolyLib fluid storage.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidStack (class, common): Loader-neutral fluid stack used by PolyLib's common fluid API.
+
+Amounts are stored as droplets, matching Fabric Transfer's fluid unit. Use `FluidManager#BUCKET` and `FluidManager#MILLIBUCKET` when converting to bucket or millibucket-oriented APIs.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidStorage (class, common): Simple single-tank implementation of `IPolyFluidStorage`.
+
+This storage accepts one fluid type at a time and calls an optional change listener whenever its contents are mutated.
+- net.creeperhost.polylib.inventory.fluid.PolyItemFluidStorage (class, common): ItemStack backed fluid storage using PolyLib's item fluid data component.
+- net.creeperhost.polylib.inventory.items.BlockInventory (class, common): Simple `Container` implementation for inventories owned by a `BlockEntity`.
+
+This inventory stores its contents in a fixed-size `NonNullList`, marks the owning block entity dirty whenever its contents change, and serializes its items through `ContainerHelper`. It also supports a global stack validator and per-slot validators for menu and automation checks.
 - net.creeperhost.polylib.inventory.items.ContainerAccessControl (class, common): Used to provide control over what slots allow insert / extract / under what conditions etc. Designed for use with `PolyInventoryBlock` but will work with anything that accepts a `WorldlyContainer`
 
 When implementing you can return a single instance for all faces, or you can return different instances for different faces if you need custom per-face configurations.
@@ -844,7 +917,7 @@ Because `register(Identifier, DebugScreenEntry)` is private-static, we obtain th
 - net.creeperhost.polylib.mixin.client.MixinHeartTypeFabric (class, fabric): No summary.
 - net.creeperhost.polylib.mixin.client.MixinItemFrameRendererFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ITEM_IN_FRAME`. Injects at the head of `ItemFrameRenderer#submit`.
 - net.creeperhost.polylib.mixin.client.MixinItemInHandRendererArmFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ARM`. Injects at the head of `ItemInHandRenderer#renderPlayerArm` (private method).
-- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererHandFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#submitArmWithItem` (private method).
+- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererHandFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#renderArmWithItem` (private method).
 - net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPostFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_POST`, `PolyEntityRenderEvents#RENDER_PLAYER_POST`.
 - net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPreFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_PRE`, `PolyEntityRenderEvents#RENDER_PLAYER_PRE`.
 
@@ -969,10 +1042,10 @@ Note: the `target` parameter is the primary attack target (not each swept entity
 - net.creeperhost.polylib.mixin.MixinItemPickupPostFabric (class, fabric): Fabric bridge for `PolyPlayerEvents#ITEM_PICKUP_POST`. Fires after `ItemEntity#playerTouch` returns (item has been picked up).
 - net.creeperhost.polylib.mixin.MixinLevelRendererAllChangedNF (class, neoforge): NeoForge bridge for `PolyRenderStateEvents#INVALIDATE_RENDER_STATE`.
 
-Fires after `LevelRenderer#invalidateCompiledGeometry` completes. In 26.2 this replaced the old full render-state rebuild hook.
+Fires after `LevelRenderer#allChanged()` completes — this method is called whenever render state must be fully rebuilt (resource reload, graphics settings change, etc.).
 - net.creeperhost.polylib.mixin.MixinLevelRendererBlockOutlineNF (class, neoforge): NeoForge bridge for `PolyLevelRenderEvents#BEFORE_BLOCK_OUTLINE`.
 
-Injects at the head of `LevelRenderer#submitBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.
+Injects at the head of `LevelRenderer#extractBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.
 - net.creeperhost.polylib.mixin.MixinMinecraftRun (class, neoforge): NeoForge bridge for `PolyClientLifecycleEvents#CLIENT_STARTED`. Fires exactly once when the game loop begins (first call to `Minecraft#run`).
 - net.creeperhost.polylib.mixin.MixinMinecraftSetLevelNF (class, neoforge): NeoForge bridge for `PolyClientLifecycleEvents#CLIENT_LEVEL_CHANGED`.
 
@@ -983,15 +1056,44 @@ Hooks `Minecraft#setLevel` and `Minecraft#clearClientLevel` to fire the event wi
 - net.creeperhost.polylib.ModMenuCompat (class, fabric): Mod Menu entrypoint. Loaded only when Mod Menu is present (declared as a `suggests` dependency, not a hard `depends`).
 
 Reads from `ConfigPanelRegistry` — any mod that registered its config panel via PolyLib automatically appears in Mod Menu without any additional work.
-- net.creeperhost.polylib.mulitblock.IMultiblockPart (class, common): No summary.
-- net.creeperhost.polylib.mulitblock.MultiblockBlockEntityBase (class, common): No summary.
-- net.creeperhost.polylib.mulitblock.MultiblockControllerBase (class, common): No summary.
-- net.creeperhost.polylib.mulitblock.MultiblockRegistry (class, common): No summary.
-- net.creeperhost.polylib.mulitblock.MultiblockValidationException (class, common): No summary.
-- net.creeperhost.polylib.mulitblock.MultiblockWorldRegistry (class, common): No summary.
-- net.creeperhost.polylib.mulitblock.rectangular.PartPosition (enum, common): No summary.
-- net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockControllerBase (class, common): No summary.
-- net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockTileEntityBase (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.IMultiblockPart (class, common): Base block entity contract for a block that can participate in a multiblock structure.
+
+Parts are responsible for finding neighboring parts, attaching to compatible controllers, tracking validation visits, and receiving machine lifecycle callbacks.
+- net.creeperhost.polylib.mulitblock.MultiblockBlockEntityBase (class, common): Base implementation for block entities that participate in a multiblock controller.
+
+Handles controller attachment, detachment, save-delegate state, visited state, neighbor discovery, and registry notifications. Concrete parts supply machine lifecycle behavior and the controller type they create.
+- net.creeperhost.polylib.mulitblock.MultiblockControllerBase (class, common): Base controller for a connected multiblock machine.
+
+A controller owns a set of connected parts, validates whether those parts form a complete machine, manages assembly state transitions, handles controller merges and splits, and delegates persistence/network description data to one save part.
+- net.creeperhost.polylib.mulitblock.MultiblockRegistry (class, common): Global registry that maps loaded levels to their active multiblock registries.
+
+Platform hooks should notify this class when parts load or unload, chunks finish loading, worlds unload, and server ticks begin.
+- net.creeperhost.polylib.mulitblock.MultiblockValidationException (class, common): Thrown when a multiblock controller determines that its connected parts do not form a valid assembled machine.
+- net.creeperhost.polylib.mulitblock.MultiblockWorldRegistry (class, common): Per-level registry that tracks multiblock controllers and pending part changes.
+
+This class processes orphaned parts, controller merges, disconnections, dead controllers, and delayed part attachment caused by chunk loading.
+- net.creeperhost.polylib.mulitblock.rectangular.PartPosition (enum, common): Position classification for a part inside a rectangular multiblock's bounding box.
+- net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockControllerBase (class, common): Controller base for rectangular-prism multiblocks.
+
+Validation checks the controller's bounding box against min/max dimensions and then validates every coordinate as frame, side, top, bottom, or interior.
+- net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockTileEntityBase (class, common): Base part implementation for rectangular multiblocks.
+
+Tracks this part's position within the controller bounding box and the outward facing direction for face parts. Concrete implementations provide validation rules for frame, side, top, bottom, and interior positions.
+- net.creeperhost.polylib.neoforge.inventory.fluid.NeoFluidManager (class, neoforge): NeoForge implementation of `FluidManager`.
+
+Wraps NeoForge transfer `ResourceHandler` fluid capabilities in PolyLib's common fluid storage interfaces.
+- net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidItemWrapper (class, neoforge): Item variant of `NeoPolyFluidWrapper`.
+
+Keeps the `ItemAccess` used to query the item capability so the current container stack can be returned after operations.
+- net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidWrapper (class, neoforge): Wraps a NeoForge fluid `ResourceHandler` as an `IPolyFluidStorage`.
+
+NeoForge transfer fluid amounts are converted to PolyLib droplets at the API boundary.
+- net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidItemWrapper (class, neoforge): Item variant of `PolyNeoFluidWrapper`.
+
+After mutating the PolyLib storage, this wrapper updates the NeoForge `ItemAccess` so automation receives the modified container stack.
+- net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper (class, neoforge): Exposes an `IPolyFluidStorage` as a NeoForge fluid `ResourceHandler`.
+
+NeoForge transactions are backed by snapshots of the PolyLib storage contents.
 - net.creeperhost.polylib.neoforge.inventory.power.NeoEnergyManager (class, neoforge): No summary.
 - net.creeperhost.polylib.neoforge.inventory.power.NeoPolyEnergyItemWrapper (class, neoforge): No summary.
 - net.creeperhost.polylib.neoforge.inventory.power.NeoPolyEnergyWrapper (class, neoforge): No summary.
@@ -1008,12 +1110,14 @@ Call `#registerToBus(IEventBus)` from your mod constructor (client dist only): `
 - net.creeperhost.polylib.NeoForgeModBusEvents (class, neoforge): NeoForge Mod Bus event handlers for PolyLib Tier 15 mod-bus-only events.
 
 In NeoForge 26.1.x the `EventBusSubscriber.Bus` enum was removed. These handlers are registered manually via `eventBus.addListener()` in `PolyLibNeoForge`.
-- net.creeperhost.polylib.network.packets.ContainerClientPayload (record, common): No summary.
-- net.creeperhost.polylib.network.packets.ContainerServerPayload (record, common): No summary.
-- net.creeperhost.polylib.network.packets.TileDataClientPayload (record, common): No summary.
-- net.creeperhost.polylib.network.packets.TileDataServerPayload (record, common): No summary.
-- net.creeperhost.polylib.network.packets.TilePacketServerPayload (record, common): No summary.
-- net.creeperhost.polylib.network.PolyLibNetwork (class, common): No summary.
+- net.creeperhost.polylib.network.packets.ContainerClientPayload (record, common): Server-to-client container payload.
+- net.creeperhost.polylib.network.packets.ContainerServerPayload (record, common): Client-to-server container payload.
+- net.creeperhost.polylib.network.packets.TileDataClientPayload (record, common): Server-to-client block-entity data-manager payload.
+- net.creeperhost.polylib.network.packets.TileDataServerPayload (record, common): Client-to-server block-entity data-manager payload.
+- net.creeperhost.polylib.network.packets.TilePacketServerPayload (record, common): Client-to-server custom block-entity payload.
+- net.creeperhost.polylib.network.PolyLibNetwork (class, common): Cross-loader networking facade used by PolyLib containers and data managers.
+
+Public send methods collect packet contents into a `RegistryFriendlyByteBuf`, wrap them in a typed PolyLib payload, and delegate transport to the active platform service. Public handle methods route received payloads back to containers or block-entity data managers with guarded error logging.
 - net.creeperhost.polylib.platform.FabricClientHelper (class, fabric): No summary.
 - net.creeperhost.polylib.platform.FabricNetworkHelper (class, fabric): No summary.
 - net.creeperhost.polylib.platform.FabricPlatformHelper (class, fabric): No summary.
