@@ -3,22 +3,20 @@ package net.creeperhost.polylib.platform;
 import io.netty.buffer.Unpooled;
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsC2SPayload;
 import net.creeperhost.polylib.accessibility.AccessibilityPrefsManager;
+import net.creeperhost.polylib.network.OptionalPacketHandler;
 import net.creeperhost.polylib.network.PolyLibNetwork;
 import net.creeperhost.polylib.network.packets.*;
 import net.creeperhost.polylib.platform.services.INetworkHelper;
-import net.creeperhost.polylib.player.serverdata.PlayerServerDataClientCache;
 import net.creeperhost.polylib.player.serverdata.SyncPlayerServerDataS2CPayload;
-import net.creeperhost.polylib.player.settings.PlayerClientSettingsClientCache;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsManager;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingSyncS2CPayload;
 import net.creeperhost.polylib.player.settings.UpdatePlayerClientSettingC2SPayload;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
@@ -70,30 +68,52 @@ public class FabricNetworkHelper implements INetworkHelper
     @Override
     public void initClient()
     {
-        ClientPlayNetworking.registerGlobalReceiver(ContainerClientPayload.TYPE, (payload, context) ->
-        {
-            Player player = context.player();
-            RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.wrappedBuffer(payload.data()), player.registryAccess());
-            context.client().execute(() -> PolyLibNetwork.handleContainerFromServer(player, buf));
-        });
-        ClientPlayNetworking.registerGlobalReceiver(TileDataClientPayload.TYPE, (payload, context) ->
-        {
-            Player player = context.player();
-            RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.wrappedBuffer(payload.data()), player.registryAccess());
-            context.client().execute(() -> PolyLibNetwork.handleTileDataValueFromServer(player, buf));
-        });
-        ClientPlayNetworking.registerGlobalReceiver(PlayerClientSettingSyncS2CPayload.TYPE, (payload, context) ->
-                context.client().execute(() ->
-                        PlayerClientSettingsClientCache.receive(payload.playerUUID(), payload.typeId(), payload.data())));
-        ClientPlayNetworking.registerGlobalReceiver(SyncPlayerServerDataS2CPayload.TYPE, (payload, context) ->
-                context.client().execute(() ->
-                        PlayerServerDataClientCache.receive(payload.typeId(), payload.data())));
+        FabricClientNetwork.init();
+    }
+
+    @Override
+    public <T extends CustomPacketPayload> void registerOptionalClientbound(
+            CustomPacketPayload.Type<T> type,
+            StreamCodec<? super RegistryFriendlyByteBuf, T> codec)
+    {
+        PayloadTypeRegistry.clientboundPlay().register(type, codec);
+    }
+
+    @Override
+    public <T extends CustomPacketPayload> void registerOptionalServerbound(
+            CustomPacketPayload.Type<T> type,
+            StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
+            OptionalPacketHandler<T> handler)
+    {
+        PayloadTypeRegistry.serverboundPlay().register(type, codec);
+        ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) ->
+                handler.handle(payload, context.player()));
+    }
+
+    @Override
+    public <T extends CustomPacketPayload> void registerOptionalClientHandler(
+            CustomPacketPayload.Type<T> type,
+            OptionalPacketHandler<T> handler)
+    {
+        FabricClientNetwork.registerOptionalHandler(type, handler);
+    }
+
+    @Override
+    public boolean canSendOptionalToServer(CustomPacketPayload.Type<?> type)
+    {
+        return FabricClientNetwork.canSend(type);
+    }
+
+    @Override
+    public boolean canSendOptionalToPlayer(ServerPlayer player, CustomPacketPayload.Type<?> type)
+    {
+        return ServerPlayNetworking.canSend(player, type);
     }
 
     @Override
     public void sendToServer(CustomPacketPayload payload)
     {
-        ClientPlayNetworking.send(payload);
+        FabricClientNetwork.send(payload);
     }
 
     @Override

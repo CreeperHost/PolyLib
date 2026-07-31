@@ -22,6 +22,9 @@ neoForge {
         client {
             client()
             gameDirectory = this.mkdir(this.file("runs/client"))
+            if (project.hasProperty('withoutOptionalPackets')) {
+                systemProperty('testmod.optionalPackets.disabled', 'true')
+            }
         }
         server {
             server()

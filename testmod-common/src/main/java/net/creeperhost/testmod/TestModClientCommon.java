@@ -15,9 +15,12 @@ import net.creeperhost.polylib.client.modulargui.ModularGuiScreen;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam;
 import net.creeperhost.polylib.event.events.client.PolyInputEvents;
+import net.creeperhost.polylib.network.OptionalPackets;
 import net.creeperhost.testmod.init.TestClientEvents;
 import net.creeperhost.testmod.init.TestDebugEntries;
 import net.creeperhost.testmod.init.TestScreens;
+import net.creeperhost.testmod.network.OptionalPingPayload;
+import net.creeperhost.testmod.network.TestOptionalPackets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
@@ -36,6 +39,7 @@ public class TestModClientCommon
 
     public static void init()
     {
+        TestOptionalPackets.initClient();
         TestClientEvents.init();
         TestScreens.init();
         TestDebugEntries.init();
@@ -114,6 +118,17 @@ public class TestModClientCommon
             if (action != 1) return; // press only
             Minecraft mc = Minecraft.getInstance();
             if (mc.screen != null) return;
+
+            // KP_4 - send an optional packet when the connected server supports it
+            if (key == GLFW.GLFW_KEY_KP_4)
+            {
+                boolean sent = OptionalPackets.sendToServer(new OptionalPingPayload(42));
+                LOGGER.info("[TestMod] KP_4: optional ping sent={}", sent);
+                if (!sent && mc.player != null)
+                {
+                    mc.player.sendSystemMessage(Component.literal("Server does not support the optional test packet"));
+                }
+            }
 
             // ------------------------------------------------------------------
             // KP_5 — open all channels as floating windows (Plan B test)

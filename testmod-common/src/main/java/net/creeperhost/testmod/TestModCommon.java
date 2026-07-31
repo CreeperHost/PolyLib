@@ -11,6 +11,7 @@ import net.creeperhost.polylib.player.settings.BroadcastScope;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsRegistry;
 import net.creeperhost.polylib.player.settings.PlayerClientSettingsType;
 import net.creeperhost.testmod.init.*;
+import net.creeperhost.testmod.network.TestOptionalPackets;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
@@ -59,6 +60,7 @@ public class TestModCommon
         TestContainers.init();
         TestEvents.init();
         TestCommands.init();
+        TestOptionalPackets.init();
 
         if (Services.PLATFORM.isClient()) {
             TestModClientCommon.init();

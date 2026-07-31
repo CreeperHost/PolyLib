@@ -67,11 +67,16 @@ public class ConfigBuilder
         {
             JsonObject jObject = JANKSON.load(CONFIG_PATH.toFile());
             ConfigData newData = (ConfigData) JANKSON.fromJson(jObject, CONFIG_DATA_CLASS);
+            if (newData == null)
+            {
+                newData = (ConfigData) CONFIG_DATA_CLASS.getDeclaredConstructor().newInstance();
+            }
             CONFIG_DATA.set(newData);
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            resetToDefaults();
         }
     }
 
@@ -81,12 +86,18 @@ public class ConfigBuilder
         {
             JsonObject jObject = JANKSON.load(CONFIG_PATH.toFile());
             ConfigData newData = (ConfigData) JANKSON.fromJson(jObject, CONFIG_DATA_CLASS);
+            if (newData == null)
+            {
+                newData = data;
+            }
             data = newData;
             CONFIG_DATA.set(newData);
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            CONFIG_DATA.set(data);
+            save(data);
         }
     }
 
@@ -95,7 +106,11 @@ public class ConfigBuilder
         try
         {
             ConfigData data = CONFIG_DATA.get();
-            if (data == null) data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
+            if (data == null)
+            {
+                data = (ConfigData) CONFIG_DATA_CLASS.getDeclaredConstructor().newInstance();
+                CONFIG_DATA.set(data);
+            }
 
             if (CONFIG_PATH.getParent() != null) {
                 CONFIG_PATH.getParent().toFile().mkdirs();
@@ -151,5 +166,18 @@ public class ConfigBuilder
     public ConfigData getConfigData()
     {
         return CONFIG_DATA.get();
+    }
+
+    private void resetToDefaults()
+    {
+        try
+        {
+            CONFIG_DATA.set((ConfigData) CONFIG_DATA_CLASS.getDeclaredConstructor().newInstance());
+            save();
+        }
+        catch (Exception e)
+        {
+            throw new IllegalStateException("Failed to create default config for " + CONFIG_NAME, e);
+        }
     }
 }

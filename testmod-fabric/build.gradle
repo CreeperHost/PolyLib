@@ -63,6 +63,9 @@ loom {
             setConfigName('Fabric Testmod Client')
             ideConfigGenerated(true)
             runDir('runs/client')
+            if (project.hasProperty('withoutOptionalPackets')) {
+                property 'testmod.optionalPackets.disabled', 'true'
+            }
         }
         server {
             server()
