@@ -130,6 +130,7 @@ publishMods {
     version = "$project.version"
     changelog = ""
     type = rootProject.artifact_type == "alpha" ? ALPHA : rootProject.artifact_type == "beta" ? BETA : STABLE
+    dryRun = providers.gradleProperty("publishDryRun").map { it.toBoolean() }.orElse(false)
     modLoaders.add("neoforge")
 
     def curseApiKey = providers.gradleProperty("CURSE_API_KEY").orElse(providers.environmentVariable("CURSE_API_KEY"))
@@ -150,6 +151,14 @@ publishMods {
             projectId = rootProject.modrinth_id
             minecraftVersions.add("$rootProject.minecraft_version")
             environment = CLIENT_AND_SERVER
+        }
+    }
+
+    def githubToken = providers.gradleProperty("GITHUB_TOKEN").orElse(providers.environmentVariable("GITHUB_TOKEN"))
+    if (githubToken.isPresent()) {
+        github {
+            accessToken = githubToken
+            parent project(":fabric").tasks.named("publishGithub")
         }
     }
 }

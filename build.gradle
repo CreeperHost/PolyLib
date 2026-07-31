@@ -1,7 +1,31 @@
+import net.creeperhost.modpacksch.EnvironmentSupport
+
 plugins {
     // see https://fabricmc.net/develop/ for new versions
     id 'net.fabricmc.fabric-loom' version '1.15.5' apply false
     // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
     id 'net.neoforged.moddev' version '2.0.141' apply false
-    id "me.modmuss50.mod-publish-plugin" version "2.2.0" apply false
+    id 'net.creeperhost.modpacksch' version '0.1.1'
+}
+
+modpacksCh {
+    defaults {
+        gameVersions.add("$minecraft_version")
+        environment {
+            client = EnvironmentSupport.OPTIONAL
+            server = EnvironmentSupport.OPTIONAL
+        }
+    }
+    publication(':fabric:publishGithub') {
+        displayName = "$version [Fabric]"
+        loaders.add('fabric')
+        dependencies {
+            requiredCurseForge('306612')
+            requiredModrinth('P7dR8mSH')
+        }
+    }
+    publication(':neoforge:publishGithub') {
+        displayName = "$version [NeoForge]"
+        loaders.add('neoforge')
+    }
 }

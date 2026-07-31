@@ -117,6 +117,7 @@ publishMods {
     version = "$project.version"
     changelog = ""
     type = rootProject.artifact_type == "alpha" ? ALPHA : rootProject.artifact_type == "beta" ? BETA : STABLE
+    dryRun = providers.gradleProperty("publishDryRun").map { it.toBoolean() }.orElse(false)
     modLoaders.add("fabric")
 
     def curseApiKey = providers.gradleProperty("CURSE_API_KEY").orElse(providers.environmentVariable("CURSE_API_KEY"))
@@ -139,6 +140,16 @@ publishMods {
             minecraftVersions.add("$rootProject.minecraft_version")
             environment = CLIENT_AND_SERVER
             requires("fabric-api")
+        }
+    }
+
+    def githubToken = providers.gradleProperty("GITHUB_TOKEN").orElse(providers.environmentVariable("GITHUB_TOKEN"))
+    if (githubToken.isPresent()) {
+        github {
+            accessToken = githubToken
+            repository = "CreeperHost/PolyLib"
+            commitish = providers.environmentVariable("GITHUB_SHA").orElse("multi/$rootProject.minecraft_version")
+            tagName = "$rootProject.minecraft_version-$rootProject.version"
         }
     }
 }

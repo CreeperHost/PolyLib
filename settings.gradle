@@ -2,6 +2,10 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+        maven {
+            name = 'CreeperHost'
+            url = uri('https://maven.creeperhost.net')
+        }
         exclusiveContent {
             forRepository {
                 maven {
