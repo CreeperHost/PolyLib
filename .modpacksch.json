@@ -1,0 +1,32 @@
+{
+  "$schema": "https://modpacks.ch/schemas/project-link-v1.json",
+  "version": 1,
+  "projects": {
+    "curseforge": "576589",
+    "modrinth": "6lvkzFFj",
+    "github": "CreeperHost/PolyLib"
+  },
+  "preferredDownload": "curseforge",
+  "destinations": [
+    {
+      "platform": "github",
+      "releases": true,
+      "manifestAsset": ".modpacksch-release.json"
+    }
+  ],
+  "hosting": [
+    {
+      "name": "CreeperHost",
+      "url": "https://www.creeperhost.net/applyPromo/HomeGrownMods"
+    }
+  ],
+  "page": {
+    "sections": [
+      "quick-answer",
+      "about-project",
+      "where-it-goes",
+      "before-you-install"
+    ],
+    "disabled": []
+  }
+}
