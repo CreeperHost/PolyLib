@@ -11,7 +11,7 @@
     {
       "platform": "github",
       "releases": true,
-      "manifestAsset": ".modpacksch-release.json"
+      "manifestAsset": "modpacksch-release.json"
     }
   ],
   "hosting": [
