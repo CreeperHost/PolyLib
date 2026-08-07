@@ -1,0 +1,20 @@
+---
+title: Events
+description: Loader-neutral events exposed by PolyLib.
+---
+
+PolyLib events use `PolyEvent<T>` to register handlers and expose an invoker for each event.
+
+Event groups live under `net.creeperhost.polylib.event.events.client` and `net.creeperhost.polylib.event.events.server`. Loader bridges call the PolyLib invokers from Fabric mixins or NeoForge events.
+
+## Reading Event Docs
+
+Generated event pages list:
+
+- the declaring event group,
+- the public event constant,
+- the handler interface,
+- the callback method signature,
+- whether the signature appears cancellable.
+
+Start with the generated [events reference](../../reference/generated/events/).
