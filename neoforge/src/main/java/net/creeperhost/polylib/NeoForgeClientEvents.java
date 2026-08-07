@@ -192,10 +192,13 @@ public class NeoForgeClientEvents
     // public static void onContainerScreenBackground(ContainerScreenEvent.Render.Background event) { ... }
 
     @SubscribeEvent
-    public static void onContainerScreenForeground(net.neoforged.neoforge.client.event.ContainerScreenEvent.Render.Foreground event)
+    public static void onContainerScreenForeground(ScreenEvent.Render.Foreground event)
     {
-        PolyGuiEvents.CONTAINER_SCREEN_RENDER_FG.invoker().onContainerScreenRenderFg(
-                event.getContainerScreen(), event.getGuiGraphics(), event.getMouseX(), event.getMouseY());
+        if (event.getScreen() instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> containerScreen)
+        {
+            PolyGuiEvents.CONTAINER_SCREEN_RENDER_FG.invoker().onContainerScreenRenderFg(
+                    containerScreen, event.getGuiGraphics(), event.getMouseX(), event.getMouseY());
+        }
     }
 
     @SubscribeEvent
