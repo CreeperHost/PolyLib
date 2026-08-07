@@ -2,7 +2,7 @@
 
 > PolyLib is a Minecraft library mod by CreeperHost. These docs include human guides, generated Java API reference, and release-specific metadata.
 
-Generated for 26.1.2-2.0.11 on 2026-08-07T17:56:34.658Z.
+Generated for 26.1.2-2.0.11 on 2026-08-07T18:14:51.671Z.
 
 Version: 26.1.2-2.0.11
 Minecraft: 26.1.2
