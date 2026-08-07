@@ -1291,7 +1291,7 @@ public class GuiRender {
     }
 
     public void toolTipWithImage(List<Component> tooltip, Optional<TooltipComponent> tooltipImage, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        List<ClientTooltipComponent> list = Services.CLIENT.postGatherTooltipComponents(this.tooltipStack, tooltip, tooltipImage, (int) mouseX, guiWidth(), guiHeight(), font());
+        List<ClientTooltipComponent> list = Services.client().postGatherTooltipComponents(this.tooltipStack, tooltip, tooltipImage, (int) mouseX, guiWidth(), guiHeight(), font());
         this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
     }
 
@@ -1300,12 +1300,12 @@ public class GuiRender {
     }
 
     public void renderTooltip(Component message, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        List<ClientTooltipComponent> list = Services.CLIENT.postGatherTooltipComponents(this.tooltipStack, List.of(message), Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        List<ClientTooltipComponent> list = Services.client().postGatherTooltipComponents(this.tooltipStack, List.of(message), Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
         this.renderTooltipInternal(list, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
     }
 
     public void componentTooltip(List<Component> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom) {
-        List<ClientTooltipComponent> components = Services.CLIENT.postGatherTooltipComponents(this.tooltipStack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        List<ClientTooltipComponent> components = Services.client().postGatherTooltipComponents(this.tooltipStack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
         this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
     }
 
@@ -1319,7 +1319,7 @@ public class GuiRender {
 
     public void componentTooltip(List<? extends FormattedText> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ItemStack stack) {
         this.tooltipStack = stack;
-        List<ClientTooltipComponent> components = Services.CLIENT.postGatherTooltipComponents(stack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
+        List<ClientTooltipComponent> components = Services.client().postGatherTooltipComponents(stack, tooltips, Optional.empty(), (int) mouseX, guiWidth(), guiHeight(), font());
         this.renderTooltipInternal(components, mouseX, mouseY, backgroundTop, backgroundBottom, borderTop, borderBottom, DefaultTooltipPositioner.INSTANCE);
         this.tooltipStack = ItemStack.EMPTY;
     }
@@ -1347,7 +1347,7 @@ public class GuiRender {
 
     private void renderTooltipInternal(List<ClientTooltipComponent> tooltips, double mouseX, double mouseY, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, ClientTooltipPositioner positioner) {
         if (!tooltips.isEmpty()) {
-            IClientHelper.ToolTipResult event = Services.CLIENT.postRenderTooltipPre(this.tooltipStack, wrapped, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
+            IClientHelper.ToolTipResult event = Services.client().postRenderTooltipPre(this.tooltipStack, wrapped, (int) mouseX, (int) mouseY, guiWidth(), guiHeight(), tooltips, font(), positioner);
             if (event.canceled()) return;
 
             int width = 0;
@@ -1362,7 +1362,7 @@ public class GuiRender {
             int yPos = Math.max(position.y(), 3); //Default positioner allows negative y-pos for some reason...
 
             wrapped.pose().pushMatrix();
-            IClientHelper.ToolTipColour colour = Services.CLIENT.postTooltipColour(tooltipStack, wrapped, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
+            IClientHelper.ToolTipColour colour = Services.client().postTooltipColour(tooltipStack, wrapped, xPos, yPos, backgroundTop, backgroundBottom, borderTop, borderBottom, event.getFont(), tooltips);
             toolTipBackground(xPos - 3, yPos - 3, width + 6, height + 6, colour.getBackgroundStart(), colour.getBackgroundEnd(), colour.getBorderStart(), colour.getBorderEnd(), true);
             int linePos = yPos;
 

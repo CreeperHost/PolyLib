@@ -13,7 +13,13 @@ public class Services {
     public static final IRegisterHelper REGISTER_HELPER = load(IRegisterHelper.class);
     public static final IRegistryFactory REGISTRY = load(IRegistryFactory.class);
     public static final IPlayerDataHelper PLAYER_DATA = load(IPlayerDataHelper.class);
-    public static final IClientHelper CLIENT = load(IClientHelper.class);
+    public static IClientHelper client() {
+        return ClientHolder.INSTANCE;
+    }
+
+    private static final class ClientHolder {
+        private static final IClientHelper INSTANCE = load(IClientHelper.class);
+    }
 
     public static <T> T load(Class<T> clazz) {
 
