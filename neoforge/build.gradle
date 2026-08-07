@@ -154,11 +154,4 @@ publishMods {
         }
     }
 
-    def githubToken = providers.gradleProperty("GITHUB_TOKEN").orElse(providers.environmentVariable("GITHUB_TOKEN"))
-    if (githubToken.isPresent()) {
-        github {
-            accessToken = githubToken
-            parent project(":fabric").tasks.named("publishGithub")
-        }
-    }
 }

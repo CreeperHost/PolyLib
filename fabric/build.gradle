@@ -143,13 +143,4 @@ publishMods {
         }
     }
 
-    def githubToken = providers.gradleProperty("GITHUB_TOKEN").orElse(providers.environmentVariable("GITHUB_TOKEN"))
-    if (githubToken.isPresent()) {
-        github {
-            accessToken = githubToken
-            repository = "CreeperHost/PolyLib"
-            commitish = providers.environmentVariable("GITHUB_SHA").orElse("multi/$rootProject.minecraft_version")
-            tagName = "$rootProject.minecraft_version-$rootProject.version"
-        }
-    }
 }
