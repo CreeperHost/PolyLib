@@ -1,10 +1,10 @@
 {
   "project": {
     "name": "PolyLib",
-    "version": "2.0.10",
+    "version": "2.0.11",
     "minecraftVersion": "26.1.2",
-    "releaseTag": "26.1.2-2.0.10",
-    "generatedAt": "2026-07-01T21:02:57.729Z"
+    "releaseTag": "26.1.2-2.0.11",
+    "generatedAt": "2026-08-07T17:56:34.645Z"
   },
   "packages": [
     {
@@ -416,7 +416,7 @@
       "loaders": [
         "common"
       ],
-      "classCount": 1
+      "classCount": 3
     },
     {
       "name": "net.creeperhost.polylib.network.packets",
@@ -26936,6 +26936,97 @@
       "fields": []
     },
     {
+      "name": "OptionalPacketHandler",
+      "qualifiedName": "net.creeperhost.polylib.network.OptionalPacketHandler",
+      "packageName": "net.creeperhost.polylib.network",
+      "loader": "common",
+      "kind": "interface",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/OptionalPacketHandler.java",
+      "summary": "Handles an optional play-stage packet on the main game thread.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "OptionalPackets",
+      "qualifiedName": "net.creeperhost.polylib.network.OptionalPackets",
+      "packageName": "net.creeperhost.polylib.network",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/OptionalPackets.java",
+      "summary": "Cross-loader registration and transport for optional play-stage packets.\n\nOptional packets do not make the packet-owning mod a connection requirement. A payload is sent only when the remote connection advertised support for its type. Registration must happen during normal mod initialization, before a server starts or a client connects.",
+      "methodCount": 8,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "registerClientbound",
+          "visibility": "public",
+          "returnType": "static <T extends CustomPacketPayload> void",
+          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec",
+          "signature": "public static <T extends CustomPacketPayload> void registerClientbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec)",
+          "javadoc": "Registers a payload sent from the server to a client.\n\nRegister the matching client handler separately from client initialization with `OptionalPacketHandler)`."
+        },
+        {
+          "name": "registerServerbound",
+          "visibility": "public",
+          "returnType": "static <T extends CustomPacketPayload> void",
+          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler",
+          "signature": "public static <T extends CustomPacketPayload> void registerServerbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler)",
+          "javadoc": "Registers a payload sent from a client to the server and its server handler."
+        },
+        {
+          "name": "registerClientHandler",
+          "visibility": "public",
+          "returnType": "static <T extends CustomPacketPayload> void",
+          "parameters": "CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler",
+          "signature": "public static <T extends CustomPacketPayload> void registerClientHandler(CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler)",
+          "javadoc": "Registers the client handler for a previously registered clientbound payload. This method must only be called from physical-client initialization."
+        },
+        {
+          "name": "canSendToServer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "CustomPacketPayload.Type<?> type",
+          "signature": "public boolean canSendToServer(CustomPacketPayload.Type<?> type)",
+          "javadoc": "Checks whether the connected server accepts the payload type."
+        },
+        {
+          "name": "sendToServer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "CustomPacketPayload payload",
+          "signature": "public boolean sendToServer(CustomPacketPayload payload)",
+          "javadoc": "Sends a payload to the server when the server advertised support for it."
+        },
+        {
+          "name": "canSendToPlayer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "ServerPlayer player, CustomPacketPayload.Type<?> type",
+          "signature": "public boolean canSendToPlayer(ServerPlayer player, CustomPacketPayload.Type<?> type)",
+          "javadoc": "Checks whether a player's client accepts the payload type."
+        },
+        {
+          "name": "sendToPlayer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "ServerPlayer player, CustomPacketPayload payload",
+          "signature": "public boolean sendToPlayer(ServerPlayer player, CustomPacketPayload payload)",
+          "javadoc": "Sends a payload to one player when that client advertised support for it."
+        },
+        {
+          "name": "sendToPlayers",
+          "visibility": "public",
+          "returnType": "int",
+          "parameters": "List<ServerPlayer> players, CustomPacketPayload payload",
+          "signature": "public int sendToPlayers(List<ServerPlayer> players, CustomPacketPayload payload)",
+          "javadoc": "Sends a payload to every player whose client advertised support."
+        }
+      ],
+      "fields": []
+    },
+    {
       "name": "ContainerClientPayload",
       "qualifiedName": "net.creeperhost.polylib.network.packets.ContainerClientPayload",
       "packageName": "net.creeperhost.polylib.network.packets",
@@ -27320,7 +27411,7 @@
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/platform/FabricNetworkHelper.java",
       "summary": "",
-      "methodCount": 5,
+      "methodCount": 7,
       "fieldCount": 0,
       "methods": [
         {
@@ -27337,6 +27428,22 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void initClient()",
+          "javadoc": ""
+        },
+        {
+          "name": "canSendOptionalToServer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "CustomPacketPayload.Type<?> type",
+          "signature": "public boolean canSendOptionalToServer(CustomPacketPayload.Type<?> type)",
+          "javadoc": ""
+        },
+        {
+          "name": "canSendOptionalToPlayer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "ServerPlayer player, CustomPacketPayload.Type<?> type",
+          "signature": "public boolean canSendOptionalToPlayer(ServerPlayer player, CustomPacketPayload.Type<?> type)",
           "javadoc": ""
         },
         {
@@ -27670,7 +27777,7 @@
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/platform/NeoForgeNetworkHelper.java",
       "summary": "",
-      "methodCount": 6,
+      "methodCount": 12,
       "fieldCount": 0,
       "methods": [
         {
@@ -27679,6 +27786,14 @@
           "returnType": "void",
           "parameters": "RegisterPayloadHandlersEvent event",
           "signature": "public void onRegisterPayloads(RegisterPayloadHandlersEvent event)",
+          "javadoc": ""
+        },
+        {
+          "name": "onRegisterClientPayloadHandlers",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "RegisterClientPayloadHandlersEvent event",
+          "signature": "public void onRegisterClientPayloadHandlers(RegisterClientPayloadHandlersEvent event)",
           "javadoc": ""
         },
         {
@@ -27695,6 +27810,46 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void initClient()",
+          "javadoc": ""
+        },
+        {
+          "name": "registerOptionalClientbound",
+          "visibility": "public",
+          "returnType": "synchronized <T extends CustomPacketPayload> void",
+          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec",
+          "signature": "public synchronized <T extends CustomPacketPayload> void registerOptionalClientbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec)",
+          "javadoc": ""
+        },
+        {
+          "name": "registerOptionalServerbound",
+          "visibility": "public",
+          "returnType": "synchronized <T extends CustomPacketPayload> void",
+          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler",
+          "signature": "public synchronized <T extends CustomPacketPayload> void registerOptionalServerbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler)",
+          "javadoc": ""
+        },
+        {
+          "name": "registerOptionalClientHandler",
+          "visibility": "public",
+          "returnType": "synchronized <T extends CustomPacketPayload> void",
+          "parameters": "CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler",
+          "signature": "public synchronized <T extends CustomPacketPayload> void registerOptionalClientHandler(CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler)",
+          "javadoc": ""
+        },
+        {
+          "name": "canSendOptionalToServer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "CustomPacketPayload.Type<?> type",
+          "signature": "public boolean canSendOptionalToServer(CustomPacketPayload.Type<?> type)",
+          "javadoc": ""
+        },
+        {
+          "name": "canSendOptionalToPlayer",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "ServerPlayer player, CustomPacketPayload.Type<?> type",
+          "signature": "public boolean canSendOptionalToPlayer(ServerPlayer player, CustomPacketPayload.Type<?> type)",
           "javadoc": ""
         },
         {

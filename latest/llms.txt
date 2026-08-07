@@ -2,9 +2,9 @@
 
 > PolyLib is a Minecraft library mod by CreeperHost. These docs include human guides, generated Java API reference, and release-specific metadata.
 
-Generated for 26.1.2-2.0.10 on 2026-07-01T21:02:57.742Z.
+Generated for 26.1.2-2.0.11 on 2026-08-07T17:56:34.658Z.
 
-Version: 26.1.2-2.0.10
+Version: 26.1.2-2.0.11
 Minecraft: 26.1.2
 Java: 25
 Loaders: common, Fabric, NeoForge
@@ -81,7 +81,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.neoforge.inventory.fluid: 5 public types (neoforge)
 - net.creeperhost.polylib.neoforge.inventory.power: 5 public types (neoforge)
 - net.creeperhost.polylib.neoforge.registry: 3 public types (neoforge)
-- net.creeperhost.polylib.network: 1 public types (common)
+- net.creeperhost.polylib.network: 3 public types (common)
 - net.creeperhost.polylib.network.packets: 5 public types (common)
 - net.creeperhost.polylib.platform: 11 public types (common, fabric, neoforge)
 - net.creeperhost.polylib.platform.services: 5 public types (common)
@@ -1110,6 +1110,10 @@ Call `#registerToBus(IEventBus)` from your mod constructor (client dist only): `
 - net.creeperhost.polylib.NeoForgeModBusEvents (class, neoforge): NeoForge Mod Bus event handlers for PolyLib Tier 15 mod-bus-only events.
 
 In NeoForge 26.1.x the `EventBusSubscriber.Bus` enum was removed. These handlers are registered manually via `eventBus.addListener()` in `PolyLibNeoForge`.
+- net.creeperhost.polylib.network.OptionalPacketHandler (interface, common): Handles an optional play-stage packet on the main game thread.
+- net.creeperhost.polylib.network.OptionalPackets (class, common): Cross-loader registration and transport for optional play-stage packets.
+
+Optional packets do not make the packet-owning mod a connection requirement. A payload is sent only when the remote connection advertised support for its type. Registration must happen during normal mod initialization, before a server starts or a client connects.
 - net.creeperhost.polylib.network.packets.ContainerClientPayload (record, common): Server-to-client container payload.
 - net.creeperhost.polylib.network.packets.ContainerServerPayload (record, common): Client-to-server container payload.
 - net.creeperhost.polylib.network.packets.TileDataClientPayload (record, common): Server-to-client block-entity data-manager payload.
