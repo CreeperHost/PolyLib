@@ -87,7 +87,7 @@ public class FabricNetworkHelper implements INetworkHelper
     {
         PayloadTypeRegistry.serverboundPlay().register(type, codec);
         ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) ->
-                handler.handle(payload, context.player()));
+                context.server().execute(() -> handler.handle(payload, context.player())));
     }
 
     @Override
@@ -113,13 +113,19 @@ public class FabricNetworkHelper implements INetworkHelper
     @Override
     public void sendToServer(CustomPacketPayload payload)
     {
-        FabricClientNetwork.send(payload);
+        if (canSendOptionalToServer(payload.type()))
+        {
+            FabricClientNetwork.send(payload);
+        }
     }
 
     @Override
     public void sendToPlayer(ServerPlayer player, CustomPacketPayload payload)
     {
-        ServerPlayNetworking.send(player, payload);
+        if (canSendOptionalToPlayer(player, payload.type()))
+        {
+            ServerPlayNetworking.send(player, payload);
+        }
     }
 
     @Override
@@ -127,7 +133,7 @@ public class FabricNetworkHelper implements INetworkHelper
     {
         for (ServerPlayer player : players)
         {
-            ServerPlayNetworking.send(player, payload);
+            sendToPlayer(player, payload);
         }
     }
 }

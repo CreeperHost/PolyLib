@@ -64,7 +64,7 @@ final class FabricClientNetwork
             OptionalPacketHandler<T> handler)
     {
         ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) ->
-                handler.handle(payload, context.player()));
+                context.client().execute(() -> handler.handle(payload, context.player())));
     }
 
     /**
