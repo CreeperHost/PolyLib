@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.NetworkRegistry;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class NeoForgeNetworkHelper implements INetworkHelper
 
     public static void onRegisterPayloads(RegisterPayloadHandlersEvent event)
     {
-        PayloadRegistrar registrar = event.registrar(Constants.MOD_ID);
+        PayloadRegistrar registrar = event.registrar(Constants.MOD_ID).optional();
 
         registrar.playToServer(ContainerServerPayload.TYPE, ContainerServerPayload.CODEC, (payload, ctx) ->
         {
@@ -93,13 +94,19 @@ public class NeoForgeNetworkHelper implements INetworkHelper
     @Override
     public void sendToServer(CustomPacketPayload payload)
     {
-        ClientPacketDistributor.sendToServer(payload);
+        if (NeoForgeClientNetworkAccess.canSend(payload.type()))
+        {
+            ClientPacketDistributor.sendToServer(payload);
+        }
     }
 
     @Override
     public void sendToPlayer(ServerPlayer player, CustomPacketPayload payload)
     {
-        PacketDistributor.sendToPlayer(player, payload);
+        if (NetworkRegistry.hasChannel(player.connection, payload.type().id()))
+        {
+            PacketDistributor.sendToPlayer(player, payload);
+        }
     }
 
     @Override
@@ -107,7 +114,7 @@ public class NeoForgeNetworkHelper implements INetworkHelper
     {
         for (ServerPlayer player : players)
         {
-            PacketDistributor.sendToPlayer(player, payload);
+            sendToPlayer(player, payload);
         }
     }
 

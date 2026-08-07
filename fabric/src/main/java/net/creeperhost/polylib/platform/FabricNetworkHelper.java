@@ -93,13 +93,19 @@ public class FabricNetworkHelper implements INetworkHelper
     @Override
     public void sendToServer(CustomPacketPayload payload)
     {
-        ClientPlayNetworking.send(payload);
+        if (ClientPlayNetworking.canSend(payload.type()))
+        {
+            ClientPlayNetworking.send(payload);
+        }
     }
 
     @Override
     public void sendToPlayer(ServerPlayer player, CustomPacketPayload payload)
     {
-        ServerPlayNetworking.send(player, payload);
+        if (ServerPlayNetworking.canSend(player, payload.type()))
+        {
+            ServerPlayNetworking.send(player, payload);
+        }
     }
 
     @Override
@@ -107,7 +113,7 @@ public class FabricNetworkHelper implements INetworkHelper
     {
         for (ServerPlayer player : players)
         {
-            ServerPlayNetworking.send(player, payload);
+            sendToPlayer(player, payload);
         }
     }
 }
