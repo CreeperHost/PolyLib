@@ -41,7 +41,7 @@ public class NeoForgeNetworkHelper implements INetworkHelper
 
     public static void onRegisterPayloads(RegisterPayloadHandlersEvent event)
     {
-        PayloadRegistrar registrar = event.registrar(Constants.MOD_ID);
+        PayloadRegistrar registrar = event.registrar(Constants.MOD_ID).optional();
 
         registrar.playToServer(ContainerServerPayload.TYPE, ContainerServerPayload.CODEC, (payload, ctx) ->
         {
@@ -88,8 +88,7 @@ public class NeoForgeNetworkHelper implements INetworkHelper
             ctx.enqueueWork(() -> PlayerClientSettingsManager.applyFromClient(sp, payload.typeId(), payload.data()));
         });
 
-        PayloadRegistrar optionalRegistrar = registrar.optional();
-        OPTIONAL_PAYLOADS.values().forEach(registration -> registerOptionalPayload(optionalRegistrar, registration));
+        OPTIONAL_PAYLOADS.values().forEach(registration -> registerOptionalPayload(registrar, registration));
         optionalPayloadRegistrationClosed = true;
     }
 
@@ -179,13 +178,19 @@ public class NeoForgeNetworkHelper implements INetworkHelper
     @Override
     public void sendToServer(CustomPacketPayload payload)
     {
-        ClientPacketDistributor.sendToServer(payload);
+        if (canSendOptionalToServer(payload.type()))
+        {
+            ClientPacketDistributor.sendToServer(payload);
+        }
     }
 
     @Override
     public void sendToPlayer(ServerPlayer player, CustomPacketPayload payload)
     {
-        PacketDistributor.sendToPlayer(player, payload);
+        if (canSendOptionalToPlayer(player, payload.type()))
+        {
+            PacketDistributor.sendToPlayer(player, payload);
+        }
     }
 
     @Override
@@ -193,7 +198,7 @@ public class NeoForgeNetworkHelper implements INetworkHelper
     {
         for (ServerPlayer player : players)
         {
-            PacketDistributor.sendToPlayer(player, payload);
+            sendToPlayer(player, payload);
         }
     }
 
@@ -227,7 +232,8 @@ public class NeoForgeNetworkHelper implements INetworkHelper
         if (registration.clientbound && registration.serverHandler != null)
         {
             registrar.playBidirectional(registration.type, registration.codec,
-                    (payload, context) -> registration.serverHandler.handle(payload, context.player()));
+                    (payload, context) -> context.enqueueWork(() ->
+                            registration.serverHandler.handle(payload, context.player())));
         }
         else if (registration.clientbound)
         {
@@ -236,7 +242,8 @@ public class NeoForgeNetworkHelper implements INetworkHelper
         else if (registration.serverHandler != null)
         {
             registrar.playToServer(registration.type, registration.codec,
-                    (payload, context) -> registration.serverHandler.handle(payload, context.player()));
+                    (payload, context) -> context.enqueueWork(() ->
+                            registration.serverHandler.handle(payload, context.player())));
         }
     }
 
@@ -249,7 +256,7 @@ public class NeoForgeNetworkHelper implements INetworkHelper
         OptionalPayloadRegistration<T> typedRegistration = (OptionalPayloadRegistration<T>) registration;
         OptionalPacketHandler<T> typedHandler = (OptionalPacketHandler<T>) handler;
         event.register(typedRegistration.type, (payload, context) ->
-                typedHandler.handle(payload, context.player()));
+                context.enqueueWork(() -> typedHandler.handle(payload, context.player())));
     }
 
     private static final class OptionalPayloadRegistration<T extends CustomPacketPayload>
