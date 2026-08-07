@@ -1,10 +1,10 @@
 {
   "project": {
     "name": "PolyLib",
-    "version": "2.0.11",
-    "minecraftVersion": "26.1.2",
-    "releaseTag": "26.1.2-2.0.11",
-    "generatedAt": "2026-08-07T18:14:51.657Z"
+    "version": "2.0.10",
+    "minecraftVersion": "26.2",
+    "releaseTag": "26.2-2.0.10",
+    "generatedAt": "2026-08-07T18:31:30.831Z"
   },
   "packages": [
     {
@@ -105,7 +105,7 @@
       "loaders": [
         "common"
       ],
-      "classCount": 28
+      "classCount": 27
     },
     {
       "name": "net.creeperhost.polylib.client.modulargui.lib",
@@ -218,7 +218,7 @@
       "loaders": [
         "common"
       ],
-      "classCount": 13
+      "classCount": 12
     },
     {
       "name": "net.creeperhost.polylib.datagen",
@@ -285,13 +285,6 @@
       "classCount": 6
     },
     {
-      "name": "net.creeperhost.polylib.fabric.inventory.fluid",
-      "loaders": [
-        "fabric"
-      ],
-      "classCount": 5
-    },
-    {
       "name": "net.creeperhost.polylib.fabric.registry",
       "loaders": [
         "fabric"
@@ -318,13 +311,6 @@
         "common"
       ],
       "classCount": 1
-    },
-    {
-      "name": "net.creeperhost.polylib.inventory.fluid",
-      "loaders": [
-        "common"
-      ],
-      "classCount": 9
     },
     {
       "name": "net.creeperhost.polylib.inventory.items",
@@ -391,13 +377,6 @@
       "classCount": 1
     },
     {
-      "name": "net.creeperhost.polylib.neoforge.inventory.fluid",
-      "loaders": [
-        "neoforge"
-      ],
-      "classCount": 5
-    },
-    {
       "name": "net.creeperhost.polylib.neoforge.inventory.power",
       "loaders": [
         "neoforge"
@@ -416,7 +395,7 @@
       "loaders": [
         "common"
       ],
-      "classCount": 3
+      "classCount": 1
     },
     {
       "name": "net.creeperhost.polylib.network.packets",
@@ -5656,138 +5635,6 @@
           "name": "nameOffset",
           "type": "int",
           "javadoc": ""
-        }
-      ]
-    },
-    {
-      "name": "GuiFluidTank",
-      "qualifiedName": "net.creeperhost.polylib.client.modulargui.elements.GuiFluidTank",
-      "packageName": "net.creeperhost.polylib.client.modulargui.elements",
-      "loader": "common",
-      "kind": "class",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/client/modulargui/elements/GuiFluidTank.java",
-      "summary": "Modular GUI element that renders a single PolyLib fluid tank.\n\nThe tank accepts `PolyFluidStack` suppliers so container screens can bind it directly to synced fluid data.",
-      "methodCount": 14,
-      "fieldCount": 1,
-      "methods": [
-        {
-          "name": "GuiFluidTank",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "@NotNull GuiParent<?> parent",
-          "signature": "public GuiFluidTank(@NotNull GuiParent<?> parent)",
-          "javadoc": "Creates a fluid tank element."
-        },
-        {
-          "name": "setCapacity",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "long capacity",
-          "signature": "public GuiFluidTank setCapacity(long capacity)",
-          "javadoc": "Sets the capacity of this tank in droplets."
-        },
-        {
-          "name": "setCapacity",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "Supplier<Long> capacity",
-          "signature": "public GuiFluidTank setCapacity(Supplier<Long> capacity)",
-          "javadoc": "Supplies the capacity of this tank in droplets."
-        },
-        {
-          "name": "setFluidStack",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "PolyFluidStack fluidStack",
-          "signature": "public GuiFluidTank setFluidStack(PolyFluidStack fluidStack)",
-          "javadoc": "Sets the current stored fluid stack."
-        },
-        {
-          "name": "setFluidStack",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "Supplier<PolyFluidStack> fluidStack",
-          "signature": "public GuiFluidTank setFluidStack(Supplier<PolyFluidStack> fluidStack)",
-          "javadoc": "Supplies the current stored fluid stack."
-        },
-        {
-          "name": "setToolTipFormatter",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "BiFunction<PolyFluidStack, Long, List<Component>> toolTipFormatter",
-          "signature": "public GuiFluidTank setToolTipFormatter(BiFunction<PolyFluidStack, Long, List<Component>> toolTipFormatter)",
-          "javadoc": "Installs a custom tooltip formatter."
-        },
-        {
-          "name": "setWindow",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "@Nullable Material window",
-          "signature": "public GuiFluidTank setWindow(@Nullable Material window)",
-          "javadoc": "Sets the tank window texture."
-        },
-        {
-          "name": "setDrawGauge",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "boolean drawGauge",
-          "signature": "public GuiFluidTank setDrawGauge(boolean drawGauge)",
-          "javadoc": "Enables or disables built-in gauge marks."
-        },
-        {
-          "name": "setGaugeColour",
-          "visibility": "public",
-          "returnType": "GuiFluidTank",
-          "parameters": "int gaugeColour",
-          "signature": "public GuiFluidTank setGaugeColour(int gaugeColour)",
-          "javadoc": "Sets the built-in gauge mark color."
-        },
-        {
-          "name": "getCapacity",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "",
-          "signature": "public long getCapacity()",
-          "javadoc": ""
-        },
-        {
-          "name": "getFluidStack",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "",
-          "signature": "public PolyFluidStack getFluidStack()",
-          "javadoc": ""
-        },
-        {
-          "name": "renderBehind",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "GuiRender render, double mouseX, double mouseY, float partialTicks",
-          "signature": "public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks)",
-          "javadoc": ""
-        },
-        {
-          "name": "simpleTank",
-          "visibility": "public",
-          "returnType": "Assembly<GuiRectangle, GuiFluidTank>",
-          "parameters": "@NotNull GuiParent<?> parent",
-          "signature": "public Assembly<GuiRectangle, GuiFluidTank> simpleTank(@NotNull GuiParent<?> parent)",
-          "javadoc": "Creates a tank with a vanilla-slot style backing rectangle."
-        },
-        {
-          "name": "defaultFormatter",
-          "visibility": "public",
-          "returnType": "BiFunction<PolyFluidStack, Long, List<Component>>",
-          "parameters": "",
-          "signature": "public BiFunction<PolyFluidStack, Long, List<Component>> defaultFormatter()",
-          "javadoc": "Creates the default fluid tank tooltip formatter."
-        }
-      ],
-      "fields": [
-        {
-          "name": "DEFAULT_WINDOW",
-          "type": "Material",
-          "javadoc": "Default overlay texture for the tank glass."
         }
       ]
     },
@@ -12325,7 +12172,7 @@
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/client/modulargui/ModularGuiContainer.java",
       "summary": "Container screen implementation for `ModularGui`.",
-      "methodCount": 32,
+      "methodCount": 33,
       "fieldCount": 1,
       "methods": [
         {
@@ -12514,10 +12361,18 @@
         },
         {
           "name": "extractSlot",
-          "visibility": "public",
+          "visibility": "protected",
           "returnType": "void",
-          "parameters": "GuiGraphicsExtractor guiGraphics, Slot slot, int i, int j",
-          "signature": "public void extractSlot(GuiGraphicsExtractor guiGraphics, Slot slot, int i, int j)",
+          "parameters": "GuiGraphicsExtractor guiGraphics, Slot slot, int mouseX, int mouseY",
+          "signature": "protected void extractSlot(GuiGraphicsExtractor guiGraphics, Slot slot, int mouseX, int mouseY)",
+          "javadoc": ""
+        },
+        {
+          "name": "extractSlots",
+          "visibility": "protected",
+          "returnType": "void",
+          "parameters": "GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY",
+          "signature": "protected void extractSlots(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY)",
           "javadoc": ""
         },
         {
@@ -12962,8 +12817,8 @@
           "name": "buffer",
           "visibility": "public",
           "returnType": "VertexConsumer",
-          "parameters": "MultiBufferSource buffers, Function<Identifier, RenderType> typeBuilder",
-          "signature": "public VertexConsumer buffer(MultiBufferSource buffers, Function<Identifier, RenderType> typeBuilder)",
+          "parameters": "Function<RenderType, VertexConsumer> bufferSource, Function<Identifier, RenderType> typeBuilder",
+          "signature": "public VertexConsumer buffer(Function<RenderType, VertexConsumer> bufferSource, Function<Identifier, RenderType> typeBuilder)",
           "javadoc": "Convenience method to create a vertex consumer using this material's render type."
         },
         {
@@ -14219,7 +14074,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/containers/network/PolyContainerSyncProtocol.java",
-      "summary": "Default `ContainerSyncProtocol` implementation used by `ModularGuiContainerMenu`.\n\nThis protocol sends typed payloads through the container packet channel using packet id `254` as the routing id. The payload type id is written next, then the payload is encoded with the `SyncPayloadType#codec()` registered for that id.\n\nHandlers must be registered on the receiving side before packets arrive. Unknown payload ids are ignored rather than decoded.",
+      "summary": "",
       "methodCount": 3,
       "fieldCount": 0,
       "methods": [
@@ -14229,7 +14084,7 @@
           "returnType": "",
           "parameters": "ModularGuiContainerMenu container",
           "signature": "public PolyContainerSyncProtocol(ModularGuiContainerMenu container)",
-          "javadoc": "Creates a sync protocol bound to a container menu."
+          "javadoc": ""
         },
         {
           "name": "handleClientPacket",
@@ -14237,7 +14092,7 @@
           "returnType": "void",
           "parameters": "Player player, RegistryFriendlyByteBuf buf",
           "signature": "public void handleClientPacket(Player player, RegistryFriendlyByteBuf buf)",
-          "javadoc": "Handles a routed payload received by the client-side container.\n\nCalled by `int, RegistryFriendlyByteBuf)` after the container id and protocol packet id have already been read."
+          "javadoc": ""
         },
         {
           "name": "handleServerPacket",
@@ -14245,7 +14100,7 @@
           "returnType": "void",
           "parameters": "Player player, RegistryFriendlyByteBuf buf",
           "signature": "public void handleServerPacket(Player player, RegistryFriendlyByteBuf buf)",
-          "javadoc": "Handles a routed payload received by the server-side container.\n\nCalled by `int, RegistryFriendlyByteBuf)` after the container id and protocol packet id have already been read."
+          "javadoc": ""
         }
       ],
       "fields": []
@@ -14257,7 +14112,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/containers/PolyBlockContainerMenu.java",
-      "summary": "Base container menu for block-entity backed modular GUIs.\n\nThis binds a `ModularGuiContainerMenu` to a `PolyBlockEntity`, provides the `DataManagerContainer` bridge used by PolyLib's data manager packets, and handles the standard open, close, and access-distance checks for the backing tile.",
+      "summary": "",
       "methodCount": 6,
       "fieldCount": 2,
       "methods": [
@@ -14267,7 +14122,7 @@
           "returnType": "",
           "parameters": "@Nullable MenuType<?> type, int windowId, Inventory playerInv, FriendlyByteBuf extraData",
           "signature": "public PolyBlockContainerMenu(@Nullable MenuType<?> type, int windowId, Inventory playerInv, FriendlyByteBuf extraData)",
-          "javadoc": "Constructs the client-side menu instance from the block position written to the menu's extra data buffer.\n\nThe buffer is expected to contain the backing block entity's `net.minecraft.core.BlockPos`."
+          "javadoc": ""
         },
         {
           "name": "PolyBlockContainerMenu",
@@ -14275,7 +14130,7 @@
           "returnType": "",
           "parameters": "@Nullable MenuType<?> type, int windowId, Inventory playerInv, T tile",
           "signature": "public PolyBlockContainerMenu(@Nullable MenuType<?> type, int windowId, Inventory playerInv, T tile)",
-          "javadoc": "Constructs the server-side menu instance for the supplied block entity.\n\nThis records the opening player on the tile via `PolyBlockEntity#onPlayerOpenContainer(Player)` so `PolyBlockEntity#getAccessingPlayers()` can report active viewers."
+          "javadoc": ""
         },
         {
           "name": "getClientTile",
@@ -14283,7 +14138,7 @@
           "returnType": "static <T extends PolyBlockEntity> T",
           "parameters": "Inventory playerInv, FriendlyByteBuf extraData",
           "signature": "protected static <T extends PolyBlockEntity> T getClientTile(Inventory playerInv, FriendlyByteBuf extraData)",
-          "javadoc": "Reads the backing block entity for a client-side menu from the opening payload."
+          "javadoc": ""
         },
         {
           "name": "removed",
@@ -14291,7 +14146,7 @@
           "returnType": "void",
           "parameters": "Player player",
           "signature": "public void removed(Player player)",
-          "javadoc": "Removes this player from the backing tile's active container viewer set."
+          "javadoc": ""
         },
         {
           "name": "stillValid",
@@ -14299,7 +14154,7 @@
           "returnType": "boolean",
           "parameters": "Player player",
           "signature": "public boolean stillValid(Player player)",
-          "javadoc": "Keeps the menu open only while the original block entity is still present and the player remains within the tile's configured access distance."
+          "javadoc": ""
         },
         {
           "name": "getBlockEntity",
@@ -14307,19 +14162,19 @@
           "returnType": "T",
           "parameters": "",
           "signature": "public T getBlockEntity()",
-          "javadoc": "Returns the block entity used as the target for `DataManagerContainer` packet routing."
+          "javadoc": ""
         }
       ],
       "fields": [
         {
           "name": "tile",
           "type": "T",
-          "javadoc": "The block entity backing this menu."
+          "javadoc": ""
         },
         {
           "name": "player",
           "type": "Player",
-          "javadoc": "The player whose inventory opened this menu."
+          "javadoc": ""
         }
       ]
     },
@@ -14330,7 +14185,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/containers/slots/PolySlot.java",
-      "summary": "A fully configurable inventory slot.\n\nUse this when a menu needs slot behavior beyond vanilla `Slot` checks, such as dynamic enablement, custom insertion rules, stack limits, pickup restrictions, or callbacks when a player changes the slot contents.\n\nConfiguration methods return this slot so they can be chained during menu setup.\n\nIf there is anything this slot can not do... Let me know.",
+      "summary": "A fully configurable inventory slot. If there is anything this slot can not do... Let me know.",
       "methodCount": 15,
       "fieldCount": 0,
       "methods": [
@@ -14340,7 +14195,7 @@
           "returnType": "",
           "parameters": "Container container, int index",
           "signature": "public PolySlot(Container container, int index)",
-          "javadoc": "Creates a configurable slot at the default GUI position."
+          "javadoc": ""
         },
         {
           "name": "PolySlot",
@@ -14348,7 +14203,7 @@
           "returnType": "",
           "parameters": "Container container, int index, int xPos, int yPos",
           "signature": "public PolySlot(Container container, int index, int xPos, int yPos)",
-          "javadoc": "Creates a configurable slot."
+          "javadoc": ""
         },
         {
           "name": "output",
@@ -14364,7 +14219,7 @@
           "returnType": "PolySlot",
           "parameters": "",
           "signature": "public PolySlot noCheck()",
-          "javadoc": "Do not use the containers canPlaceItem when checking if an item can be placed.\n\nThe slot's local placement flag and validator still apply."
+          "javadoc": "Do not use the containers canPlaceItem when checking if an item can be placed."
         },
         {
           "name": "setValidator",
@@ -14404,7 +14259,7 @@
           "returnType": "PolySlot",
           "parameters": "Supplier<Boolean> enabled",
           "signature": "public PolySlot setEnabled(Supplier<Boolean> enabled)",
-          "javadoc": "Controls whether this slot is active using a dynamic supplier.\n\nInactive slots are hidden and cannot be interacted with by vanilla menu logic."
+          "javadoc": ""
         },
         {
           "name": "setEnabled",
@@ -14412,7 +14267,7 @@
           "returnType": "PolySlot",
           "parameters": "boolean enabled",
           "signature": "public PolySlot setEnabled(boolean enabled)",
-          "javadoc": "Controls whether this slot is active using a fixed value."
+          "javadoc": ""
         },
         {
           "name": "mayPlace",
@@ -14464,7 +14319,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/containers/slots/SlotInput.java",
-      "summary": "Basic input slot for menu layouts that want an explicit input-slot type.\n\nThis currently behaves the same as a vanilla `Slot`; use `PolySlot` when custom validation, stack limits, or active-state behavior is needed.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 0,
       "methods": [
@@ -14474,7 +14329,7 @@
           "returnType": "",
           "parameters": "Container container, int i, int j, int k",
           "signature": "public SlotInput(Container container, int i, int j, int k)",
-          "javadoc": "Creates an input slot."
+          "javadoc": ""
         }
       ],
       "fields": []
@@ -14486,7 +14341,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/containers/slots/SlotOutput.java",
-      "summary": "Output-only slot.\n\nPlayers can take items from this slot, but `#mayPlace(ItemStack)` always returns false so items cannot be inserted directly.",
+      "summary": "",
       "methodCount": 2,
       "fieldCount": 0,
       "methods": [
@@ -14496,7 +14351,7 @@
           "returnType": "",
           "parameters": "Container container, int i, int j, int k",
           "signature": "public SlotOutput(Container container, int i, int j, int k)",
-          "javadoc": "Creates an output-only slot."
+          "javadoc": ""
         },
         {
           "name": "mayPlace",
@@ -14504,7 +14359,7 @@
           "returnType": "boolean",
           "parameters": "@NotNull ItemStack itemStack",
           "signature": "public boolean mayPlace(@NotNull ItemStack itemStack)",
-          "javadoc": "Blocks direct insertion into this output slot."
+          "javadoc": ""
         }
       ],
       "fields": []
@@ -14516,7 +14371,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/containers/slots/SlotTag.java",
-      "summary": "Slot that only accepts items contained in a configured item tag.",
+      "summary": "",
       "methodCount": 3,
       "fieldCount": 0,
       "methods": [
@@ -14526,7 +14381,7 @@
           "returnType": "",
           "parameters": "Container container, int i, int j, int k, @NotNull TagKey<Item> tagKey",
           "signature": "public SlotTag(Container container, int i, int j, int k, @NotNull TagKey<Item> tagKey)",
-          "javadoc": "Creates a tag-filtered slot."
+          "javadoc": ""
         },
         {
           "name": "mayPlace",
@@ -14534,7 +14389,7 @@
           "returnType": "boolean",
           "parameters": "@NotNull ItemStack itemStack",
           "signature": "public boolean mayPlace(@NotNull ItemStack itemStack)",
-          "javadoc": "Allows placement only when the stack belongs to this slot's tag."
+          "javadoc": ""
         },
         {
           "name": "getTagKey",
@@ -14613,7 +14468,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/AbstractDataStore.java",
-      "summary": "The base class of a simple general purpose serializable data system.\n\nA data store owns one value, tracks whether that value needs to be synchronized or saved, and defines the byte-buffer and tag serialization used by `TileDataManager`.",
+      "summary": "The base class of a simple general purpose serializable data system.",
       "methodCount": 14,
       "fieldCount": 0,
       "methods": [
@@ -14623,7 +14478,7 @@
           "returnType": "",
           "parameters": "T defaultValue",
           "signature": "public AbstractDataStore(T defaultValue)",
-          "javadoc": "Creates a data store with the supplied default value."
+          "javadoc": ""
         },
         {
           "name": "setValidator",
@@ -14631,7 +14486,7 @@
           "returnType": "AbstractDataStore<T>",
           "parameters": "Predicate<T> validator",
           "signature": "public AbstractDataStore<T> setValidator(Predicate<T> validator)",
-          "javadoc": "Sets a validator used to reject future values.\n\nThe validator is applied by `#set` and by deserialization helpers that call `#validValue`."
+          "javadoc": ""
         },
         {
           "name": "getValue",
@@ -14655,7 +14510,7 @@
           "returnType": "void",
           "parameters": "T value",
           "signature": "public void setValue(T value)",
-          "javadoc": "Updates the stored value if it is accepted by the validator."
+          "javadoc": ""
         },
         {
           "name": "set",
@@ -14663,7 +14518,7 @@
           "returnType": "T",
           "parameters": "T value",
           "signature": "public T set(T value)",
-          "javadoc": "Updates the stored value if it differs from the current value and passes validation.\n\nAccepted changes mark this store dirty."
+          "javadoc": ""
         },
         {
           "name": "markDirty",
@@ -14671,7 +14526,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void markDirty()",
-          "javadoc": "Marks this data store as needing synchronization or saving."
+          "javadoc": ""
         },
         {
           "name": "isDirty",
@@ -14679,7 +14534,7 @@
           "returnType": "boolean",
           "parameters": "boolean reset",
           "signature": "public boolean isDirty(boolean reset)",
-          "javadoc": "Checks whether this data store has changed since the last reset."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -14687,7 +14542,7 @@
           "returnType": "void",
           "parameters": "RegistryFriendlyByteBuf buf",
           "signature": "public void toBytes(RegistryFriendlyByteBuf buf)",
-          "javadoc": "Writes this value to a network buffer."
+          "javadoc": ""
         },
         {
           "name": "fromBytes",
@@ -14695,7 +14550,7 @@
           "returnType": "void",
           "parameters": "RegistryFriendlyByteBuf buf",
           "signature": "public void fromBytes(RegistryFriendlyByteBuf buf)",
-          "javadoc": "Reads this value from a network buffer."
+          "javadoc": ""
         },
         {
           "name": "toTag",
@@ -14703,7 +14558,7 @@
           "returnType": "void",
           "parameters": "ValueOutput output",
           "signature": "public void toTag(ValueOutput output)",
-          "javadoc": "Writes this value to persistent tag data."
+          "javadoc": ""
         },
         {
           "name": "fromTag",
@@ -14711,7 +14566,7 @@
           "returnType": "void",
           "parameters": "ValueInput input",
           "signature": "public void fromTag(ValueInput input)",
-          "javadoc": "Reads this value from persistent tag data."
+          "javadoc": ""
         },
         {
           "name": "isSameValue",
@@ -14719,7 +14574,7 @@
           "returnType": "boolean",
           "parameters": "T newValue",
           "signature": "public boolean isSameValue(T newValue)",
-          "javadoc": "Compares a candidate value with the currently stored value."
+          "javadoc": ""
         },
         {
           "name": "validValue",
@@ -14727,7 +14582,7 @@
           "returnType": "T",
           "parameters": "T value, T fallBack",
           "signature": "protected T validValue(T value, T fallBack)",
-          "javadoc": "Applies the validator to a deserialized value."
+          "javadoc": ""
         }
       ],
       "fields": []
@@ -14739,7 +14594,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/BooleanData.java",
-      "summary": "`AbstractDataStore` implementation for a boolean value.",
+      "summary": "",
       "methodCount": 7,
       "fieldCount": 0,
       "methods": [
@@ -14749,7 +14604,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public BooleanData()",
-          "javadoc": "Creates a boolean data store with a default value of false."
+          "javadoc": ""
         },
         {
           "name": "BooleanData",
@@ -14757,7 +14612,7 @@
           "returnType": "",
           "parameters": "boolean defaultValue",
           "signature": "public BooleanData(boolean defaultValue)",
-          "javadoc": "Creates a boolean data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -14809,7 +14664,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/ByteData.java",
-      "summary": "`AbstractDataStore` implementation for a byte value.",
+      "summary": "",
       "methodCount": 13,
       "fieldCount": 0,
       "methods": [
@@ -14819,7 +14674,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public ByteData()",
-          "javadoc": "Creates a byte data store with a default value of zero."
+          "javadoc": ""
         },
         {
           "name": "ByteData",
@@ -14827,7 +14682,7 @@
           "returnType": "",
           "parameters": "byte defaultValue",
           "signature": "public ByteData(byte defaultValue)",
-          "javadoc": "Creates a byte data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -14927,7 +14782,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/DoubleData.java",
-      "summary": "`AbstractDataStore` implementation for a double value.",
+      "summary": "",
       "methodCount": 13,
       "fieldCount": 0,
       "methods": [
@@ -14937,7 +14792,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public DoubleData()",
-          "javadoc": "Creates a double data store with a default value of zero."
+          "javadoc": ""
         },
         {
           "name": "DoubleData",
@@ -14945,7 +14800,7 @@
           "returnType": "",
           "parameters": "double defaultValue",
           "signature": "public DoubleData(double defaultValue)",
-          "javadoc": "Creates a double data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15045,7 +14900,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/EnumData.java",
-      "summary": "`AbstractDataStore` implementation for enum values.\n\nValues are encoded to tags by enum ordinal index and to network buffers with Minecraft's enum codec helpers. Enum types with more than 255 constants are not supported.",
+      "summary": "",
       "methodCount": 8,
       "fieldCount": 2,
       "methods": [
@@ -15055,7 +14910,7 @@
           "returnType": "",
           "parameters": "@NotNull T defaultValue",
           "signature": "public EnumData(@NotNull T defaultValue)",
-          "javadoc": "Creates an enum data store using the declaring class of the default value."
+          "javadoc": ""
         },
         {
           "name": "EnumData",
@@ -15063,7 +14918,7 @@
           "returnType": "",
           "parameters": "Class<T> enumClass, @Nullable T defaultValue",
           "signature": "public EnumData(Class<T> enumClass, @Nullable T defaultValue)",
-          "javadoc": "Creates an enum data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15134,7 +14989,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/FloatData.java",
-      "summary": "`AbstractDataStore` implementation for a float value.",
+      "summary": "",
       "methodCount": 13,
       "fieldCount": 0,
       "methods": [
@@ -15144,7 +14999,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public FloatData()",
-          "javadoc": "Creates a float data store with a default value of zero."
+          "javadoc": ""
         },
         {
           "name": "FloatData",
@@ -15152,7 +15007,7 @@
           "returnType": "",
           "parameters": "float defaultValue",
           "signature": "public FloatData(float defaultValue)",
-          "javadoc": "Creates a float data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15246,91 +15101,13 @@
       "fields": []
     },
     {
-      "name": "FluidData",
-      "qualifiedName": "net.creeperhost.polylib.data.serializable.FluidData",
-      "packageName": "net.creeperhost.polylib.data.serializable",
-      "loader": "common",
-      "kind": "class",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/FluidData.java",
-      "summary": "`AbstractDataStore` implementation for a `PolyFluidStack`.\n\nStored fluid stacks are copied on assignment, and equality is checked using `PolyFluidStack#equals(Object)` so fluid, amount, and component data all participate in dirty-state detection.",
-      "methodCount": 8,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "FluidData",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "",
-          "signature": "public FluidData()",
-          "javadoc": "Creates a fluid data store with `PolyFluidStack#EMPTY`."
-        },
-        {
-          "name": "FluidData",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "PolyFluidStack defaultValue",
-          "signature": "public FluidData(PolyFluidStack defaultValue)",
-          "javadoc": "Creates a fluid data store."
-        },
-        {
-          "name": "set",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "PolyFluidStack value",
-          "signature": "public PolyFluidStack set(PolyFluidStack value)",
-          "javadoc": "Stores a copy of the supplied fluid stack when it differs from the current stack and passes validation."
-        },
-        {
-          "name": "toBytes",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "RegistryFriendlyByteBuf buf",
-          "signature": "public void toBytes(RegistryFriendlyByteBuf buf)",
-          "javadoc": ""
-        },
-        {
-          "name": "fromBytes",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "RegistryFriendlyByteBuf buf",
-          "signature": "public void fromBytes(RegistryFriendlyByteBuf buf)",
-          "javadoc": ""
-        },
-        {
-          "name": "toTag",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "ValueOutput output",
-          "signature": "public void toTag(ValueOutput output)",
-          "javadoc": ""
-        },
-        {
-          "name": "fromTag",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "ValueInput input",
-          "signature": "public void fromTag(ValueInput input)",
-          "javadoc": ""
-        },
-        {
-          "name": "isSameValue",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack newValue",
-          "signature": "public boolean isSameValue(PolyFluidStack newValue)",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
       "name": "IntData",
       "qualifiedName": "net.creeperhost.polylib.data.serializable.IntData",
       "packageName": "net.creeperhost.polylib.data.serializable",
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/IntData.java",
-      "summary": "`AbstractDataStore` implementation for an integer value.",
+      "summary": "",
       "methodCount": 13,
       "fieldCount": 0,
       "methods": [
@@ -15340,7 +15117,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public IntData()",
-          "javadoc": "Creates an integer data store with a default value of zero."
+          "javadoc": ""
         },
         {
           "name": "IntData",
@@ -15348,7 +15125,7 @@
           "returnType": "",
           "parameters": "int defaultValue",
           "signature": "public IntData(int defaultValue)",
-          "javadoc": "Creates an integer data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15448,7 +15225,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/LongData.java",
-      "summary": "`AbstractDataStore` implementation for a long value.",
+      "summary": "",
       "methodCount": 13,
       "fieldCount": 0,
       "methods": [
@@ -15458,7 +15235,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public LongData()",
-          "javadoc": "Creates a long data store with a default value of zero."
+          "javadoc": ""
         },
         {
           "name": "LongData",
@@ -15466,7 +15243,7 @@
           "returnType": "",
           "parameters": "long defaultValue",
           "signature": "public LongData(long defaultValue)",
-          "javadoc": "Creates a long data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15566,7 +15343,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/ShortData.java",
-      "summary": "`AbstractDataStore` implementation for a short value.",
+      "summary": "",
       "methodCount": 13,
       "fieldCount": 0,
       "methods": [
@@ -15576,7 +15353,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public ShortData()",
-          "javadoc": "Creates a short data store with a default value of zero."
+          "javadoc": ""
         },
         {
           "name": "ShortData",
@@ -15584,7 +15361,7 @@
           "returnType": "",
           "parameters": "short defaultValue",
           "signature": "public ShortData(short defaultValue)",
-          "javadoc": "Creates a short data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15684,7 +15461,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/StackData.java",
-      "summary": "`AbstractDataStore` implementation for an `ItemStack`.\n\nStored stacks are copied on assignment, and equality is checked with `ItemStack)` so stack components are compared using Minecraft's item stack matching rules.",
+      "summary": "",
       "methodCount": 8,
       "fieldCount": 0,
       "methods": [
@@ -15694,7 +15471,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public StackData()",
-          "javadoc": "Creates an item stack data store with `ItemStack#EMPTY`."
+          "javadoc": ""
         },
         {
           "name": "StackData",
@@ -15702,7 +15479,7 @@
           "returnType": "",
           "parameters": "ItemStack defaultValue",
           "signature": "public StackData(ItemStack defaultValue)",
-          "javadoc": "Creates an item stack data store."
+          "javadoc": ""
         },
         {
           "name": "set",
@@ -15710,7 +15487,7 @@
           "returnType": "ItemStack",
           "parameters": "ItemStack value",
           "signature": "public ItemStack set(ItemStack value)",
-          "javadoc": "Stores a copy of the supplied stack when it differs from the current stack and passes validation."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15772,7 +15549,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public StringData()",
-          "javadoc": "Creates a string data store with an empty default value."
+          "javadoc": ""
         },
         {
           "name": "StringData",
@@ -15780,7 +15557,7 @@
           "returnType": "",
           "parameters": "String defaultValue",
           "signature": "public StringData(String defaultValue)",
-          "javadoc": "Creates a string data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -15834,7 +15611,7 @@
           "returnType": "",
           "parameters": "",
           "signature": "public UUIDData()",
-          "javadoc": "Creates a UUID data store with a null default value."
+          "javadoc": ""
         },
         {
           "name": "UUIDData",
@@ -15842,7 +15619,7 @@
           "returnType": "",
           "parameters": "@Nullable UUID defaultValue",
           "signature": "public UUIDData(@Nullable UUID defaultValue)",
-          "javadoc": "Creates a UUID data store."
+          "javadoc": ""
         },
         {
           "name": "toBytes",
@@ -16294,7 +16071,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void cancel()",
-          "javadoc": "Marks this event dispatch as cancelled."
+          "javadoc": ""
         },
         {
           "name": "isCancelled",
@@ -16314,7 +16091,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyCameraEvents.java",
-      "summary": "Client camera events for FOV and camera orientation customization.",
+      "summary": "",
       "methodCount": 7,
       "fieldCount": 2,
       "methods": [
@@ -16395,7 +16172,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientBlockEntityEvents.java",
-      "summary": "Client-side block entity lifecycle events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 2,
       "methods": [],
@@ -16419,7 +16196,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientChunkEvents.java",
-      "summary": "Client-side chunk lifecycle events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 2,
       "methods": [],
@@ -16507,7 +16284,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientEntityEvents.java",
-      "summary": "Client-side entity lifecycle events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 2,
       "methods": [],
@@ -16531,7 +16308,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientInteractionEvents.java",
-      "summary": "Client-side interaction events for block breaking and attack input.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 4,
       "methods": [],
@@ -16565,7 +16342,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientLevelEvents.java",
-      "summary": "Client-side level load and unload events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 2,
       "methods": [],
@@ -16589,7 +16366,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientLifecycleEvents.java",
-      "summary": "Client lifecycle events for startup, shutdown, and active level changes.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 3,
       "methods": [],
@@ -16618,7 +16395,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientPlayerEvents.java",
-      "summary": "Client-side local player connection events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 2,
       "methods": [],
@@ -16642,7 +16419,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyClientTickEvents.java",
-      "summary": "Client and client-level tick events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 4,
       "methods": [],
@@ -16709,7 +16486,7 @@
         {
           "name": "RENDER_HAND",
           "type": "PolyEvent<RenderHand>",
-          "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#renderArmWithItem` at HEAD (cancellable)"
+          "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#submitArmWithItem` at HEAD (cancellable)"
         },
         {
           "name": "RENDER_ARM",
@@ -16740,7 +16517,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyGuiEvents.java",
-      "summary": "Client GUI and HUD rendering events.\n\nEvents ending in `Pre` or carrying a `CancelContext` may be cancelled to suppress the corresponding GUI action or render layer.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 10,
       "methods": [],
@@ -16804,7 +16581,7 @@
       "loader": "common",
       "kind": "enum",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyHeartType.java",
-      "summary": "Cross-loader heart render types used by `PolyGuiEvents#PLAYER_HEART_TYPE`.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -16817,7 +16594,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyInputEvents.java",
-      "summary": "Client input events for keyboard and mouse button activity.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 2,
       "methods": [],
@@ -16915,7 +16692,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyRenderEvents.java",
-      "summary": "Client render events for common world and GUI render stages.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 7,
       "methods": [],
@@ -16972,7 +16749,7 @@
         {
           "name": "INVALIDATE_RENDER_STATE",
           "type": "PolyEvent<Invalidate>",
-          "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#allChanged` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`"
+          "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#invalidateCompiledGeometry` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`"
         }
       ]
     },
@@ -16983,7 +16760,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyScreenEvents.java",
-      "summary": "Client screen lifecycle, rendering, keyboard, mouse, and text-input events.\n\nThe `Allow` callbacks receive a `CancelContext`; cancelling them suppresses the matching vanilla screen input action.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 27,
       "methods": [],
@@ -17214,7 +16991,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyBlockEvents.java",
-      "summary": "Server-side block events for breaking, placing, growth, fluid behavior, drops, neighbor notifications, pistons, and note blocks.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 17,
       "methods": [],
@@ -17376,7 +17153,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyChunkEvents.java",
-      "summary": "Server-side chunk lifecycle and player chunk-watch events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 4,
       "methods": [],
@@ -17458,7 +17235,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyEntityEvents.java",
-      "summary": "Server-side entity events for ticking, level changes, mounting, teleporting, projectile impacts, mob griefing, and invulnerability checks.",
+      "summary": "",
       "methodCount": 3,
       "fieldCount": 12,
       "methods": [
@@ -17557,7 +17334,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyExplosionEvents.java",
-      "summary": "Server-side explosion events for start, detonation, and entity knockback.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 3,
       "methods": [],
@@ -17586,7 +17363,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyItemEvents.java",
-      "summary": "Server-side item events for use lifecycle, item entities, crafting stations, fuel checks, inventory stacking, and anvil results.",
+      "summary": "",
       "methodCount": 12,
       "fieldCount": 10,
       "methods": [
@@ -17747,7 +17524,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyLevelEvents.java",
-      "summary": "Server-level events for load, unload, save, sleep completion, game rule changes, difficulty changes, and potential mob spawn lists.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 7,
       "methods": [],
@@ -17796,7 +17573,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyLivingEvents.java",
-      "summary": "Server-side living entity events covering damage, death, healing, targeting, equipment, item use, spawning, breathing, projectile selection, and combat hooks.",
+      "summary": "",
       "methodCount": 16,
       "fieldCount": 33,
       "methods": [
@@ -18104,7 +17881,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyMobEffectEvents.java",
-      "summary": "Server-side mob effect events for applying, adding, removing, and expiring effects.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 4,
       "methods": [],
@@ -18138,7 +17915,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyPlayerEvents.java",
-      "summary": "Server-side player events for connection lifecycle, interaction, inventory, experience, dimensions, permissions, advancements, trading, and persistence hooks.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 50,
       "methods": [],
@@ -18402,7 +18179,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyPlayerTickEvents.java",
-      "summary": "Server-side player tick events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 2,
       "methods": [],
@@ -18469,7 +18246,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyServerLifecycleEvents.java",
-      "summary": "Server lifecycle events for startup, shutdown, reloads, datapack sync, login/configuration negotiation, game tests, and reload listener ordering.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 14,
       "methods": [],
@@ -18553,7 +18330,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyServerTickEvents.java",
-      "summary": "Server and server-level tick events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 4,
       "methods": [],
@@ -18649,7 +18426,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolySoundEvents.java",
-      "summary": "Server-side sound events.",
+      "summary": "",
       "methodCount": 0,
       "fieldCount": 1,
       "methods": [],
@@ -18741,7 +18518,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/PolyEvent.java",
-      "summary": "Lightweight event container used by PolyLib's cross-loader event API.\n\nEach event stores registered handlers and exposes a combined invoker generated by the supplied combiner. Event holder classes define the combiner behavior for each event, including whether listeners are all called, whether a boolean result is aggregated, or whether a `CancelContext` short-circuits dispatch.",
+      "summary": "",
       "methodCount": 3,
       "fieldCount": 0,
       "methods": [
@@ -18751,7 +18528,7 @@
           "returnType": "static <T> PolyEvent<T>",
           "parameters": "Function<List<T>, T> combiner",
           "signature": "public static <T> PolyEvent<T> create(Function<List<T>, T> combiner)",
-          "javadoc": "Creates an event with the supplied handler combiner."
+          "javadoc": ""
         },
         {
           "name": "register",
@@ -18759,7 +18536,7 @@
           "returnType": "void",
           "parameters": "T handler",
           "signature": "public void register(T handler)",
-          "javadoc": "Registers a handler and rebuilds this event's invoker."
+          "javadoc": ""
         },
         {
           "name": "invoker",
@@ -19055,291 +18832,6 @@
       "fields": []
     },
     {
-      "name": "FabricFluidManager",
-      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.FabricFluidManager",
-      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
-      "loader": "fabric",
-      "kind": "class",
-      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/FabricFluidManager.java",
-      "summary": "Fabric implementation of `FluidManager`.\n\nWraps Fabric Transfer `Storage` instances in PolyLib's common fluid storage interfaces.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "FabricPolyFluidItemWrapper",
-      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidItemWrapper",
-      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
-      "loader": "fabric",
-      "kind": "class",
-      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/FabricPolyFluidItemWrapper.java",
-      "summary": "Item variant of `FabricPolyFluidWrapper`.\n\nExposes Fabric item fluid storage through PolyLib's item storage contract and returns the current container stack from the Fabric item context.",
-      "methodCount": 1,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "FabricPolyFluidItemWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "Storage<FluidVariant> storage, ContainerItemContext context",
-          "signature": "public FabricPolyFluidItemWrapper(Storage<FluidVariant> storage, ContainerItemContext context)",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "FabricPolyFluidWrapper",
-      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidWrapper",
-      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
-      "loader": "fabric",
-      "kind": "class",
-      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/FabricPolyFluidWrapper.java",
-      "summary": "Wraps a Fabric Transfer fluid storage as an `IPolyFluidStorage`.",
-      "methodCount": 10,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "FabricPolyFluidWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "Storage<FluidVariant> storage",
-          "signature": "public FabricPolyFluidWrapper(Storage<FluidVariant> storage)",
-          "javadoc": ""
-        },
-        {
-          "name": "getFluid",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "",
-          "signature": "public PolyFluidStack getFluid()",
-          "javadoc": ""
-        },
-        {
-          "name": "getCapacity",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "",
-          "signature": "public long getCapacity()",
-          "javadoc": ""
-        },
-        {
-          "name": "fill",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "PolyFluidStack resource, boolean simulate",
-          "signature": "public long fill(PolyFluidStack resource, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "drain",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "PolyFluidStack resource, boolean simulate",
-          "signature": "public PolyFluidStack drain(PolyFluidStack resource, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "drain",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "long maxDrain, boolean simulate",
-          "signature": "public PolyFluidStack drain(long maxDrain, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "canFill",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean canFill(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "canDrain",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean canDrain(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "isFluidValid",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean isFluidValid(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "setFluid",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "PolyFluidStack stack",
-          "signature": "public void setFluid(PolyFluidStack stack)",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "PolyFabricFluidItemWrapper",
-      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidItemWrapper",
-      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
-      "loader": "fabric",
-      "kind": "class",
-      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/PolyFabricFluidItemWrapper.java",
-      "summary": "Item variant of `PolyFabricFluidWrapper`.\n\nAfter mutating the PolyLib storage, this wrapper updates the Fabric item context so callers receive the modified container stack.",
-      "methodCount": 4,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "PolyFabricFluidItemWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "IPolyFluidStorageItem storage, ContainerItemContext itemContext",
-          "signature": "public PolyFabricFluidItemWrapper(IPolyFluidStorageItem storage, ContainerItemContext itemContext)",
-          "javadoc": ""
-        },
-        {
-          "name": "insert",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
-          "signature": "public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction)",
-          "javadoc": ""
-        },
-        {
-          "name": "extract",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
-          "signature": "public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction)",
-          "javadoc": ""
-        },
-        {
-          "name": "getContainer",
-          "visibility": "public",
-          "returnType": "ItemStack",
-          "parameters": "",
-          "signature": "public ItemStack getContainer()",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "PolyFabricFluidWrapper",
-      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper",
-      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
-      "loader": "fabric",
-      "kind": "class",
-      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/PolyFabricFluidWrapper.java",
-      "summary": "Exposes an `IPolyFluidStorage` as Fabric Transfer fluid storage.\n\nFabric transactions are backed by snapshots of the PolyLib storage contents.",
-      "methodCount": 12,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "PolyFabricFluidWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "IPolyFluidStorage storage",
-          "signature": "public PolyFabricFluidWrapper(IPolyFluidStorage storage)",
-          "javadoc": ""
-        },
-        {
-          "name": "insert",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
-          "signature": "public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction)",
-          "javadoc": ""
-        },
-        {
-          "name": "extract",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
-          "signature": "public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction)",
-          "javadoc": ""
-        },
-        {
-          "name": "supportsInsertion",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "",
-          "signature": "public boolean supportsInsertion()",
-          "javadoc": ""
-        },
-        {
-          "name": "supportsExtraction",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "",
-          "signature": "public boolean supportsExtraction()",
-          "javadoc": ""
-        },
-        {
-          "name": "iterator",
-          "visibility": "public",
-          "returnType": "Iterator<StorageView<FluidVariant>>",
-          "parameters": "",
-          "signature": "public Iterator<StorageView<FluidVariant>> iterator()",
-          "javadoc": ""
-        },
-        {
-          "name": "createSnapshot",
-          "visibility": "protected",
-          "returnType": "PolyFluidStack",
-          "parameters": "",
-          "signature": "protected PolyFluidStack createSnapshot()",
-          "javadoc": ""
-        },
-        {
-          "name": "readSnapshot",
-          "visibility": "protected",
-          "returnType": "void",
-          "parameters": "PolyFluidStack snapshot",
-          "signature": "protected void readSnapshot(PolyFluidStack snapshot)",
-          "javadoc": ""
-        },
-        {
-          "name": "isResourceBlank",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "",
-          "signature": "public boolean isResourceBlank()",
-          "javadoc": ""
-        },
-        {
-          "name": "getResource",
-          "visibility": "public",
-          "returnType": "FluidVariant",
-          "parameters": "",
-          "signature": "public FluidVariant getResource()",
-          "javadoc": ""
-        },
-        {
-          "name": "getAmount",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "",
-          "signature": "public long getAmount()",
-          "javadoc": ""
-        },
-        {
-          "name": "getCapacity",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "",
-          "signature": "public long getCapacity()",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
       "name": "InitialContentsContainerItemContext",
       "qualifiedName": "net.creeperhost.polylib.fabric.inventory.InitialContentsContainerItemContext",
       "packageName": "net.creeperhost.polylib.fabric.inventory",
@@ -19559,7 +19051,7 @@
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/FabricInventoryManager.java",
       "summary": "",
       "methodCount": 1,
-      "fieldCount": 2,
+      "fieldCount": 1,
       "methods": [
         {
           "name": "init",
@@ -19574,11 +19066,6 @@
         {
           "name": "ENERGY_MANAGER",
           "type": "EnergyManager",
-          "javadoc": ""
-        },
-        {
-          "name": "FLUID_MANAGER",
-          "type": "FluidManager",
           "javadoc": ""
         }
       ]
@@ -20109,8 +19596,8 @@
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/init/DataComps.java",
       "summary": "",
-      "methodCount": 6,
-      "fieldCount": 4,
+      "methodCount": 5,
+      "fieldCount": 3,
       "methods": [
         {
           "name": "isDataEnabled",
@@ -20145,14 +19632,6 @@
           "javadoc": ""
         },
         {
-          "name": "getItemFluid",
-          "visibility": "public",
-          "returnType": "DataComponentType<PolyFluidStack>",
-          "parameters": "",
-          "signature": "public DataComponentType<PolyFluidStack> getItemFluid()",
-          "javadoc": ""
-        },
-        {
           "name": "getItemTileData",
           "visibility": "public",
           "returnType": "DataComponentType<CustomData>",
@@ -20170,11 +19649,6 @@
         {
           "name": "ITEM_ENERGY",
           "type": "DataComponentType<Long>",
-          "javadoc": ""
-        },
-        {
-          "name": "ITEM_FLUID",
-          "type": "DataComponentType<PolyFluidStack>",
           "javadoc": ""
         },
         {
@@ -20229,462 +19703,13 @@
       "fields": []
     },
     {
-      "name": "FluidManager",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.FluidManager",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "interface",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/FluidManager.java",
-      "summary": "Platform fluid access and convenience utilities.\n\nAll PolyLib fluid amounts are expressed in droplets. One bucket is `#BUCKET` droplets and one millibucket is `#MILLIBUCKET` droplets.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "IPolyFluidStorage",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.IPolyFluidStorage",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "interface",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/IPolyFluidStorage.java",
-      "summary": "Common fluid storage contract used by PolyLib across loaders.\n\nAll amounts are expressed in droplets. Platform wrappers convert as needed when bridging to native Fabric or NeoForge transfer APIs.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "IPolyFluidStorageItem",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.IPolyFluidStorageItem",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "interface",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/IPolyFluidStorageItem.java",
-      "summary": "Fluid storage backed by an `ItemStack`.\n\nPlatform item fluid APIs may replace the container stack after mutation, so callers should read `#getContainer()` after fill or drain operations.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "PolyBlockFluidStorage",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyBlockFluidStorage",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "class",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyBlockFluidStorage.java",
-      "summary": "Block entity backed fluid storage.\n\nCalls `BlockEntity#setChanged()` whenever the stored fluid changes.",
-      "methodCount": 3,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "PolyBlockFluidStorage",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "BlockEntity blockEntity, long capacity",
-          "signature": "public PolyBlockFluidStorage(BlockEntity blockEntity, long capacity)",
-          "javadoc": ""
-        },
-        {
-          "name": "PolyBlockFluidStorage",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "BlockEntity blockEntity, long capacity, Runnable changeListener",
-          "signature": "public PolyBlockFluidStorage(BlockEntity blockEntity, long capacity, Runnable changeListener)",
-          "javadoc": ""
-        },
-        {
-          "name": "markDirty",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "",
-          "signature": "public void markDirty()",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "PolyFluidBlock",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidBlock",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "interface",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidBlock.java",
-      "summary": "Implement on block entities that expose PolyLib fluid storage.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "PolyFluidItem",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidItem",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "interface",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidItem.java",
-      "summary": "Implement on items that expose PolyLib fluid storage.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "PolyFluidStack",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidStack",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "class",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidStack.java",
-      "summary": "Loader-neutral fluid stack used by PolyLib's common fluid API.\n\nAmounts are stored as droplets, matching Fabric Transfer's fluid unit. Use `FluidManager#BUCKET` and `FluidManager#MILLIBUCKET` when converting to bucket or millibucket-oriented APIs.",
-      "methodCount": 13,
-      "fieldCount": 3,
-      "methods": [
-        {
-          "name": "decode",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "RegistryFriendlyByteBuf buf",
-          "signature": "public PolyFluidStack decode(RegistryFriendlyByteBuf buf)",
-          "javadoc": ""
-        },
-        {
-          "name": "encode",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "RegistryFriendlyByteBuf buf, PolyFluidStack stack",
-          "signature": "public void encode(RegistryFriendlyByteBuf buf, PolyFluidStack stack)",
-          "javadoc": ""
-        },
-        {
-          "name": "PolyFluidStack",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "Fluid fluid, long amount",
-          "signature": "public PolyFluidStack(Fluid fluid, long amount)",
-          "javadoc": "Creates a fluid stack with no data components."
-        },
-        {
-          "name": "PolyFluidStack",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "Fluid fluid, long amount, DataComponentPatch components",
-          "signature": "public PolyFluidStack(Fluid fluid, long amount, DataComponentPatch components)",
-          "javadoc": "Creates a fluid stack with optional component data."
-        },
-        {
-          "name": "getFluid",
-          "visibility": "public",
-          "returnType": "Fluid",
-          "parameters": "",
-          "signature": "public Fluid getFluid()",
-          "javadoc": ""
-        },
-        {
-          "name": "getAmount",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "",
-          "signature": "public long getAmount()",
-          "javadoc": ""
-        },
-        {
-          "name": "getComponents",
-          "visibility": "public",
-          "returnType": "DataComponentPatch",
-          "parameters": "",
-          "signature": "public DataComponentPatch getComponents()",
-          "javadoc": ""
-        },
-        {
-          "name": "isEmpty",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "",
-          "signature": "public boolean isEmpty()",
-          "javadoc": ""
-        },
-        {
-          "name": "copy",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "",
-          "signature": "public PolyFluidStack copy()",
-          "javadoc": ""
-        },
-        {
-          "name": "copyWithAmount",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "long amount",
-          "signature": "public PolyFluidStack copyWithAmount(long amount)",
-          "javadoc": "Creates a copy with the same fluid and components but a new amount."
-        },
-        {
-          "name": "isSameFluid",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack other",
-          "signature": "public boolean isSameFluid(PolyFluidStack other)",
-          "javadoc": "Compares only fluid identity and component data, ignoring amount."
-        },
-        {
-          "name": "equals",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "Object obj",
-          "signature": "public boolean equals(Object obj)",
-          "javadoc": ""
-        },
-        {
-          "name": "hashCode",
-          "visibility": "public",
-          "returnType": "int",
-          "parameters": "",
-          "signature": "public int hashCode()",
-          "javadoc": ""
-        }
-      ],
-      "fields": [
-        {
-          "name": "EMPTY",
-          "type": "PolyFluidStack",
-          "javadoc": "Shared empty stack instance."
-        },
-        {
-          "name": "CODEC",
-          "type": "Codec<PolyFluidStack>",
-          "javadoc": "Persistent codec for storing fluid, amount, and data component patch."
-        },
-        {
-          "name": "STREAM_CODEC",
-          "type": "StreamCodec<RegistryFriendlyByteBuf, PolyFluidStack>",
-          "javadoc": "Network codec for synchronizing fluid stack contents."
-        }
-      ]
-    },
-    {
-      "name": "PolyFluidStorage",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidStorage",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "class",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidStorage.java",
-      "summary": "Simple single-tank implementation of `IPolyFluidStorage`.\n\nThis storage accepts one fluid type at a time and calls an optional change listener whenever its contents are mutated.",
-      "methodCount": 20,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "PolyFluidStorage",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "long capacity",
-          "signature": "public PolyFluidStorage(long capacity)",
-          "javadoc": "Creates a fluid storage with the supplied capacity."
-        },
-        {
-          "name": "PolyFluidStorage",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "long capacity, Runnable changeListener",
-          "signature": "public PolyFluidStorage(long capacity, Runnable changeListener)",
-          "javadoc": "Creates a fluid storage with the supplied capacity and change listener."
-        },
-        {
-          "name": "setIOMode",
-          "visibility": "public",
-          "returnType": "PolyFluidStorage",
-          "parameters": "boolean allowDrain, boolean allowFill",
-          "signature": "public PolyFluidStorage setIOMode(boolean allowDrain, boolean allowFill)",
-          "javadoc": "Sets whether fluid can be drained or filled."
-        },
-        {
-          "name": "setDrainOnly",
-          "visibility": "public",
-          "returnType": "PolyFluidStorage",
-          "parameters": "",
-          "signature": "public PolyFluidStorage setDrainOnly()",
-          "javadoc": ""
-        },
-        {
-          "name": "setFillOnly",
-          "visibility": "public",
-          "returnType": "PolyFluidStorage",
-          "parameters": "",
-          "signature": "public PolyFluidStorage setFillOnly()",
-          "javadoc": ""
-        },
-        {
-          "name": "setCapacity",
-          "visibility": "public",
-          "returnType": "PolyFluidStorage",
-          "parameters": "long capacity",
-          "signature": "public PolyFluidStorage setCapacity(long capacity)",
-          "javadoc": "Updates capacity and clamps current contents if needed."
-        },
-        {
-          "name": "getFluid",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "",
-          "signature": "public PolyFluidStack getFluid()",
-          "javadoc": ""
-        },
-        {
-          "name": "getCapacity",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "",
-          "signature": "public long getCapacity()",
-          "javadoc": ""
-        },
-        {
-          "name": "fill",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "PolyFluidStack resource, boolean simulate",
-          "signature": "public long fill(PolyFluidStack resource, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "drain",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "PolyFluidStack resource, boolean simulate",
-          "signature": "public PolyFluidStack drain(PolyFluidStack resource, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "drain",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "long maxDrain, boolean simulate",
-          "signature": "public PolyFluidStack drain(long maxDrain, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "canFill",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean canFill(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "canDrain",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean canDrain(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "isFluidValid",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean isFluidValid(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "setFluid",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "PolyFluidStack stack",
-          "signature": "public void setFluid(PolyFluidStack stack)",
-          "javadoc": ""
-        },
-        {
-          "name": "markDirty",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "",
-          "signature": "public void markDirty()",
-          "javadoc": "Marks this storage as changed and runs the optional listener."
-        },
-        {
-          "name": "serialize",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "ValueOutput output",
-          "signature": "public void serialize(ValueOutput output)",
-          "javadoc": ""
-        },
-        {
-          "name": "deserialize",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "ValueInput input",
-          "signature": "public void deserialize(ValueInput input)",
-          "javadoc": ""
-        },
-        {
-          "name": "readFromBuf",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "FriendlyByteBuf buf",
-          "signature": "public void readFromBuf(FriendlyByteBuf buf)",
-          "javadoc": "Reads this storage from a network buffer."
-        },
-        {
-          "name": "writeToBuf",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "FriendlyByteBuf buf",
-          "signature": "public void writeToBuf(FriendlyByteBuf buf)",
-          "javadoc": "Writes this storage to a network buffer."
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "PolyItemFluidStorage",
-      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyItemFluidStorage",
-      "packageName": "net.creeperhost.polylib.inventory.fluid",
-      "loader": "common",
-      "kind": "class",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyItemFluidStorage.java",
-      "summary": "ItemStack backed fluid storage using PolyLib's item fluid data component.",
-      "methodCount": 3,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "PolyItemFluidStorage",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "ItemStack stack, long capacity",
-          "signature": "public PolyItemFluidStorage(ItemStack stack, long capacity)",
-          "javadoc": ""
-        },
-        {
-          "name": "PolyItemFluidStorage",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "ItemStack stack, long capacity, Runnable changeListener",
-          "signature": "public PolyItemFluidStorage(ItemStack stack, long capacity, Runnable changeListener)",
-          "javadoc": ""
-        },
-        {
-          "name": "markDirty",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "",
-          "signature": "public void markDirty()",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
       "name": "BlockInventory",
       "qualifiedName": "net.creeperhost.polylib.inventory.items.BlockInventory",
       "packageName": "net.creeperhost.polylib.inventory.items",
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/items/BlockInventory.java",
-      "summary": "Simple `Container` implementation for inventories owned by a `BlockEntity`.\n\nThis inventory stores its contents in a fixed-size `NonNullList`, marks the owning block entity dirty whenever its contents change, and serializes its items through `ContainerHelper`. It also supports a global stack validator and per-slot validators for menu and automation checks.",
+      "summary": "",
       "methodCount": 17,
       "fieldCount": 0,
       "methods": [
@@ -20694,7 +19719,7 @@
           "returnType": "",
           "parameters": "BlockEntity blockEntity, int size",
           "signature": "public BlockInventory(BlockEntity blockEntity, int size)",
-          "javadoc": "Creates a block inventory with the supplied slot count."
+          "javadoc": ""
         },
         {
           "name": "setMaxStackSize",
@@ -20702,7 +19727,7 @@
           "returnType": "BlockInventory",
           "parameters": "int maxStackSize",
           "signature": "public BlockInventory setMaxStackSize(int maxStackSize)",
-          "javadoc": "Sets the maximum stack size accepted by this inventory."
+          "javadoc": ""
         },
         {
           "name": "setStackValidator",
@@ -20710,7 +19735,7 @@
           "returnType": "BlockInventory",
           "parameters": "BiPredicate<Integer, ItemStack> stackValidator",
           "signature": "public BlockInventory setStackValidator(BiPredicate<Integer, ItemStack> stackValidator)",
-          "javadoc": "Sets a global validator used by `ItemStack)` when no per-slot validator is registered for the target slot."
+          "javadoc": ""
         },
         {
           "name": "setStackValidator",
@@ -20718,7 +19743,7 @@
           "returnType": "BlockInventory",
           "parameters": "Predicate<ItemStack> stackValidator",
           "signature": "public BlockInventory setStackValidator(Predicate<ItemStack> stackValidator)",
-          "javadoc": "Sets a global stack-only validator used by `ItemStack)` when no per-slot validator is registered for the target slot."
+          "javadoc": ""
         },
         {
           "name": "setSlotValidator",
@@ -20726,7 +19751,7 @@
           "returnType": "BlockInventory",
           "parameters": "int slot, Predicate<ItemStack> validator",
           "signature": "public BlockInventory setSlotValidator(int slot, Predicate<ItemStack> validator)",
-          "javadoc": "Sets a validator for a specific slot.\n\nSlot validators take priority over the global stack validator."
+          "javadoc": ""
         },
         {
           "name": "getBlockEntity",
@@ -21853,7 +20878,7 @@
       "loader": "fabric",
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/client/MixinItemInHandRendererHandFabric.java",
-      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#renderArmWithItem` (private method).",
+      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#submitArmWithItem` (private method).",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -23161,7 +22186,7 @@
       "loader": "neoforge",
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/mixin/MixinLevelRendererAllChangedNF.java",
-      "summary": "NeoForge bridge for `PolyRenderStateEvents#INVALIDATE_RENDER_STATE`.\n\nFires after `LevelRenderer#allChanged()` completes — this method is called whenever render state must be fully rebuilt (resource reload, graphics settings change, etc.).",
+      "summary": "NeoForge bridge for `PolyRenderStateEvents#INVALIDATE_RENDER_STATE`.\n\nFires after `LevelRenderer#invalidateCompiledGeometry` completes. In 26.2 this replaced the old full render-state rebuild hook.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -23174,7 +22199,7 @@
       "loader": "neoforge",
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/mixin/MixinLevelRendererBlockOutlineNF.java",
-      "summary": "NeoForge bridge for `PolyLevelRenderEvents#BEFORE_BLOCK_OUTLINE`.\n\nInjects at the head of `LevelRenderer#extractBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.",
+      "summary": "NeoForge bridge for `PolyLevelRenderEvents#BEFORE_BLOCK_OUTLINE`.\n\nInjects at the head of `LevelRenderer#submitBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -23274,7 +22299,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/IMultiblockPart.java",
-      "summary": "Base block entity contract for a block that can participate in a multiblock structure.\n\nParts are responsible for finding neighboring parts, attaching to compatible controllers, tracking validation visits, and receiving machine lifecycle callbacks.",
+      "summary": "",
       "methodCount": 27,
       "fieldCount": 1,
       "methods": [
@@ -23284,7 +22309,7 @@
           "returnType": "",
           "parameters": "BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState",
           "signature": "public IMultiblockPart(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)",
-          "javadoc": "Creates a multiblock part block entity."
+          "javadoc": ""
         },
         {
           "name": "isConnected",
@@ -23316,7 +22341,7 @@
           "returnType": "void",
           "parameters": "MultiblockControllerBase newController",
           "signature": "public void onAttached(MultiblockControllerBase newController)",
-          "javadoc": "Called when this part attaches to a controller."
+          "javadoc": ""
         },
         {
           "name": "onDetached",
@@ -23324,7 +22349,7 @@
           "returnType": "void",
           "parameters": "MultiblockControllerBase multiblockController",
           "signature": "public void onDetached(MultiblockControllerBase multiblockController)",
-          "javadoc": "Called when this part detaches from a controller."
+          "javadoc": ""
         },
         {
           "name": "onOrphaned",
@@ -23332,7 +22357,7 @@
           "returnType": "void",
           "parameters": "MultiblockControllerBase oldController, int oldControllerSize, int newControllerSize",
           "signature": "public void onOrphaned(MultiblockControllerBase oldController, int oldControllerSize, int newControllerSize)",
-          "javadoc": "Called when this part was separated from a controller during graph splitting."
+          "javadoc": ""
         },
         {
           "name": "createNewMultiblock",
@@ -23340,7 +22365,7 @@
           "returnType": "MultiblockControllerBase",
           "parameters": "",
           "signature": "public MultiblockControllerBase createNewMultiblock()",
-          "javadoc": "Creates a new controller instance for this part's multiblock type."
+          "javadoc": ""
         },
         {
           "name": "getMultiblockControllerType",
@@ -23356,7 +22381,7 @@
           "returnType": "void",
           "parameters": "MultiblockControllerBase newController",
           "signature": "public void onAssimilated(MultiblockControllerBase newController)",
-          "javadoc": "Called when this part's controller is assimilated into another controller."
+          "javadoc": ""
         },
         {
           "name": "setVisited",
@@ -23499,7 +22524,7 @@
         {
           "name": "INVALID_DISTANCE",
           "type": "int",
-          "javadoc": "Distance marker used when no valid graph distance is available."
+          "javadoc": ""
         }
       ]
     },
@@ -23510,7 +22535,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/MultiblockBlockEntityBase.java",
-      "summary": "Base implementation for block entities that participate in a multiblock controller.\n\nHandles controller attachment, detachment, save-delegate state, visited state, neighbor discovery, and registry notifications. Concrete parts supply machine lifecycle behavior and the controller type they create.",
+      "summary": "",
       "methodCount": 29,
       "fieldCount": 0,
       "methods": [
@@ -23520,7 +22545,7 @@
           "returnType": "",
           "parameters": "BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState",
           "signature": "public MultiblockBlockEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)",
-          "javadoc": "Creates a multiblock block entity base."
+          "javadoc": ""
         },
         {
           "name": "attachToNeighbors",
@@ -23756,7 +22781,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/MultiblockControllerBase.java",
-      "summary": "Base controller for a connected multiblock machine.\n\nA controller owns a set of connected parts, validates whether those parts form a complete machine, manages assembly state transitions, handles controller merges and splits, and delegates persistence/network description data to one save part.",
+      "summary": "",
       "methodCount": 51,
       "fieldCount": 2,
       "methods": [
@@ -24173,7 +23198,7 @@
         {
           "name": "DIMENSION_UNBOUNDED",
           "type": "short",
-          "javadoc": "Dimension limit value used by controllers that do not bound a dimension."
+          "javadoc": ""
         },
         {
           "name": "connectedParts",
@@ -24189,7 +23214,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/MultiblockRegistry.java",
-      "summary": "Global registry that maps loaded levels to their active multiblock registries.\n\nPlatform hooks should notify this class when parts load or unload, chunks finish loading, worlds unload, and server ticks begin.",
+      "summary": "",
       "methodCount": 8,
       "fieldCount": 0,
       "methods": [
@@ -24267,7 +23292,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/MultiblockValidationException.java",
-      "summary": "Thrown when a multiblock controller determines that its connected parts do not form a valid assembled machine.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 0,
       "methods": [
@@ -24277,7 +23302,7 @@
           "returnType": "",
           "parameters": "String reason",
           "signature": "public MultiblockValidationException(String reason)",
-          "javadoc": "Creates a validation exception with a human-readable failure reason."
+          "javadoc": ""
         }
       ],
       "fields": []
@@ -24289,7 +23314,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/MultiblockWorldRegistry.java",
-      "summary": "Per-level registry that tracks multiblock controllers and pending part changes.\n\nThis class processes orphaned parts, controller merges, disconnections, dead controllers, and delayed part attachment caused by chunk loading.",
+      "summary": "",
       "methodCount": 10,
       "fieldCount": 0,
       "methods": [
@@ -24299,7 +23324,7 @@
           "returnType": "",
           "parameters": "final Level world",
           "signature": "public MultiblockWorldRegistry(final Level world)",
-          "javadoc": "Creates a registry for one level."
+          "javadoc": ""
         },
         {
           "name": "tickStart",
@@ -24383,7 +23408,7 @@
       "loader": "common",
       "kind": "enum",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/rectangular/PartPosition.java",
-      "summary": "Position classification for a part inside a rectangular multiblock's bounding box.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 0,
       "methods": [
@@ -24405,7 +23430,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/rectangular/RectangularMultiblockControllerBase.java",
-      "summary": "Controller base for rectangular-prism multiblocks.\n\nValidation checks the controller's bounding box against min/max dimensions and then validates every coordinate as frame, side, top, bottom, or interior.",
+      "summary": "",
       "methodCount": 2,
       "fieldCount": 0,
       "methods": [
@@ -24415,7 +23440,7 @@
           "returnType": "",
           "parameters": "Level world",
           "signature": "protected RectangularMultiblockControllerBase(Level world)",
-          "javadoc": "Creates a rectangular multiblock controller for a level."
+          "javadoc": ""
         },
         {
           "name": "isMachineWhole",
@@ -24435,7 +23460,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/mulitblock/rectangular/RectangularMultiblockTileEntityBase.java",
-      "summary": "Base part implementation for rectangular multiblocks.\n\nTracks this part's position within the controller bounding box and the outward facing direction for face parts. Concrete implementations provide validation rules for frame, side, top, bottom, and interior positions.",
+      "summary": "",
       "methodCount": 12,
       "fieldCount": 0,
       "methods": [
@@ -24445,7 +23470,7 @@
           "returnType": "",
           "parameters": "BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState",
           "signature": "public RectangularMultiblockTileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)",
-          "javadoc": "Creates a rectangular multiblock part."
+          "javadoc": ""
         },
         {
           "name": "getOutwardsDir",
@@ -24493,7 +23518,7 @@
           "returnType": "void",
           "parameters": "BlockPos minCoord, BlockPos maxCoord",
           "signature": "public void recalculateOutwardsDirection(BlockPos minCoord, BlockPos maxCoord)",
-          "javadoc": "Recomputes this part's position classification and outward direction."
+          "javadoc": ""
         },
         {
           "name": "isGoodForFrame",
@@ -24501,7 +23526,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void isGoodForFrame()",
-          "javadoc": "Validates this part for a frame or corner position."
+          "javadoc": ""
         },
         {
           "name": "isGoodForSides",
@@ -24509,7 +23534,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void isGoodForSides()",
-          "javadoc": "Validates this part for a side-wall position."
+          "javadoc": ""
         },
         {
           "name": "isGoodForTop",
@@ -24517,7 +23542,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void isGoodForTop()",
-          "javadoc": "Validates this part for a top-face position."
+          "javadoc": ""
         },
         {
           "name": "isGoodForBottom",
@@ -24525,7 +23550,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void isGoodForBottom()",
-          "javadoc": "Validates this part for a bottom-face position."
+          "javadoc": ""
         },
         {
           "name": "isGoodForInterior",
@@ -24533,276 +23558,6 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void isGoodForInterior()",
-          "javadoc": "Validates this part for an interior position."
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "NeoFluidManager",
-      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.NeoFluidManager",
-      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
-      "loader": "neoforge",
-      "kind": "class",
-      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/NeoFluidManager.java",
-      "summary": "NeoForge implementation of `FluidManager`.\n\nWraps NeoForge transfer `ResourceHandler` fluid capabilities in PolyLib's common fluid storage interfaces.",
-      "methodCount": 1,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "setItem",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "int slot, @NotNull ItemStack stack, boolean performSideEffects",
-          "signature": "public void setItem(int slot, @NotNull ItemStack stack, boolean performSideEffects)",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "NeoPolyFluidItemWrapper",
-      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidItemWrapper",
-      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
-      "loader": "neoforge",
-      "kind": "class",
-      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/NeoPolyFluidItemWrapper.java",
-      "summary": "Item variant of `NeoPolyFluidWrapper`.\n\nKeeps the `ItemAccess` used to query the item capability so the current container stack can be returned after operations.",
-      "methodCount": 1,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "NeoPolyFluidItemWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "ResourceHandler<FluidResource> handler, ItemAccess access",
-          "signature": "public NeoPolyFluidItemWrapper(ResourceHandler<FluidResource> handler, ItemAccess access)",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "NeoPolyFluidWrapper",
-      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidWrapper",
-      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
-      "loader": "neoforge",
-      "kind": "class",
-      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/NeoPolyFluidWrapper.java",
-      "summary": "Wraps a NeoForge fluid `ResourceHandler` as an `IPolyFluidStorage`.\n\nNeoForge transfer fluid amounts are converted to PolyLib droplets at the API boundary.",
-      "methodCount": 10,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "NeoPolyFluidWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "ResourceHandler<FluidResource> handler",
-          "signature": "public NeoPolyFluidWrapper(ResourceHandler<FluidResource> handler)",
-          "javadoc": ""
-        },
-        {
-          "name": "getFluid",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "",
-          "signature": "public PolyFluidStack getFluid()",
-          "javadoc": ""
-        },
-        {
-          "name": "getCapacity",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "",
-          "signature": "public long getCapacity()",
-          "javadoc": ""
-        },
-        {
-          "name": "fill",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "PolyFluidStack resource, boolean simulate",
-          "signature": "public long fill(PolyFluidStack resource, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "drain",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "PolyFluidStack resource, boolean simulate",
-          "signature": "public PolyFluidStack drain(PolyFluidStack resource, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "drain",
-          "visibility": "public",
-          "returnType": "PolyFluidStack",
-          "parameters": "long maxDrain, boolean simulate",
-          "signature": "public PolyFluidStack drain(long maxDrain, boolean simulate)",
-          "javadoc": ""
-        },
-        {
-          "name": "canFill",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean canFill(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "canDrain",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean canDrain(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "isFluidValid",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "PolyFluidStack resource",
-          "signature": "public boolean isFluidValid(PolyFluidStack resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "setFluid",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "PolyFluidStack stack",
-          "signature": "public void setFluid(PolyFluidStack stack)",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "PolyNeoFluidItemWrapper",
-      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidItemWrapper",
-      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
-      "loader": "neoforge",
-      "kind": "class",
-      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/PolyNeoFluidItemWrapper.java",
-      "summary": "Item variant of `PolyNeoFluidWrapper`.\n\nAfter mutating the PolyLib storage, this wrapper updates the NeoForge `ItemAccess` so automation receives the modified container stack.",
-      "methodCount": 3,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "PolyNeoFluidItemWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "IPolyFluidStorageItem storage, ItemAccess access",
-          "signature": "public PolyNeoFluidItemWrapper(IPolyFluidStorageItem storage, ItemAccess access)",
-          "javadoc": ""
-        },
-        {
-          "name": "insert",
-          "visibility": "public",
-          "returnType": "int",
-          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
-          "signature": "public int insert(int index, FluidResource resource, int amount, TransactionContext transaction)",
-          "javadoc": ""
-        },
-        {
-          "name": "extract",
-          "visibility": "public",
-          "returnType": "int",
-          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
-          "signature": "public int extract(int index, FluidResource resource, int amount, TransactionContext transaction)",
-          "javadoc": ""
-        }
-      ],
-      "fields": []
-    },
-    {
-      "name": "PolyNeoFluidWrapper",
-      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper",
-      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
-      "loader": "neoforge",
-      "kind": "class",
-      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/PolyNeoFluidWrapper.java",
-      "summary": "Exposes an `IPolyFluidStorage` as a NeoForge fluid `ResourceHandler`.\n\nNeoForge transactions are backed by snapshots of the PolyLib storage contents.",
-      "methodCount": 10,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "PolyNeoFluidWrapper",
-          "visibility": "public",
-          "returnType": "",
-          "parameters": "IPolyFluidStorage storage",
-          "signature": "public PolyNeoFluidWrapper(IPolyFluidStorage storage)",
-          "javadoc": ""
-        },
-        {
-          "name": "size",
-          "visibility": "public",
-          "returnType": "int",
-          "parameters": "",
-          "signature": "public int size()",
-          "javadoc": ""
-        },
-        {
-          "name": "getResource",
-          "visibility": "public",
-          "returnType": "FluidResource",
-          "parameters": "int index",
-          "signature": "public FluidResource getResource(int index)",
-          "javadoc": ""
-        },
-        {
-          "name": "getAmountAsLong",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "int index",
-          "signature": "public long getAmountAsLong(int index)",
-          "javadoc": ""
-        },
-        {
-          "name": "getCapacityAsLong",
-          "visibility": "public",
-          "returnType": "long",
-          "parameters": "int index, FluidResource resource",
-          "signature": "public long getCapacityAsLong(int index, FluidResource resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "isValid",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "int index, FluidResource resource",
-          "signature": "public boolean isValid(int index, FluidResource resource)",
-          "javadoc": ""
-        },
-        {
-          "name": "insert",
-          "visibility": "public",
-          "returnType": "int",
-          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
-          "signature": "public int insert(int index, FluidResource resource, int amount, TransactionContext transaction)",
-          "javadoc": ""
-        },
-        {
-          "name": "extract",
-          "visibility": "public",
-          "returnType": "int",
-          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
-          "signature": "public int extract(int index, FluidResource resource, int amount, TransactionContext transaction)",
-          "javadoc": ""
-        },
-        {
-          "name": "createSnapshot",
-          "visibility": "protected",
-          "returnType": "PolyFluidStack",
-          "parameters": "",
-          "signature": "protected PolyFluidStack createSnapshot()",
-          "javadoc": ""
-        },
-        {
-          "name": "revertToSnapshot",
-          "visibility": "protected",
-          "returnType": "void",
-          "parameters": "PolyFluidStack snapshot",
-          "signature": "protected void revertToSnapshot(PolyFluidStack snapshot)",
           "javadoc": ""
         }
       ],
@@ -25316,8 +24071,8 @@
           "name": "onContainerScreenForeground",
           "visibility": "public",
           "returnType": "void",
-          "parameters": "net.neoforged.neoforge.client.event.ContainerScreenEvent.Render.Foreground event",
-          "signature": "public void onContainerScreenForeground(net.neoforged.neoforge.client.event.ContainerScreenEvent.Render.Foreground event)",
+          "parameters": "ScreenEvent.Render.Foreground event",
+          "signature": "public void onContainerScreenForeground(ScreenEvent.Render.Foreground event)",
           "javadoc": ""
         },
         {
@@ -26936,104 +25691,13 @@
       "fields": []
     },
     {
-      "name": "OptionalPacketHandler",
-      "qualifiedName": "net.creeperhost.polylib.network.OptionalPacketHandler",
-      "packageName": "net.creeperhost.polylib.network",
-      "loader": "common",
-      "kind": "interface",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/OptionalPacketHandler.java",
-      "summary": "Handles an optional play-stage packet on the main game thread.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "OptionalPackets",
-      "qualifiedName": "net.creeperhost.polylib.network.OptionalPackets",
-      "packageName": "net.creeperhost.polylib.network",
-      "loader": "common",
-      "kind": "class",
-      "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/OptionalPackets.java",
-      "summary": "Cross-loader registration and transport for optional play-stage packets.\n\nOptional packets do not make the packet-owning mod a connection requirement. A payload is sent only when the remote connection advertised support for its type. Registration must happen during normal mod initialization, before a server starts or a client connects.",
-      "methodCount": 8,
-      "fieldCount": 0,
-      "methods": [
-        {
-          "name": "registerClientbound",
-          "visibility": "public",
-          "returnType": "static <T extends CustomPacketPayload> void",
-          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec",
-          "signature": "public static <T extends CustomPacketPayload> void registerClientbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec)",
-          "javadoc": "Registers a payload sent from the server to a client.\n\nRegister the matching client handler separately from client initialization with `OptionalPacketHandler)`."
-        },
-        {
-          "name": "registerServerbound",
-          "visibility": "public",
-          "returnType": "static <T extends CustomPacketPayload> void",
-          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler",
-          "signature": "public static <T extends CustomPacketPayload> void registerServerbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler)",
-          "javadoc": "Registers a payload sent from a client to the server and its server handler."
-        },
-        {
-          "name": "registerClientHandler",
-          "visibility": "public",
-          "returnType": "static <T extends CustomPacketPayload> void",
-          "parameters": "CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler",
-          "signature": "public static <T extends CustomPacketPayload> void registerClientHandler(CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler)",
-          "javadoc": "Registers the client handler for a previously registered clientbound payload. This method must only be called from physical-client initialization."
-        },
-        {
-          "name": "canSendToServer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "CustomPacketPayload.Type<?> type",
-          "signature": "public boolean canSendToServer(CustomPacketPayload.Type<?> type)",
-          "javadoc": "Checks whether the connected server accepts the payload type."
-        },
-        {
-          "name": "sendToServer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "CustomPacketPayload payload",
-          "signature": "public boolean sendToServer(CustomPacketPayload payload)",
-          "javadoc": "Sends a payload to the server when the server advertised support for it."
-        },
-        {
-          "name": "canSendToPlayer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "ServerPlayer player, CustomPacketPayload.Type<?> type",
-          "signature": "public boolean canSendToPlayer(ServerPlayer player, CustomPacketPayload.Type<?> type)",
-          "javadoc": "Checks whether a player's client accepts the payload type."
-        },
-        {
-          "name": "sendToPlayer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "ServerPlayer player, CustomPacketPayload payload",
-          "signature": "public boolean sendToPlayer(ServerPlayer player, CustomPacketPayload payload)",
-          "javadoc": "Sends a payload to one player when that client advertised support for it."
-        },
-        {
-          "name": "sendToPlayers",
-          "visibility": "public",
-          "returnType": "int",
-          "parameters": "List<ServerPlayer> players, CustomPacketPayload payload",
-          "signature": "public int sendToPlayers(List<ServerPlayer> players, CustomPacketPayload payload)",
-          "javadoc": "Sends a payload to every player whose client advertised support."
-        }
-      ],
-      "fields": []
-    },
-    {
       "name": "ContainerClientPayload",
       "qualifiedName": "net.creeperhost.polylib.network.packets.ContainerClientPayload",
       "packageName": "net.creeperhost.polylib.network.packets",
       "loader": "common",
       "kind": "record",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/packets/ContainerClientPayload.java",
-      "summary": "Server-to-client container payload.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 2,
       "methods": [
@@ -27050,12 +25714,12 @@
         {
           "name": "TYPE",
           "type": "Type<ContainerClientPayload>",
-          "javadoc": "Payload type id for server-to-client container packets."
+          "javadoc": ""
         },
         {
           "name": "CODEC",
           "type": "StreamCodec<ByteBuf, ContainerClientPayload>",
-          "javadoc": "Codec that stores the encoded payload length followed by the payload bytes."
+          "javadoc": ""
         }
       ]
     },
@@ -27066,7 +25730,7 @@
       "loader": "common",
       "kind": "record",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/packets/ContainerServerPayload.java",
-      "summary": "Client-to-server container payload.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 2,
       "methods": [
@@ -27083,12 +25747,12 @@
         {
           "name": "TYPE",
           "type": "Type<ContainerServerPayload>",
-          "javadoc": "Payload type id for client-to-server container packets."
+          "javadoc": ""
         },
         {
           "name": "CODEC",
           "type": "StreamCodec<ByteBuf, ContainerServerPayload>",
-          "javadoc": "Codec that stores the encoded payload length followed by the payload bytes."
+          "javadoc": ""
         }
       ]
     },
@@ -27099,7 +25763,7 @@
       "loader": "common",
       "kind": "record",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/packets/TileDataClientPayload.java",
-      "summary": "Server-to-client block-entity data-manager payload.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 2,
       "methods": [
@@ -27116,12 +25780,12 @@
         {
           "name": "TYPE",
           "type": "Type<TileDataClientPayload>",
-          "javadoc": "Payload type id for server-to-client tile data packets."
+          "javadoc": ""
         },
         {
           "name": "CODEC",
           "type": "StreamCodec<ByteBuf, TileDataClientPayload>",
-          "javadoc": "Codec that stores the encoded payload length followed by the payload bytes."
+          "javadoc": ""
         }
       ]
     },
@@ -27132,7 +25796,7 @@
       "loader": "common",
       "kind": "record",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/packets/TileDataServerPayload.java",
-      "summary": "Client-to-server block-entity data-manager payload.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 2,
       "methods": [
@@ -27149,12 +25813,12 @@
         {
           "name": "TYPE",
           "type": "Type<TileDataServerPayload>",
-          "javadoc": "Payload type id for client-to-server tile data packets."
+          "javadoc": ""
         },
         {
           "name": "CODEC",
           "type": "StreamCodec<ByteBuf, TileDataServerPayload>",
-          "javadoc": "Codec that stores the encoded payload length followed by the payload bytes."
+          "javadoc": ""
         }
       ]
     },
@@ -27165,7 +25829,7 @@
       "loader": "common",
       "kind": "record",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/packets/TilePacketServerPayload.java",
-      "summary": "Client-to-server custom block-entity payload.",
+      "summary": "",
       "methodCount": 1,
       "fieldCount": 2,
       "methods": [
@@ -27182,12 +25846,12 @@
         {
           "name": "TYPE",
           "type": "Type<TilePacketServerPayload>",
-          "javadoc": "Payload type id for client-to-server tile packets."
+          "javadoc": ""
         },
         {
           "name": "CODEC",
           "type": "StreamCodec<ByteBuf, TilePacketServerPayload>",
-          "javadoc": "Codec that stores the encoded payload length followed by the payload bytes."
+          "javadoc": ""
         }
       ]
     },
@@ -27198,7 +25862,7 @@
       "loader": "common",
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/network/PolyLibNetwork.java",
-      "summary": "Cross-loader networking facade used by PolyLib containers and data managers.\n\nPublic send methods collect packet contents into a `RegistryFriendlyByteBuf`, wrap them in a typed PolyLib payload, and delegate transport to the active platform service. Public handle methods route received payloads back to containers or block-entity data managers with guarded error logging.",
+      "summary": "",
       "methodCount": 12,
       "fieldCount": 0,
       "methods": [
@@ -27208,7 +25872,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void init()",
-          "javadoc": "Registers common packet handlers with the active platform network service."
+          "javadoc": ""
         },
         {
           "name": "initClient",
@@ -27216,7 +25880,7 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void initClient()",
-          "javadoc": "Registers client-only packet handlers with the active platform network service."
+          "javadoc": ""
         },
         {
           "name": "sendContainerPacketToServer",
@@ -27224,7 +25888,7 @@
           "returnType": "void",
           "parameters": "RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> writer",
           "signature": "public void sendContainerPacketToServer(RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> writer)",
-          "javadoc": "Sends a container packet from the client to the server."
+          "javadoc": ""
         },
         {
           "name": "sendDataValueToServerTile",
@@ -27232,7 +25896,7 @@
           "returnType": "void",
           "parameters": "RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> writer",
           "signature": "public void sendDataValueToServerTile(RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> writer)",
-          "javadoc": "Sends a data-manager value update from a client container to its server block entity."
+          "javadoc": ""
         },
         {
           "name": "sendPacketToServerTile",
@@ -27240,7 +25904,7 @@
           "returnType": "void",
           "parameters": "RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> writer",
           "signature": "public void sendPacketToServerTile(RegistryAccess registryAccess, Consumer<RegistryFriendlyByteBuf> writer)",
-          "javadoc": "Sends a custom block-entity packet from a client container to the server."
+          "javadoc": ""
         },
         {
           "name": "sendContainerPacketToClient",
@@ -27248,7 +25912,7 @@
           "returnType": "void",
           "parameters": "ServerPlayer player, Consumer<RegistryFriendlyByteBuf> writer",
           "signature": "public void sendContainerPacketToClient(ServerPlayer player, Consumer<RegistryFriendlyByteBuf> writer)",
-          "javadoc": "Sends a container packet from the server to a specific client."
+          "javadoc": ""
         },
         {
           "name": "sendTileDataValueToClients",
@@ -27256,7 +25920,7 @@
           "returnType": "void",
           "parameters": "Level level, BlockPos pos, Consumer<RegistryFriendlyByteBuf> writer",
           "signature": "public void sendTileDataValueToClients(Level level, BlockPos pos, Consumer<RegistryFriendlyByteBuf> writer)",
-          "javadoc": "Sends a block-entity data-manager value update to players watching the chunk containing `pos`."
+          "javadoc": ""
         },
         {
           "name": "handleContainerFromClient",
@@ -27264,7 +25928,7 @@
           "returnType": "void",
           "parameters": "Player player, RegistryFriendlyByteBuf buf",
           "signature": "public void handleContainerFromClient(Player player, RegistryFriendlyByteBuf buf)",
-          "javadoc": "Handles a container packet received from a client."
+          "javadoc": ""
         },
         {
           "name": "handleTileDataFromClient",
@@ -27272,7 +25936,7 @@
           "returnType": "void",
           "parameters": "Player player, RegistryFriendlyByteBuf buf",
           "signature": "public void handleTileDataFromClient(Player player, RegistryFriendlyByteBuf buf)",
-          "javadoc": "Handles a data-manager value update received from a client-side container."
+          "javadoc": ""
         },
         {
           "name": "handleTilePacketFromClient",
@@ -27280,7 +25944,7 @@
           "returnType": "void",
           "parameters": "Player player, RegistryFriendlyByteBuf buf",
           "signature": "public void handleTilePacketFromClient(Player player, RegistryFriendlyByteBuf buf)",
-          "javadoc": "Handles a custom block-entity packet received from a client-side container."
+          "javadoc": ""
         },
         {
           "name": "handleContainerFromServer",
@@ -27288,7 +25952,7 @@
           "returnType": "void",
           "parameters": "Player player, RegistryFriendlyByteBuf buf",
           "signature": "public void handleContainerFromServer(Player player, RegistryFriendlyByteBuf buf)",
-          "javadoc": "Handles a container packet received from the server."
+          "javadoc": ""
         },
         {
           "name": "handleTileDataValueFromServer",
@@ -27296,7 +25960,7 @@
           "returnType": "void",
           "parameters": "Player player, RegistryFriendlyByteBuf packet",
           "signature": "public void handleTileDataValueFromServer(Player player, RegistryFriendlyByteBuf packet)",
-          "javadoc": "Handles a block-entity data-manager value update received from the server.\n\nThe packet must begin with the target block position."
+          "javadoc": ""
         }
       ],
       "fields": []
@@ -27411,7 +26075,7 @@
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/platform/FabricNetworkHelper.java",
       "summary": "",
-      "methodCount": 7,
+      "methodCount": 5,
       "fieldCount": 0,
       "methods": [
         {
@@ -27428,22 +26092,6 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void initClient()",
-          "javadoc": ""
-        },
-        {
-          "name": "canSendOptionalToServer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "CustomPacketPayload.Type<?> type",
-          "signature": "public boolean canSendOptionalToServer(CustomPacketPayload.Type<?> type)",
-          "javadoc": ""
-        },
-        {
-          "name": "canSendOptionalToPlayer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "ServerPlayer player, CustomPacketPayload.Type<?> type",
-          "signature": "public boolean canSendOptionalToPlayer(ServerPlayer player, CustomPacketPayload.Type<?> type)",
           "javadoc": ""
         },
         {
@@ -27481,7 +26129,7 @@
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/platform/FabricPlatformHelper.java",
       "summary": "",
-      "methodCount": 7,
+      "methodCount": 6,
       "fieldCount": 0,
       "methods": [
         {
@@ -27530,14 +26178,6 @@
           "returnType": "EnergyManager",
           "parameters": "",
           "signature": "public EnergyManager getEnergyManager()",
-          "javadoc": ""
-        },
-        {
-          "name": "getFluidManager",
-          "visibility": "public",
-          "returnType": "FluidManager",
-          "parameters": "",
-          "signature": "public FluidManager getFluidManager()",
           "javadoc": ""
         }
       ],
@@ -27777,7 +26417,7 @@
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/platform/NeoForgeNetworkHelper.java",
       "summary": "",
-      "methodCount": 12,
+      "methodCount": 6,
       "fieldCount": 0,
       "methods": [
         {
@@ -27786,14 +26426,6 @@
           "returnType": "void",
           "parameters": "RegisterPayloadHandlersEvent event",
           "signature": "public void onRegisterPayloads(RegisterPayloadHandlersEvent event)",
-          "javadoc": ""
-        },
-        {
-          "name": "onRegisterClientPayloadHandlers",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "RegisterClientPayloadHandlersEvent event",
-          "signature": "public void onRegisterClientPayloadHandlers(RegisterClientPayloadHandlersEvent event)",
           "javadoc": ""
         },
         {
@@ -27810,46 +26442,6 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void initClient()",
-          "javadoc": ""
-        },
-        {
-          "name": "registerOptionalClientbound",
-          "visibility": "public",
-          "returnType": "synchronized <T extends CustomPacketPayload> void",
-          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec",
-          "signature": "public synchronized <T extends CustomPacketPayload> void registerOptionalClientbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec)",
-          "javadoc": ""
-        },
-        {
-          "name": "registerOptionalServerbound",
-          "visibility": "public",
-          "returnType": "synchronized <T extends CustomPacketPayload> void",
-          "parameters": "CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler",
-          "signature": "public synchronized <T extends CustomPacketPayload> void registerOptionalServerbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, OptionalPacketHandler<T> handler)",
-          "javadoc": ""
-        },
-        {
-          "name": "registerOptionalClientHandler",
-          "visibility": "public",
-          "returnType": "synchronized <T extends CustomPacketPayload> void",
-          "parameters": "CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler",
-          "signature": "public synchronized <T extends CustomPacketPayload> void registerOptionalClientHandler(CustomPacketPayload.Type<T> type, OptionalPacketHandler<T> handler)",
-          "javadoc": ""
-        },
-        {
-          "name": "canSendOptionalToServer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "CustomPacketPayload.Type<?> type",
-          "signature": "public boolean canSendOptionalToServer(CustomPacketPayload.Type<?> type)",
-          "javadoc": ""
-        },
-        {
-          "name": "canSendOptionalToPlayer",
-          "visibility": "public",
-          "returnType": "boolean",
-          "parameters": "ServerPlayer player, CustomPacketPayload.Type<?> type",
-          "signature": "public boolean canSendOptionalToPlayer(ServerPlayer player, CustomPacketPayload.Type<?> type)",
           "javadoc": ""
         },
         {
@@ -27887,7 +26479,7 @@
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/platform/NeoForgePlatformHelper.java",
       "summary": "",
-      "methodCount": 7,
+      "methodCount": 6,
       "fieldCount": 0,
       "methods": [
         {
@@ -27936,14 +26528,6 @@
           "returnType": "EnergyManager",
           "parameters": "",
           "signature": "public EnergyManager getEnergyManager()",
-          "javadoc": ""
-        },
-        {
-          "name": "getFluidManager",
-          "visibility": "public",
-          "returnType": "FluidManager",
-          "parameters": "",
-          "signature": "public FluidManager getFluidManager()",
           "javadoc": ""
         }
       ],
@@ -28041,9 +26625,17 @@
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/platform/Services.java",
       "summary": "",
-      "methodCount": 1,
-      "fieldCount": 6,
+      "methodCount": 2,
+      "fieldCount": 5,
       "methods": [
+        {
+          "name": "client",
+          "visibility": "public",
+          "returnType": "IClientHelper",
+          "parameters": "",
+          "signature": "public IClientHelper client()",
+          "javadoc": ""
+        },
         {
           "name": "load",
           "visibility": "public",
@@ -28077,11 +26669,6 @@
         {
           "name": "PLAYER_DATA",
           "type": "IPlayerDataHelper",
-          "javadoc": ""
-        },
-        {
-          "name": "CLIENT",
-          "type": "IClientHelper",
           "javadoc": ""
         }
       ]
@@ -29886,7 +28473,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_HAND",
       "declaringType": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyEntityRenderEvents.java",
-      "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#renderArmWithItem` at HEAD (cancellable)",
+      "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#submitArmWithItem` at HEAD (cancellable)",
       "method": {
         "name": "onRenderHand",
         "returnType": "void",
@@ -30570,7 +29157,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.client.PolyRenderStateEvents.INVALIDATE_RENDER_STATE",
       "declaringType": "net.creeperhost.polylib.event.events.client.PolyRenderStateEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyRenderStateEvents.java",
-      "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#allChanged` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`",
+      "javadoc": "Fired when the client render state must be invalidated (resource reload, model rebuild, graphics settings change, etc.). Listeners should release any caches that reference baked models or texture-atlas sprites.\n\nNeoForge: mixin on `LevelRenderer#invalidateCompiledGeometry` at RETURN\n\nFabric: `InvalidateRenderStateCallback.EVENT`",
       "method": {
         "name": "onInvalidate",
         "returnType": "void",
