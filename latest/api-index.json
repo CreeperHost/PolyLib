@@ -1,10 +1,10 @@
 {
   "project": {
     "name": "PolyLib",
-    "version": "2.0.10",
+    "version": "2.0.11",
     "minecraftVersion": "26.2",
-    "releaseTag": "26.2-2.0.10",
-    "generatedAt": "2026-08-07T18:31:30.831Z"
+    "releaseTag": "26.2-2.0.11",
+    "generatedAt": "2026-09-03T13:13:41.912Z"
   },
   "packages": [
     {

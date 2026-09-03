@@ -1,0 +1,1085 @@
+# PolyLib
+
+> PolyLib is a Minecraft library mod by CreeperHost. These docs include human guides, generated Java API reference, and release-specific metadata.
+
+Generated for 26.2-2.0.11 on 2026-09-03T13:13:41.926Z.
+
+Version: 26.2-2.0.11
+Minecraft: 26.2
+Java: 25
+Loaders: common, Fabric, NeoForge
+
+## Start Here
+
+- [Getting Started](https://creeperhost.github.io/PolyLib/versions/26.2-2.0.11/getting-started/)
+- [Registries](https://creeperhost.github.io/PolyLib/versions/26.2-2.0.11/concepts/registries/)
+- [Events](https://creeperhost.github.io/PolyLib/versions/26.2-2.0.11/concepts/events/)
+- [Modular GUI](https://creeperhost.github.io/PolyLib/versions/26.2-2.0.11/concepts/modular-gui/)
+- [Data Sync](https://creeperhost.github.io/PolyLib/versions/26.2-2.0.11/concepts/data-sync/)
+- [Generated Reference](https://creeperhost.github.io/PolyLib/versions/26.2-2.0.11/reference/)
+
+## Machine-readable
+
+- [API index](https://creeperhost.github.io/PolyLib/versions/26.2-2.0.11/api-index.json)
+
+## Packages
+
+- net.creeperhost.polylib: 15 public types (common, fabric, neoforge)
+- net.creeperhost.polylib.accessibility: 7 public types (common)
+- net.creeperhost.polylib.blocks: 9 public types (common)
+- net.creeperhost.polylib.chat: 5 public types (common)
+- net.creeperhost.polylib.chat.client: 5 public types (common)
+- net.creeperhost.polylib.chat.client.notification: 7 public types (common)
+- net.creeperhost.polylib.chat.client.tab: 11 public types (common)
+- net.creeperhost.polylib.chat.layout: 3 public types (common)
+- net.creeperhost.polylib.client: 1 public types (common)
+- net.creeperhost.polylib.client.config: 4 public types (common)
+- net.creeperhost.polylib.client.gif: 3 public types (common)
+- net.creeperhost.polylib.client.model: 1 public types (common)
+- net.creeperhost.polylib.client.modulargui: 4 public types (common)
+- net.creeperhost.polylib.client.modulargui.elements: 27 public types (common)
+- net.creeperhost.polylib.client.modulargui.lib: 15 public types (common)
+- net.creeperhost.polylib.client.modulargui.lib.container: 4 public types (common)
+- net.creeperhost.polylib.client.modulargui.lib.geometry: 13 public types (common)
+- net.creeperhost.polylib.client.modulargui.nodegraph: 1 public types (common)
+- net.creeperhost.polylib.client.modulargui.sprite: 5 public types (common)
+- net.creeperhost.polylib.client.screen: 2 public types (common)
+- net.creeperhost.polylib.client.screen.widget: 4 public types (common)
+- net.creeperhost.polylib.client.toast: 2 public types (common)
+- net.creeperhost.polylib.compat: 1 public types (fabric)
+- net.creeperhost.polylib.config: 4 public types (common, neoforge)
+- net.creeperhost.polylib.containers: 3 public types (common)
+- net.creeperhost.polylib.containers.network: 2 public types (common)
+- net.creeperhost.polylib.containers.slots: 4 public types (common)
+- net.creeperhost.polylib.data: 2 public types (common)
+- net.creeperhost.polylib.data.lang: 1 public types (common)
+- net.creeperhost.polylib.data.serializable: 12 public types (common)
+- net.creeperhost.polylib.datagen: 2 public types (fabric, neoforge)
+- net.creeperhost.polylib.debug: 4 public types (common)
+- net.creeperhost.polylib.debug.neoforge: 1 public types (neoforge)
+- net.creeperhost.polylib.event: 1 public types (common)
+- net.creeperhost.polylib.event.data: 1 public types (common)
+- net.creeperhost.polylib.event.events.client: 20 public types (common)
+- net.creeperhost.polylib.event.events.server: 23 public types (common)
+- net.creeperhost.polylib.fabric.inventory: 2 public types (fabric)
+- net.creeperhost.polylib.fabric.inventory.energy: 6 public types (fabric)
+- net.creeperhost.polylib.fabric.registry: 2 public types (fabric)
+- net.creeperhost.polylib.helpers: 12 public types (common)
+- net.creeperhost.polylib.init: 3 public types (common)
+- net.creeperhost.polylib.inventory: 1 public types (common)
+- net.creeperhost.polylib.inventory.items: 4 public types (common)
+- net.creeperhost.polylib.inventory.power: 8 public types (common)
+- net.creeperhost.polylib.items: 1 public types (common)
+- net.creeperhost.polylib.items.helpers: 1 public types (common)
+- net.creeperhost.polylib.mixin: 100 public types (fabric, neoforge)
+- net.creeperhost.polylib.mixin.client: 20 public types (fabric)
+- net.creeperhost.polylib.mulitblock: 6 public types (common)
+- net.creeperhost.polylib.mulitblock.rectangular: 3 public types (common)
+- net.creeperhost.polylib.neoforge: 1 public types (neoforge)
+- net.creeperhost.polylib.neoforge.inventory.power: 5 public types (neoforge)
+- net.creeperhost.polylib.neoforge.registry: 3 public types (neoforge)
+- net.creeperhost.polylib.network: 1 public types (common)
+- net.creeperhost.polylib.network.packets: 5 public types (common)
+- net.creeperhost.polylib.platform: 11 public types (common, fabric, neoforge)
+- net.creeperhost.polylib.platform.services: 5 public types (common)
+- net.creeperhost.polylib.player.serverdata: 6 public types (common)
+- net.creeperhost.polylib.player.serverdata.offline: 2 public types (common)
+- net.creeperhost.polylib.player.settings: 8 public types (common)
+- net.creeperhost.polylib.registry: 4 public types (common)
+- net.creeperhost.polylib.util: 3 public types (common)
+
+## Events
+
+- net.creeperhost.polylib.event.events.client.PolyCameraEvents.CAMERA_SETUP: handler CameraSetup, void onCameraSetup(CameraContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyCameraEvents.FOV_MODIFIER: handler FovModifier, void onComputeFov(LocalPlayer player, float[] fovHolder)
+- net.creeperhost.polylib.event.events.client.PolyClientBlockEntityEvents.CLIENT_BLOCK_ENTITY_LOAD: handler BlockEntityLoad, void onBlockEntityLoad(BlockEntity blockEntity, ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientBlockEntityEvents.CLIENT_BLOCK_ENTITY_UNLOAD: handler BlockEntityUnload, void onBlockEntityUnload(BlockEntity blockEntity, ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientChunkEvents.CLIENT_CHUNK_LOAD: handler ChunkLoad, void onChunkLoad(ClientLevel level, LevelChunk chunk)
+- net.creeperhost.polylib.event.events.client.PolyClientChunkEvents.CLIENT_CHUNK_UNLOAD: handler ChunkUnload, void onChunkUnload(ClientLevel level, LevelChunk chunk)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_CONFIGURATION_COMPLETE: handler ConfigurationComplete, void onConfigurationComplete(ClientConfigurationPacketListenerImpl handler, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_CONFIGURATION_DISCONNECT: handler ConfigurationDisconnect, void onConfigurationDisconnect(ClientConfigurationPacketListenerImpl handler, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_CONFIGURATION_INIT: handler ConfigurationInit, void onConfigurationInit(ClientConfigurationPacketListenerImpl handler, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_LOGIN_DISCONNECT: handler LoginDisconnect, void onLoginDisconnect(ClientHandshakePacketListenerImpl handler, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_LOGIN_INIT: handler LoginInit, void onLoginInit(ClientHandshakePacketListenerImpl handler, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_LOGIN_QUERY_RESPONSE: handler LoginQueryResponse, void onQueryResponse(ClientHandshakePacketListenerImpl handler, Minecraft client, CustomQueryPayload payload)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_LOGIN_QUERY_START: handler LoginQueryStart, void onQueryStart(ClientHandshakePacketListenerImpl handler, Minecraft client, @Nullable Object sender, @Nullable CustomQueryPayload payload)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_PLAY_DISCONNECT: handler PlayDisconnect, void onPlayDisconnect(ClientPacketListener handler, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_PLAY_INIT: handler PlayInit, void onPlayInit(ClientPacketListener handler, @Nullable Object sender, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents.CLIENT_PLAY_JOIN: handler PlayJoin, void onPlayJoin(ClientPacketListener handler, @Nullable Object sender, Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientEntityEvents.CLIENT_ENTITY_LOAD: handler EntityLoad, void onEntityLoad(Entity entity, ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientEntityEvents.CLIENT_ENTITY_UNLOAD: handler EntityUnload, void onEntityUnload(Entity entity, ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents.CLIENT_BLOCK_BREAK_AFTER: handler BlockBreakAfter, void onBlockBreakAfter(LocalPlayer player, ClientLevel level, BlockPos pos, BlockState state)
+- net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents.CLIENT_BLOCK_BREAK_BEFORE: handler BlockBreakBefore, void onBlockBreakBefore(LocalPlayer player, ClientLevel level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents.CLIENT_BLOCK_BREAK_CANCELED: handler BlockBreakCanceled, void onBlockBreakCanceled(LocalPlayer player, ClientLevel level, BlockPos pos, BlockState state)
+- net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents.CLIENT_PRE_ATTACK: handler PreAttack, void onPreAttack(Minecraft client, LocalPlayer player, int clickCount, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyClientLevelEvents.CLIENT_LEVEL_LOAD: handler LevelLoad, void onLoad(ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientLevelEvents.CLIENT_LEVEL_UNLOAD: handler LevelUnload, void onUnload(ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientLifecycleEvents.CLIENT_LEVEL_CHANGED: handler ClientLevelChanged, void onClientLevelChanged(Minecraft client, @Nullable ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientLifecycleEvents.CLIENT_STARTED: handler ClientStarted, void onClientStarted(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientLifecycleEvents.CLIENT_STOPPING: handler ClientStopping, void onClientStopping(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientPlayerEvents.CLIENT_LOGIN: handler Login, void onLogin(LocalPlayer player)
+- net.creeperhost.polylib.event.events.client.PolyClientPlayerEvents.LOGOUT: handler Logout, void onLogout(LocalPlayer player)
+- net.creeperhost.polylib.event.events.client.PolyClientTickEvents.CLIENT_LEVEL_TICK_END: handler LevelTickEnd, void onLevelTickEnd(ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientTickEvents.CLIENT_LEVEL_TICK_START: handler LevelTickStart, void onTickStart(ClientLevel level)
+- net.creeperhost.polylib.event.events.client.PolyClientTickEvents.CLIENT_TICK_END: handler TickEnd, void onTickEnd(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyClientTickEvents.CLIENT_TICK_START: handler TickStart, void onTickStart(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.ALLOW_CAPE_RENDER: handler AllowCapeRender, void onAllowCapeRender(AvatarRenderState renderState, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_ARM: handler RenderArm, void onRenderArm(HumanoidArm arm, AbstractClientPlayer player, int packedLight, PoseStack poseStack, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_BLOCK_SCREEN_EFFECT: handler RenderBlockScreenEffect, void onRenderBlockScreenEffect(Player player, BlockPos pos, BlockState state, ScreenOverlayType overlayType, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_HAND: handler RenderHand, void onRenderHand(InteractionHand hand, ItemStack itemStack, PoseStack poseStack, float partialTick, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_ITEM_IN_FRAME: handler RenderItemInFrame, void onRenderItemInFrame(ItemStackRenderState itemRenderState, ItemFrameRenderState frameRenderState, PoseStack poseStack, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_LIVING_POST: handler RenderLivingPost, void onRenderLivingPost(LivingEntityRenderState renderState, PoseStack poseStack, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_LIVING_PRE: handler RenderLivingPre, void onRenderLivingPre(LivingEntityRenderState renderState, PoseStack poseStack, float partialTick, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_NAME_TAG: handler RenderNameTag, void onRenderNameTag(EntityRenderState renderState, Component displayName, PoseStack poseStack, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_PLAYER_POST: handler RenderPlayerPost, void onRenderPlayerPost(AvatarRenderState renderState, PoseStack poseStack, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_PLAYER_PRE: handler RenderPlayerPre, void onRenderPlayerPre(AvatarRenderState renderState, PoseStack poseStack, float partialTick, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.CONTAINER_SCREEN_RENDER_BG: handler ContainerScreenRenderBg, void onContainerScreenRenderBg(AbstractContainerScreen<?> screen, GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY)
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.CONTAINER_SCREEN_RENDER_FG: handler ContainerScreenRenderFg, void onContainerScreenRenderFg(AbstractContainerScreen<?> screen, GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY)
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.CUSTOMIZE_HUD_OVERLAY: handler CustomizeHudOverlay, void onCustomizeHudOverlay(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick, String type, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.PLAYER_HEART_TYPE: handler PlayerHeartTypeEvent, void onPlayerHeartType(Player player, PolyHeartType[] result)
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.RENDER_GUI_POST: handler RenderGuiPost, void onRenderGuiPost(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.RENDER_GUI_PRE: handler RenderGuiPre, void onRenderGuiPre(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.RENDER_HUD_LAYER_POST: handler RenderHudLayerPost, void onRenderHudLayerPost(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick, Identifier layerId)
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.RENDER_HUD_LAYER_PRE: handler RenderHudLayerPre, void onRenderHudLayerPre(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick, Identifier layerId, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.SCREENSHOT: handler Screenshot, void onScreenshot(File screenshotFile, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents.TOAST_ADD: handler ToastAdd, void onToastAdd(Toast toast, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyInputEvents.INPUT_KEY: handler KeyInput, void onKeyInput(int key, int scanCode, int action, int modifiers)
+- net.creeperhost.polylib.event.events.client.PolyInputEvents.INPUT_MOUSE: handler MouseInput, void onMouseInput(int button, int action, int modifiers)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.AFTER_LEVEL: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.AFTER_OPAQUE_FEATURES: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.AFTER_SKY: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.AFTER_TRANSLUCENT_FEATURES: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.AFTER_WEATHER: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.BEFORE_BLOCK_OUTLINE: handler BeforeBlockOutline, void onBeforeBlockOutline(Minecraft client, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.BEFORE_GIZMOS: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.BEFORE_TRANSLUCENT_TERRAIN: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.COLLECT_SUBMITS: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.RENDER_FRAME_END: handler RenderFrameEnd, void onRenderFrameEnd(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.RENDER_FRAME_START: handler RenderFrameStart, void onRenderFrameStart(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents.START_MAIN: handler RenderStage, void onRenderStage(Minecraft client)
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents.AFTER_OPAQUE_BLOCKS: handler RenderLevel, void onRender(PoseStack poseStack)
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents.AFTER_TRANSLUCENT_BLOCKS: handler RenderLevel, void onRender(PoseStack poseStack)
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents.AFTER_TRANSLUCENT_PARTICLES: handler RenderLevel, void onRender(PoseStack poseStack)
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents.GUI_OVERLAY_POST: handler GuiOverlayPost, void onGuiOverlayPost(Identifier layerId, GuiGraphicsExtractor graphics, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents.GUI_OVERLAY_PRE: handler GuiOverlayPre, void onGuiOverlayPre(Identifier layerId, GuiGraphicsExtractor graphics, float partialTick, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents.RENDER_GUI_POST: handler RenderGui, void onRenderGui(GuiGraphicsExtractor graphics, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents.RENDER_GUI_PRE: handler RenderGui, void onRenderGui(GuiGraphicsExtractor graphics, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyRenderStateEvents.INVALIDATE_RENDER_STATE: handler Invalidate, void onInvalidate()
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_CHAR_TYPED_AFTER: handler ScreenCharTypedAfter, void onScreenCharTypedAfter(Screen screen, char codePoint, int modifiers)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_CHAR_TYPED_ALLOW: handler ScreenCharTypedAllow, void onScreenCharTypedAllow(Screen screen, char codePoint, int modifiers, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_CLOSING: handler ScreenClosing, void onScreenClosing(Screen screen)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_KEY_PRESS_AFTER: handler ScreenKeyPressAfter, void onScreenKeyPressAfter(Screen screen, int keyCode, int scanCode, int modifiers)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_KEY_PRESS_ALLOW: handler ScreenKeyPressAllow, void onScreenKeyPressAllow(Screen screen, int keyCode, int scanCode, int modifiers, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_KEY_PRESS_BEFORE: handler ScreenKeyPressBefore, void onScreenKeyPressBefore(Screen screen, int keyCode, int scanCode, int modifiers)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_KEY_RELEASE_AFTER: handler ScreenKeyReleaseAfter, void onScreenKeyReleaseAfter(Screen screen, int keyCode, int scanCode, int modifiers)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_KEY_RELEASE_ALLOW: handler ScreenKeyReleaseAllow, void onScreenKeyReleaseAllow(Screen screen, int keyCode, int scanCode, int modifiers, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_KEY_RELEASE_BEFORE: handler ScreenKeyReleaseBefore, void onScreenKeyReleaseBefore(Screen screen, int keyCode, int scanCode, int modifiers)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_CLICK_AFTER: handler ScreenMouseClickAfter, void onScreenMouseClickAfter(Screen screen, double mouseX, double mouseY, int button)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_CLICK_ALLOW: handler ScreenMouseClickAllow, void onScreenMouseClickAllow(Screen screen, double mouseX, double mouseY, int button, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_CLICK_BEFORE: handler ScreenMouseClickBefore, void onScreenMouseClickBefore(Screen screen, double mouseX, double mouseY, int button)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_DRAG_AFTER: handler ScreenMouseDragAfter, void onScreenMouseDragAfter(Screen screen, double mouseX, double mouseY, int button, double dragX, double dragY)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_DRAG_ALLOW: handler ScreenMouseDragAllow, void onScreenMouseDragAllow(Screen screen, double mouseX, double mouseY, int button, double dragX, double dragY, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_DRAG_BEFORE: handler ScreenMouseDragBefore, void onScreenMouseDragBefore(Screen screen, double mouseX, double mouseY, int button, double dragX, double dragY)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_RELEASE_AFTER: handler ScreenMouseReleaseAfter, void onScreenMouseReleaseAfter(Screen screen, double mouseX, double mouseY, int button)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_RELEASE_ALLOW: handler ScreenMouseReleaseAllow, void onScreenMouseReleaseAllow(Screen screen, double mouseX, double mouseY, int button, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_RELEASE_BEFORE: handler ScreenMouseReleaseBefore, void onScreenMouseReleaseBefore(Screen screen, double mouseX, double mouseY, int button)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_SCROLL_AFTER: handler ScreenMouseScrollAfter, void onScreenMouseScrollAfter(Screen screen, double mouseX, double mouseY, double scrollX, double scrollY)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_SCROLL_ALLOW: handler ScreenMouseScrollAllow, void onScreenMouseScrollAllow(Screen screen, double mouseX, double mouseY, double scrollX, double scrollY, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_MOUSE_SCROLL_BEFORE: handler ScreenMouseScrollBefore, void onScreenMouseScrollBefore(Screen screen, double mouseX, double mouseY, double scrollX, double scrollY)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_OPENED: handler ScreenOpened, void onScreenOpened(Minecraft mc, Screen screen, int width, int height)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_OPENING: handler ScreenOpening, void onScreenOpening(@Nullable Screen screen, @Nullable Screen oldScreen, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_RENDER_POST: handler ScreenRenderPost, void onScreenRenderPost(Screen screen, GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_RENDER_PRE: handler ScreenRenderPre, void onScreenRenderPre(Screen screen, GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY, float partialTick)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_TICK_AFTER: handler ScreenTickAfter, void onScreenTickAfter(Screen screen)
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents.SCREEN_TICK_BEFORE: handler ScreenTickBefore, void onScreenTickBefore(Screen screen)
+- net.creeperhost.polylib.event.events.client.PolyTooltipEvents.ITEM_ATTRIBUTE_MODIFIERS: handler ItemAttributeModifiers, void onItemAttributeModifiers(ItemStack stack, List<net.minecraft.world.item.component.ItemAttributeModifiers.Entry> modifiers)
+- net.creeperhost.polylib.event.events.client.PolyTooltipEvents.ITEM_TOOLTIP: handler ItemTooltip, void onItemTooltip(ItemStack stack, Player player, List<Component> lines, TooltipFlag flags)
+- net.creeperhost.polylib.event.events.client.PolyViewportEvents.COMPUTE_CAMERA_DISTANCE: handler ComputeCameraDistance, void onComputeCameraDistance(float[] distance)
+- net.creeperhost.polylib.event.events.client.PolyViewportEvents.COMPUTE_FOG_COLOR: handler ComputeFogColor, void onComputeFogColor(Camera camera, float[] rgb)
+- net.creeperhost.polylib.event.events.client.PolyViewportEvents.COMPUTE_FOV: handler ComputeFov, void onComputeFov(float[] fov)
+- net.creeperhost.polylib.event.events.client.PolyViewportEvents.RENDER_FOG: handler RenderFog, void onRenderFog(Camera camera, float[] params)
+- net.creeperhost.polylib.event.events.server.PolyBlockEntityEvents.BLOCK_ENTITY_LOAD: handler BlockEntityLoad, void onBlockEntityLoad(BlockEntity blockEntity)
+- net.creeperhost.polylib.event.events.server.PolyBlockEntityEvents.BLOCK_ENTITY_UNLOAD: handler BlockEntityUnload, void onBlockEntityUnload(BlockEntity blockEntity)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.ALTER_GROUND: handler AlterGround, void onAlterGround(ServerLevel level, BlockPos pos, BlockStateProvider provider)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.BLOCK_DROPS: handler BlockDrops, void onBlockDrops(ServerLevel level, BlockPos pos, BlockState state, List<ItemEntity> drops)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.BLOCK_GROW_FEATURE: handler BlockGrowFeature, void onBlockGrowFeature(ServerLevel level, BlockPos pos, Holder<ConfiguredFeature<?, ?>> feature)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.BREAK: handler Break, void onBreak(ServerPlayer player, LevelAccessor level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.CROP_GROW_POST: handler CropGrowPost, void onCropGrowPost(Level level, BlockPos pos, BlockState state)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.CROP_GROW_PRE: handler CropGrow, void onCropGrow(Level level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.ENTITY_MULTI_PLACE: handler EntityMultiPlace, void onEntityMultiPlace(ServerLevel level, Entity entity, BlockState placedState, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.FARMLAND_TRAMPLE: handler FarmlandTrample, void onFarmlandTrample(Entity entity, Level level, BlockPos pos, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.FLUID_PLACE_BLOCK: handler FluidPlaceBlock, void onFluidPlaceBlock(Level level, BlockPos pos, BlockPos liquidPos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.FLUID_SOURCE: handler FluidSource, void onFluidSource(LevelAccessor level, BlockPos pos, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.NEIGHBOR_NOTIFY: handler NeighborNotify, void onNeighborNotify(Level level, BlockPos pos, BlockState state, EnumSet<Direction> notifiedSides, boolean forceRedstoneUpdate)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.NOTE_BLOCK_CHANGE: handler NoteBlockChange, void onNoteBlockChange(Level level, BlockPos pos, NoteBlockInstrument oldInstrument, NoteBlockInstrument newInstrument, int oldNote, int newNote, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.NOTE_BLOCK_PLAY: handler NoteBlockPlay, void onNoteBlockPlay(LevelAccessor level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.PISTON_POST: handler PistonPost, void onPistonPost(LevelAccessor level, BlockPos pos, Direction direction, boolean extending)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.PISTON_PRE: handler PistonPre, void onPistonPre(LevelAccessor level, BlockPos pos, Direction direction, boolean extending, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.PLACE: handler Place, void onPlace(Entity entity, LevelAccessor level, BlockPos pos, BlockState placed, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.PORTAL_SPAWN: handler PortalSpawn, void onPortalSpawn(LevelAccessor level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyBrewingEvents.BREW_POST: handler BrewPost, void onBrewPost(NonNullList<ItemStack> items)
+- net.creeperhost.polylib.event.events.server.PolyBrewingEvents.BREW_PRE: handler BrewPre, void onBrewPre(NonNullList<ItemStack> items, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyChatEvents.ALLOW_GAME_MESSAGE: handler AllowGameMessage, boolean allowGameMessage(MinecraftServer server, Component message, boolean overlay), cancellable
+- net.creeperhost.polylib.event.events.server.PolyChatEvents.CHAT_DECORATE: handler ChatDecorate, void onChatDecorate(@Nullable ServerPlayer player, Component[] message)
+- net.creeperhost.polylib.event.events.server.PolyChatEvents.COMMAND_EXECUTE: handler CommandExecute, void onCommandExecute(CommandSourceStack source, String[] command, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyChatEvents.SERVER_CHAT: handler ServerChat, void onServerChat(ServerPlayer player, Component[] message, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyChatEvents.SERVER_GAME_MESSAGE: handler ServerGameMessage, void onServerGameMessage(MinecraftServer server, Component message, boolean overlay)
+- net.creeperhost.polylib.event.events.server.PolyChunkEvents.CHUNK_LOAD: handler Load, void onLoad(ServerLevel level, LevelChunk chunk)
+- net.creeperhost.polylib.event.events.server.PolyChunkEvents.CHUNK_UNLOAD: handler Unload, void onUnload(ServerLevel level, LevelChunk chunk)
+- net.creeperhost.polylib.event.events.server.PolyChunkEvents.CHUNK_UNWATCH: handler UnWatch, void onUnWatch(ServerPlayer player, ChunkPos pos, ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyChunkEvents.CHUNK_WATCH: handler Watch, void onWatch(ServerPlayer player, ChunkPos pos, ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyDataEvents.LOOT_TABLE_LOAD: handler LootTableLoad, void onLootTableLoad(Identifier id)
+- net.creeperhost.polylib.event.events.server.PolyDataEvents.TAGS_UPDATED: handler TagsUpdated, void onTagsUpdated(HolderLookup.Provider lookupProvider)
+- net.creeperhost.polylib.event.events.server.PolyEnchantEvents.ENCHANT_TABLE_LEVEL: handler EnchantTableLevel, void onEnchantTableLevel(ItemStack stack, int power, int originalLevel, int[] level)
+- net.creeperhost.polylib.event.events.server.PolyEnchantEvents.GET_ENCHANT_LEVEL: handler GetEnchantLevel, void onGetEnchantLevel(ItemStack stack, Holder<Enchantment> targetEnchant, net.minecraft.world.item.enchantment.ItemEnchantments.Mutable enchantments)
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.ENTITY_CHANGE_LEVEL_POST: handler EntityChangeLevelPost, void onEntityChangeLevelPost(Entity original, Entity replacement, ServerLevel from, ServerLevel to)
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.ENTITY_INVULNERABILITY_CHECK: handler InvulnerabilityCheck, boolean onInvulnerabilityCheck(Entity entity, DamageSource source, boolean originalInvulnerable), cancellable
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.ENTITY_TICK: handler EntityTick, void onEntityTick(Entity entity)
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.ENTITY_TICK_END: handler EntityTickEnd, void onEntityTickEnd(Entity entity)
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.JOIN_LEVEL: handler JoinLevel, void onJoinLevel(Entity entity, ServerLevel level, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.LEAVE_LEVEL: handler LeaveLevel, void onLeaveLevel(Entity entity, ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.MOB_GRIEFING: handler MobGriefing, void onMobGriefing(Entity entity, GriefingContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.MOUNT: handler Mount, void onMount(Entity entity, Entity vehicle, boolean isMounting, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.PROJECTILE_IMPACT: handler ProjectileImpact, void onProjectileImpact(Projectile projectile, HitResult hitResult, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.STRUCK_BY_LIGHTNING: handler StruckByLightning, void onStruckByLightning(Entity entity, LightningBolt lightning, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.TELEPORT: handler Teleport, void onTeleport(Entity entity, double[] target, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents.TRAVEL_DIMENSION: handler TravelDimension, void onTravelDimension(Entity entity, ResourceKey<Level> destination, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyExplosionEvents.DETONATE: handler Detonate, void onDetonate(Level level, List<BlockPos> affectedBlocks, List<Entity> affectedEntities)
+- net.creeperhost.polylib.event.events.server.PolyExplosionEvents.KNOCKBACK: handler Knockback, void onKnockback(Level level, Entity entity, Vec3 velocity)
+- net.creeperhost.polylib.event.events.server.PolyExplosionEvents.START: handler Start, void onStart(Level level, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ANVIL_CRAFT: handler AnvilCraft, void onAnvilCraft(Player player, ItemStack left, ItemStack right, ItemStack output, int cost)
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ANVIL_UPDATE: handler Anvil, void onAnvilUpdate(ItemStack left, ItemStack right, String name, AnvilContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.FUEL_BURN_TIME: handler FuelBurnTime, void onFuelBurnTime(ItemStack stack, int[] burnTime)
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.GRINDSTONE: handler Grindstone, void onGrindstone(ItemStack topItem, ItemStack bottomItem, GrindstoneContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ITEM_EXPIRE: handler ItemExpire, void onItemExpire(ItemEntity item)
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ITEM_FISHING: handler ItemFishing, void onItemFishing(Player player, List<ItemStack> drops, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ITEM_STACKED_ON_OTHER: handler ItemStackedOnOther, void onItemStackedOnOther(Player player, ItemStack carried, ItemStack target, Slot targetSlot, Slot carriedSlot)
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ITEM_USE_FINISH: handler UseFinish, void onUseFinish(LivingEntity entity, ItemStack stack)
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ITEM_USE_START: handler UseStart, void onUseStart(LivingEntity entity, ItemStack stack, int duration, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyItemEvents.ITEM_USE_TICK: handler UseTick, void onUseTick(LivingEntity entity, ItemStack stack, int ticksRemaining, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents.DIFFICULTY_CHANGE: handler DifficultyChange, void onDifficultyChange(Difficulty difficulty, Difficulty oldDifficulty)
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents.GAME_RULE_CHANGE: handler GameRuleChange, void onGameRuleChange(MinecraftServer server, GameRule<?> rule, GameRules rules)
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents.LEVEL_LOAD: handler Load, void onLoad(ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents.LEVEL_SAVE: handler Save, void onSave(ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents.LEVEL_UNLOAD: handler Unload, void onUnload(ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents.POTENTIAL_SPAWNS: handler PotentialSpawns, void onPotentialSpawns(ServerLevel level, MobCategory category, BlockPos pos, List<MobSpawnSettings.SpawnerData> spawns)
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents.SLEEP_FINISHED: handler SleepFinished, void onSleepFinished(ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ARMOR_HURT: handler ArmorHurt, void onArmorHurt(LivingEntity entity, DamageSource source, ArmorHurtContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ARROW_LOOSE: handler ArrowLoose, void onArrowLoose(ServerPlayer player, ItemStack bow, int charge, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ARROW_NOCK: handler ArrowNock, void onArrowNock(ServerPlayer player, ItemStack bow, InteractionHand hand, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.BABY_SPAWN: handler BabySpawn, void onBabySpawn(LivingEntity parentA, LivingEntity parentB, Player causedBy, AgeableMob child, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.BREATHE: handler Breathe, void onBreathe(LivingEntity entity, BreatheContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.CHANGE_TARGET: handler ChangeTarget, void onChangeTarget(LivingEntity entity, LivingEntity newTarget, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.CONVERSION_POST: handler ConversionPost, void onConversionPost(LivingEntity original, LivingEntity converted)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.CONVERSION_PRE: handler ConversionPre, void onConversionPre(LivingEntity entity, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.CRITICAL_HIT: handler CriticalHit, void onCriticalHit(ServerPlayer player, Entity target, CriticalHitContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.DAMAGE_FINAL_PRE: handler DamageFinalPre, void onDamageFinalPre(LivingEntity entity, DamageSource source, float amount, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.DAMAGE_POST: handler DamagePost, void onDamagePost(LivingEntity entity, DamageSource source, float amount)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.DAMAGE_PRE: handler DamagePre, void onDamagePre(LivingEntity entity, DamageSource source, float amount, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.DEATH: handler Death, void onDeath(LivingEntity entity, DamageSource source, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.DESTROY_BLOCK: handler DestroyBlock, void onDestroyBlock(LivingEntity entity, LevelAccessor level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.DROPS: handler Drops, void onDrops(LivingEntity entity, DamageSource source, List<ItemEntity> drops)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.DROWN: handler Drown, void onDrown(LivingEntity entity, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ELYTRA_ALLOW: handler ElytraAllow, void onElytraAllow(LivingEntity entity, boolean[] result)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENDERMAN_ANGER: handler EndermanAnger, void onEndermanAnger(EnderMan enderman, Player player, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENTITY_EQUIP_CHANGE: handler EquipChange, void onEquipChange(LivingEntity entity, EquipmentSlot slot, ItemStack from, ItemStack to)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENTITY_KILLED_OTHER: handler EntityKilledOther, void onEntityKilledOther(LivingEntity killer, LivingEntity victim)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.FALL: handler Fall, void onFall(LivingEntity entity, double distance, float multiplier)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.GET_PROJECTILE: handler GetProjectile, void onGetProjectile(LivingEntity entity, ItemStack[] resultHolder)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.HEAL: handler Heal, void onHeal(LivingEntity entity, float amount, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ITEM_USE_FINISH: handler ItemUseFinish, void onItemUseFinish(LivingEntity entity, ItemStack item, ItemStack[] resultHolder)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ITEM_USE_START: handler ItemUseStart, void onItemUseStart(LivingEntity entity, ItemStack item, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.KNOCKBACK: handler Knockback, void onKnockback(LivingEntity entity, float strength, double ratioX, double ratioZ, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.MOB_KILL_XP: handler MobKillXp, void onMobKillXp(LivingEntity victim, Entity killer, int[] xp)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.MOB_SPLIT: handler MobSplit, void onMobSplit(LivingEntity parent, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.SHIELD_BLOCK: handler ShieldBlock, void onShieldBlock(LivingEntity entity, DamageSource source, float damageBlocked, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.SPAWN_CLUSTER_SIZE: handler SpawnClusterSize, void onSpawnClusterSize(Mob mob, int[] size)
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.SWAP_ITEMS: handler SwapItems, void onSwapItems(LivingEntity entity, ItemStack toMainHand, ItemStack toOffHand, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.USE_TOTEM: handler UseTotem, void onUseTotem(LivingEntity entity, DamageSource source, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.XP_DROP: handler XpDrop, void onXpDrop(LivingEntity entity, int amount)
+- net.creeperhost.polylib.event.events.server.PolyMobEffectEvents.ALLOW_APPLY: handler AllowApply, void onAllowApply(LivingEntity entity, MobEffectInstance effect, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyMobEffectEvents.APPLIED: handler Applied, void onApplied(LivingEntity entity, MobEffectInstance effect)
+- net.creeperhost.polylib.event.events.server.PolyMobEffectEvents.EXPIRED: handler Expired, void onExpired(LivingEntity entity, MobEffectInstance effect)
+- net.creeperhost.polylib.event.events.server.PolyMobEffectEvents.REMOVED: handler Removed, void onRemoved(LivingEntity entity, MobEffectInstance effect)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ADVANCEMENT_EARN: handler AdvancementEarn, void onAdvancementEarn(ServerPlayer player, AdvancementHolder advancement)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ADVANCEMENT_REVOKE: handler AdvancementRevoke, void onAdvancementRevoke(ServerPlayer player, AdvancementHolder advancement)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ANIMAL_TAME: handler AnimalTame, void onAnimalTame(Animal animal, ServerPlayer player, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ATTACK_ENTITY: handler AttackEntity, void onAttackEntity(ServerPlayer player, Entity target)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.BONE_MEAL: handler BoneMeal, void onBoneMeal(Player player, Level level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.BREAK_BLOCK: handler BreakBlock, void onBreakBlock(ServerPlayer player, Level level, BlockPos pos, BlockState state)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.BREAK_SPEED: handler BreakSpeed, void onBreakSpeed(Player player, BlockState state, BlockPos pos, float[] speed)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.BREWED_POTION: handler BrewedPotion, void onBrewedPotion(Player player, ItemStack stack)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.CAN_CONTINUE_SLEEPING: handler CanContinueSleeping, void onCanContinueSleeping(Player player, Player.BedSleepingProblem[] result)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.CHANGE_DIMENSION: handler ChangeDimension, void onChangeDimension(ServerPlayer player, ResourceKey<Level> from, ResourceKey<Level> to)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.CHANGE_GAME_MODE: handler ChangeGameMode, void onChangeGameMode(ServerPlayer player, GameType current, GameType next, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.CLIENT_INFORMATION_UPDATED: handler ClientInfoUpdated, void onClientInformationUpdated(ServerPlayer player, ClientInformation info)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.CLONE: handler Clone, void onClone(ServerPlayer newPlayer, ServerPlayer oldPlayer, boolean isWasDeath)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.CONTAINER_CLOSE: handler ContainerClose, void onContainerClose(ServerPlayer player, AbstractContainerMenu container)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.CONTAINER_OPEN: handler ContainerOpen, void onContainerOpen(Player player, AbstractContainerMenu menu)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.DEATH: handler Death, void onDeath(ServerPlayer player, DamageSource source, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.DESTROY_ITEM: handler DestroyItem, void onDestroyItem(Player player, ItemStack stack, @Nullable EquipmentSlot slot)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ENCHANT_ITEM: handler EnchantItem, void onEnchantItem(Player player, ItemStack stack, int cost)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ENTITY_INTERACT: handler EntityInteract, void onEntityInteract(ServerPlayer player, Entity target, InteractionHand hand)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.FLYABLE_FALL: handler FlyableFall, void onFlyableFall(Player player, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.HARVEST_CHECK: handler HarvestCheck, void onHarvestCheck(Player player, BlockState state, boolean[] result)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ITEM_CRAFTED: handler ItemCrafted, void onItemCrafted(ServerPlayer player, ItemStack crafted, Container craftingGrid)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ITEM_PICKUP: handler ItemPickup, void onItemPickup(ServerPlayer player, ItemEntity item, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ITEM_PICKUP_POST: handler ItemPickupPost, void onItemPickupPost(Player player, ItemEntity itemEntity, ItemStack stack)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ITEM_SMELTED: handler ItemSmelted, void onItemSmelted(Player player, ItemStack stack)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.ITEM_TOSS: handler ItemToss, void onItemToss(ServerPlayer player, ItemEntity item)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.LEFT_CLICK_BLOCK: handler LeftClickBlock, void onLeftClickBlock(Player player, BlockPos pos, Direction face, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.LOGIN: handler Login, void onLogin(ServerPlayer player)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.LOGOUT: handler Logout, void onLogout(ServerPlayer player)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.NAME_FORMAT: handler NameFormat, void onNameFormat(ServerPlayer player, Component[] name)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.PERMISSIONS_CHANGED: handler PermissionsChanged, void onPermissionsChanged(ServerPlayer player)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.PHANTOM_SPAWN: handler PhantomSpawn, void onPhantomSpawn(ServerPlayer player, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.PLAYER_LOAD: handler PlayerFileEvent, void onPlayerFile(ServerPlayer player, String uuid)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.PLAYER_SAVE: handler PlayerFileEvent, void onPlayerFile(ServerPlayer player, String uuid)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.RESPAWN: handler Respawn, void onRespawn(ServerPlayer player, boolean isEndConquered)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.RESPAWN_POSITION: handler RespawnPosition, void onRespawnPosition(ServerPlayer player, BlockPos[] pos, ResourceKey<Level>[] dimension)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.RIGHT_CLICK_BLOCK: handler RightClickBlock, void onRightClickBlock(ServerPlayer player, InteractionHand hand, BlockPos pos, Direction face, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.RIGHT_CLICK_EMPTY: handler RightClickEmpty, void onRightClickEmpty(Player player, InteractionHand hand)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.SET_SPAWN: handler SetSpawn, void onSetSpawn(ServerPlayer player, BlockPos pos, ResourceKey<Level> dimension, boolean forced, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.START_TRACKING: handler StartTracking, void onStartTracking(ServerPlayer tracked, ServerPlayer tracker)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.STAT_AWARD: handler StatAward, void onStatAward(Player player, Stat<?> stat, int value, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.STOP_TRACKING: handler StopTracking, void onStopTracking(ServerPlayer player, Entity entity)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.SWEEP_ATTACK: handler SweepAttack, void onSweepAttack(Player player, Entity target, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.TAB_LIST_NAME_FORMAT: handler TabListNameFormat, void onTabListNameFormat(ServerPlayer player, Component[] name)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.TRADE_WITH_VILLAGER: handler TradeWithVillager, void onTradeWithVillager(Player player, MerchantOffer offer, AbstractVillager merchant)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.USE_ITEM: handler UseItem, void onUseItem(ServerPlayer player, InteractionHand hand, ItemStack stack, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.WAKE_UP: handler WakeUp, void onWakeUp(Player player, boolean updateLevel)
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.XP_CHANGE: handler XpChange, void onXpChange(ServerPlayer player, int amount, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.XP_LEVEL_CHANGE: handler XpLevelChange, void onXpLevelChange(ServerPlayer player, int levels, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents.XP_PICKUP: handler XpPickup, void onXpPickup(ServerPlayer player, ExperienceOrb orb)
+- net.creeperhost.polylib.event.events.server.PolyPlayerTickEvents.PLAYER_TICK_END: handler Tick, void onTick(ServerPlayer player)
+- net.creeperhost.polylib.event.events.server.PolyPlayerTickEvents.PLAYER_TICK_START: handler Tick, void onTick(ServerPlayer player)
+- net.creeperhost.polylib.event.events.server.PolyRegistryEvents.MODIFY_DIMENSION_ATTRIBUTES: handler ModifyDimensionAttributes, void onModifyDimensionAttributes(Object dimType, Object builder, Object provider)
+- net.creeperhost.polylib.event.events.server.PolyRegistryEvents.REGISTRY_ID_REMAP: handler RegistryIdRemap, void onRegistryIdRemap(Object remapState)
+- net.creeperhost.polylib.event.events.server.PolyServerCommandEvents.REGISTER_COMMANDS: handler Register, void onRegisterCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext, Commands.CommandSelection selection)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.CONFIGURATION_DISCONNECT: handler ConfigurationDisconnect, void onConfigurationDisconnect(ServerConfigurationPacketListenerImpl listener, MinecraftServer server)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.DATAPACK_SYNC: handler DatapackSync, void onDatapackSync(MinecraftServer server, ServerPlayer player)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.LOGIN_QUERY_START: handler LoginQueryStart, void onLoginQueryStart(ServerLoginPacketListenerImpl listener, MinecraftServer server, Object sender, Object syncCallback)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.MOD_MISMATCH: handler ModMismatch, void onModMismatch(Set<String> mismatchedModIds, boolean anyUnresolved)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.PLAYER_NEGOTIATION: handler PlayerNegotiation, void onPlayerNegotiation(Connection connection)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.REGISTER_GAME_TESTS: handler RegisterGameTests, void onRegisterGameTests(Object event)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.REGISTER_STRUCTURE_CONVERSIONS: handler RegisterStructureConversions, void onRegisterStructureConversions(Object event)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.RELOAD_END: handler ReloadEnd, void onReloadEnd(MinecraftServer server, ResourceManager rm, boolean success)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.RELOAD_START: handler ReloadStart, void onReloadStart(MinecraftServer server, ResourceManager rm)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.SERVER_AFTER_SETUP: handler AfterSetup, void onServerAfterSetup(MinecraftServer server)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.SERVER_STARTED: handler Started, void onStarted(MinecraftServer server)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.SERVER_STOPPED: handler Stopped, void onStopped(MinecraftServer server)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.SERVER_STOPPING: handler Stopping, void onStopping(MinecraftServer server)
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents.SORT_RELOAD_LISTENERS: handler SortReloadListeners, void onSortReloadListeners(Object event)
+- net.creeperhost.polylib.event.events.server.PolyServerTickEvents.LEVEL_TICK_END: handler LevelTickEnd, void onLevelTickEnd(ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyServerTickEvents.LEVEL_TICK_START: handler LevelTickStart, void onLevelTickStart(ServerLevel level)
+- net.creeperhost.polylib.event.events.server.PolyServerTickEvents.TICK_END: handler TickEnd, void onTickEnd(MinecraftServer server)
+- net.creeperhost.polylib.event.events.server.PolyServerTickEvents.TICK_START: handler TickStart, void onTickStart(MinecraftServer server)
+- net.creeperhost.polylib.event.events.server.PolySleepEvents.ALLOW_SLEEPING: handler AllowSleeping, void onAllowSleeping(net.minecraft.server.level.ServerPlayer player, BlockPos pos, SleepContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolySleepEvents.START_SLEEPING: handler StartSleeping, void onStartSleeping(LivingEntity entity, BlockPos pos)
+- net.creeperhost.polylib.event.events.server.PolySleepEvents.STOP_SLEEPING: handler StopSleeping, void onStopSleeping(LivingEntity entity, BlockPos pos)
+- net.creeperhost.polylib.event.events.server.PolySoundEvents.ENTITY_SOUND: handler EntitySound, void onEntitySound(Entity entity, Holder<SoundEvent> sound, SoundSource source, float volume, float pitch, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolySpawnEvents.FINALIZE_SPAWN: handler FinalizeSpawn, void onFinalizeSpawn(Mob mob, ServerLevelAccessor level, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolySpawnEvents.MOB_DESPAWN: handler MobDespawn, void onMobDespawn(Mob mob, DespawnContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolySpawnEvents.MOB_SPAWN_CONTEXT: handler MobSpawnContext, void onMobSpawnContext(Mob mob, ServerLevelAccessor level, BlockPos pos, EntitySpawnReason spawnType, net.minecraft.world.DifficultyInstance difficulty)
+- net.creeperhost.polylib.event.events.server.PolyVillageEvents.SIEGE_SPAWN: handler SiegeSpawn, void onSiegeSpawn(VillageSiege siege, Level level, Player player, Vec3 attemptedPos, CancelContext ctx), cancellable
+
+## Public Types
+
+- net.creeperhost.polylib.accessibility.AccessibilityOptionsRegistry (class, common): Central registry for accessibility option widgets that PolyLib injects into the vanilla Accessibility Options screen.
+
+Mods register providers during client init. PolyLib's event handlers call `#inject(Screen)` on every screen init event. Usage example `// During client init: AccessibilityOptionsRegistry.register("mymod.rescue", target -> { target.addCategory(Component.literal("My Mod")); target.addToggle(Component.literal("Fall Rescue"), prefs::isRescueOn, prefs::setRescueOn); `); }
+- net.creeperhost.polylib.accessibility.AccessibilityPolicy (enum, common): Controls how a registered accessibility preference interacts with server configuration.
+- net.creeperhost.polylib.accessibility.AccessibilityPrefsC2SPayload (record, common): C2S packet: client sends its current accessibility preference values to the server. Only preferences with effective policy `AccessibilityPolicy#PLAYER_OVERRIDES_SERVER` are included.
+- net.creeperhost.polylib.accessibility.AccessibilityPrefsManager (class, common): Server-side store for per-player accessibility preferences.
+
+Pure common — no loader API. Thread-safe via `ConcurrentHashMap`. Values are stored exactly as received from the client; no server config gate is applied here. The policy check (`AccessibilityPolicy`) is enforced on the client before sending.
+- net.creeperhost.polylib.accessibility.AccessibilityRegistrationBuilder (class, common): Fluent builder for registering accessibility options while simultaneously contributing their default English translations to PolyLib's lang datagen system.
+
+Used with the builder-style `AccessibilityOptionsRegistry#register` overloads: `AccessibilityOptionsRegistry.register("mymod.rescue", builder -> builder .togglePair( "mymod.accessibility.rescue_blink", "Save Me: Blink", () -> prefs.blinkRescueOn, v -> prefs.blinkRescueOn = v, "mymod.accessibility.rescue_farreach", "Save Me: Far Reach", () -> prefs.farReachOn, v -> prefs.farReachOn = v ) .toggle( "mymod.accessibility.void_grave", "Void Grave", () -> prefs.voidGraveOn, v -> prefs.voidGraveOn = v ) ); `
+
+Each method contributes the given key+English pair to `PolyLangContributions` and stores the corresponding widget action. The builder itself implements `OptionsWidgetProvider` and is stored as the entry's provider.
+- net.creeperhost.polylib.accessibility.OptionsListTarget (class, common): Wraps a reflected `OptionsList` and exposes a concise builder API for adding widgets to the Accessibility Options screen.
+
+Uses reflection to call the NeoForge-patched `addSmall(AbstractWidget, AbstractWidget)` and `addBig(AbstractWidget)` overloads which are not present in the vanilla compile target.
+- net.creeperhost.polylib.accessibility.OptionsWidgetProvider (interface, common): Callback that adds one or more widgets to the Accessibility Options screen via `OptionsListTarget`.
+- net.creeperhost.polylib.blocks.BlockFacing (class, common): No summary.
+- net.creeperhost.polylib.blocks.ChangeListener (interface, common): Can be implemented by any `BlockEntity` whose block extends `PolyEntityBlock`. Allows the block entity to receive neighbor change events from the block.
+- net.creeperhost.polylib.blocks.DataRetainingBlock (interface, common): This class can be implemented on any `BlockEntity`, then as long as that entity belongs to a `PolyEntityBlock`, It will keep its data when harvested.
+- net.creeperhost.polylib.blocks.InteractableBlock (interface, common): Can be implemented by any `BlockEntity` whose block extends `PolyEntityBlock`. Allows the block entity to receive player interaction events.
+- net.creeperhost.polylib.blocks.PolyBlock (class, common): Base block class for PolyLib,
+- net.creeperhost.polylib.blocks.PolyBlockEntity (class, common): Base class for all poly block entities. This implements the data manager system as well as a bunch of other useful features. Designed to work with `PolyBlockEntity`
+- net.creeperhost.polylib.blocks.PolyEntityBlock (class, common): No summary.
+- net.creeperhost.polylib.blocks.RedstoneActivatedBlock (interface, common): All functionality for this interface is already built into `PolyBlockEntity` This means all you have to do is implement this on a `BlockEntity` that extends PolyBlockEntity. you can then use `PolyBlockEntity#isTileEnabled()` to check if the tile is currently allowed to run.
+- net.creeperhost.polylib.blocks.RedstoneEmitter (interface, common): Can be implemented by any `BlockEntity` whose block extends `PolyEntityBlock`. Note: canProvidePower must be set to true on the `PolyEntityBlock` constructor.
+- net.creeperhost.polylib.chat.ChatChannel (class, common): Represents an isolated stream of messages and members.
+- net.creeperhost.polylib.chat.ChatConfig (class, common): User-facing config options for the PolyLib chat system. Values are runtime defaults; these can be wired to a config screen in the future.
+- net.creeperhost.polylib.chat.ChatMember (record, common): Represents a member/participant in a ChatChannel sidebar. Can represent a Player, a Shell, or an Automation Controller.
+- net.creeperhost.polylib.chat.ChatRouter (class, common): Manages active chat channels and routes messages.
+- net.creeperhost.polylib.chat.client.ChatNotifications (class, common): Registry for mention/notification triggers per channel. When a message arrives on a channel, the registered trigger is tested. If it fires, the channel's UI elements pulse and an optional vanilla notification is sent.
+- net.creeperhost.polylib.chat.client.ChatWindowManager (class, common): Manages multiple GuiWindows, handles Z-indexing, focus, snapping, and tiling.
+- net.creeperhost.polylib.chat.client.FloatingChatWindow (class, common): The actual chat UI that renders a ChatChannel.
+- net.creeperhost.polylib.chat.client.notification.FloatingNotificationWindow (class, common): Floating notification window — read-only scrollable list of NotificationEntry items. ALERT entries pulse the header yellow→orange. Inherits drag/minimize/resize from GuiWindow.
+- net.creeperhost.polylib.chat.client.notification.NotificationEntry (record, common): A single notification pushed by a mod.
+- net.creeperhost.polylib.chat.client.notification.NotificationSeverity (enum, common): Severity level for a notification entry. ALERT entries trigger window border pulse.
+- net.creeperhost.polylib.chat.client.notification.NotificationWindowManager (class, common): Manages FloatingNotificationWindow instances for FLOATING-mode notification windows.
+- net.creeperhost.polylib.chat.client.notification.NotificationWindowMode (enum, common): How a notification window is displayed.
+- net.creeperhost.polylib.chat.client.notification.NotificationWindowRegistry (class, common): Registry for notification windows. Mods register named windows and push entries to them.
+- net.creeperhost.polylib.chat.client.notification.PolyNotifications (class, common): Convenience API for the built-in shared PolyLib notification window. All mods sending to `#send(NotificationEntry)` share one consolidated panel.
+- net.creeperhost.polylib.chat.client.PulseEffect (class, common): Generates a pulsing ARGB color that cycles between two colors over time. Used for mention pulse on floating window headers and tab badges.
+- net.creeperhost.polylib.chat.client.tab.AllTab (record, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.ChannelTab (record, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.ChatTab (interface, common): Sealed interface for tab types shown in the vanilla chat tab bar.
+- net.creeperhost.polylib.chat.client.tab.ChatTabBarElement (class, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.ChatTabBarSide (class, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.ChatTabBarTop (class, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.ChatTabInjection (class, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.ChatTabRegistry (class, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.NotificationTab (record, common): A tab representing a notification window within the chat tab bar.
+- net.creeperhost.polylib.chat.client.tab.TabPosition (enum, common): No summary.
+- net.creeperhost.polylib.chat.client.tab.VanillaTab (record, common): No summary.
+- net.creeperhost.polylib.chat.client.VanillaChatResize (class, common): Opt-in API for making the vanilla chat area resizable. PolyLib does NOT register this by default. Mods call `#enable()` to opt in. When enabled, the vanilla chat history region gains drag handles on its top and right edges, allowing the player to resize the chat area. The resized dimensions are persisted in ChatLayoutManager under a special layout ID.
+- net.creeperhost.polylib.chat.layout.ChatLayoutManager (class, common): Manages saving and loading of ChatWindowLayouts to the local client disk.
+- net.creeperhost.polylib.chat.layout.ChatWindowLayout (class, common): Represents the on-screen layout properties of a floating chat window. This state is persisted to disk.
+- net.creeperhost.polylib.chat.layout.SnapCorner (enum, common): Screen corner a floating window is snapped to. When snapped, the window re-anchors on screen resize.
+- net.creeperhost.polylib.chat.RichChatMessage (record, common): Represents a single message in the PolyLib Modular Chat Framework.
+- net.creeperhost.polylib.client.config.ConfigPanelRegistry (class, common): Central registry for mod config panel screens. Registration tiers
+
+Vanilla Screen — `ScreenFactory)`. Works on any loader. The dev provides a standard `Screen` factory. ModularGui — `GuiProviderFactory)`. PolyLib wraps the `GuiProvider` in a `ModularGuiScreen` automatically. ModularGui Injection — `Predicate, Function)`. Overlays a ModularGui directly onto an existing vanilla screen via `ModularGuiInjector`. Use for advanced cases only.
+
+Auto-hooks
+
+NeoForge — use `NeoForgeConfigHelper.register(...)` from the NeoForge module. This calls both this registry AND `IConfigScreenFactory` so the entry appears under the native "Mods → Config" button. Fabric / Mod Menu — handled automatically via PolyLib's `ModMenuCompat` entrypoint when Mod Menu is present. Just call `#register` from the Fabric init. Button injection fallback — PolyLib injects a button into `ConfigurationSectionScreen` and similar screens that the native hook doesn't cover. Keybinds are also ticked via `#tickKeybinds()`.
+
+PolyConfig json5 backing The per-mod keybind enable/disable map is stored in `polylib.json5` and managed through `PolylibCommon#configData`.
+- net.creeperhost.polylib.client.config.GuiProviderFactory (interface, common): Factory that creates a PolyLib `GuiProvider` for a given parent screen. PolyLib wraps this in `net.creeperhost.polylib.client.modulargui.ModularGuiScreen` automatically.
+- net.creeperhost.polylib.client.config.KeyboardShortcut (record, common): Describes an optional keyboard shortcut for a config panel entry. Variants
+
+`#unbound(KeyMapping.Category)` — shows in Controls but has no default key `InputConstants.Type, KeyMapping.Category)` — has a suggested key but defaults to UNBOUND so it never conflicts `InputConstants.Type, KeyMapping.Category)` — bound by default; use sparingly
+
+Create or reuse a `KeyMapping.Category` via `KeyMapping.Category.register(Identifier.fromNamespaceAndPath(modId, "main"))`.
+- net.creeperhost.polylib.client.config.ScreenFactory (interface, common): Factory that creates a config `Screen` for a given parent screen. Used by `ConfigPanelRegistry` to open a mod's config panel.
+- net.creeperhost.polylib.client.gif.AnimatedGif (class, common): No summary.
+- net.creeperhost.polylib.client.gif.GifSequenceWriter (class, common): No summary.
+- net.creeperhost.polylib.client.gif.ImageUtils (class, common): No summary.
+- net.creeperhost.polylib.client.model.Model3D (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiButton (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiColourPicker (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiContextMenu (class, common): Context menus get added to the root element when they are created so as long as no new elements are added after the menu is opened, the menu will always be on top. It will also automatically close when an option is selected, or when the user clicks outside the context menu.
+- net.creeperhost.polylib.client.modulargui.elements.GuiDialog (class, common): This class provides an easy way to construct a simple dialog with some text and buttons.
+- net.creeperhost.polylib.client.modulargui.elements.GuiDropZone (class, common): A translucent highlight rectangle shown as a drop-zone indicator during drag operations. Starts hidden; call `#show()` / `#hide()` to toggle visibility.
+- net.creeperhost.polylib.client.modulargui.elements.GuiDVD (class, common): Just for fun!
+- net.creeperhost.polylib.client.modulargui.elements.GuiElement (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiEnergyBar (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiEntityRenderer (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiFuzzyFinder (class, common): A search-based context menu overlay (Fuzzy Finder) for visual scripting. Allows users to type to filter a list of available nodes or options.
+- net.creeperhost.polylib.client.modulargui.elements.GuiFuzzySearch (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiInfoPanel (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiItemStack (class, common): A simple gui element that renders an item stack. This width and height of this element should be constrained to the same value, The stack size is based on the element size. constrain size to 16x16 for the standard gui stack size.
+- net.creeperhost.polylib.client.modulargui.elements.GuiList (class, common): GuiList, as the name suggests allows you to display a list of objects. The list type can be whatever you want, and you can install a converter to map list objects to elements for display.
+
+The default converter simply displays the toString() value of the object.
+
+Element width will be fixed to the width of the GuiList, element height can be whatever you want.
+
+Note on adding child elements to this: If any child elements extend beyond the bounds of this element, that part will be culled. Also, child elements will always end up bellow the list items when the list is updated.
+- net.creeperhost.polylib.client.modulargui.elements.GuiManipulable (class, common): This element can be used to create movable/resizable guis of gui elements. This is achieved via a "contentElement" to which all child elements should eb attached. Initially the bounds of the content element will match the parent `GuiManipulable` element. However, depending on which features are enabled, it is possible for the user to resize the content element by clicking and dragging the edges, or move the element by clicking and dragging a specified "dragArea".
+
+It should be noted that the constraints on the underlying `GuiManipulable` should be fairly rigid. Things like dynamic constraint changes will not translate through to the contentElement,
+
+If a UI resize occurs the content element's bounds will be reset to default. You can also trigger a manual reset by calling `#resetBounds()`
+- net.creeperhost.polylib.client.modulargui.elements.GuiPannableCanvas (class, common): A generic panning/zooming canvas element. Provides: - panX, panY, zoom state - Coordinate transformations between Screen Space and Canvas Space - Middle-mouse dragging to pan - Scroll wheel to zoom toward cursor - Bookmark saving/recalling for viewport positions
+- net.creeperhost.polylib.client.modulargui.elements.GuiProgressIcon (class, common): This can be used to create a simple progress indicator like those used in machines like furnaces.
+
+The background texture (if one is used) and the animated texture must be the same shape and size, They must be designed so that the animated texture can be rendered directly on top of the background texture with no offset. The animated texture should not have any empty space on ether end as the entire width of the texture is used in the animation.
+
+Texture must be designed for left to right animation,
+- net.creeperhost.polylib.client.modulargui.elements.GuiRectangle (class, common): Used to draw a simple rectangle on the screen. Can specify separate (or no) border colours and fill colours. Can also render using the "shadedRectangle" render type.
+- net.creeperhost.polylib.client.modulargui.elements.GuiScrolling (class, common): So the logic behind this element is as follows. This element contains a base "Content Element" that holds all the scrollable content. The content element's position is controlled by the `GuiScrolling` But its `GeoParam#WIDTH` and `GeoParam#HEIGHT` constraints can be set by the user, Or they can be set to dynamically adjust to the child elements added to it.
+
+The bounds of the `GuiScrolling` represent the "view window" When scrolling up/down, left/right the Content Element is effectively just moving around behind the view window and everything outside the view window is scissored off. Any events that occur outside the view window are not propagated to scroll element. Calls to `#isMouseOver()` from an area of an element that is outside the view window will return false.
+
+Elements that are completely outside the view window will not be rendered at all for efficiency.
+- net.creeperhost.polylib.client.modulargui.elements.GuiSlider (class, common): This can be used as the base for anything that requires the linear movement of an element between two position. e.g. Scroll bars, Slide controls and slide indicators.
+
+Implementation is simple, Simply install a "Slide Element", this will be the moving element, The movement of this element is confined to the bounds og the `GuiSlider`
+
+The position of the slider is managed via the installed `SliderState`
+- net.creeperhost.polylib.client.modulargui.elements.GuiSlots (class, common): This element is used to manage and render a grid of inventory slots in a GUI. The width and height of this element are automatically constrained based on the slot configuration. However, you can override those constraints, The slot grid will always render in the center of the element nomater the element size.
+
+This can be used to render all slots in a `SlotGroup` or a sub-set of slots within a group.
+- net.creeperhost.polylib.client.modulargui.elements.GuiText (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiTextField (class, common): TODO, Re write this, Its currently mostly pulled from the TextField in Gui v2
+- net.creeperhost.polylib.client.modulargui.elements.GuiTextList (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiTexture (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiWindow (class, common): A draggable, floating window primitive built on GuiManipulable. Supports window titles, close buttons, and tab-group docking logic.
+- net.creeperhost.polylib.client.modulargui.elements.TextInputDialog (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.Assembly (class, common): This represents multiple gui elements that have been assembled into a functional component. This is primarily for used by the built-in element builders. But could be used in custom builders.
+
+This is needed because a builder method for an element, cant always return just the relevant element. Take the scroll bar for example. The builtin scroll bar construction consists of a background element, with the scroll bar itself being a child of the background element constrained to the background element.
+
+So the create method for a scroll bar needs to return the background element so that you can constrain int appropriately, but it also needs to return the slider element so that you can actually use it. That's what this container class is for.
+- net.creeperhost.polylib.client.modulargui.lib.BackgroundRender (interface, common): Allows a Gui Elements to render content behind child elements. This is the default render mode for the majority of elements.
+- net.creeperhost.polylib.client.modulargui.lib.ColourState (interface, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.Constraints (class, common): This class contains a bunch of static helper methods that can be used to quickly apply common constraints. The plan is to keep adding common constraints to this class as they pop up.
+- net.creeperhost.polylib.client.modulargui.lib.container.ContainerGuiProvider (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.container.ContainerScreenAccess (interface, common): Used by `ContainerGuiProvider` Provides access to the ContainerMenu as well as some essential functions.
+- net.creeperhost.polylib.client.modulargui.lib.container.DataSync (class, common): This class provides a convenient way to synchronize server side data with a client side screen via the ContainerMenu
+- net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup (class, common): Used to configure slots a set of slots in a ContainerMenu. The SlotGroup can then be passed to ModularGui elements such as `GuiSlots` in order to give the gui control over slot positioning and rendering.
+
+Ideally you should use a separate SlotGroup for each 'group' of slots, Meaning the players main inventory and hot bar should be separate ranges. That said, if you have multiple slots spread out across something like a machine gui, You can add them all to one SlotGroup then pass each individual slot from that range to a `ContainerScreenAccess, SlotGroup, int)`
+- net.creeperhost.polylib.client.modulargui.lib.ContentElement (interface, common): Implemented by elements that have a separate child element to which content should be added. e.g. scroll element, manipulable element etc...
+- net.creeperhost.polylib.client.modulargui.lib.CursorHelper (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.DynamicTextures (interface, common): Designed for use with DynamicTextureProvider
+- net.creeperhost.polylib.client.modulargui.lib.ElementEvents (interface, common): This class defines the default implementation for all Screen events. Input events in Modular GUI v2 work similar to v2, events are passed to all elements recursively in a top-down order, and if any element 'consumes' the event, it will not be passed any further down the chain. However, this approach had issues in v2, because there are certain situations where an element needs to receive an event even if it has been consumed. To deal with that we now have two methods for each event, the main handler method that will always get called, and uses a 'consumed' flag to track whether the event has been consumed, as well as a simpler convenience method that will only get called if the event has not already been canceled, and does not require you to call super.
+- net.creeperhost.polylib.client.modulargui.lib.ForegroundRender (interface, common): Allows a Gui Elements to render content in front of child elements. Note: Most elements should use `BackgroundRender` to render their content.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.Align (enum, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.Axis (enum, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.AxisConfig (enum, common): Denies how each of the three axis parameters are computed based on the available constraints. Note: If both min and max are defined, size is ignored.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.Borders (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.ConstrainedGeometry (class, common): This is the base class used to define the size and position of a GuiElement.
+
+The geometry system is designed to be very user-friendly, yet very powerful, with the ability to do all sorts of fun and interesting things. But if all you want is the ability to set simple size and position values, then there is no need to read any further. Just use the basic setters setXPos, setYPos, setWidth, setHeight and everything should just work. If you want to dive deeper, read on.
+
+The geometry system is based around 6 core parameters: xMin, xMax, xSize, yMin, yMax and ySize. See: `GeoParam`
+
+These parameters are defined using 'Constraints' See: `Constraint`
+
+When properly constrained, it will be possible to request values for any of these 6 parameters.
+
+For each axis (x and y) there are 3 constraints: min, max and size.
+
+In order for an axis to be properly defined 2 of these constraints need to be set.
+
+e.g. (xMin and xSize) or (xMin and xMax) or (xMax and xSize)
+
+Using any of these combinations the position and size of an axis can be computed.
+
+Look at `AxisConfig` for details on the values that get returned when too few constraints are set.
+
+TLDR: We will always try to return "reasonable" default values. e.g. if only size is constrained, xMin will default to 0 and xMax will default to 0 + xSize.
+
+If all three constraints are set then the size constraint will be ignored.
+
+You can use `#strictMode(boolean)` to change this behavior.
+
+There are a number of different types of constraints that can be used, including completely custom constraints.
+
+Take a look at the `Constraint` class for a detailed list with explanations.
+
+Note: All position and size values in ModularGui use doubles. This is because floating point position and size values can be very useful at times. But they can also cause a lot of ugly visual artifacts when not used properly. So by default, all the builtin constraints will cast their outputs to an integer value. If you need floating point precision, you can enable it by calling .precise() on any of the builtin constraints.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint (interface, common): Constraints are used to define an elements position and shape by constraining the elements geometry parameters. `GeoParam` Constraints can be as simple as literal values representing an elements exact position and / or size in screen space, They can be relative coordinates, (Relative to another element's Geometry) Or they can be used to supply completely custom dynamic values.
+
+All the built-in constraints are implemented and documented in this class.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.ConstraintImpl (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.Direction (enum, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam (enum, common): Used to define the 6 core parameters that make up an elements geometry These are named Left, Right, Width, Top, Bottom, Height. These names were chosen for ease of use, and to make it clear what they represent. Internally they are known as xMin, xMax, xSize, yMin, yMax, ySize.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.GeoRef (class, common): Used to access one of the 6 core parameters that make up an element's geometry.
+
+The primary purpose of this class is to provide a convenient way to reference a geometry parameter when defining constraints. It also helps make the code more debuggable. I could just make literally everything a lambda, but that makes debugging kinda painful when things break.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent (interface, common): This is the base interface that allows an element or screen to define its basic geometry. As well as defining the primary methods for handling child elements.
+
+It also provides a way to access some common minecraft fields.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.Position (interface, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle (interface, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.GuiProvider (interface, common): This interface is used to build modular gui Screens. For modular gui container screens use `ContainerGuiProvider`
+- net.creeperhost.polylib.client.modulargui.lib.GuiRender (class, common): This class primarily based on GuiHelper from BrandonsCore But its implementation is heavily inspired by the new GuiGraphics system in 1.20+
+
+The purpose of this class is to provide most of the basic rendering functions required to render various GUI geometry. This includes things like simple rectangles, textures, strings, etc.
+- net.creeperhost.polylib.client.modulargui.lib.ScissorHandler (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.lib.SliderState (interface, common): The primary interface for managing getting and setting the position of slider elements.
+- net.creeperhost.polylib.client.modulargui.lib.TextState (interface, common): The primary interface for managing getting and setting the text in a `GuiTextField`
+- net.creeperhost.polylib.client.modulargui.lib.ToolTipHandler (interface, common): No summary.
+- net.creeperhost.polylib.client.modulargui.ModularGui (class, common): The modular gui system is built around "Gui Elements" but those elements need to be rendered by a base parent element. That's what this class is. This class is essentially just a container for the root gui element.
+- net.creeperhost.polylib.client.modulargui.ModularGuiContainer (class, common): Container screen implementation for `ModularGui`.
+- net.creeperhost.polylib.client.modulargui.ModularGuiInjector (class, common): This class is designed to allow you to inject modular gui elements into / overtop any standard gui.
+- net.creeperhost.polylib.client.modulargui.ModularGuiScreen (class, common): A simple ModularGui screen implementation. This is simply a wrapper for a `ModularGui` that takes a `GuiProvider` This should be suitable for most basic gui screens.
+- net.creeperhost.polylib.client.modulargui.nodegraph.BlockInsertionHelper (class, common): Generic helper class for managing block insertion and displacement in a vertical visual scripting environment. Handles calculating the necessary recursive Y-displacement when a block is inserted between existing blocks in a stack.
+- net.creeperhost.polylib.client.modulargui.sprite.Material (class, common): 26.1 port of the old compatibility wrapper. Vanilla net.minecraft.client.resources.model.Material is gone in the new rendering/model setup, so this class now stands entirely on its own.
+- net.creeperhost.polylib.client.modulargui.sprite.ModAtlasHolder (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.sprite.ModSpriteLoader (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.sprite.ModSpriteResourceLoader (class, common): Custom sprite resource loader that allows filtering of resources based on mod id.
+- net.creeperhost.polylib.client.modulargui.sprite.PolyTextures (class, common): This class contains Polylib's gui texture atlas and methods for retrieving gui materials.
+
+Mods wishing to use their own textures in guis can pretty much just copy-paste this class. Just make sure MOD_ID points to your mod's id.
+
+Don't forget to register the atlas holder as a resource reload listener. polylib does this in PolyLibFabric (fabric) and ForgeClientEvents (forge)
+
+Then the last thing you need is an atlas json identical to polylib's in "assets/[mod-id]/atlasses/gui.json"
+- net.creeperhost.polylib.client.PolyPalette (class, common): This class contains a common set of colours and gui components for use in most CreeperHost gui's The goal of this class is not to start out with everything we will ever need, but rather to provide a place to put new bits and pieces as we find need for them.
+- net.creeperhost.polylib.client.screen.ButtonHelper (class, common): No summary.
+- net.creeperhost.polylib.client.screen.PolyScreen (class, common): No summary.
+- net.creeperhost.polylib.client.screen.widget.ScreenList (class, common): No summary.
+- net.creeperhost.polylib.client.screen.widget.ScreenListEntry (class, common): No summary.
+- net.creeperhost.polylib.client.screen.widget.ScreenWell (class, common): No summary.
+- net.creeperhost.polylib.client.screen.widget.TextFieldValidate (class, common): No summary.
+- net.creeperhost.polylib.client.toast.ProgressToast (class, common): No summary.
+- net.creeperhost.polylib.client.toast.SimpleToast (class, common): No summary.
+- net.creeperhost.polylib.compat.EnergyIntegration (class, fabric): No summary.
+- net.creeperhost.polylib.config.ConfigBuilder (class, common): No summary.
+- net.creeperhost.polylib.config.ConfigData (class, common): No summary.
+- net.creeperhost.polylib.config.NeoForgeConfigHelper (class, neoforge): NeoForge-specific helper for registering a mod config screen with PolyLib.
+
+A single call to one of these methods registers the screen with both:
+
+`ConfigPanelRegistry` — powers PolyLib's keybind, button injection, and Fabric Mod Menu NeoForge's `IConfigScreenFactory` extension point — makes the screen appear under the native "Mods → Config" button without any extra boilerplate
+
+Usage (NeoForge mod constructor) `public MyMod(ModContainer container, IEventBus bus) { // Vanilla Screen variant: NeoForgeConfigHelper.register(container, parent -> new MyConfigScreen(container, parent)); // ModularGui variant: NeoForgeConfigHelper.registerModularGui(container, parent -> new MyConfigLayout(container, parent)); ` }
+- net.creeperhost.polylib.config.PolyConfig (class, common): No summary.
+- net.creeperhost.polylib.Constants (class, common): No summary.
+- net.creeperhost.polylib.containers.DataManagerContainer (interface, common): If you wish to send messages from a client gui to the server via `DataManagerBlock`, Then the gui's container must implement this interface.
+- net.creeperhost.polylib.containers.ModularGuiContainerMenu (class, common): The base abstract ContainerMenu for all modular gui containers.
+- net.creeperhost.polylib.containers.network.ContainerSyncProtocol (interface, common): Protocol adapter for synchronizing data between server and client containers. Replaces the need for raw byte buffer manipulation and manual packet ID assignments.
+- net.creeperhost.polylib.containers.network.PolyContainerSyncProtocol (class, common): No summary.
+- net.creeperhost.polylib.containers.PolyBlockContainerMenu (class, common): No summary.
+- net.creeperhost.polylib.containers.slots.PolySlot (class, common): A fully configurable inventory slot. If there is anything this slot can not do... Let me know.
+- net.creeperhost.polylib.containers.slots.SlotInput (class, common): No summary.
+- net.creeperhost.polylib.containers.slots.SlotOutput (class, common): No summary.
+- net.creeperhost.polylib.containers.slots.SlotTag (class, common): No summary.
+- net.creeperhost.polylib.data.DataManagerBlock (interface, common): This interface must be implemented on any BlockEntity that wishes to use the `TileDataManager` system.
+- net.creeperhost.polylib.data.lang.PolyLangContributions (class, common): Central store for PolyLib-managed default English translation strings.
+
+Populated automatically by PolyLib registration APIs:
+
+`AccessibilityRegistrationBuilder` toggle/pair/category methods `ConfigPanelRegistry.register(modId, labelKey, defaultEnglish, ...)` overloads `PlayerClientSettingsRegistry.register(..., displayKey, displayEnglish)` overload `PolyRegistry.register(name, defaultEnglish, supplier)` overload Direct: `String)`
+
+Consumed by `PolyLibLangProvider` in PolyLib's NeoForge module during datagen. Mod lang providers should extend `PolyLibLangProvider` instead of `LanguageProvider` directly to receive all contributions automatically.
+
+Thread-safe. First registration wins — later contributions for an existing key are ignored, allowing mods to override PolyLib defaults by contributing earlier.
+- net.creeperhost.polylib.data.serializable.AbstractDataStore (class, common): The base class of a simple general purpose serializable data system.
+- net.creeperhost.polylib.data.serializable.BooleanData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.ByteData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.DoubleData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.EnumData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.FloatData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.IntData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.LongData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.ShortData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.StackData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.StringData (class, common): `AbstractDataStore` wrapping a single `String` value.
+
+NBT: stored via `ValueOutput.putString` / `ValueInput.getStringOr`. Network: sent via `buf.writeUtf` / `buf.readUtf`.
+
+Created for DisCraftHonored PolyLib integration.
+- net.creeperhost.polylib.data.serializable.UUIDData (class, common): `AbstractDataStore` wrapping a nullable `UUID` value.
+
+NBT: stored as a string (`""` represents `null`). Network: presence flag (boolean) followed by two longs (most/least significant bits).
+
+Created for DisCraftHonored PolyLib integration.
+- net.creeperhost.polylib.data.TileDataManager (class, common): This class provides a way to save and synchronize tile data with the client. As well as the ability to set fields in your tile via a client side container screen.
+
+To get started simply define a TileDataManager instance in your tile and call the `#tick()`, and methods from the appropriate methods on your tile.
+
+You can then define a data field in you tile like so: public IntData myIntField = dataManager.register("int_field_name", new IntData(0), SAVE, SYNC, CLIENT_CONTROL);
+
+The SAVE, SYNC and CLIENT_CONTROL flags are each optional, Take a look at #register(String, AbstractDataStore, int...) for more info.
+- net.creeperhost.polylib.datagen.FabricPolyLibLangProvider (class, fabric): Abstract `FabricLanguageProvider` that automatically includes every translation entry contributed to PolyLib's lang datagen system via any PolyLib registration API. Usage Extend this class in your mod's Fabric datagen module instead of extending `FabricLanguageProvider` directly: `public class ModLangProvider extends FabricPolyLibLangProvider { public ModLangProvider(FabricPackOutput output, CompletableFuture registries) { super(output, registries); ` protected void addModTranslations(HolderLookup.Provider registries, TranslationBuilder builder) { // Only entries NOT managed by PolyLib registration APIs. } } }
+- net.creeperhost.polylib.datagen.PolyLibLangProvider (class, neoforge): Abstract `LanguageProvider` that automatically includes every translation entry contributed to PolyLib's lang datagen system via any PolyLib registration API. Usage Extend this class in your mod's NeoForge datagen module instead of extending `LanguageProvider` directly: `public class ModLangProvider extends PolyLibLangProvider { public ModLangProvider(PackOutput output) { super(output, "mymod"); ` protected void addModTranslations() { // Only entries NOT managed by PolyLib registration APIs. // Items, blocks, and other objects registered with // PolyRegistry.register(name, defaultEnglish, supplier) // and accessibility options registered with // AccessibilityOptionsRegistry.register(key, builder -> ...) // are included AUTOMATICALLY — no add() calls needed here. add("message.mymod.some_event", "Something happened!"); } } } What is auto-included Any key+English pair contributed to `PolyLangContributions` via:
+
+`AccessibilityOptionsRegistry.register(key, builder → ...)` — all `.toggle()`, `.togglePair()`, and `.category()` labels `ConfigPanelRegistry.register(modId, labelKey, defaultEnglish, factory, shortcut)` `ConfigPanelRegistry.registerModularGui(modId, labelKey, defaultEnglish, factory, shortcut)` `PlayerClientSettingsRegistry.register(..., displayNameKey, displayNameEnglish)` `PolyRegistry.register(name, defaultEnglish, supplier)` — block/item names `PolyLangContributions.contribute(key, english)` — direct contributions
+
+Locale support Use `String, String)` to generate a locale other than `en_us`.
+- net.creeperhost.polylib.debug.neoforge.NeoForgeDebugBridge (class, neoforge): NeoForge bridge that wires `PolyDebugRegistry` into the vanilla `DebugScreenEntries` system via `RegisterDebugEntriesEvent`.
+
+Registered on the mod event bus from `net.creeperhost.polylib.PolyLibClientNeoForge`.
+
+Each `PolyDebugEntryType` is adapted to a `DebugScreenEntry` that delegates `isAllowed()` and `display()` back to the `PolyDebugEntry` implementation. Toggle state and persistence are handled entirely by vanilla's `DebugOptions` / `options.txt` mechanism — no extra storage is needed.
+- net.creeperhost.polylib.debug.PolyDebugDisplayer (interface, common): Platform-agnostic display interface passed to `PolyDebugEntry#display`.
+
+Maps directly onto `DebugScreenDisplayer` on both NeoForge and Fabric. Use `#addLine` for normal sequential lines, `#addPriorityLine` to force a line to the top of its column, and `#addToGroup` to append lines beneath an existing vanilla or mod-registered entry group.
+- net.creeperhost.polylib.debug.PolyDebugEntry (interface, common): Callback interface for a custom F3 debug screen entry.
+
+Implement this interface and register an instance via `PolyDebugRegistry#register`. Both methods are called on the render thread (client-side only), each frame while the F3 screen is visible. Example `PolyDebugRegistry.register( Identifier.fromNamespaceAndPath("mymod", "stats"), new PolyDebugEntry() { public boolean isAllowed(Minecraft mc, boolean reduced) { return mc.level != null; // only show in-world ` public void display(PolyDebugDisplayer d, Level level, LevelChunk cc, LevelChunk sc) { d.addLine("MyMod stat: " + MyStats.getValue()); } }, true, true, false, "debug.mymod.stats", "My Stats" ); }
+- net.creeperhost.polylib.debug.PolyDebugEntryType (class, common): Typed registration token for a custom F3 debug screen entry.
+
+Obtain via `PolyDebugRegistry#register` and store as a `public static final` constant in your mod class. Toggle / profile behaviour
+
+`#defaultEnabled` — whether the toggle button is ON by default when no saved preference exists yet. MC persists the toggle across sessions in the vanilla `options.txt` (`debugScreen.*`). `#inDefaultProfile` — automatically enable this entry when the player activates the "Default" F3 profile (F3 + N in vanilla). `#inPerformanceProfile` — automatically enable this entry when the "Performance" F3 profile is active.
+- net.creeperhost.polylib.debug.PolyDebugRegistry (class, common): Registry for `PolyDebugEntryType` tokens.
+
+Registration must happen before the debug screen is first opened — typically in your mod's client initialiser or static init. On NeoForge this registry is consumed by `net.creeperhost.polylib.debug.neoforge.NeoForgeDebugBridge` during the `RegisterDebugEntriesEvent` (mod bus). On Fabric it is consumed by the `FabricDebugEntriesMixin` injected into `DebugScreenEntries`. Minimal usage example `// In your mod client init: public static final PolyDebugEntryType MY_ENTRY = PolyDebugRegistry.register( Identifier.fromNamespaceAndPath("mymod", "my_info"), displayer -> displayer.addLine("MyMod: " + getSomeValue()), true, // ON by default true, // included in the Default profile false, // not in the Performance profile "debug.mymod.my_info", // i18n key "My Info" // English fallback for datagen ); `
+- net.creeperhost.polylib.event.data.CancelContext (class, common): Passed to cancellable PolyEvent handlers. Handlers call `#cancel()` to stop further propagation. The combiner for cancellable events must check `#isCancelled()` after each handler and short-circuit.
+- net.creeperhost.polylib.event.events.client.PolyCameraEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientBlockEntityEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientChunkEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientConnectionEvents (class, common): Client-side connection lifecycle events (play, login, configuration channels).
+
+`@Nullable Object sender` parameters accept a Fabric `PacketSender` on Fabric; NeoForge adapters pass `null`.
+- net.creeperhost.polylib.event.events.client.PolyClientEntityEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientInteractionEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientLevelEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientLifecycleEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientPlayerEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyClientTickEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents (class, common): Client-side entity and world-object rendering events.
+
+All events in this class use MC render-state objects (`LivingEntityRenderState`, `AvatarRenderState`, etc.) rather than live entity references, reflecting the MC 26.1.2 extract-then-submit pipeline.
+- net.creeperhost.polylib.event.events.client.PolyGuiEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyHeartType (enum, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyInputEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents (class, common): Client-side level rendering stage events.
+
+All SAMs receive the `Minecraft` instance as their sole typed parameter; loader-specific context objects (PoseStack, Camera, etc.) are intentionally omitted to keep the API loader-agnostic.
+
+Stages with no Fabric native equivalent are fired only on NeoForge (NeoForge-primary). Stages with no NeoForge native equivalent are fired only on Fabric (Fabric-primary). Cross-loader stages are fired on both.
+- net.creeperhost.polylib.event.events.client.PolyRenderEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyRenderStateEvents (class, common): Events related to client render state validity.
+- net.creeperhost.polylib.event.events.client.PolyScreenEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.client.PolyTooltipEvents (class, common): Client-side tooltip events.
+- net.creeperhost.polylib.event.events.client.PolyViewportEvents (class, common): Client-side viewport events: fog, FOV, and camera distance.
+
+All events in this class are NeoForge-primary — no Fabric native equivalents exist. Fabric mixin bridges would require hooking into deep rendering internals; they may be added in a future tier.
+
+Note: Camera-angle modification is covered by `PolyCameraEvents#CAMERA_SETUP` (already wired in T16). FOV modifier (multiplier) is covered by `PolyCameraEvents#FOV_MODIFIER` (already wired in T16).
+- net.creeperhost.polylib.event.events.server.PolyBlockEntityEvents (class, common): Events related to block entity lifecycle (load / unload).
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyBrewingEvents (class, common): Events related to brewing stand operations.
+
+NeoForge: `PotionBrewEvent.Pre` / `PotionBrewEvent.Post`
+
+Fabric: mixin into `BrewingStandBlockEntity#doTick`
+- net.creeperhost.polylib.event.events.server.PolyChatEvents (class, common): Events related to player chat messages and command execution.
+- net.creeperhost.polylib.event.events.server.PolyChunkEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyDataEvents (class, common): Events related to data/resource loading.
+
+Note: `REGISTER_COMMANDS` is located in `PolyServerCommandEvents`.
+- net.creeperhost.polylib.event.events.server.PolyEnchantEvents (class, common): Events related to enchanting mechanics.
+- net.creeperhost.polylib.event.events.server.PolyEntityEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyExplosionEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyItemEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyLevelEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyMobEffectEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyPlayerEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyPlayerTickEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyRegistryEvents (class, common): Events related to registry operations.
+
+Tier 15 — `REGISTRY_ID_REMAP` added in Tier 15.
+- net.creeperhost.polylib.event.events.server.PolyServerCommandEvents (class, common): Fired when the server is registering commands. Use this to register commands cross-platform via Brigadier.
+
+NeoForge: `RegisterCommandsEvent`
+
+Fabric: `CommandRegistrationCallback`
+- net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolyServerTickEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolySleepEvents (class, common): Events related to entity sleeping behaviour.
+
+NeoForge: `CanPlayerSleepEvent`; start/stop via mixin
+
+Fabric: `EntitySleepEvents.START_SLEEPING`, `STOP_SLEEPING`, `ALLOW_SLEEPING`
+- net.creeperhost.polylib.event.events.server.PolySoundEvents (class, common): No summary.
+- net.creeperhost.polylib.event.events.server.PolySpawnEvents (class, common): Events related to mob spawning and despawning.
+
+NeoForge: `FinalizeSpawnEvent`, `MobDespawnEvent`
+
+Fabric: mixins into `Mob#finalizeSpawn` and `Mob#checkDespawn`
+- net.creeperhost.polylib.event.events.server.PolyVillageEvents (class, common): Events related to villages, villager trading, and sieges.
+
+NeoForge: `VillageSiegeEvent`
+
+Fabric: mixin into `VillageSiege#tick`
+- net.creeperhost.polylib.event.PolyEvent (class, common): No summary.
+- net.creeperhost.polylib.fabric.inventory.energy.FabricEnergyManager (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.energy.FabricPolyEnergyItemWrapper (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.energy.FabricPolyEnergyWrapper (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.energy.NullEnergyManager (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.energy.PolyFabricEnergyItemWrapper (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.energy.PolyFabricEnergyWrapper (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.InitialContentsContainerItemContext (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.ItemStackStorage (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.registry.FabricPolyRegistry (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.registry.FabricRegistryFactory (class, fabric): No summary.
+- net.creeperhost.polylib.FabricEvents (class, fabric): No summary.
+- net.creeperhost.polylib.FabricEventsClient (class, fabric): No summary.
+- net.creeperhost.polylib.FabricInventoryManager (class, fabric): No summary.
+- net.creeperhost.polylib.FabricServerEvents (class, fabric): Fabric server-side lifecycle hooks for PolyLib player settings. Registered in `PolyLibFabric#onInitialize()`. Respawn/death copy is handled automatically by the `copyOnDeath()` flag on each AttachmentType.
+- net.creeperhost.polylib.helpers.BlockTagHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.ComponentHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.ContainerUtil (class, common): No summary.
+- net.creeperhost.polylib.helpers.FormatHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.ItemTagHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.LevelHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.MathUtil (class, common): No summary.
+- net.creeperhost.polylib.helpers.PlayerHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.RecipeHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.RegistryNameHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.VectorHelper (class, common): No summary.
+- net.creeperhost.polylib.helpers.VoxelShapeHelper (class, common): No summary.
+- net.creeperhost.polylib.init.DataComps (class, common): No summary.
+- net.creeperhost.polylib.init.InternalEventListener (class, common): No summary.
+- net.creeperhost.polylib.init.InternalEventListenerClient (class, common): No summary.
+- net.creeperhost.polylib.inventory.items.BlockInventory (class, common): No summary.
+- net.creeperhost.polylib.inventory.items.ContainerAccessControl (class, common): Used to provide control over what slots allow insert / extract / under what conditions etc. Designed for use with `PolyInventoryBlock` but will work with anything that accepts a `WorldlyContainer`
+
+When implementing you can return a single instance for all faces, or you can return different instances for different faces if you need custom per-face configurations.
+- net.creeperhost.polylib.inventory.items.ContainerHelpers (interface, common): No summary.
+- net.creeperhost.polylib.inventory.items.PolyInventoryBlock (interface, common): No summary.
+- net.creeperhost.polylib.inventory.PlayerInventoryMirrorContainer (class, common): A live Container view of a ServerPlayer's inventory (main + armor + offhand) plus any Curios slots appended by the platform layer. Slot layout (matches VoidAnomalyEntity.SNAPSHOT_SIZE = 41): 0-35 main inventory (including hotbar 0-8) 36-39 armor slots (feet, legs, chest, head) 40 offhand 41+ curios slots (appended by CuriosPlayerInventoryMirror if Curios is present) This container does NOT copy items — every read/write goes directly to the player's live Inventory, so changes are immediately visible to the player without any sync step.
+- net.creeperhost.polylib.inventory.power.EnergyManager (interface, common): No summary.
+- net.creeperhost.polylib.inventory.power.IPolyEnergyStorage (interface, common): No summary.
+- net.creeperhost.polylib.inventory.power.IPolyEnergyStorageItem (interface, common): No summary.
+- net.creeperhost.polylib.inventory.power.PolyBlockEnergyStorage (class, common): No summary.
+- net.creeperhost.polylib.inventory.power.PolyEnergyBlock (interface, common): No summary.
+- net.creeperhost.polylib.inventory.power.PolyEnergyItem (interface, common): No summary.
+- net.creeperhost.polylib.inventory.power.PolyEnergyStorage (class, common): Simple implementation of IPolyEnergyStorage that ensures the given block entity is marked dirty when energy content changes.
+- net.creeperhost.polylib.inventory.power.PolyItemEnergyStorage (class, common): No summary.
+- net.creeperhost.polylib.items.helpers.IDamageBarHelper (interface, common): No summary.
+- net.creeperhost.polylib.items.ItemToggle (class, common): No summary.
+- net.creeperhost.polylib.mixin.client.EntryMapAccessor (interface, fabric): Mixin accessor that exposes the private-static `ENTRIES_BY_ID` field of `DebugScreenEntries` so that `FabricDebugEntriesMixin` can insert PolyLib debug entries after vanilla's static initialiser runs.
+
+Mutable access is intentional: we need to `Map#put` into the live map, not a copy. The field is a `HashMap` (confirmed via bytecode) that is later read (but not replaced) by `allEntries()` and `getEntry()`.
+- net.creeperhost.polylib.mixin.client.FabricChatComponentMixin (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.client.FabricChatScreenMixin (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.client.FabricDebugEntriesMixin (class, fabric): Fabric bridge for `PolyDebugRegistry`.
+
+Injects at the tail of `DebugScreenEntries`'s static initialiser so that all entries registered via `PolyDebugRegistry` are appended to the vanilla `ENTRIES_BY_ID` map before the first F3 screen render.
+
+Because `register(Identifier, DebugScreenEntry)` is private-static, we obtain the `ENTRIES_BY_ID` field via the `EntryMapAccessor` interface and call `Map#put` directly. This matches exactly what the private method does (see bytecode: `ENTRIES_BY_ID.put(id, entry); return id;`).
+- net.creeperhost.polylib.mixin.client.FabricFovModifierMixin (class, fabric): FOV_MODIFIER on Fabric: `GameRenderer` in MC 26.1.2 does not expose a public `getFov()` method. Full support is available on NeoForge via `ComputeFovModifierEvent`. This stub exists as a placeholder.
+- net.creeperhost.polylib.mixin.client.FabricKeyInputMixin (class, fabric): Fabric bridge for `PolyInputEvents#INPUT_KEY`. Injects into the GLFW key callback registered by `KeyboardHandler#setup`.
+- net.creeperhost.polylib.mixin.client.FabricMouseInputMixin (class, fabric): Fabric bridge for `PolyInputEvents#INPUT_MOUSE`. Injects into the GLFW mouse button callback registered by `MouseHandler#setup`.
+- net.creeperhost.polylib.mixin.client.MixinAbstractContainerScreenFabric (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.client.MixinEntityRendererNameTagFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_NAME_TAG`. Injects at the head of `EntityRenderer#submitNameDisplay`.
+- net.creeperhost.polylib.mixin.client.MixinGameRendererRenderEndFabric (class, fabric): Fabric bridge for `PolyLevelRenderEvents#RENDER_FRAME_END`. Fires at the end of each call to `GameRenderer#render`, after all rendering has been submitted.
+- net.creeperhost.polylib.mixin.client.MixinGameRendererRenderStartFabric (class, fabric): Fabric bridge for `PolyLevelRenderEvents#RENDER_FRAME_START`. Fires at the very beginning of each call to `GameRenderer#render`.
+- net.creeperhost.polylib.mixin.client.MixinHeartTypeFabric (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.client.MixinItemFrameRendererFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ITEM_IN_FRAME`. Injects at the head of `ItemFrameRenderer#submit`.
+- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererArmFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ARM`. Injects at the head of `ItemInHandRenderer#renderPlayerArm` (private method).
+- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererHandFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#submitArmWithItem` (private method).
+- net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPostFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_POST`, `PolyEntityRenderEvents#RENDER_PLAYER_POST`.
+- net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPreFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_PRE`, `PolyEntityRenderEvents#RENDER_PLAYER_PRE`.
+
+Injects at the head of `LivingEntityRenderer#submit`. If any listener cancels the context the render is skipped. When the render state is an `AvatarRenderState`, also fires the player-specific events.
+- net.creeperhost.polylib.mixin.client.MixinScreenCharTypedFabric (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.client.MixinScreenshotFabric (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.client.MixinToastAddFabric (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.FabricAdvancementEarnMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#ADVANCEMENT_EARN`.
+- net.creeperhost.polylib.mixin.FabricAnimalTameMixin (class, fabric): Bridges `PolyPlayerEvents#ANIMAL_TAME` on Fabric.
+- net.creeperhost.polylib.mixin.FabricAnvilMixin (class, fabric): Fabric bridge for `PolyItemEvents#ANVIL_UPDATE`. Fires after the anvil computes a repair/rename result.
+- net.creeperhost.polylib.mixin.FabricArrowLooseMixin (class, fabric): Bridges `PolyLivingEvents#ARROW_LOOSE` on Fabric.
+- net.creeperhost.polylib.mixin.FabricArrowNockMixin (class, fabric): Bridges `PolyLivingEvents#ARROW_NOCK` on Fabric.
+- net.creeperhost.polylib.mixin.FabricBabySpawnMixin (class, fabric): Fabric bridge for `PolyLivingEvents#BABY_SPAWN`. Fires when an animal produces a baby from breeding.
+- net.creeperhost.polylib.mixin.FabricBlockDropsMixin (class, fabric): Fabric bridge for `PolyBlockEvents#BLOCK_DROPS`. Fires after block drops have been spawned into the world (informational).
+
+Note: modifications to the entity list do not affect already-spawned item entities. NeoForge fires this event before drops spawn, allowing modification.
+- net.creeperhost.polylib.mixin.FabricBlockEntityLifecycleMixin (class, fabric): Fabric bridge for `PolyBlockEntityEvents#BLOCK_ENTITY_LOAD` and `PolyBlockEntityEvents#BLOCK_ENTITY_UNLOAD`.
+- net.creeperhost.polylib.mixin.FabricBoneMealMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#BONE_MEAL`.
+- net.creeperhost.polylib.mixin.FabricBreakSpeedMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#BREAK_SPEED`.
+- net.creeperhost.polylib.mixin.FabricBrewedPotionMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#BREWED_POTION`. Fires at the end of a brewing operation. The player is the nearest player within 8 blocks of the brewing stand; if no player is nearby, the event does not fire.
+- net.creeperhost.polylib.mixin.FabricBrewingMixin (class, fabric): Fabric bridge for `PolyBrewingEvents#BREW_PRE` and `PolyBrewingEvents#BREW_POST`. Injects into the private static `doBrew` method of `BrewingStandBlockEntity`.
+- net.creeperhost.polylib.mixin.FabricChunkWatchMixin (class, fabric): Fabric bridge for `PolyChunkEvents#CHUNK_WATCH`.
+- net.creeperhost.polylib.mixin.FabricClientBlockBreakBeforeMixin (class, fabric): Fabric bridge for `PolyClientInteractionEvents#CLIENT_BLOCK_BREAK_BEFORE`. (`ClientPlayerBlockBreakEvents.BEFORE` does not exist in Fabric API 0.146.1+26.1.2.)
+- net.creeperhost.polylib.mixin.FabricClientBlockBreakCanceledMixin (class, fabric): Fabric bridge for `PolyClientInteractionEvents#CLIENT_BLOCK_BREAK_CANCELED`. (`ClientPlayerBlockBreakEvents.CANCELED` does not exist in Fabric API 0.146.1+26.1.2.)
+- net.creeperhost.polylib.mixin.FabricCommandExecuteMixin (class, fabric): Fabric bridge for `PolyChatEvents#COMMAND_EXECUTE`. Fires at the start of every prefixed command execution (player or command-block commands). Cancel to prevent execution.
+
+Note: modifying `command[0]` has no effect on Fabric because the string has already been parsed by the time the inject fires. Use NeoForge for command redirection.
+- net.creeperhost.polylib.mixin.FabricContainerOpenMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#CONTAINER_OPEN`.
+- net.creeperhost.polylib.mixin.FabricCropGrowMixin (class, fabric): Fabric bridge for `PolyBlockEvents#CROP_GROW_PRE` and `PolyBlockEvents#CROP_GROW_POST`. Fires before and after a crop block grows.
+- net.creeperhost.polylib.mixin.FabricDestroyBlockMixin (class, fabric): Fabric bridge for `PolyLivingEvents#DESTROY_BLOCK`. Fires when an Enderman destroys (picks up) a block.
+- net.creeperhost.polylib.mixin.FabricDifficultyChangeMixin (class, fabric): Fabric bridge for `PolyLevelEvents#DIFFICULTY_CHANGE`.
+- net.creeperhost.polylib.mixin.FabricEnchantTableLevelMixin (class, fabric): Fabric bridge for `PolyEnchantEvents#ENCHANT_TABLE_LEVEL`. Fires after `EnchantmentMenu.slotsChanged` computes the three slot costs, allowing modification of each offered enchantment level.
+
+The `power` argument is always 0 on Fabric because bookshelf count is not accessible without additional shadowing; NeoForge provides the exact power value.
+- net.creeperhost.polylib.mixin.FabricEntityKilledOtherMixin (class, fabric): Fabric bridge for `PolyLivingEvents#ENTITY_KILLED_OTHER`. Fires when a living entity is killed by another living entity.
+- net.creeperhost.polylib.mixin.FabricEntityLightningMixin (class, fabric): Bridges `PolyEntityEvents#STRUCK_BY_LIGHTNING` on Fabric.
+- net.creeperhost.polylib.mixin.FabricEntityMountMixin (class, fabric): Fabric bridge for `PolyEntityEvents#MOUNT`. Fires when an entity is about to mount a vehicle.
+- net.creeperhost.polylib.mixin.FabricEntityTeleportMixin (class, fabric): Bridges `PolyEntityEvents#TELEPORT` on Fabric by injecting into `Entity#teleportTo(ServerLevel, double, double, double, java.util.Set, float, float, boolean)`.
+
+Limitation: Position mutation (redirecting the target coordinates) is not propagated from the CancelContext back to the method args in this approach — cancellation only.
+- net.creeperhost.polylib.mixin.FabricEquipChangeMixin (class, fabric): Fabric bridge for `PolyLivingEvents#ENTITY_EQUIP_CHANGE`.
+- net.creeperhost.polylib.mixin.FabricFinalizeSpawnMixin (class, fabric): Bridges `PolySpawnEvents#FINALIZE_SPAWN` on Fabric.
+- net.creeperhost.polylib.mixin.FabricFluidSourceMixin (class, fabric): Fabric bridge for `PolyBlockEvents#FLUID_SOURCE`. Fires before a flowing fluid spreads to a new position.
+- net.creeperhost.polylib.mixin.FabricFuelBurnTimeMixin (class, fabric): Fabric bridge for `PolyItemEvents#FUEL_BURN_TIME`.
+- net.creeperhost.polylib.mixin.FabricGameRuleChangeMixin (class, fabric): Fabric bridge for `PolyLevelEvents#GAME_RULE_CHANGE`. Fires at the tail of the `/gamerule` command handler so the change is already applied.
+- net.creeperhost.polylib.mixin.FabricGetEnchantLevelMixin (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.FabricGetProjectileMixin (class, fabric): Fabric bridge for `PolyLivingEvents#GET_PROJECTILE`. Fires when a living entity determines which projectile to use.
+- net.creeperhost.polylib.mixin.FabricGrindstoneMixin (class, fabric): Fabric bridge for `PolyItemEvents#GRINDSTONE`. Fires after the grindstone slots change and a result is computed.
+- net.creeperhost.polylib.mixin.FabricHarvestCheckMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#HARVEST_CHECK`.
+- net.creeperhost.polylib.mixin.FabricItemCraftedMixin (class, fabric): Bridges `PolyPlayerEvents#ITEM_CRAFTED` on Fabric. Fires when a player takes an item from the crafting result slot.
+- net.creeperhost.polylib.mixin.FabricItemExpireMixin (class, fabric): Fabric bridge for `PolyItemEvents#ITEM_EXPIRE`. Fires when an ItemEntity's age exceeds its lifespan.
+- net.creeperhost.polylib.mixin.FabricItemFishingMixin (class, fabric): Fabric bridge for `PolyItemEvents#ITEM_FISHING`. Fires when a fishing hook is retrieved.
+- net.creeperhost.polylib.mixin.FabricItemSmeltedMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#ITEM_SMELTED`. Fires when a player takes a smelted item from a furnace.
+- net.creeperhost.polylib.mixin.FabricItemUseFinishMixin (class, fabric): Fabric bridge for `PolyLivingEvents#ITEM_USE_FINISH` and `PolyItemEvents#ITEM_USE_FINISH`. Note: result modification is best-effort; the result is computed inline.
+- net.creeperhost.polylib.mixin.FabricItemUseStartMixin (class, fabric): Fabric bridge for `PolyLivingEvents#ITEM_USE_START` and `PolyItemEvents#ITEM_USE_START`.
+- net.creeperhost.polylib.mixin.FabricItemUseTickMixin (class, fabric): Fabric bridge for `PolyItemEvents#ITEM_USE_TICK`. Fires each tick while a living entity is actively using an item.
+- net.creeperhost.polylib.mixin.FabricLivingEntityFallMixin (class, fabric): Fabric bridge for `PolyLivingEvents#FALL`. Fires when a living entity is about to take fall damage.
+- net.creeperhost.polylib.mixin.FabricLivingEntityXpMixin (class, fabric): Fabric bridge for `PolyLivingEvents#XP_DROP`. Fires when a living entity drops experience on death.
+- net.creeperhost.polylib.mixin.FabricLivingHealMixin (class, fabric): Fabric bridge for `PolyLivingEvents#HEAL`. Fires when a living entity is about to be healed.
+- net.creeperhost.polylib.mixin.FabricLivingKnockbackMixin (class, fabric): Fabric bridge for `PolyLivingEvents#KNOCKBACK`. Fires when a living entity is about to be knocked back.
+- net.creeperhost.polylib.mixin.FabricMobChangeTargetMixin (class, fabric): Fabric bridge for `PolyLivingEvents#CHANGE_TARGET`. Fires when a mob is about to change its attack target.
+- net.creeperhost.polylib.mixin.FabricMobDespawnMixin (class, fabric): Bridges `PolySpawnEvents#MOB_DESPAWN` on Fabric.
+
+Note: `PolySpawnEvents.DespawnContext.Result#REMOVE` calls `discard()` to force-remove the mob, as there is no direct Fabric API for this.
+- net.creeperhost.polylib.mixin.FabricMobKillXpMixin (class, fabric): Fabric bridge for `PolyLivingEvents#MOB_KILL_XP`. Allows modifying the XP value returned by `LivingEntity#getExperienceReward`.
+- net.creeperhost.polylib.mixin.FabricMobSplitMixin (class, fabric): Fabric bridge for `PolyLivingEvents#MOB_SPLIT`. Fires when a Slime is removed (which triggers splitting into smaller slimes).
+- net.creeperhost.polylib.mixin.FabricNameFormatMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#NAME_FORMAT`. Fires when a player's display name is being computed.
+- net.creeperhost.polylib.mixin.FabricNoteBlockMixin (class, fabric): Fabric bridge for `PolyBlockEvents#NOTE_BLOCK_PLAY`. Fires when a note block is triggered (triggerEvent type 0 = play note).
+- net.creeperhost.polylib.mixin.FabricPhantomSpawnMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#PHANTOM_SPAWN`. Fires just before a phantom spawn cycle begins (when `nextTick` reaches zero).
+
+Cancellation stops all phantom spawns in the current cycle for the cancelled players. Because the spawn loop cannot be broken per-player without complex local capture, cancelling any player cancels the entire spawn action for that tick.
+- net.creeperhost.polylib.mixin.FabricPistonPostMixin (class, fabric): Fabric bridge for `PolyBlockEvents#PISTON_POST`. Fires after a piston trigger completes (extend or retract).
+- net.creeperhost.polylib.mixin.FabricPistonPreMixin (class, fabric): Fabric bridge for `PolyBlockEvents#PISTON_PRE`. Fires when a piston is triggered (TRIGGER_EXTEND = 0, TRIGGER_CONTRACT = 1).
+- net.creeperhost.polylib.mixin.FabricPlayerGameModeMixin (class, fabric): Bridges `PolyPlayerEvents#CHANGE_GAME_MODE` on Fabric.
+- net.creeperhost.polylib.mixin.FabricPlayerLoadSaveMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#PLAYER_LOAD` and `PolyPlayerEvents#PLAYER_SAVE`.
+- net.creeperhost.polylib.mixin.FabricPlayerSetSpawnMixin (class, fabric): Bridges `PolyPlayerEvents#SET_SPAWN` on Fabric.
+- net.creeperhost.polylib.mixin.FabricPlayerTickMixin (class, fabric): Fabric bridge for `PolyPlayerTickEvents#PLAYER_TICK_START` and `PolyPlayerTickEvents#PLAYER_TICK_END`.
+- net.creeperhost.polylib.mixin.FabricPlayerXpChangeMixin (class, fabric): Bridges `PolyPlayerEvents#XP_CHANGE` on Fabric.
+- net.creeperhost.polylib.mixin.FabricPlayerXpLevelMixin (class, fabric): Bridges `PolyPlayerEvents#XP_LEVEL_CHANGE` on Fabric.
+- net.creeperhost.polylib.mixin.FabricPortalSpawnMixin (class, fabric): Fabric bridge for `PolyBlockEvents#PORTAL_SPAWN`. Fires before portal blocks are placed.
+- net.creeperhost.polylib.mixin.FabricPotentialSpawnsMixin (class, fabric): No summary.
+- net.creeperhost.polylib.mixin.FabricProjectileImpactMixin (class, fabric): Bridges `PolyEntityEvents#PROJECTILE_IMPACT` on Fabric.
+- net.creeperhost.polylib.mixin.FabricServerChatMixin (class, fabric): Fabric bridge for `PolyChatEvents#SERVER_CHAT`.
+- net.creeperhost.polylib.mixin.FabricShieldBlockMixin (class, fabric): Bridges `PolyLivingEvents#SHIELD_BLOCK` on Fabric.
+
+Limitation: the exact `damageBlocked` float is unavailable at this injection point; `0f` is passed as a placeholder.
+- net.creeperhost.polylib.mixin.FabricSleepFinishedMixin (class, fabric): Fabric bridge for `PolyLevelEvents#SLEEP_FINISHED`. Fires when the server level's sleeping player list is updated (i.e. sleep finishes).
+- net.creeperhost.polylib.mixin.FabricSpawnClusterSizeMixin (class, fabric): Fabric bridge for `PolyLivingEvents#SPAWN_CLUSTER_SIZE`.
+- net.creeperhost.polylib.mixin.FabricStartSleepingMixin (class, fabric): Bridges `PolySleepEvents#START_SLEEPING` on Fabric (and NeoForge via its own mixin config).
+- net.creeperhost.polylib.mixin.FabricStatAwardMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#STAT_AWARD`.
+- net.creeperhost.polylib.mixin.FabricStopSleepingMixin (class, fabric): Bridges `PolySleepEvents#STOP_SLEEPING` on Fabric (and NeoForge via its own mixin config).
+- net.creeperhost.polylib.mixin.FabricSwapItemsMixin (class, fabric): Fabric bridge for `PolyLivingEvents#SWAP_ITEMS`. Fires just before a player's main/off-hand items are swapped (F key). Injected before the first `setItemInHand` call in `handlePlayerAction`'s SWAP_ITEM_WITH_OFFHAND branch.
+- net.creeperhost.polylib.mixin.FabricSweepAttackMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#SWEEP_ATTACK`. Fires at the sweep-attack visual call inside `Player#attack(Entity)`, which occurs after sweep damage has already been applied to nearby entities.
+
+Note: the `target` parameter is the primary attack target (not each swept entity). Cancellation has no effect on damage; this event is primarily informational on Fabric.
+- net.creeperhost.polylib.mixin.FabricTabListNameFormatMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#TAB_LIST_NAME_FORMAT`. Fires when the tab-list display name for a player is queried. Modify `name[0]` to change the displayed name.
+- net.creeperhost.polylib.mixin.FabricTradeWithVillagerMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#TRADE_WITH_VILLAGER`.
+- net.creeperhost.polylib.mixin.FabricUseTotemMixin (class, fabric): Fabric bridge for `PolyLivingEvents#USE_TOTEM`. Fires when a living entity is about to use a Totem of Undying.
+- net.creeperhost.polylib.mixin.FabricVillageSiegeMixin (class, fabric): Fabric bridge for `PolyVillageEvents#SIEGE_SPAWN`. Fires just before the siege attempts to spawn zombies.
+- net.creeperhost.polylib.mixin.FabricWakeUpMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#WAKE_UP`. Fires when a player wakes up from sleeping via `Player#stopSleepInBed`.
+- net.creeperhost.polylib.mixin.MixinCapeLayerNF (class, neoforge): NeoForge bridge for `PolyEntityRenderEvents#ALLOW_CAPE_RENDER`. Injects at the head of `CapeLayer#submit` to allow listeners to suppress cape rendering for a specific avatar.
+- net.creeperhost.polylib.mixin.MixinChatComponentNF (class, neoforge): No summary.
+- net.creeperhost.polylib.mixin.MixinChatScreenNF (class, neoforge): No summary.
+- net.creeperhost.polylib.mixin.MixinClientBELoadNF (class, neoforge): NeoForge bridge for `PolyClientBlockEntityEvents#CLIENT_BLOCK_ENTITY_LOAD`. Fires after `ClientLevel#onBlockEntityAdded(BlockEntity)`.
+- net.creeperhost.polylib.mixin.MixinClientBEUnloadNF (class, neoforge): NeoForge bridge for `PolyClientBlockEntityEvents#CLIENT_BLOCK_ENTITY_UNLOAD`. Targets `Level#removeBlockEntity(BlockPos)` — fires before removal with a `ClientLevel` instance guard so it only fires on the client side.
+- net.creeperhost.polylib.mixin.MixinClientBlockBreakNF (class, neoforge): NeoForge bridges for client block-break events.
+
+`PolyClientInteractionEvents#CLIENT_BLOCK_BREAK_BEFORE` — `destroyBlock` HEAD, cancellable `PolyClientInteractionEvents#CLIENT_BLOCK_BREAK_AFTER` — `destroyBlock` RETURN, only when `true` `PolyClientInteractionEvents#CLIENT_BLOCK_BREAK_CANCELED` — `stopDestroyBlock` HEAD
+- net.creeperhost.polylib.mixin.MixinClientChunkLoadNF (class, neoforge): NeoForge bridge for `PolyClientChunkEvents#CLIENT_CHUNK_LOAD`. Fires after `ClientLevel#onChunkLoaded` has processed the chunk.
+- net.creeperhost.polylib.mixin.MixinClientChunkUnloadNF (class, neoforge): NeoForge bridge for `PolyClientChunkEvents#CLIENT_CHUNK_UNLOAD`. Fires before `ClientLevel#unload(LevelChunk)` removes the chunk so the instance is still valid.
+- net.creeperhost.polylib.mixin.MixinClientConfigNF (class, neoforge): NeoForge bridge for:
+
+`PolyClientConnectionEvents#CLIENT_CONFIGURATION_INIT` — constructor TAIL `PolyClientConnectionEvents#CLIENT_CONFIGURATION_COMPLETE` — `handleConfigurationFinished` HEAD `PolyClientConnectionEvents#CLIENT_CONFIGURATION_DISCONNECT` — `onDisconnect` HEAD
+- net.creeperhost.polylib.mixin.MixinClientEntityLoadNF (class, neoforge): NeoForge bridge for `PolyClientEntityEvents#CLIENT_ENTITY_LOAD`. Fires after `ClientLevel#addEntity(Entity)` has added the entity to the world.
+- net.creeperhost.polylib.mixin.MixinClientEntityUnloadNF (class, neoforge): NeoForge bridge for `PolyClientEntityEvents#CLIENT_ENTITY_UNLOAD`. Fires before `ClientLevel#removeEntity` removes the entity so the instance is still valid.
+- net.creeperhost.polylib.mixin.MixinClientLoginNF (class, neoforge): NeoForge bridge for:
+
+`PolyClientConnectionEvents#CLIENT_LOGIN_INIT` — constructor TAIL `PolyClientConnectionEvents#CLIENT_LOGIN_QUERY_START` — `handleCustomQuery` HEAD `PolyClientConnectionEvents#CLIENT_LOGIN_QUERY_RESPONSE` — `handleCustomQuery` RETURN `PolyClientConnectionEvents#CLIENT_LOGIN_DISCONNECT` — `onDisconnect` HEAD
+- net.creeperhost.polylib.mixin.MixinClientPlayInitNF (class, neoforge): NeoForge bridge for `PolyClientConnectionEvents#CLIENT_PLAY_INIT`. Fires when the `ClientPacketListener` (play connection) is fully constructed.
+- net.creeperhost.polylib.mixin.MixinClientPreAttackNF (class, neoforge): NeoForge bridge for `PolyClientInteractionEvents#CLIENT_PRE_ATTACK`. Fires before `MultiPlayerGameMode#attack(Player, Entity)`.
+- net.creeperhost.polylib.mixin.MixinEntityTickEndFabric (class, fabric): Fabric bridge for `PolyEntityEvents#ENTITY_TICK_END`. Fires after `Entity#tick` returns.
+- net.creeperhost.polylib.mixin.MixinItemPickupPostFabric (class, fabric): Fabric bridge for `PolyPlayerEvents#ITEM_PICKUP_POST`. Fires after `ItemEntity#playerTouch` returns (item has been picked up).
+- net.creeperhost.polylib.mixin.MixinLevelRendererAllChangedNF (class, neoforge): NeoForge bridge for `PolyRenderStateEvents#INVALIDATE_RENDER_STATE`.
+
+Fires after `LevelRenderer#invalidateCompiledGeometry` completes. In 26.2 this replaced the old full render-state rebuild hook.
+- net.creeperhost.polylib.mixin.MixinLevelRendererBlockOutlineNF (class, neoforge): NeoForge bridge for `PolyLevelRenderEvents#BEFORE_BLOCK_OUTLINE`.
+
+Injects at the head of `LevelRenderer#submitBlockOutline`; if any listener cancels the context the method returns early, suppressing the outline extraction.
+- net.creeperhost.polylib.mixin.MixinMinecraftRun (class, neoforge): NeoForge bridge for `PolyClientLifecycleEvents#CLIENT_STARTED`. Fires exactly once when the game loop begins (first call to `Minecraft#run`).
+- net.creeperhost.polylib.mixin.MixinMinecraftSetLevelNF (class, neoforge): NeoForge bridge for `PolyClientLifecycleEvents#CLIENT_LEVEL_CHANGED`.
+
+Hooks `Minecraft#setLevel` and `Minecraft#clearClientLevel` to fire the event with the new level reference (or `null` on disconnect).
+- net.creeperhost.polylib.mixin.MixinMobSpawnContextFabric (class, fabric): Fabric bridge for `PolySpawnEvents#MOB_SPAWN_CONTEXT`. Fires at the head of `Mob#finalizeSpawn` before equipment/attribute assignment.
+- net.creeperhost.polylib.mixin.MixinServerConfigDisconnectNF (class, neoforge): NeoForge mixin bridge for `PolyServerLifecycleEvents#CONFIGURATION_DISCONNECT`. Fires when a client disconnects during the server configuration phase.
+- net.creeperhost.polylib.mixin.MixinServerLoginQueryStartNF (class, neoforge): NeoForge mixin bridge for `PolyServerLifecycleEvents#LOGIN_QUERY_START`. Fires when the server begins the login query phase.
+- net.creeperhost.polylib.ModMenuCompat (class, fabric): Mod Menu entrypoint. Loaded only when Mod Menu is present (declared as a `suggests` dependency, not a hard `depends`).
+
+Reads from `ConfigPanelRegistry` — any mod that registered its config panel via PolyLib automatically appears in Mod Menu without any additional work.
+- net.creeperhost.polylib.mulitblock.IMultiblockPart (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.MultiblockBlockEntityBase (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.MultiblockControllerBase (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.MultiblockRegistry (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.MultiblockValidationException (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.MultiblockWorldRegistry (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.rectangular.PartPosition (enum, common): No summary.
+- net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockControllerBase (class, common): No summary.
+- net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockTileEntityBase (class, common): No summary.
+- net.creeperhost.polylib.neoforge.inventory.power.NeoEnergyManager (class, neoforge): No summary.
+- net.creeperhost.polylib.neoforge.inventory.power.NeoPolyEnergyItemWrapper (class, neoforge): No summary.
+- net.creeperhost.polylib.neoforge.inventory.power.NeoPolyEnergyWrapper (class, neoforge): No summary.
+- net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyItemWrapper (class, neoforge): No summary.
+- net.creeperhost.polylib.neoforge.inventory.power.PolyNeoEnergyWrapper (class, neoforge): No summary.
+- net.creeperhost.polylib.neoforge.NeoForgeInventoryManager (class, neoforge): No summary.
+- net.creeperhost.polylib.neoforge.registry.NeoPolyRegistry (class, neoforge): No summary.
+- net.creeperhost.polylib.neoforge.registry.NeoPolyScreens (class, neoforge): Hooks `PolyScreens` into NeoForge's `RegisterMenuScreensEvent`.
+
+Call `#registerToBus(IEventBus)` from your mod constructor (client dist only): `if (FMLLoader.getDist().isClient()) { NeoPolyScreens.registerToBus(bus); ` }
+- net.creeperhost.polylib.neoforge.registry.NeoRegistryFactory (class, neoforge): No summary.
+- net.creeperhost.polylib.NeoForgeClientEvents (class, neoforge): No summary.
+- net.creeperhost.polylib.NeoForgeEvents (class, neoforge): NeoForge server-side game-bus event handlers for PolyLib lifecycle hooks.
+- net.creeperhost.polylib.NeoForgeModBusEvents (class, neoforge): NeoForge Mod Bus event handlers for PolyLib Tier 15 mod-bus-only events.
+
+In NeoForge 26.1.x the `EventBusSubscriber.Bus` enum was removed. These handlers are registered manually via `eventBus.addListener()` in `PolyLibNeoForge`.
+- net.creeperhost.polylib.network.packets.ContainerClientPayload (record, common): No summary.
+- net.creeperhost.polylib.network.packets.ContainerServerPayload (record, common): No summary.
+- net.creeperhost.polylib.network.packets.TileDataClientPayload (record, common): No summary.
+- net.creeperhost.polylib.network.packets.TileDataServerPayload (record, common): No summary.
+- net.creeperhost.polylib.network.packets.TilePacketServerPayload (record, common): No summary.
+- net.creeperhost.polylib.network.PolyLibNetwork (class, common): No summary.
+- net.creeperhost.polylib.platform.FabricClientHelper (class, fabric): No summary.
+- net.creeperhost.polylib.platform.FabricNetworkHelper (class, fabric): No summary.
+- net.creeperhost.polylib.platform.FabricPlatformHelper (class, fabric): No summary.
+- net.creeperhost.polylib.platform.FabricPlayerDataHelper (class, fabric): Fabric implementation of `IPlayerDataHelper`. Each `PlayerClientSettingsType` gets its own `AttachmentType&lt;byte[]&gt;` registered with `AttachmentRegistry`, persisted via `Codec.BYTE_BUFFER.xmap(...)`. The `copyOnDeath()` flag mirrors `PlayerClientSettingsType#copyOnDeath()`.
+- net.creeperhost.polylib.platform.FabricRegisterHelper (class, fabric): No summary.
+- net.creeperhost.polylib.platform.NeoForgeClientHelper (class, neoforge): No summary.
+- net.creeperhost.polylib.platform.NeoForgeNetworkHelper (class, neoforge): No summary.
+- net.creeperhost.polylib.platform.NeoForgePlatformHelper (class, neoforge): No summary.
+- net.creeperhost.polylib.platform.NeoForgePlayerDataHelper (class, neoforge): NeoForge implementation of `IPlayerDataHelper`.
+
+Client settings (StreamCodec-based): stored as `byte[]` in `player.getPersistentData()` under key `polylib_settings.`.
+
+Server data (DFU Codec-based): stored as a wrapped NBT tag in `player.getPersistentData()` under key `polylib_sdata.`. The tag is wrapped in a CompoundTag (`{v: `}) to handle all NBT element types.
+
+Both are saved with the player NBT automatically and loaded on join.
+- net.creeperhost.polylib.platform.NeoForgeRegisterHelper (class, neoforge): No summary.
+- net.creeperhost.polylib.platform.Services (class, common): No summary.
+- net.creeperhost.polylib.platform.services.IClientHelper (interface, common): No summary.
+- net.creeperhost.polylib.platform.services.INetworkHelper (interface, common): No summary.
+- net.creeperhost.polylib.platform.services.IPlatformHelper (interface, common): No summary.
+- net.creeperhost.polylib.platform.services.IPlayerDataHelper (interface, common): Platform service for persisting player data (both client settings and server data). NeoForge impl uses `getPersistentData()` (CompoundTag) for both. Fabric impl uses `AttachmentRegistry` for both.
+- net.creeperhost.polylib.platform.services.IRegisterHelper (interface, common): No summary.
+- net.creeperhost.polylib.player.serverdata.offline.OfflinePlayerData (interface, common): Mutable view of a single player's PolyLib server data, valid for either an online or offline player. Obtained via `java.util.UUID, java.util.function.Consumer)`.
+
+For online players every `#get`/`#set` call goes directly to `net.creeperhost.polylib.player.serverdata.PlayerServerDataManager`. For offline players the view is backed by the loaded `ForgeData` `net.minecraft.nbt.CompoundTag`; changes are written back to `/playerdata/.dat` when the `modify` call returns.
+- net.creeperhost.polylib.player.serverdata.offline.OfflinePlayerDataAccessor (class, common): Read/write PolyLib `PlayerServerDataType` values for both online and offline players. Online players All operations delegate to the live `PlayerServerDataManager` so the in-memory store is never bypassed. Offline players Data is read from / written to the player's `.dat` file at `/playerdata/.dat`. The exact NBT structure used is platform-specific: NeoForge stores data inside the `ForgeData` compound; Fabric uses the `fabric:attachments` compound. Thread safety Must be called from the server tick thread. No locking is performed because Minecraft's server is single-threaded; concurrent calls from other threads (e.g. the network thread) are unsafe regardless. Usage example `// One-shot read (returns default if no data) PlayerAbilities ab = OfflinePlayerDataAccessor.get(server, uuid, ModPlayerData.PLAYER_ABILITIES); // One-shot write OfflinePlayerDataAccessor.set(server, uuid, ModPlayerData.PLAYER_ABILITIES, newAbilities); // Atomic read-modify-write (single file I/O pass for offline players) OfflinePlayerDataAccessor.modify(server, uuid, data -> { PlayerAbilities ab = data.get(ModPlayerData.PLAYER_ABILITIES); ab.addPower(SomePower.ID); data.set(ModPlayerData.PLAYER_ABILITIES, ab); `); }
+- net.creeperhost.polylib.player.serverdata.PlayerServerDataClientCache (class, common): Client-side read-only cache of server-authoritative player data values.
+
+Values are received via `SyncPlayerServerDataS2CPayload` and decoded on demand using the type's `syncCodec`. This cache is keyed by type ID only (not UUID) because these values are always for the local/owning player.
+
+Typical use: HUD rendering, client-side power availability checks. Never write to this; mutations go through `PlayerServerDataManager#set` on the server.
+- net.creeperhost.polylib.player.serverdata.PlayerServerDataManager (class, common): Central server-side manager for `PlayerServerDataType` values.
+
+Handles NBT persistence (via `IPlayerDataHelper`), optional S2C sync to the owning player, and player lifecycle (login / logout / respawn).
+
+Server is always the authoritative source. Use `#get` / `#set` from server-side code only. Clients receive a read-only copy via `PlayerServerDataClientCache` when the type's `syncCodec` is non-null.
+- net.creeperhost.polylib.player.serverdata.PlayerServerDataRegistry (class, common): Registry for `PlayerServerDataType` tokens. All registration must happen before the server starts (mod constructor / init).
+- net.creeperhost.polylib.player.serverdata.PlayerServerDataStore (class, common): Per-player in-memory store for server-authoritative player data values. Internal to PolyLib — not part of the public API. Mirrors `PlayerClientSettingsStore` but keyed on `PlayerServerDataType`.
+- net.creeperhost.polylib.player.serverdata.PlayerServerDataType (class, common): Typed token representing a registered server-authoritative player data type.
+
+Create via `PlayerServerDataRegistry#register` and store as a `public static final` constant in your mod.
+
+This is the server-authority counterpart to `PlayerClientSettingsType`. The server owns the value; the client receives read-only S2C syncs for HUD use.
+- net.creeperhost.polylib.player.serverdata.SyncPlayerServerDataS2CPayload (record, common): S2C packet: server pushes an updated server-authoritative data value to the owning player. Sent only to the player whose data changed — never to other players.
+- net.creeperhost.polylib.player.settings.BroadcastScope (enum, common): Controls which clients receive S2C sync packets when a PlayerClientSetting value changes.
+- net.creeperhost.polylib.player.settings.PlayerClientSettingsClientCache (class, common): Client-side cache of PlayerClientSettings values received via S2C sync packets. Replaces per-mod caches like `PlayerAppearanceCache`.
+- net.creeperhost.polylib.player.settings.PlayerClientSettingsManager (class, common): Central server-side manager for PlayerClientSettings. Handles persistence, sync, and incoming C2S updates.
+- net.creeperhost.polylib.player.settings.PlayerClientSettingsRegistry (class, common): Registry for `PlayerClientSettingsType` tokens. All registration must happen before the server starts (typically in mod constructor or init).
+- net.creeperhost.polylib.player.settings.PlayerClientSettingsStore (class, common): Per-player in-memory store for PlayerClientSettings values. Internal to PolyLib — not part of public API. Provides zero-deserialization reads via a typed object cache.
+- net.creeperhost.polylib.player.settings.PlayerClientSettingsType (class, common): Typed token representing a registered PlayerClientSetting type. Create via `PlayerClientSettingsRegistry#register` and store as a `public static final` constant in your mod.
+- net.creeperhost.polylib.player.settings.PlayerClientSettingSyncS2CPayload (record, common): S2C: server broadcasts a PlayerClientSetting value update to clients per the type's `BroadcastScope`.
+- net.creeperhost.polylib.player.settings.UpdatePlayerClientSettingC2SPayload (record, common): C2S: client sends an updated PlayerClientSetting value to the server.
+- net.creeperhost.polylib.PolyLibClient (class, common): No summary.
+- net.creeperhost.polylib.PolyLibClientFabric (class, fabric): No summary.
+- net.creeperhost.polylib.PolyLibClientNeoForge (class, neoforge): No summary.
+- net.creeperhost.polylib.PolylibCommon (class, common): No summary.
+- net.creeperhost.polylib.PolyLibFabric (class, fabric): No summary.
+- net.creeperhost.polylib.PolyLibNeoForge (class, neoforge): No summary.
+- net.creeperhost.polylib.registry.IMenuFactory (interface, common): No summary.
+- net.creeperhost.polylib.registry.IRegistryFactory (interface, common): No summary.
+- net.creeperhost.polylib.registry.PolyRegistry (class, common): No summary.
+- net.creeperhost.polylib.registry.PolyScreens (class, common): Cross-platform screen registration queue.
+
+Call `#register` from client-only init code (e.g. inside an `isClient()` guard). Platform entry points flush the queue at the appropriate time:
+
+NeoForge — call `NeoPolyScreens.registerToBus(bus)` from your mod constructor; the flush happens during `RegisterMenuScreensEvent`. Fabric — call `#flush` from your `ClientModInitializer.onInitializeClient()`.
+- net.creeperhost.polylib.util.OptionalSupplier (interface, common): No summary.
+- net.creeperhost.polylib.util.Serializable (interface, common): No summary.
+- net.creeperhost.polylib.util.Updatable (interface, common): No summary.

@@ -1,5 +1,5 @@
 {
-  "latest": "26.2-2.0.10",
+  "latest": "26.2-2.0.11",
   "versions": [
     {
       "version": "multi/26.1.2",
@@ -8,9 +8,15 @@
       "publishedAt": "2026-06-25T12:59:36.325Z"
     },
     {
+      "version": "26.2-2.0.11",
+      "url": "/PolyLib/versions/26.2-2.0.11/",
+      "latest": true,
+      "publishedAt": "2026-09-03T13:14:06.751Z"
+    },
+    {
       "version": "26.2-2.0.10",
       "url": "/PolyLib/versions/26.2-2.0.10/",
-      "latest": true,
+      "latest": false,
       "publishedAt": "2026-08-07T18:31:55.157Z"
     },
     {
