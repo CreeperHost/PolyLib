@@ -2,8 +2,9 @@ package net.creeperhost.polylib.mixin.client;
 
 import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents;
-import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.FirstPersonHandsAndItemsRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.level.PlayerRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -15,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Fabric bridge for {@link PolyEntityRenderEvents#RENDER_ARM}.
- * Injects at the head of {@code ItemInHandRenderer#renderPlayerArm} (private method).
+ * Injects at the head of {@code FirstPersonHandsAndItemsRenderer#renderPlayerArm} (private method).
  */
-@Mixin(ItemInHandRenderer.class)
+@Mixin(FirstPersonHandsAndItemsRenderer.class)
 public abstract class MixinItemInHandRendererArmFabric
 {
     @Inject(method = "renderPlayerArm", at = @At("HEAD"), cancellable = true, remap = false)
@@ -27,6 +28,7 @@ public abstract class MixinItemInHandRendererArmFabric
                                             float partialTick,
                                             float bob,
                                             HumanoidArm arm,
+                                            PlayerRenderState playerState,
                                             CallbackInfo ci)
     {
         AbstractClientPlayer player = Minecraft.getInstance().player instanceof AbstractClientPlayer p ? p : null;

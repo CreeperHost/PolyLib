@@ -19,7 +19,6 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -493,7 +492,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
                     case InputConstants.KEY_PAGEDOWN:
                     default:
                         //Consume key presses when we are typing so we dont do something dumb like close the screen when you type e
-                        return keyEvent.key() != GLFW.GLFW_KEY_ESCAPE;
+                        return keyEvent.key() != InputConstants.KEY_ESCAPE;
                     case InputConstants.KEY_DELETE:
                         if (isEditable()) {
                             shiftPressed = false;

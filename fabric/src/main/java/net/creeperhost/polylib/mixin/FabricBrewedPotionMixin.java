@@ -2,11 +2,9 @@ package net.creeperhost.polylib.mixin;
 
 import net.creeperhost.polylib.event.events.server.PolyPlayerEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,16 +20,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class FabricBrewedPotionMixin
 {
     @Inject(method = "doBrew", at = @At("TAIL"))
-    private static void polylib$onDoBrew(Level level, BlockPos pos, NonNullList<ItemStack> items,
+    private static void polylib$onDoBrew(ServerLevel level, BlockPos pos, BrewingStandBlockEntity brewingStand,
             CallbackInfo ci)
     {
-        if (!(level instanceof ServerLevel sl)) return;
-        Player player = sl.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8.0, false);
+        Player player = level.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8.0, false);
         if (player == null) return;
         // Potion output slots are 0, 1, 2
         for (int i = 0; i < 3; i++)
         {
-            ItemStack result = items.get(i);
+            ItemStack result = brewingStand.getItem(i);
             if (!result.isEmpty())
             {
                 PolyPlayerEvents.BREWED_POTION.invoker().onBrewedPotion(player, result);

@@ -2,14 +2,12 @@ package net.creeperhost.polylib.mixin;
 
 import net.creeperhost.polylib.event.events.server.PolyLevelEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +26,7 @@ public abstract class FabricPotentialSpawnsMixin
     @Inject(method = "mobsAt", at = @At("RETURN"), cancellable = true)
     private static void polylib$onMobsAt(
             ServerLevel level, StructureManager structureManager, ChunkGenerator generator,
-            MobCategory category, BlockPos pos, Holder<Biome> biome,
+            MobCategory category, BlockPos pos,
             CallbackInfoReturnable<WeightedList<MobSpawnSettings.SpawnerData>> cir)
     {
         List<Weighted<MobSpawnSettings.SpawnerData>> original = cir.getReturnValue().unwrap();

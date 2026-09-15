@@ -70,24 +70,24 @@ public class PolyLibClientFabric
             ScreenKeyboardEvents.allowKeyPress(screen).register((s, ke) -> {
                 CancelContext ctx = new CancelContext();
                 PolyScreenEvents.SCREEN_KEY_PRESS_ALLOW.invoker()
-                        .onScreenKeyPressAllow(s, ke.key(), ke.scancode(), ke.modifiers(), ctx);
+                        .onScreenKeyPressAllow(s, ke.key(), ke.keycode(), ke.modifiers(), ctx);
                 return !ctx.isCancelled();
             });
             ScreenKeyboardEvents.beforeKeyPress(screen).register((s, ke) ->
-                    PolyScreenEvents.SCREEN_KEY_PRESS_BEFORE.invoker().onScreenKeyPressBefore(s, ke.key(), ke.scancode(), ke.modifiers()));
+                    PolyScreenEvents.SCREEN_KEY_PRESS_BEFORE.invoker().onScreenKeyPressBefore(s, ke.key(), ke.keycode(), ke.modifiers()));
             ScreenKeyboardEvents.afterKeyPress(screen).register((s, ke) ->
-                    PolyScreenEvents.SCREEN_KEY_PRESS_AFTER.invoker().onScreenKeyPressAfter(s, ke.key(), ke.scancode(), ke.modifiers()));
+                    PolyScreenEvents.SCREEN_KEY_PRESS_AFTER.invoker().onScreenKeyPressAfter(s, ke.key(), ke.keycode(), ke.modifiers()));
 
             ScreenKeyboardEvents.allowKeyRelease(screen).register((s, ke) -> {
                 CancelContext ctx = new CancelContext();
                 PolyScreenEvents.SCREEN_KEY_RELEASE_ALLOW.invoker()
-                        .onScreenKeyReleaseAllow(s, ke.key(), ke.scancode(), ke.modifiers(), ctx);
+                        .onScreenKeyReleaseAllow(s, ke.key(), ke.keycode(), ke.modifiers(), ctx);
                 return !ctx.isCancelled();
             });
             ScreenKeyboardEvents.beforeKeyRelease(screen).register((s, ke) ->
-                    PolyScreenEvents.SCREEN_KEY_RELEASE_BEFORE.invoker().onScreenKeyReleaseBefore(s, ke.key(), ke.scancode(), ke.modifiers()));
+                    PolyScreenEvents.SCREEN_KEY_RELEASE_BEFORE.invoker().onScreenKeyReleaseBefore(s, ke.key(), ke.keycode(), ke.modifiers()));
             ScreenKeyboardEvents.afterKeyRelease(screen).register((s, ke) ->
-                    PolyScreenEvents.SCREEN_KEY_RELEASE_AFTER.invoker().onScreenKeyReleaseAfter(s, ke.key(), ke.scancode(), ke.modifiers()));
+                    PolyScreenEvents.SCREEN_KEY_RELEASE_AFTER.invoker().onScreenKeyReleaseAfter(s, ke.key(), ke.keycode(), ke.modifiers()));
 
             // Mouse
             ScreenMouseEvents.allowMouseClick(screen).register((s, mbe) -> {

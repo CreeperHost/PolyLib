@@ -101,7 +101,7 @@ import net.neoforged.neoforge.event.brewing.PlayerBrewedPotionEvent;
 import net.neoforged.neoforge.event.enchanting.EnchantmentLevelSetEvent;
 import net.neoforged.neoforge.event.enchanting.GetEnchantmentLevelEvent;
 import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
-import net.neoforged.neoforge.event.entity.living.EnderManAngerEvent;
+import net.neoforged.neoforge.event.entity.living.EndermanAngerEvent;
 import net.neoforged.neoforge.event.entity.living.SpawnClusterSizeEvent;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.BonemealEvent;
@@ -110,7 +110,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent;
 import net.neoforged.neoforge.event.entity.player.SweepAttackEvent;
 import net.neoforged.neoforge.event.entity.player.TradeWithVillagerEvent;
-import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.GameRuleChangedEvent;
@@ -1365,7 +1364,7 @@ public class NeoForgeEvents
     }
 
     @SubscribeEvent
-    public static void onEnderManAnger(EnderManAngerEvent event)
+    public static void onEnderManAnger(EndermanAngerEvent event)
     {
         CancelContext ctx = new CancelContext();
         PolyLivingEvents.ENDERMAN_ANGER.invoker().onEndermanAnger(
@@ -1437,14 +1436,6 @@ public class NeoForgeEvents
         PolyEnchantEvents.ENCHANT_TABLE_LEVEL.invoker().onEnchantTableLevel(
                 event.getItem(), event.getPower(), event.getOriginalLevel(), level);
         event.setEnchantLevel(level[0]);
-    }
-
-    @SubscribeEvent
-    public static void onFuelBurnTime(FurnaceFuelBurnTimeEvent event)
-    {
-        int[] time = { event.getBurnTime() };
-        PolyItemEvents.FUEL_BURN_TIME.invoker().onFuelBurnTime(event.getItemStack(), time);
-        event.setBurnTime(time[0]);
     }
 
     @SubscribeEvent

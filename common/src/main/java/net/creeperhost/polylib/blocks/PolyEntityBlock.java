@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.Nameable;
@@ -141,7 +142,7 @@ public class PolyEntityBlock extends PolyBlock implements EntityBlock {
     }
 
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack heldStack) {
+    public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack heldStack) {
         ItemStack stack = ItemStack.EMPTY;
 
         if (blockEntity instanceof DataRetainingBlock retaining && retaining.saveToItem()) {

@@ -209,8 +209,7 @@ public final class PolyItemEvents
     /**
      * Fired to query how long an item burns as fuel. Modify {@code burnTime[0]} to change.
      * <p>
-     * NeoForge: {@code FurnaceFuelBurnTimeEvent} (MOD bus)<br>
-     * Fabric: mixin on {@code FurnaceBlockEntity#getBurnDuration}
+     * Both loaders: mixin on {@code AbstractFurnaceBlockEntity#getBurnDuration}.
      */
     public static final PolyEvent<FuelBurnTime> FUEL_BURN_TIME = PolyEvent.create(
             handlers -> (stack, burnTime) -> handlers.forEach(h -> h.onFuelBurnTime(stack, burnTime)));

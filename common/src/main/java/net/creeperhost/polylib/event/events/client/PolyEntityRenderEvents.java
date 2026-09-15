@@ -106,7 +106,7 @@ public final class PolyEntityRenderEvents
      * Cancel to suppress the hand render entirely.
      * <p>
      * NeoForge: {@code RenderHandEvent}<br>
-     * Fabric: mixin on {@code ItemInHandRenderer#submitArmWithItem} at HEAD (cancellable)
+     * Fabric: mixin on {@code FirstPersonHandsAndItemsRenderer#submitArmWithItem} at HEAD (cancellable)
      */
     public static final PolyEvent<RenderHand> RENDER_HAND = PolyEvent.create(
             handlers -> (hand, itemStack, poseStack, partialTick, ctx) ->
@@ -123,7 +123,7 @@ public final class PolyEntityRenderEvents
      * Cancel to suppress the arm.
      * <p>
      * NeoForge: {@code RenderArmEvent}<br>
-     * Fabric: mixin on {@code ItemInHandRenderer#renderPlayerArm} at HEAD (cancellable)
+     * Fabric: mixin on {@code FirstPersonHandsAndItemsRenderer#renderPlayerArm} at HEAD (cancellable)
      */
     public static final PolyEvent<RenderArm> RENDER_ARM = PolyEvent.create(
             handlers -> (arm, player, packedLight, poseStack, ctx) ->

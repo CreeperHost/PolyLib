@@ -1,5 +1,7 @@
 package net.creeperhost.testmod;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import net.creeperhost.polylib.chat.ChatChannel;
 import net.creeperhost.polylib.chat.ChatMember;
 import net.creeperhost.polylib.chat.ChatRouter;
@@ -22,7 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
+
 import java.util.UUID;
 import static net.creeperhost.testmod.TestModCommon.LOGGER;
 
@@ -118,7 +120,7 @@ public class TestModClientCommon
             // ------------------------------------------------------------------
             // KP_5 — open all channels as floating windows (Plan B test)
             // ------------------------------------------------------------------
-            if (key == GLFW.GLFW_KEY_KP_5)
+            if (key == InputConstants.KEY_NUMPAD5)
             {
                 LOGGER.info("[TestMod] KP_5: opening FloatingChatWindow for all channels");
                 mc.gui.setScreen(new ModularGuiScreen(gui ->
@@ -140,7 +142,7 @@ public class TestModClientCommon
             // ------------------------------------------------------------------
             // KP_6 — simulate a mention in Guild to trigger pulse (Plan C test)
             // ------------------------------------------------------------------
-            if (key == GLFW.GLFW_KEY_KP_6)
+            if (key == InputConstants.KEY_NUMPAD6)
             {
                 String playerName = mc.player != null ? mc.player.getScoreboardName() : "Player";
                 LOGGER.info("[TestMod] KP_6: simulating mention of '{}' in Guild", playerName);
@@ -158,7 +160,7 @@ public class TestModClientCommon
             // ------------------------------------------------------------------
             // KP_7 — send test notifications (Plan D test)
             // ------------------------------------------------------------------
-            if (key == GLFW.GLFW_KEY_KP_7)
+            if (key == InputConstants.KEY_NUMPAD7)
             {
                 Identifier src = Identifier.fromNamespaceAndPath("testmod", "test");
                 PolyNotifications.send(NotificationEntry.create(
@@ -185,7 +187,7 @@ public class TestModClientCommon
             // ------------------------------------------------------------------
             // KP_8 — flood all channels with rapid messages (stress test)
             // ------------------------------------------------------------------
-            if (key == GLFW.GLFW_KEY_KP_8)
+            if (key == InputConstants.KEY_NUMPAD8)
             {
                 LOGGER.info("[TestMod] KP_8: flooding all channels with 10 messages each");
                 for (int i = 1; i <= 10; i++)
@@ -200,7 +202,7 @@ public class TestModClientCommon
             // ------------------------------------------------------------------
             // KP_9 — send one of each notification severity to verify badges
             // ------------------------------------------------------------------
-            if (key == GLFW.GLFW_KEY_KP_9)
+            if (key == InputConstants.KEY_NUMPAD9)
             {
                 Identifier src = Identifier.fromNamespaceAndPath("testmod", "badge_test");
                 for (NotificationSeverity sev : NotificationSeverity.values())

@@ -22,7 +22,7 @@ import net.creeperhost.polylib.event.events.client.PolyTooltipEvents;
 import net.creeperhost.polylib.event.events.server.PolyRegistryEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;

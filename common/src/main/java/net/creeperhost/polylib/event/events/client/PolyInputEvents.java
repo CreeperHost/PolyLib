@@ -6,7 +6,8 @@ public final class PolyInputEvents
 {
     /**
      * Fired when a keyboard key is pressed, released, or repeated.
-     * {@code action}: 0 = release, 1 = press, 2 = repeat.
+     * {@code action}: 0 = release, 1 = press, -1 = repeat (see Minecraft's InputConstants).
+     * {@code key} is the physical key; the second argument is the layout-dependent keycode.
      * <p>
      * NeoForge: {@code InputEvent.Key}<br>
      * Fabric: mixin into {@code KeyboardHandler}

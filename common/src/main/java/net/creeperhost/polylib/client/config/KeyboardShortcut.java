@@ -26,14 +26,14 @@ public record KeyboardShortcut(int defaultKey, InputConstants.Type inputType, Ke
      */
     public static KeyboardShortcut unbound(KeyMapping.Category category)
     {
-        return new KeyboardShortcut(InputConstants.UNKNOWN.getValue(), InputConstants.Type.KEYSYM, category, false);
+        return new KeyboardShortcut(InputConstants.UNKNOWN.getValue(), InputConstants.Type.KEYBOARD, category, false);
     }
 
     /**
      * Has a suggested default key, but ships as UNBOUND so it never conflicts with other mods.
      *
-     * @param key      GLFW key constant, e.g. {@code GLFW.GLFW_KEY_F6}
-     * @param type     Usually {@link InputConstants.Type#KEYSYM}
+     * @param key      Minecraft input constant, e.g. {@code InputConstants.KEY_F6}
+     * @param type     Usually {@link InputConstants.Type#KEYBOARD}
      * @param category The Controls category to group this keybind under
      */
     public static KeyboardShortcut suggested(int key, InputConstants.Type type, KeyMapping.Category category)

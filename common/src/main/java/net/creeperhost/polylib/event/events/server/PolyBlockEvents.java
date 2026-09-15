@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -349,7 +349,7 @@ public final class PolyBlockEvents
     @FunctionalInterface
     public interface BlockGrowFeature
     {
-        void onBlockGrowFeature(ServerLevel level, BlockPos pos, Holder<ConfiguredFeature<?, ?>> feature);
+        void onBlockGrowFeature(ServerLevel level, BlockPos pos, Holder<Feature> feature);
     }
 
     @FunctionalInterface

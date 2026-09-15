@@ -1,7 +1,6 @@
 package net.creeperhost.polylib.mixin.client;
 
 import net.creeperhost.polylib.event.events.client.PolyLevelRenderEvents;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinGameRendererRenderStartFabric
 {
     @Inject(method = "render", at = @At("HEAD"))
-    private void polylib$onRenderFrameStart(DeltaTracker tracker, boolean onScreen, CallbackInfo ci)
+    private void polylib$onRenderFrameStart(CallbackInfo ci)
     {
         PolyLevelRenderEvents.RENDER_FRAME_START.invoker().onRenderFrameStart(Minecraft.getInstance());
     }

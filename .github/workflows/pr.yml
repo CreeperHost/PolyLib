@@ -3,7 +3,7 @@ name: PR Compile Check
 on:
   pull_request:
     branches:
-      - '26.2'
+      - '26.3'
 
 jobs:
   build:

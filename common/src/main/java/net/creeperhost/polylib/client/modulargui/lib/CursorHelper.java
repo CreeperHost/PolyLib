@@ -5,8 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.sdl.SDLMouse;
+import org.lwjgl.sdl.SDLPixels;
+import org.lwjgl.sdl.SDLSurface;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -52,15 +53,22 @@ public class CursorHelper {
                 Constants.LOG.warn("Unable to read cursor image {}", resource);
                 return 0;
             }
-            GLFWImage glfwImage = imageToGLFWImage(bufferedimage);
-            return GLFW.glfwCreateCursor(glfwImage, 16, 16);
+            ByteBuffer pixels = imageToPixels(bufferedimage);
+            var surface = SDLSurface.SDL_CreateSurfaceFrom(bufferedimage.getWidth(), bufferedimage.getHeight(),
+                    SDLPixels.SDL_PIXELFORMAT_RGBA32, pixels, bufferedimage.getWidth() * 4);
+            if (surface == null) return 0;
+            try {
+                return SDLMouse.SDL_CreateColorCursor(surface, 16, 16);
+            } finally {
+                SDLSurface.SDL_DestroySurface(surface);
+            }
         } catch (Exception e) {
             Constants.LOG.warn("Unable to create cursor {}", resource, e);
         }
         return 0;
     }
 
-    private static GLFWImage imageToGLFWImage(BufferedImage image) {
+    private static ByteBuffer imageToPixels(BufferedImage image) {
         if (image.getType() != BufferedImage.TYPE_INT_ARGB_PRE) {
             final BufferedImage convertedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
             final Graphics2D graphics = convertedImage.createGraphics();
@@ -81,18 +89,15 @@ public class CursorHelper {
             }
         }
         buffer.flip();
-        final GLFWImage result = GLFWImage.create();
-        result.set(image.getWidth(), image.getHeight(), buffer);
-        return result;
+        return buffer;
     }
 
     public static void setCursor(@Nullable Identifier cursor) {
         if (cursor != active) {
             active = cursor;
-            long window = Minecraft.getInstance().getWindow().handle();
             long newCursor = active == null ? 0 : cursors.computeIfAbsent(cursor, CursorHelper::createCursor);
             try {
-                GLFW.glfwSetCursor(window, newCursor);
+                SDLMouse.SDL_SetCursor(newCursor == 0 ? SDLMouse.SDL_GetDefaultCursor() : newCursor);
             }
             catch (Throwable e) {
                 e.printStackTrace();

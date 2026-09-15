@@ -205,7 +205,7 @@ public class NeoForgeClientEvents
     public static void onInputKey(InputEvent.Key event)
     {
         PolyInputEvents.INPUT_KEY.invoker().onKeyInput(
-                event.getKey(), event.getScanCode(), event.getAction(), event.getModifiers());
+                event.getKey(), event.getKeycode(), event.getAction(), event.getModifiers());
     }
 
     @SubscribeEvent
@@ -384,17 +384,17 @@ public class NeoForgeClientEvents
     {
         CancelContext ctx = new CancelContext();
         PolyScreenEvents.SCREEN_KEY_PRESS_ALLOW.invoker().onScreenKeyPressAllow(
-                event.getScreen(), event.getKeyCode(), event.getScanCode(), event.getModifiers(), ctx);
+                event.getScreen(), event.getKey(), event.getKeycode(), event.getModifiers(), ctx);
         if (ctx.isCancelled()) { event.setCanceled(true); return; }
         PolyScreenEvents.SCREEN_KEY_PRESS_BEFORE.invoker().onScreenKeyPressBefore(
-                event.getScreen(), event.getKeyCode(), event.getScanCode(), event.getModifiers());
+                event.getScreen(), event.getKey(), event.getKeycode(), event.getModifiers());
     }
 
     @SubscribeEvent
     public static void onScreenKeyPressedPost(ScreenEvent.KeyPressed.Post event)
     {
         PolyScreenEvents.SCREEN_KEY_PRESS_AFTER.invoker().onScreenKeyPressAfter(
-                event.getScreen(), event.getKeyCode(), event.getScanCode(), event.getModifiers());
+                event.getScreen(), event.getKey(), event.getKeycode(), event.getModifiers());
     }
 
     @SubscribeEvent
@@ -402,17 +402,17 @@ public class NeoForgeClientEvents
     {
         CancelContext ctx = new CancelContext();
         PolyScreenEvents.SCREEN_KEY_RELEASE_ALLOW.invoker().onScreenKeyReleaseAllow(
-                event.getScreen(), event.getKeyCode(), event.getScanCode(), event.getModifiers(), ctx);
+                event.getScreen(), event.getKey(), event.getKeycode(), event.getModifiers(), ctx);
         if (ctx.isCancelled()) { event.setCanceled(true); return; }
         PolyScreenEvents.SCREEN_KEY_RELEASE_BEFORE.invoker().onScreenKeyReleaseBefore(
-                event.getScreen(), event.getKeyCode(), event.getScanCode(), event.getModifiers());
+                event.getScreen(), event.getKey(), event.getKeycode(), event.getModifiers());
     }
 
     @SubscribeEvent
     public static void onScreenKeyReleasedPost(ScreenEvent.KeyReleased.Post event)
     {
         PolyScreenEvents.SCREEN_KEY_RELEASE_AFTER.invoker().onScreenKeyReleaseAfter(
-                event.getScreen(), event.getKeyCode(), event.getScanCode(), event.getModifiers());
+                event.getScreen(), event.getKey(), event.getKeycode(), event.getModifiers());
     }
 
     @SubscribeEvent

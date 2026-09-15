@@ -12,7 +12,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
@@ -547,7 +547,7 @@ public final class PolyLivingEvents
      * Fired when an Enderman begins to get angry at a player. Cancel to prevent.
      * <p>
      * NeoForge: {@code EnderManAngerEvent}<br>
-     * Fabric: mixin on {@code EnderMan#isLookingAtMe}
+     * Fabric: mixin on {@code Enderman#isLookingAtMe}
      */
     public static final PolyEvent<EndermanAnger> ENDERMAN_ANGER = PolyEvent.create(handlers -> (enderman, player, ctx) ->
     {
@@ -609,7 +609,7 @@ public final class PolyLivingEvents
     @FunctionalInterface
     public interface EndermanAnger
     {
-        void onEndermanAnger(EnderMan enderman, Player player, CancelContext ctx);
+        void onEndermanAnger(Enderman enderman, Player player, CancelContext ctx);
     }
 
     @FunctionalInterface

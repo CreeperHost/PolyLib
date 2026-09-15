@@ -1,6 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.lib;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Borders;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Rectangle;
 import net.creeperhost.polylib.client.modulargui.sprite.Material;

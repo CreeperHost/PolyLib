@@ -2,8 +2,9 @@ package net.creeperhost.polylib.mixin.client;
 
 import net.creeperhost.polylib.event.data.CancelContext;
 import net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.state.level.PlayerRenderState;
+import net.minecraft.client.renderer.state.level.FirstPersonHandsAndItemsRenderState;
+import net.minecraft.client.renderer.FirstPersonHandsAndItemsRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -15,13 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Fabric bridge for {@link PolyEntityRenderEvents#RENDER_HAND}.
- * Injects at the head of {@code ItemInHandRenderer#submitArmWithItem} (private method).
+ * Injects at the head of {@code FirstPersonHandsAndItemsRenderer#submitArmWithItem} (private method).
  */
-@Mixin(ItemInHandRenderer.class)
+@Mixin(FirstPersonHandsAndItemsRenderer.class)
 public abstract class MixinItemInHandRendererHandFabric
 {
     @Inject(method = "submitArmWithItem", at = @At("HEAD"), cancellable = true, remap = false)
-    private void polylib$onRenderArmWithItem(AbstractClientPlayer player,
+    private void polylib$onRenderArmWithItem(PlayerRenderState playerState,
+                                              FirstPersonHandsAndItemsRenderState state,
                                               float partialTick,
                                               float equipProgress,
                                               InteractionHand hand,
