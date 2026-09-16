@@ -2,10 +2,10 @@
 
 > PolyLib is a Minecraft library mod by CreeperHost. These docs include human guides, generated Java API reference, and release-specific metadata.
 
-Generated for 26.2-2.0.11 on 2026-09-03T13:13:41.926Z.
+Generated for 26.3-2.0.11 on 2026-09-16T09:59:46.404Z.
 
-Version: 26.2-2.0.11
-Minecraft: 26.2
+Version: 26.3-2.0.11
+Minecraft: 26.3
 Java: 25
 Loaders: common, Fabric, NeoForge
 
@@ -71,7 +71,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.inventory.power: 8 public types (common)
 - net.creeperhost.polylib.items: 1 public types (common)
 - net.creeperhost.polylib.items.helpers: 1 public types (common)
-- net.creeperhost.polylib.mixin: 100 public types (fabric, neoforge)
+- net.creeperhost.polylib.mixin: 100 public types (common, fabric, neoforge)
 - net.creeperhost.polylib.mixin.client: 20 public types (fabric)
 - net.creeperhost.polylib.mulitblock: 6 public types (common)
 - net.creeperhost.polylib.mulitblock.rectangular: 3 public types (common)
@@ -202,7 +202,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.event.events.server.PolyBlockEntityEvents.BLOCK_ENTITY_UNLOAD: handler BlockEntityUnload, void onBlockEntityUnload(BlockEntity blockEntity)
 - net.creeperhost.polylib.event.events.server.PolyBlockEvents.ALTER_GROUND: handler AlterGround, void onAlterGround(ServerLevel level, BlockPos pos, BlockStateProvider provider)
 - net.creeperhost.polylib.event.events.server.PolyBlockEvents.BLOCK_DROPS: handler BlockDrops, void onBlockDrops(ServerLevel level, BlockPos pos, BlockState state, List<ItemEntity> drops)
-- net.creeperhost.polylib.event.events.server.PolyBlockEvents.BLOCK_GROW_FEATURE: handler BlockGrowFeature, void onBlockGrowFeature(ServerLevel level, BlockPos pos, Holder<ConfiguredFeature<?, ?>> feature)
+- net.creeperhost.polylib.event.events.server.PolyBlockEvents.BLOCK_GROW_FEATURE: handler BlockGrowFeature, void onBlockGrowFeature(ServerLevel level, BlockPos pos, Holder<Feature> feature)
 - net.creeperhost.polylib.event.events.server.PolyBlockEvents.BREAK: handler Break, void onBreak(ServerPlayer player, LevelAccessor level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
 - net.creeperhost.polylib.event.events.server.PolyBlockEvents.CROP_GROW_POST: handler CropGrowPost, void onCropGrowPost(Level level, BlockPos pos, BlockState state)
 - net.creeperhost.polylib.event.events.server.PolyBlockEvents.CROP_GROW_PRE: handler CropGrow, void onCropGrow(Level level, BlockPos pos, BlockState state, CancelContext ctx), cancellable
@@ -281,7 +281,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.event.events.server.PolyLivingEvents.DROPS: handler Drops, void onDrops(LivingEntity entity, DamageSource source, List<ItemEntity> drops)
 - net.creeperhost.polylib.event.events.server.PolyLivingEvents.DROWN: handler Drown, void onDrown(LivingEntity entity, CancelContext ctx), cancellable
 - net.creeperhost.polylib.event.events.server.PolyLivingEvents.ELYTRA_ALLOW: handler ElytraAllow, void onElytraAllow(LivingEntity entity, boolean[] result)
-- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENDERMAN_ANGER: handler EndermanAnger, void onEndermanAnger(EnderMan enderman, Player player, CancelContext ctx), cancellable
+- net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENDERMAN_ANGER: handler EndermanAnger, void onEndermanAnger(Enderman enderman, Player player, CancelContext ctx), cancellable
 - net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENTITY_EQUIP_CHANGE: handler EquipChange, void onEquipChange(LivingEntity entity, EquipmentSlot slot, ItemStack from, ItemStack to)
 - net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENTITY_KILLED_OTHER: handler EntityKilledOther, void onEntityKilledOther(LivingEntity killer, LivingEntity victim)
 - net.creeperhost.polylib.event.events.server.PolyLivingEvents.FALL: handler Fall, void onFall(LivingEntity entity, double distance, float multiplier)
@@ -835,16 +835,16 @@ Injects at the tail of `DebugScreenEntries`'s static initialiser so that all ent
 
 Because `register(Identifier, DebugScreenEntry)` is private-static, we obtain the `ENTRIES_BY_ID` field via the `EntryMapAccessor` interface and call `Map#put` directly. This matches exactly what the private method does (see bytecode: `ENTRIES_BY_ID.put(id, entry); return id;`).
 - net.creeperhost.polylib.mixin.client.FabricFovModifierMixin (class, fabric): FOV_MODIFIER on Fabric: `GameRenderer` in MC 26.1.2 does not expose a public `getFov()` method. Full support is available on NeoForge via `ComputeFovModifierEvent`. This stub exists as a placeholder.
-- net.creeperhost.polylib.mixin.client.FabricKeyInputMixin (class, fabric): Fabric bridge for `PolyInputEvents#INPUT_KEY`. Injects into the GLFW key callback registered by `KeyboardHandler#setup`.
-- net.creeperhost.polylib.mixin.client.FabricMouseInputMixin (class, fabric): Fabric bridge for `PolyInputEvents#INPUT_MOUSE`. Injects into the GLFW mouse button callback registered by `MouseHandler#setup`.
+- net.creeperhost.polylib.mixin.client.FabricKeyInputMixin (class, fabric): Fabric bridge for `PolyInputEvents#INPUT_KEY`. Injects into the key event handler called by the SDL event loop.
+- net.creeperhost.polylib.mixin.client.FabricMouseInputMixin (class, fabric): Fabric bridge for `PolyInputEvents#INPUT_MOUSE`. Injects into the mouse button handler called by the SDL event loop.
 - net.creeperhost.polylib.mixin.client.MixinAbstractContainerScreenFabric (class, fabric): No summary.
 - net.creeperhost.polylib.mixin.client.MixinEntityRendererNameTagFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_NAME_TAG`. Injects at the head of `EntityRenderer#submitNameDisplay`.
 - net.creeperhost.polylib.mixin.client.MixinGameRendererRenderEndFabric (class, fabric): Fabric bridge for `PolyLevelRenderEvents#RENDER_FRAME_END`. Fires at the end of each call to `GameRenderer#render`, after all rendering has been submitted.
 - net.creeperhost.polylib.mixin.client.MixinGameRendererRenderStartFabric (class, fabric): Fabric bridge for `PolyLevelRenderEvents#RENDER_FRAME_START`. Fires at the very beginning of each call to `GameRenderer#render`.
 - net.creeperhost.polylib.mixin.client.MixinHeartTypeFabric (class, fabric): No summary.
 - net.creeperhost.polylib.mixin.client.MixinItemFrameRendererFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ITEM_IN_FRAME`. Injects at the head of `ItemFrameRenderer#submit`.
-- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererArmFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ARM`. Injects at the head of `ItemInHandRenderer#renderPlayerArm` (private method).
-- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererHandFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#submitArmWithItem` (private method).
+- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererArmFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_ARM`. Injects at the head of `FirstPersonHandsAndItemsRenderer#renderPlayerArm` (private method).
+- net.creeperhost.polylib.mixin.client.MixinItemInHandRendererHandFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `FirstPersonHandsAndItemsRenderer#submitArmWithItem` (private method).
 - net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPostFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_POST`, `PolyEntityRenderEvents#RENDER_PLAYER_POST`.
 - net.creeperhost.polylib.mixin.client.MixinLivingEntityRendererPreFabric (class, fabric): Fabric bridge for `PolyEntityRenderEvents#RENDER_LIVING_PRE`, `PolyEntityRenderEvents#RENDER_PLAYER_PRE`.
 
@@ -888,7 +888,6 @@ Limitation: Position mutation (redirecting the target coordinates) is not propag
 - net.creeperhost.polylib.mixin.FabricEquipChangeMixin (class, fabric): Fabric bridge for `PolyLivingEvents#ENTITY_EQUIP_CHANGE`.
 - net.creeperhost.polylib.mixin.FabricFinalizeSpawnMixin (class, fabric): Bridges `PolySpawnEvents#FINALIZE_SPAWN` on Fabric.
 - net.creeperhost.polylib.mixin.FabricFluidSourceMixin (class, fabric): Fabric bridge for `PolyBlockEvents#FLUID_SOURCE`. Fires before a flowing fluid spreads to a new position.
-- net.creeperhost.polylib.mixin.FabricFuelBurnTimeMixin (class, fabric): Fabric bridge for `PolyItemEvents#FUEL_BURN_TIME`.
 - net.creeperhost.polylib.mixin.FabricGameRuleChangeMixin (class, fabric): Fabric bridge for `PolyLevelEvents#GAME_RULE_CHANGE`. Fires at the tail of the `/gamerule` command handler so the change is already applied.
 - net.creeperhost.polylib.mixin.FabricGetEnchantLevelMixin (class, fabric): No summary.
 - net.creeperhost.polylib.mixin.FabricGetProjectileMixin (class, fabric): Fabric bridge for `PolyLivingEvents#GET_PROJECTILE`. Fires when a living entity determines which projectile to use.
@@ -945,6 +944,7 @@ Note: the `target` parameter is the primary attack target (not each swept entity
 - net.creeperhost.polylib.mixin.FabricUseTotemMixin (class, fabric): Fabric bridge for `PolyLivingEvents#USE_TOTEM`. Fires when a living entity is about to use a Totem of Undying.
 - net.creeperhost.polylib.mixin.FabricVillageSiegeMixin (class, fabric): Fabric bridge for `PolyVillageEvents#SIEGE_SPAWN`. Fires just before the siege attempts to spawn zombies.
 - net.creeperhost.polylib.mixin.FabricWakeUpMixin (class, fabric): Fabric bridge for `PolyPlayerEvents#WAKE_UP`. Fires when a player wakes up from sleeping via `Player#stopSleepInBed`.
+- net.creeperhost.polylib.mixin.FurnaceFuelBurnTimeMixin (class, common): Bridges the component-based furnace fuel calculation on both loaders.
 - net.creeperhost.polylib.mixin.MixinCapeLayerNF (class, neoforge): NeoForge bridge for `PolyEntityRenderEvents#ALLOW_CAPE_RENDER`. Injects at the head of `CapeLayer#submit` to allow listeners to suppress cape rendering for a specific avatar.
 - net.creeperhost.polylib.mixin.MixinChatComponentNF (class, neoforge): No summary.
 - net.creeperhost.polylib.mixin.MixinChatScreenNF (class, neoforge): No summary.

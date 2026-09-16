@@ -2,9 +2,9 @@
   "project": {
     "name": "PolyLib",
     "version": "2.0.11",
-    "minecraftVersion": "26.2",
-    "releaseTag": "26.2-2.0.11",
-    "generatedAt": "2026-09-03T13:13:41.912Z"
+    "minecraftVersion": "26.3",
+    "releaseTag": "26.3-2.0.11",
+    "generatedAt": "2026-09-16T09:59:46.394Z"
   },
   "packages": [
     {
@@ -343,6 +343,7 @@
     {
       "name": "net.creeperhost.polylib.mixin",
       "loaders": [
+        "common",
         "fabric",
         "neoforge"
       ],
@@ -1234,8 +1235,8 @@
           "name": "playerDestroy",
           "visibility": "public",
           "returnType": "void",
-          "parameters": "Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack heldStack",
-          "signature": "public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack heldStack)",
+          "parameters": "ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack heldStack",
+          "signature": "public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack heldStack)",
           "javadoc": ""
         }
       ],
@@ -16486,12 +16487,12 @@
         {
           "name": "RENDER_HAND",
           "type": "PolyEvent<RenderHand>",
-          "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#submitArmWithItem` at HEAD (cancellable)"
+          "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `FirstPersonHandsAndItemsRenderer#submitArmWithItem` at HEAD (cancellable)"
         },
         {
           "name": "RENDER_ARM",
           "type": "PolyEvent<RenderArm>",
-          "javadoc": "Fired before a bare player arm is rendered in first-person view. Cancel to suppress the arm.\n\nNeoForge: `RenderArmEvent`\n\nFabric: mixin on `ItemInHandRenderer#renderPlayerArm` at HEAD (cancellable)"
+          "javadoc": "Fired before a bare player arm is rendered in first-person view. Cancel to suppress the arm.\n\nNeoForge: `RenderArmEvent`\n\nFabric: mixin on `FirstPersonHandsAndItemsRenderer#renderPlayerArm` at HEAD (cancellable)"
         },
         {
           "name": "RENDER_ITEM_IN_FRAME",
@@ -16602,7 +16603,7 @@
         {
           "name": "INPUT_KEY",
           "type": "PolyEvent<KeyInput>",
-          "javadoc": "Fired when a keyboard key is pressed, released, or repeated. `action`: 0 = release, 1 = press, 2 = repeat.\n\nNeoForge: `InputEvent.Key`\n\nFabric: mixin into `KeyboardHandler`"
+          "javadoc": "Fired when a keyboard key is pressed, released, or repeated. `action`: 0 = release, 1 = press, -1 = repeat (see Minecraft's InputConstants). `key` is the physical key; the second argument is the layout-dependent keycode.\n\nNeoForge: `InputEvent.Key`\n\nFabric: mixin into `KeyboardHandler`"
         },
         {
           "name": "INPUT_MOUSE",
@@ -17503,7 +17504,7 @@
         {
           "name": "FUEL_BURN_TIME",
           "type": "PolyEvent<FuelBurnTime>",
-          "javadoc": "Fired to query how long an item burns as fuel. Modify `burnTime[0]` to change.\n\nNeoForge: `FurnaceFuelBurnTimeEvent` (MOD bus)\n\nFabric: mixin on `FurnaceBlockEntity#getBurnDuration`"
+          "javadoc": "Fired to query how long an item burns as fuel. Modify `burnTime[0]` to change.\n\nBoth loaders: mixin on `AbstractFurnaceBlockEntity#getBurnDuration`."
         },
         {
           "name": "ITEM_STACKED_ON_OTHER",
@@ -17850,7 +17851,7 @@
         {
           "name": "ENDERMAN_ANGER",
           "type": "PolyEvent<EndermanAnger>",
-          "javadoc": "Fired when an Enderman begins to get angry at a player. Cancel to prevent.\n\nNeoForge: `EnderManAngerEvent`\n\nFabric: mixin on `EnderMan#isLookingAtMe`"
+          "javadoc": "Fired when an Enderman begins to get angry at a player. Cancel to prevent.\n\nNeoForge: `EnderManAngerEvent`\n\nFabric: mixin on `Enderman#isLookingAtMe`"
         },
         {
           "name": "ENTITY_KILLED_OTHER",
@@ -20761,7 +20762,7 @@
       "loader": "fabric",
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/client/FabricKeyInputMixin.java",
-      "summary": "Fabric bridge for `PolyInputEvents#INPUT_KEY`. Injects into the GLFW key callback registered by `KeyboardHandler#setup`.",
+      "summary": "Fabric bridge for `PolyInputEvents#INPUT_KEY`. Injects into the key event handler called by the SDL event loop.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -20774,7 +20775,7 @@
       "loader": "fabric",
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/client/FabricMouseInputMixin.java",
-      "summary": "Fabric bridge for `PolyInputEvents#INPUT_MOUSE`. Injects into the GLFW mouse button callback registered by `MouseHandler#setup`.",
+      "summary": "Fabric bridge for `PolyInputEvents#INPUT_MOUSE`. Injects into the mouse button handler called by the SDL event loop.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -20865,7 +20866,7 @@
       "loader": "fabric",
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/client/MixinItemInHandRendererArmFabric.java",
-      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_ARM`. Injects at the head of `ItemInHandRenderer#renderPlayerArm` (private method).",
+      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_ARM`. Injects at the head of `FirstPersonHandsAndItemsRenderer#renderPlayerArm` (private method).",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -20878,7 +20879,7 @@
       "loader": "fabric",
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/client/MixinItemInHandRendererHandFabric.java",
-      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `ItemInHandRenderer#submitArmWithItem` (private method).",
+      "summary": "Fabric bridge for `PolyEntityRenderEvents#RENDER_HAND`. Injects at the head of `FirstPersonHandsAndItemsRenderer#submitArmWithItem` (private method).",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -21314,19 +21315,6 @@
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/FabricFluidSourceMixin.java",
       "summary": "Fabric bridge for `PolyBlockEvents#FLUID_SOURCE`. Fires before a flowing fluid spreads to a new position.",
-      "methodCount": 0,
-      "fieldCount": 0,
-      "methods": [],
-      "fields": []
-    },
-    {
-      "name": "FabricFuelBurnTimeMixin",
-      "qualifiedName": "net.creeperhost.polylib.mixin.FabricFuelBurnTimeMixin",
-      "packageName": "net.creeperhost.polylib.mixin",
-      "loader": "fabric",
-      "kind": "class",
-      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/FabricFuelBurnTimeMixin.java",
-      "summary": "Fabric bridge for `PolyItemEvents#FUEL_BURN_TIME`.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -21966,6 +21954,19 @@
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/mixin/FabricWakeUpMixin.java",
       "summary": "Fabric bridge for `PolyPlayerEvents#WAKE_UP`. Fires when a player wakes up from sleeping via `Player#stopSleepInBed`.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "FurnaceFuelBurnTimeMixin",
+      "qualifiedName": "net.creeperhost.polylib.mixin.FurnaceFuelBurnTimeMixin",
+      "packageName": "net.creeperhost.polylib.mixin",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/mixin/FurnaceFuelBurnTimeMixin.java",
+      "summary": "Bridges the component-based furnace fuel calculation on both loaders.",
       "methodCount": 0,
       "fieldCount": 0,
       "methods": [],
@@ -24374,7 +24375,7 @@
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/NeoForgeEvents.java",
       "summary": "NeoForge server-side game-bus event handlers for PolyLib lifecycle hooks.",
-      "methodCount": 161,
+      "methodCount": 160,
       "fieldCount": 0,
       "methods": [
         {
@@ -25325,8 +25326,8 @@
           "name": "onEnderManAnger",
           "visibility": "public",
           "returnType": "void",
-          "parameters": "EnderManAngerEvent event",
-          "signature": "public void onEnderManAnger(EnderManAngerEvent event)",
+          "parameters": "EndermanAngerEvent event",
+          "signature": "public void onEnderManAnger(EndermanAngerEvent event)",
           "javadoc": ""
         },
         {
@@ -25375,14 +25376,6 @@
           "returnType": "void",
           "parameters": "EnchantmentLevelSetEvent event",
           "signature": "public void onEnchantTableLevel(EnchantmentLevelSetEvent event)",
-          "javadoc": ""
-        },
-        {
-          "name": "onFuelBurnTime",
-          "visibility": "public",
-          "returnType": "void",
-          "parameters": "FurnaceFuelBurnTimeEvent event",
-          "signature": "public void onFuelBurnTime(FurnaceFuelBurnTimeEvent event)",
           "javadoc": ""
         },
         {
@@ -28437,7 +28430,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_ARM",
       "declaringType": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyEntityRenderEvents.java",
-      "javadoc": "Fired before a bare player arm is rendered in first-person view. Cancel to suppress the arm.\n\nNeoForge: `RenderArmEvent`\n\nFabric: mixin on `ItemInHandRenderer#renderPlayerArm` at HEAD (cancellable)",
+      "javadoc": "Fired before a bare player arm is rendered in first-person view. Cancel to suppress the arm.\n\nNeoForge: `RenderArmEvent`\n\nFabric: mixin on `FirstPersonHandsAndItemsRenderer#renderPlayerArm` at HEAD (cancellable)",
       "method": {
         "name": "onRenderArm",
         "returnType": "void",
@@ -28473,7 +28466,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents.RENDER_HAND",
       "declaringType": "net.creeperhost.polylib.event.events.client.PolyEntityRenderEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyEntityRenderEvents.java",
-      "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `ItemInHandRenderer#submitArmWithItem` at HEAD (cancellable)",
+      "javadoc": "Fired before the held-hand item/arms are rendered for the current frame. Cancel to suppress the hand render entirely.\n\nNeoForge: `RenderHandEvent`\n\nFabric: mixin on `FirstPersonHandsAndItemsRenderer#submitArmWithItem` at HEAD (cancellable)",
       "method": {
         "name": "onRenderHand",
         "returnType": "void",
@@ -28779,7 +28772,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.client.PolyInputEvents.INPUT_KEY",
       "declaringType": "net.creeperhost.polylib.event.events.client.PolyInputEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/client/PolyInputEvents.java",
-      "javadoc": "Fired when a keyboard key is pressed, released, or repeated. `action`: 0 = release, 1 = press, 2 = repeat.\n\nNeoForge: `InputEvent.Key`\n\nFabric: mixin into `KeyboardHandler`",
+      "javadoc": "Fired when a keyboard key is pressed, released, or repeated. `action`: 0 = release, 1 = press, -1 = repeat (see Minecraft's InputConstants). `key` is the physical key; the second argument is the layout-dependent keycode.\n\nNeoForge: `InputEvent.Key`\n\nFabric: mixin into `KeyboardHandler`",
       "method": {
         "name": "onKeyInput",
         "returnType": "void",
@@ -29845,8 +29838,8 @@
       "method": {
         "name": "onBlockGrowFeature",
         "returnType": "void",
-        "parameters": "ServerLevel level, BlockPos pos, Holder<ConfiguredFeature<?, ?>> feature",
-        "signature": "void onBlockGrowFeature(ServerLevel level, BlockPos pos, Holder<ConfiguredFeature<?, ?>> feature)"
+        "parameters": "ServerLevel level, BlockPos pos, Holder<Feature> feature",
+        "signature": "void onBlockGrowFeature(ServerLevel level, BlockPos pos, Holder<Feature> feature)"
       },
       "cancellable": false
     },
@@ -30687,7 +30680,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.server.PolyItemEvents.FUEL_BURN_TIME",
       "declaringType": "net.creeperhost.polylib.event.events.server.PolyItemEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyItemEvents.java",
-      "javadoc": "Fired to query how long an item burns as fuel. Modify `burnTime[0]` to change.\n\nNeoForge: `FurnaceFuelBurnTimeEvent` (MOD bus)\n\nFabric: mixin on `FurnaceBlockEntity#getBurnDuration`",
+      "javadoc": "Fired to query how long an item burns as fuel. Modify `burnTime[0]` to change.\n\nBoth loaders: mixin on `AbstractFurnaceBlockEntity#getBurnDuration`.",
       "method": {
         "name": "onFuelBurnTime",
         "returnType": "void",
@@ -31263,12 +31256,12 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.server.PolyLivingEvents.ENDERMAN_ANGER",
       "declaringType": "net.creeperhost.polylib.event.events.server.PolyLivingEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyLivingEvents.java",
-      "javadoc": "Fired when an Enderman begins to get angry at a player. Cancel to prevent.\n\nNeoForge: `EnderManAngerEvent`\n\nFabric: mixin on `EnderMan#isLookingAtMe`",
+      "javadoc": "Fired when an Enderman begins to get angry at a player. Cancel to prevent.\n\nNeoForge: `EnderManAngerEvent`\n\nFabric: mixin on `Enderman#isLookingAtMe`",
       "method": {
         "name": "onEndermanAnger",
         "returnType": "void",
-        "parameters": "EnderMan enderman, Player player, CancelContext ctx",
-        "signature": "void onEndermanAnger(EnderMan enderman, Player player, CancelContext ctx)"
+        "parameters": "Enderman enderman, Player player, CancelContext ctx",
+        "signature": "void onEndermanAnger(Enderman enderman, Player player, CancelContext ctx)"
       },
       "cancellable": true
     },
