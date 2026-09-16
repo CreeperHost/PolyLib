@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.creeperhost.polylib.client.modulargui.lib.*;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Axis;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
@@ -189,13 +190,13 @@ public class GuiColourPicker extends GuiManipulable {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button, boolean consumed) {
-            pressed = button == 0;
+            pressed = button == InputConstants.MOUSE_BUTTON_LEFT;
             return super.mouseClicked(mouseX, mouseY, button, consumed);
         }
 
         @Override
         public boolean mouseReleased(double mouseX, double mouseY, int button, boolean consumed) {
-            if (button == 0) pressed = false;
+            if (button == InputConstants.MOUSE_BUTTON_LEFT) pressed = false;
             return super.mouseReleased(mouseX, mouseY, button, consumed);
         }
 

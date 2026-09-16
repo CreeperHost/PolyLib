@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.chat.client.tab;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.creeperhost.polylib.chat.ChatChannel;
 import net.creeperhost.polylib.chat.client.ChatNotifications;
 import net.creeperhost.polylib.chat.client.PulseEffect;
@@ -72,7 +73,7 @@ public abstract class ChatTabBarElement extends GuiElement<ChatTabBarElement> im
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button != 0) return false;
+        if (button != InputConstants.MOUSE_BUTTON_LEFT) return false;
         for (TabHitBox box : tabBoxes) {
             if (mouseX >= box.x && mouseX < box.x + box.w && mouseY >= box.y && mouseY < box.y + box.h) {
                 registry.setActiveTab(box.tab);

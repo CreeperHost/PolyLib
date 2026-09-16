@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.creeperhost.polylib.blocks.RedstoneActivatedBlock;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.Constraint;
@@ -26,9 +27,9 @@ import static net.creeperhost.polylib.client.modulargui.lib.geometry.GeoParam.*;
  * Created by brandon3055 on 28/08/2023
  */
 public class GuiButton extends GuiElement<GuiButton> {
-    public static final int LEFT_CLICK = 0;
-    public static final int RIGHT_CLICK = 1;
-    public static final int MIDDLE_CLICK = 2;
+    public static final int LEFT_CLICK = InputConstants.MOUSE_BUTTON_LEFT;
+    public static final int RIGHT_CLICK = InputConstants.MOUSE_BUTTON_RIGHT;
+    public static final int MIDDLE_CLICK = InputConstants.MOUSE_BUTTON_MIDDLE;
 
     private final Map<Integer, Runnable> onClick = new HashMap<>();
     private final Map<Integer, Runnable> onPress = new HashMap<>();

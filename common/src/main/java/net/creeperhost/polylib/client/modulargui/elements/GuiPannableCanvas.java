@@ -1,5 +1,6 @@
 package net.creeperhost.polylib.client.modulargui.elements;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import java.util.LinkedHashMap;
 
@@ -91,7 +92,7 @@ public class GuiPannableCanvas<T extends GuiPannableCanvas<T>> extends GuiElemen
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 2 && isMouseOver(mouseX, mouseY)) {
+        if (button == InputConstants.MOUSE_BUTTON_MIDDLE && isMouseOver(mouseX, mouseY)) {
             panning = true;
             panMouseStartX = mouseX;
             panMouseStartY = mouseY;
@@ -104,7 +105,7 @@ public class GuiPannableCanvas<T extends GuiPannableCanvas<T>> extends GuiElemen
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (button == 2 && panning) {
+        if (button == InputConstants.MOUSE_BUTTON_MIDDLE && panning) {
             panning = false;
             return true;
         }
