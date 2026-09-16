@@ -32,7 +32,11 @@ public class ModularGuiInjector<T extends Screen> {
     }
 
     public static void initPost(Screen screen) {
-        if (activeGui != null) activeGui = null;
+        if (activeGui != null) {
+            ModularGui closingGui = activeGui;
+            activeGui = null;
+            closingGui.onGuiClose();
+        }
         Predicate<Screen> key = providerMap.keySet()
                 .stream()
                 .filter(e -> e.test(screen))
@@ -49,7 +53,9 @@ public class ModularGuiInjector<T extends Screen> {
 
     public static void clearGui(Screen screen) {
         if (activeGui != null && activeGui.getScreen() == screen) {
+            ModularGui closingGui = activeGui;
             activeGui = null;
+            closingGui.onGuiClose();
         }
     }
 

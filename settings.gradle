@@ -31,7 +31,10 @@ include('common')
 include('fabric')
 include('neoforge')
 
-// include('testmod-common')
-// include('testmod-fabric')
-// include('testmod-neoforge')
+// Opt in to the client regression screens with -PtestMods.
+if (providers.gradleProperty('testMods').isPresent()) {
+    include('testmod-common')
+    include('testmod-fabric')
+    include('testmod-neoforge')
+}
 

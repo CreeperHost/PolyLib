@@ -1,6 +1,7 @@
 package net.creeperhost.testmod;
 
 import net.creeperhost.polylib.client.modulargui.ModularGui;
+import net.creeperhost.polylib.client.modulargui.ModularGuiScreen;
 import net.creeperhost.polylib.client.modulargui.elements.*;
 import net.creeperhost.polylib.client.modulargui.lib.Constraints;
 import net.creeperhost.polylib.client.modulargui.lib.GuiProvider;
@@ -25,8 +26,8 @@ public class MainMenuGuiInjection implements GuiProvider
         gui.initFullscreenGui();
         GuiElement<?> root = gui.getRoot();
 
-        GuiButton testButton = GuiButton.vanilla(root, Component.literal("Test Button"))
-                .onClick(() -> {});
+        GuiButton testButton = GuiButton.vanilla(root, Component.literal("Text Input Test"))
+                .onClick(() -> gui.mc().gui.setScreen(new ModularGuiScreen(new TextInputTestGui())));
         Constraints.size(testButton, 100, 20);
         Constraints.placeInside(testButton, root, Constraints.LayoutPos.TOP_LEFT, 10, 10);
 

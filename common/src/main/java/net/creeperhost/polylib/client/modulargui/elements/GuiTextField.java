@@ -39,6 +39,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     private int displayPos;
     private int highlightPos;
     private boolean focused;
+    private boolean textInputActive;
     private boolean shiftPressed;
 
     private Supplier<Boolean> isEditable = () -> true;
@@ -61,6 +62,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
 
     public GuiTextField(@NotNull GuiParent<?> parent) {
         super(parent);
+        getModularGui().onClose(() -> setFocus(false));
     }
 
     //=== Text field setup ===//
@@ -220,6 +222,7 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
      */
     public GuiTextField setEditable(Supplier<Boolean> editable) {
         this.isEditable = editable;
+        updateTextInputState();
         return this;
     }
 
@@ -399,10 +402,22 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
     }
 
     public void setFocus(boolean focused) {
-        if (this.focused && !focused && onEditComplete != null) {
+        boolean lostFocus = this.focused && !focused;
+        this.focused = focused;
+        // Explicit focus changes must also transfer SDL text-input ownership.
+        textInputActive = canConsumeInput();
+        Minecraft.getInstance().textInputManager().onTextInputFocusChange(this, textInputActive);
+        if (lostFocus && onEditComplete != null) {
             onEditComplete.run();
         }
-        this.focused = focused;
+    }
+
+    private void updateTextInputState() {
+        boolean active = canConsumeInput();
+        if (textInputActive != active) {
+            textInputActive = active;
+            Minecraft.getInstance().textInputManager().onTextInputFocusChange(this, active);
+        }
     }
 
     public boolean isFocused() {
@@ -633,11 +648,17 @@ public class GuiTextField extends GuiElement<GuiTextField> implements Background
             render.fill(RenderPipelines.GUI_TEXT_HIGHLIGHT, k1, drawY - 1, l1 - 1, drawY + 1 + 9, 0xFF0000FF);
 //            render.pose().translate(0, 0, -0.035);
         }
+
+        if (canConsumeInput()) {
+            Minecraft.getInstance().textInputManager().setTextInputArea(k1, (int) drawY, k1 + 1, (int) drawY + 10);
+        }
     }
 
     @Override
     public void tick(double mouseX, double mouseY) {
         super.tick(mouseX, mouseY);
+        // Editable/enabled suppliers can change without calling a setter.
+        updateTextInputState();
         tick++;
     }
 
