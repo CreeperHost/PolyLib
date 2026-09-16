@@ -1,10 +1,10 @@
 {
   "project": {
     "name": "PolyLib",
-    "version": "2.0.13",
+    "version": "2.0.14",
     "minecraftVersion": "26.3",
-    "releaseTag": "26.3-2.0.13",
-    "generatedAt": "2026-09-16T14:55:09.201Z"
+    "releaseTag": "26.3-2.0.14",
+    "generatedAt": "2026-09-16T19:47:27.794Z"
   },
   "packages": [
     {
@@ -17196,7 +17196,7 @@
         {
           "name": "TAGS_UPDATED",
           "type": "PolyEvent<TagsUpdated>",
-          "javadoc": "Fired after tags are loaded or reloaded on the server (startup and `/reload`).\n\nNeoForge: `TagsUpdatedEvent` (SERVER_DATA_LOAD cause only)\n\nFabric: no direct equivalent — NeoForge only initially (TODO: Fabric bridge)"
+          "javadoc": "Fired after tags are loaded or reloaded on the server (startup and `/reload`).\n\nNeoForge: `TagsUpdatedEvent.ServerDataLoad`\n\nFabric: no direct equivalent — NeoForge only initially (TODO: Fabric bridge)"
         },
         {
           "name": "LOOT_TABLE_LOAD",
@@ -24966,8 +24966,8 @@
           "name": "onTagsUpdated",
           "visibility": "public",
           "returnType": "void",
-          "parameters": "net.neoforged.neoforge.event.TagsUpdatedEvent event",
-          "signature": "public void onTagsUpdated(net.neoforged.neoforge.event.TagsUpdatedEvent event)",
+          "parameters": "net.neoforged.neoforge.event.TagsUpdatedEvent.ServerDataLoad event",
+          "signature": "public void onTagsUpdated(net.neoforged.neoforge.event.TagsUpdatedEvent.ServerDataLoad event)",
           "javadoc": ""
         },
         {
@@ -30320,7 +30320,7 @@
       "qualifiedName": "net.creeperhost.polylib.event.events.server.PolyDataEvents.TAGS_UPDATED",
       "declaringType": "net.creeperhost.polylib.event.events.server.PolyDataEvents",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/event/events/server/PolyDataEvents.java",
-      "javadoc": "Fired after tags are loaded or reloaded on the server (startup and `/reload`).\n\nNeoForge: `TagsUpdatedEvent` (SERVER_DATA_LOAD cause only)\n\nFabric: no direct equivalent — NeoForge only initially (TODO: Fabric bridge)",
+      "javadoc": "Fired after tags are loaded or reloaded on the server (startup and `/reload`).\n\nNeoForge: `TagsUpdatedEvent.ServerDataLoad`\n\nFabric: no direct equivalent — NeoForge only initially (TODO: Fabric bridge)",
       "method": {
         "name": "onTagsUpdated",
         "returnType": "void",
