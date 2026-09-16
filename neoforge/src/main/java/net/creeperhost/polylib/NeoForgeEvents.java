@@ -929,10 +929,9 @@ public class NeoForgeEvents
     // -------------------------------------------------------------------------
 
     @SubscribeEvent
-    public static void onTagsUpdated(net.neoforged.neoforge.event.TagsUpdatedEvent event)
+    public static void onTagsUpdated(net.neoforged.neoforge.event.TagsUpdatedEvent.ServerDataLoad event)
     {
-        if (event.getUpdateCause() == net.neoforged.neoforge.event.TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD)
-            PolyDataEvents.TAGS_UPDATED.invoker().onTagsUpdated(event.getLookupProvider());
+        PolyDataEvents.TAGS_UPDATED.invoker().onTagsUpdated(event.getRegistries());
     }
 
     // -------------------------------------------------------------------------

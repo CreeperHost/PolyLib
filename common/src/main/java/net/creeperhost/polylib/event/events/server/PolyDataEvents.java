@@ -14,7 +14,7 @@ public final class PolyDataEvents
     /**
      * Fired after tags are loaded or reloaded on the server (startup and {@code /reload}).
      * <p>
-     * NeoForge: {@code TagsUpdatedEvent} (SERVER_DATA_LOAD cause only)<br>
+     * NeoForge: {@code TagsUpdatedEvent.ServerDataLoad}<br>
      * Fabric: no direct equivalent — NeoForge only initially (TODO: Fabric bridge)
      */
     public static final PolyEvent<TagsUpdated> TAGS_UPDATED = PolyEvent.create(
