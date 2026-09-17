@@ -1,10 +1,10 @@
 {
   "project": {
     "name": "PolyLib",
-    "version": "2.0.14",
+    "version": "2.0.15",
     "minecraftVersion": "26.3",
-    "releaseTag": "26.3-2.0.14",
-    "generatedAt": "2026-09-16T19:47:27.794Z"
+    "releaseTag": "26.3-2.0.15",
+    "generatedAt": "2026-09-17T11:10:58.208Z"
   },
   "packages": [
     {
@@ -13655,7 +13655,7 @@
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/config/ConfigBuilder.java",
       "summary": "",
-      "methodCount": 11,
+      "methodCount": 12,
       "fieldCount": 0,
       "methods": [
         {
@@ -13715,6 +13715,14 @@
           "javadoc": ""
         },
         {
+          "name": "saveOrThrow",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "",
+          "signature": "public void saveOrThrow()",
+          "javadoc": "Saves the current object, reporting failure so an editor can retain its pending changes."
+        },
+        {
           "name": "saveConfig",
           "visibility": "public",
           "returnType": "String",
@@ -13770,9 +13778,25 @@
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/config/NeoForgeConfigHelper.java",
       "summary": "NeoForge-specific helper for registering a mod config screen with PolyLib.\n\nA single call to one of these methods registers the screen with both:\n\n`ConfigPanelRegistry` — powers PolyLib's keybind, button injection, and Fabric Mod Menu NeoForge's `IConfigScreenFactory` extension point — makes the screen appear under the native \"Mods → Config\" button without any extra boilerplate\n\nUsage (NeoForge mod constructor) `public MyMod(ModContainer container, IEventBus bus) { // Vanilla Screen variant: NeoForgeConfigHelper.register(container, parent -> new MyConfigScreen(container, parent)); // ModularGui variant: NeoForgeConfigHelper.registerModularGui(container, parent -> new MyConfigLayout(container, parent)); ` }",
-      "methodCount": 4,
+      "methodCount": 6,
       "fieldCount": 0,
       "methods": [
+        {
+          "name": "register",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "ModContainer container, ConfigBuilder config",
+          "signature": "public void register(ModContainer container, ConfigBuilder config)",
+          "javadoc": "Generates NeoForge controls for an existing JSON5 config. Call on the physical client. Defaults come from a fresh no-argument instance of the config's class."
+        },
+        {
+          "name": "register",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "ModContainer container, ConfigBuilder config, Supplier<? extends ConfigData> defaults, @Nullable KeyboardShortcut shortcut",
+          "signature": "public void register(ModContainer container, ConfigBuilder config, Supplier<? extends ConfigData> defaults, @Nullable KeyboardShortcut shortcut)",
+          "javadoc": "Registers a generated JSON5 editor with explicit defaults and an optional shortcut. The supplier must return a fresh default instance, not the currently loaded config. Edits are applied in place and saved when the user leaves the screen (Done or Escape)."
+        },
         {
           "name": "register",
           "visibility": "public",
@@ -27486,9 +27510,17 @@
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/PolyLibClientNeoForge.java",
       "summary": "",
-      "methodCount": 1,
+      "methodCount": 2,
       "fieldCount": 0,
       "methods": [
+        {
+          "name": "registerConfigScreen",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "ModContainer container",
+          "signature": "public void registerConfigScreen(ModContainer container)",
+          "javadoc": ""
+        },
         {
           "name": "init",
           "visibility": "public",
@@ -27578,8 +27610,8 @@
           "name": "PolyLibNeoForge",
           "visibility": "public",
           "returnType": "",
-          "parameters": "IEventBus eventBus",
-          "signature": "public PolyLibNeoForge(IEventBus eventBus)",
+          "parameters": "IEventBus eventBus, ModContainer container",
+          "signature": "public PolyLibNeoForge(IEventBus eventBus, ModContainer container)",
           "javadoc": ""
         }
       ],
