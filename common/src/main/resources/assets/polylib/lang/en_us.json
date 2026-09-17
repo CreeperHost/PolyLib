@@ -11,5 +11,17 @@
   "rs_mode.polylib.active_high": "Active with redstone signal",
   "rs_mode.polylib.active_low": "Active without redstone signal",
   "rs_mode.polylib.always_active": "Always active",
-  "rs_mode.polylib.never_active": "Never active"
+  "rs_mode.polylib.never_active": "Never active",
+  "polylib.polylib.config_button": "PolyLib Settings",
+  "polylib.configuration.title": "PolyLib Settings",
+  "polylib.configuration.serverOnlySupport": "Server-only Support",
+  "polylib.configuration.serverOnlySupport.tooltip": "Allow PolyLib to run on a server without requiring connecting clients to have PolyLib installed.",
+  "polylib.configuration.configPanelKeybinds": "Config Panel Shortcuts",
+  "polylib.configuration.configPanelKeybinds.tooltip": "Enable or disable the keyboard shortcut for each registered mod config panel.",
+  "polylib.configuration.configPanelKeybinds.polylib": "PolyLib Config Shortcut",
+  "polylib.configuration.configPanelKeybinds.testmod": "Test Mod Config Shortcut",
+  "polylib.configuration.read_only": "Edit in config file",
+  "polylib.configuration.save_failed": "Could not save config",
+  "polylib.configuration.back": "Back to editor",
+  "polylib.configuration.discard": "Discard changes"
 }

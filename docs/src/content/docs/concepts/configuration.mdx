@@ -1,0 +1,71 @@
+---
+title: Configuration
+description: Edit PolyLib JSON5 configs using NeoForge's in-game controls.
+---
+
+PolyLib stores configuration in JSON5 files. On NeoForge, you can generate an in-game editor for your config with native controls, tooltips, undo, and reset to defaults.
+
+## Create a config
+
+Extend `ConfigData` and give your fields default values. Use `@Comment` to add descriptions to the file and editor tooltips:
+
+```java
+public class ExampleConfig extends ConfigData {
+    @Comment("Enable the overlay.")
+    public boolean enabled = true;
+    public int offset = -5;
+    public double scale = 1.0;
+    public String greeting = "Hello";
+}
+```
+
+Create a `ConfigBuilder` during common initialization. This loads or creates `config/example.json5`:
+
+```java
+public static final ConfigBuilder CONFIG =
+        new ConfigBuilder("example", ExampleConfig.class);
+
+ExampleConfig settings = (ExampleConfig) CONFIG.getConfigData();
+```
+
+## Register the NeoForge editor
+
+In your NeoForge client initialization, pass your mod's `ModContainer` and config builder:
+
+```java
+NeoForgeConfigHelper.register(container, CONFIG);
+```
+
+Players can open the editor through **Mods → your mod → Config**. Changes update the existing config object and JSON5 file when the player presses **Done** or **Escape**. The editor is also registered with PolyLib's config panel system.
+
+Your config class needs an accessible no-argument constructor. You can also supply a factory for fresh defaults and an optional `KeyboardShortcut` (`null` for none):
+
+```java
+NeoForgeConfigHelper.register(container, CONFIG, ExampleConfig::new, null);
+```
+
+## Supported values
+
+The editor supports booleans, numbers, strings, enums, nested objects, and existing string-keyed entries in `HashMap`, `LinkedHashMap`, and `TreeMap`. Lists, arrays, and unsupported values are read-only; map keys cannot be added or removed.
+
+The generated editor is NeoForge-only and edits local settings. Server synchronization, if needed, is handled by your mod.
+
+## Translate the editor
+
+For a mod with ID `example`, add these entries to `src/main/resources/assets/example/lang/en_us.json`:
+
+```json
+{
+  "example.configuration.title": "Example Settings",
+  "example.polylib.config_button": "Example Settings",
+  "example.configuration.enabled": "Enable Overlay",
+  "example.configuration.enabled.tooltip": "Show the overlay while playing.",
+  "example.configuration.offset": "Overlay Offset",
+  "example.configuration.scale": "Overlay Scale",
+  "example.configuration.greeting": "Greeting"
+}
+```
+
+Keys use your **mod ID**, followed by `.configuration.` and the field name. The `enabled` field above displays as **Enable Overlay**, with its `.tooltip` text shown on hover. Without translations, labels fall back to field names and tooltips use `@Comment`.
+
+For nested fields, include the full path, such as `example.configuration.overlay.opacity`. Add other languages in matching files such as `de_de.json`.

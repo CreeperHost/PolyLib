@@ -7,7 +7,8 @@ import net.creeperhost.polylib.Constants;
 import net.creeperhost.polylib.platform.Services;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -99,16 +100,7 @@ public class ConfigBuilder
     {
         try
         {
-            ConfigData data = CONFIG_DATA.get();
-            if (data == null) data = createDefaultData();
-            CONFIG_DATA.set(data);
-
-            if (CONFIG_PATH.getParent() != null) {
-                CONFIG_PATH.getParent().toFile().mkdirs();
-            }
-            FileWriter fileWriter = new FileWriter(CONFIG_PATH.toFile());
-            fileWriter.write(saveConfig());
-            fileWriter.close();
+            saveOrThrow();
         }
         catch (Exception e)
         {
@@ -118,21 +110,29 @@ public class ConfigBuilder
 
     public void save(ConfigData data)
     {
-        try
-        {
-            //            ConfigData data = (ConfigData) CONFIG_DATA_CLASS.newInstance();
-            CONFIG_DATA.set(data);
+        CONFIG_DATA.set(data);
+        save();
+    }
 
-            if (CONFIG_PATH.getParent() != null) {
-                CONFIG_PATH.getParent().toFile().mkdirs();
+    /** Saves the current object, reporting failure so an editor can retain its pending changes. */
+    public void saveOrThrow() throws IOException
+    {
+        if (CONFIG_DATA.get() == null) {
+            try {
+                CONFIG_DATA.set(createDefaultData());
+            } catch (ReflectiveOperationException e) {
+                throw new IOException("Cannot create defaults for " + CONFIG_NAME, e);
             }
-            FileWriter fileWriter = new FileWriter(CONFIG_PATH.toFile());
-            fileWriter.write(saveConfig());
-            fileWriter.close();
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+        String serialized = saveConfig();
+        Path destination = CONFIG_PATH.toAbsolutePath();
+        Files.createDirectories(destination.getParent());
+        Path temporary = Files.createTempFile(destination.getParent(), "polylib-config-", ".tmp");
+        try {
+            Files.writeString(temporary, serialized, StandardCharsets.UTF_8);
+            Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING);
+        } finally {
+            Files.deleteIfExists(temporary);
         }
     }
 

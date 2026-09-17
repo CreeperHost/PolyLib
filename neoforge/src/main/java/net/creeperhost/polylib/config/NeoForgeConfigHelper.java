@@ -9,6 +9,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Supplier;
+
 /**
  * NeoForge-specific helper for registering a mod config screen with PolyLib.
  *
@@ -33,6 +35,32 @@ import org.jetbrains.annotations.Nullable;
 public final class NeoForgeConfigHelper
 {
     private NeoForgeConfigHelper() {}
+
+    /**
+     * Generates NeoForge controls for an existing JSON5 config. Call on the physical client.
+     * Defaults come from a fresh no-argument instance of the config's class.
+     */
+    public static void register(ModContainer container, ConfigBuilder config)
+    {
+        register(container, config, () -> {
+            try {
+                return config.getConfigData().getClass().getDeclaredConstructor().newInstance();
+            } catch (ReflectiveOperationException e) {
+                throw new IllegalArgumentException("Config editor needs a no-argument constructor or a defaults supplier", e);
+            }
+        }, null);
+    }
+
+    /**
+     * Registers a generated JSON5 editor with explicit defaults and an optional shortcut.
+     * The supplier must return a fresh default instance, not the currently loaded config.
+     * Edits are applied in place and saved when the user leaves the screen (Done or Escape).
+     */
+    public static void register(ModContainer container, ConfigBuilder config,
+                                Supplier<? extends ConfigData> defaults, @Nullable KeyboardShortcut shortcut)
+    {
+        register(container, parent -> new NeoForgeConfigScreen(container.getModId(), parent, config, defaults.get()), shortcut);
+    }
 
     public static void register(ModContainer container, ScreenFactory factory)
     {

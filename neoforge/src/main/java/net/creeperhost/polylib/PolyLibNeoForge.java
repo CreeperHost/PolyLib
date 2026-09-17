@@ -7,6 +7,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -15,7 +16,7 @@ public class PolyLibNeoForge
 {
     public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Constants.MOD_ID);
 
-    public PolyLibNeoForge(IEventBus eventBus)
+    public PolyLibNeoForge(IEventBus eventBus, ModContainer container)
     {
         PolylibCommon.registerConfig();
         PolylibCommon.init();
@@ -26,6 +27,7 @@ public class PolyLibNeoForge
 
         if (FMLLoader.getCurrent().getDist().isClient()) {
             PolyLibClientNeoForge.init(eventBus);
+            PolyLibClientNeoForge.registerConfigScreen(container);
         }
 
         //TODO fix this, Prob move it to the new register system

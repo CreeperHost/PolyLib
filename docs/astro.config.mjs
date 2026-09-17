@@ -55,6 +55,7 @@ export default defineConfig({
           label: 'Concepts',
           items: [
             'concepts/registries',
+            'concepts/configuration',
             'concepts/events',
             'concepts/modular-gui',
             'concepts/data-sync',
