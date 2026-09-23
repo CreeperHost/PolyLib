@@ -1,63 +1,74 @@
-//package net.creeperhost.polylib.data.serializable;
-//
-//import dev.architectury.fluid.FluidStack;
-//import net.minecraft.network.RegistryFriendlyByteBuf;
-//import net.minecraft.world.level.storage.ValueInput;
-//import net.minecraft.world.level.storage.ValueOutput;
-//
-//import java.util.Objects;
-//
-///**
-// * Created by brandon3055 on 09/09/2023
-// */
-//public class FluidData extends AbstractDataStore<FluidStack> {
-//
-//    public FluidData() {
-//        super(FluidStack.empty());
-//    }
-//
-//    public FluidData(FluidStack defaultValue) {
-//        super(defaultValue);
-//    }
-//
-//    @Override
-//    public FluidStack set(FluidStack value) {
-//        if (!Objects.equals(value, this.value) && validator.test(value)) {
-//            this.value = value.copy();
-//            markDirty();
-//        }
-//        return this.value;
-//    }
-//
-//    @Override
-//    public void toBytes(RegistryFriendlyByteBuf buf) {
-//        buf.writeBoolean(!value.isEmpty());
-//        if (!value.isEmpty()) {
-//            value.write(buf);
-//        }
-//    }
-//
-//    @Override
-//    public void fromBytes(RegistryFriendlyByteBuf buf) {
-//        if (buf.readBoolean()){
-//            value = validValue(FluidStack.read(buf), value);
-//        } else {
-//            value = FluidStack.empty();
-//        }
-//    }
-//
-//    @Override
-//    public void toTag(ValueOutput output) {
-//        output.store("value", FluidStack.CODEC, value);
-//    }
-//
-//    @Override
-//    public void fromTag(ValueInput input) {
-//        value = input.read("value", FluidStack.CODEC).orElse(FluidStack.empty());
-//    }
-//
-//    @Override
-//    public boolean isSameValue(FluidStack newValue) {
-//        return value.equals(newValue);
-//    }
-//}
+package net.creeperhost.polylib.data.serializable;
+
+import net.creeperhost.polylib.inventory.fluid.PolyFluidStack;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+
+/**
+ * {@link AbstractDataStore} implementation for a {@link PolyFluidStack}.
+ * <p>
+ * Stored fluid stacks are copied on assignment, and equality is checked using
+ * {@link PolyFluidStack#equals(Object)} so fluid, amount, and component data all
+ * participate in dirty-state detection.
+ */
+public class FluidData extends AbstractDataStore<PolyFluidStack> {
+
+    /**
+     * Creates a fluid data store with {@link PolyFluidStack#EMPTY}.
+     */
+    public FluidData() {
+        super(PolyFluidStack.EMPTY);
+    }
+
+    /**
+     * Creates a fluid data store.
+     *
+     * @param defaultValue the initial fluid stack
+     */
+    public FluidData(PolyFluidStack defaultValue) {
+        super(defaultValue);
+    }
+
+    /**
+     * Stores a copy of the supplied fluid stack when it differs from the current
+     * stack and passes validation.
+     *
+     * @param value the requested new fluid stack
+     * @return the fluid stack currently stored after validation
+     */
+    @Override
+    public PolyFluidStack set(PolyFluidStack value) {
+        PolyFluidStack newValue = value == null ? PolyFluidStack.EMPTY : value;
+        if (!newValue.equals(this.value) && validator.test(newValue)) {
+            this.value = newValue.copy();
+            markDirty();
+        }
+        return this.value;
+    }
+
+    @Override
+    public void toBytes(RegistryFriendlyByteBuf buf) {
+        PolyFluidStack.STREAM_CODEC.encode(buf, value);
+    }
+
+    @Override
+    public void fromBytes(RegistryFriendlyByteBuf buf) {
+        value = validValue(PolyFluidStack.STREAM_CODEC.decode(buf), value);
+    }
+
+    @Override
+    public void toTag(ValueOutput output) {
+        output.store("value", PolyFluidStack.CODEC, value);
+    }
+
+    @Override
+    public void fromTag(ValueInput input) {
+        value = input.read("value", PolyFluidStack.CODEC).orElse(PolyFluidStack.EMPTY);
+    }
+
+    @Override
+    public boolean isSameValue(PolyFluidStack newValue) {
+        return value.equals(newValue == null ? PolyFluidStack.EMPTY : newValue);
+    }
+}
