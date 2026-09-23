@@ -1,10 +1,10 @@
 {
   "project": {
     "name": "PolyLib",
-    "version": "2.0.15",
+    "version": "2.0.16",
     "minecraftVersion": "26.3",
-    "releaseTag": "26.3-2.0.15",
-    "generatedAt": "2026-09-17T11:10:58.208Z"
+    "releaseTag": "26.3-2.0.16",
+    "generatedAt": "2026-09-23T10:12:16.729Z"
   },
   "packages": [
     {
@@ -105,7 +105,7 @@
       "loaders": [
         "common"
       ],
-      "classCount": 27
+      "classCount": 28
     },
     {
       "name": "net.creeperhost.polylib.client.modulargui.lib",
@@ -218,7 +218,7 @@
       "loaders": [
         "common"
       ],
-      "classCount": 12
+      "classCount": 13
     },
     {
       "name": "net.creeperhost.polylib.datagen",
@@ -285,6 +285,13 @@
       "classCount": 6
     },
     {
+      "name": "net.creeperhost.polylib.fabric.inventory.fluid",
+      "loaders": [
+        "fabric"
+      ],
+      "classCount": 5
+    },
+    {
       "name": "net.creeperhost.polylib.fabric.registry",
       "loaders": [
         "fabric"
@@ -311,6 +318,13 @@
         "common"
       ],
       "classCount": 1
+    },
+    {
+      "name": "net.creeperhost.polylib.inventory.fluid",
+      "loaders": [
+        "common"
+      ],
+      "classCount": 9
     },
     {
       "name": "net.creeperhost.polylib.inventory.items",
@@ -376,6 +390,13 @@
         "neoforge"
       ],
       "classCount": 1
+    },
+    {
+      "name": "net.creeperhost.polylib.neoforge.inventory.fluid",
+      "loaders": [
+        "neoforge"
+      ],
+      "classCount": 5
     },
     {
       "name": "net.creeperhost.polylib.neoforge.inventory.power",
@@ -5636,6 +5657,138 @@
           "name": "nameOffset",
           "type": "int",
           "javadoc": ""
+        }
+      ]
+    },
+    {
+      "name": "GuiFluidTank",
+      "qualifiedName": "net.creeperhost.polylib.client.modulargui.elements.GuiFluidTank",
+      "packageName": "net.creeperhost.polylib.client.modulargui.elements",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/client/modulargui/elements/GuiFluidTank.java",
+      "summary": "Modular GUI element that renders a single PolyLib fluid tank.\n\nThe tank accepts `PolyFluidStack` suppliers so container screens can bind it directly to synced fluid data.",
+      "methodCount": 14,
+      "fieldCount": 1,
+      "methods": [
+        {
+          "name": "GuiFluidTank",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "@NotNull GuiParent<?> parent",
+          "signature": "public GuiFluidTank(@NotNull GuiParent<?> parent)",
+          "javadoc": "Creates a fluid tank element."
+        },
+        {
+          "name": "setCapacity",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "long capacity",
+          "signature": "public GuiFluidTank setCapacity(long capacity)",
+          "javadoc": "Sets the capacity of this tank in droplets."
+        },
+        {
+          "name": "setCapacity",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "Supplier<Long> capacity",
+          "signature": "public GuiFluidTank setCapacity(Supplier<Long> capacity)",
+          "javadoc": "Supplies the capacity of this tank in droplets."
+        },
+        {
+          "name": "setFluidStack",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "PolyFluidStack fluidStack",
+          "signature": "public GuiFluidTank setFluidStack(PolyFluidStack fluidStack)",
+          "javadoc": "Sets the current stored fluid stack."
+        },
+        {
+          "name": "setFluidStack",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "Supplier<PolyFluidStack> fluidStack",
+          "signature": "public GuiFluidTank setFluidStack(Supplier<PolyFluidStack> fluidStack)",
+          "javadoc": "Supplies the current stored fluid stack."
+        },
+        {
+          "name": "setToolTipFormatter",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "BiFunction<PolyFluidStack, Long, List<Component>> toolTipFormatter",
+          "signature": "public GuiFluidTank setToolTipFormatter(BiFunction<PolyFluidStack, Long, List<Component>> toolTipFormatter)",
+          "javadoc": "Installs a custom tooltip formatter."
+        },
+        {
+          "name": "setWindow",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "@Nullable Material window",
+          "signature": "public GuiFluidTank setWindow(@Nullable Material window)",
+          "javadoc": "Sets the tank window texture."
+        },
+        {
+          "name": "setDrawGauge",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "boolean drawGauge",
+          "signature": "public GuiFluidTank setDrawGauge(boolean drawGauge)",
+          "javadoc": "Enables or disables built-in gauge marks."
+        },
+        {
+          "name": "setGaugeColour",
+          "visibility": "public",
+          "returnType": "GuiFluidTank",
+          "parameters": "int gaugeColour",
+          "signature": "public GuiFluidTank setGaugeColour(int gaugeColour)",
+          "javadoc": "Sets the built-in gauge mark color."
+        },
+        {
+          "name": "getCapacity",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "",
+          "signature": "public long getCapacity()",
+          "javadoc": ""
+        },
+        {
+          "name": "getFluidStack",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "",
+          "signature": "public PolyFluidStack getFluidStack()",
+          "javadoc": ""
+        },
+        {
+          "name": "renderBehind",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "GuiRender render, double mouseX, double mouseY, float partialTicks",
+          "signature": "public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks)",
+          "javadoc": ""
+        },
+        {
+          "name": "simpleTank",
+          "visibility": "public",
+          "returnType": "Assembly<GuiRectangle, GuiFluidTank>",
+          "parameters": "@NotNull GuiParent<?> parent",
+          "signature": "public Assembly<GuiRectangle, GuiFluidTank> simpleTank(@NotNull GuiParent<?> parent)",
+          "javadoc": "Creates a tank with a vanilla-slot style backing rectangle."
+        },
+        {
+          "name": "defaultFormatter",
+          "visibility": "public",
+          "returnType": "BiFunction<PolyFluidStack, Long, List<Component>>",
+          "parameters": "",
+          "signature": "public BiFunction<PolyFluidStack, Long, List<Component>> defaultFormatter()",
+          "javadoc": "Creates the default fluid tank tooltip formatter."
+        }
+      ],
+      "fields": [
+        {
+          "name": "DEFAULT_WINDOW",
+          "type": "Material",
+          "javadoc": "Default overlay texture for the tank glass."
         }
       ]
     },
@@ -15126,6 +15279,84 @@
       "fields": []
     },
     {
+      "name": "FluidData",
+      "qualifiedName": "net.creeperhost.polylib.data.serializable.FluidData",
+      "packageName": "net.creeperhost.polylib.data.serializable",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/data/serializable/FluidData.java",
+      "summary": "`AbstractDataStore` implementation for a `PolyFluidStack`.\n\nStored fluid stacks are copied on assignment, and equality is checked using `PolyFluidStack#equals(Object)` so fluid, amount, and component data all participate in dirty-state detection.",
+      "methodCount": 8,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "FluidData",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "",
+          "signature": "public FluidData()",
+          "javadoc": "Creates a fluid data store with `PolyFluidStack#EMPTY`."
+        },
+        {
+          "name": "FluidData",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "PolyFluidStack defaultValue",
+          "signature": "public FluidData(PolyFluidStack defaultValue)",
+          "javadoc": "Creates a fluid data store."
+        },
+        {
+          "name": "set",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "PolyFluidStack value",
+          "signature": "public PolyFluidStack set(PolyFluidStack value)",
+          "javadoc": "Stores a copy of the supplied fluid stack when it differs from the current stack and passes validation."
+        },
+        {
+          "name": "toBytes",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "RegistryFriendlyByteBuf buf",
+          "signature": "public void toBytes(RegistryFriendlyByteBuf buf)",
+          "javadoc": ""
+        },
+        {
+          "name": "fromBytes",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "RegistryFriendlyByteBuf buf",
+          "signature": "public void fromBytes(RegistryFriendlyByteBuf buf)",
+          "javadoc": ""
+        },
+        {
+          "name": "toTag",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "ValueOutput output",
+          "signature": "public void toTag(ValueOutput output)",
+          "javadoc": ""
+        },
+        {
+          "name": "fromTag",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "ValueInput input",
+          "signature": "public void fromTag(ValueInput input)",
+          "javadoc": ""
+        },
+        {
+          "name": "isSameValue",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack newValue",
+          "signature": "public boolean isSameValue(PolyFluidStack newValue)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
       "name": "IntData",
       "qualifiedName": "net.creeperhost.polylib.data.serializable.IntData",
       "packageName": "net.creeperhost.polylib.data.serializable",
@@ -18857,6 +19088,291 @@
       "fields": []
     },
     {
+      "name": "FabricFluidManager",
+      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.FabricFluidManager",
+      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
+      "loader": "fabric",
+      "kind": "class",
+      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/FabricFluidManager.java",
+      "summary": "Fabric implementation of `FluidManager`.\n\nWraps Fabric Transfer `Storage` instances in PolyLib's common fluid storage interfaces.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "FabricPolyFluidItemWrapper",
+      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidItemWrapper",
+      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
+      "loader": "fabric",
+      "kind": "class",
+      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/FabricPolyFluidItemWrapper.java",
+      "summary": "Item variant of `FabricPolyFluidWrapper`.\n\nExposes Fabric item fluid storage through PolyLib's item storage contract and returns the current container stack from the Fabric item context.",
+      "methodCount": 1,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "FabricPolyFluidItemWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "Storage<FluidVariant> storage, ContainerItemContext context",
+          "signature": "public FabricPolyFluidItemWrapper(Storage<FluidVariant> storage, ContainerItemContext context)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "FabricPolyFluidWrapper",
+      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidWrapper",
+      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
+      "loader": "fabric",
+      "kind": "class",
+      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/FabricPolyFluidWrapper.java",
+      "summary": "Wraps a Fabric Transfer fluid storage as an `IPolyFluidStorage`.",
+      "methodCount": 10,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "FabricPolyFluidWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "Storage<FluidVariant> storage",
+          "signature": "public FabricPolyFluidWrapper(Storage<FluidVariant> storage)",
+          "javadoc": ""
+        },
+        {
+          "name": "getFluid",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "",
+          "signature": "public PolyFluidStack getFluid()",
+          "javadoc": ""
+        },
+        {
+          "name": "getCapacity",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "",
+          "signature": "public long getCapacity()",
+          "javadoc": ""
+        },
+        {
+          "name": "fill",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "PolyFluidStack resource, boolean simulate",
+          "signature": "public long fill(PolyFluidStack resource, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "drain",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "PolyFluidStack resource, boolean simulate",
+          "signature": "public PolyFluidStack drain(PolyFluidStack resource, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "drain",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "long maxDrain, boolean simulate",
+          "signature": "public PolyFluidStack drain(long maxDrain, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "canFill",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean canFill(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "canDrain",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean canDrain(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "isFluidValid",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean isFluidValid(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "setFluid",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "PolyFluidStack stack",
+          "signature": "public void setFluid(PolyFluidStack stack)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "PolyFabricFluidItemWrapper",
+      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidItemWrapper",
+      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
+      "loader": "fabric",
+      "kind": "class",
+      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/PolyFabricFluidItemWrapper.java",
+      "summary": "Item variant of `PolyFabricFluidWrapper`.\n\nAfter mutating the PolyLib storage, this wrapper updates the Fabric item context so callers receive the modified container stack.",
+      "methodCount": 4,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "PolyFabricFluidItemWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "IPolyFluidStorageItem storage, ContainerItemContext itemContext",
+          "signature": "public PolyFabricFluidItemWrapper(IPolyFluidStorageItem storage, ContainerItemContext itemContext)",
+          "javadoc": ""
+        },
+        {
+          "name": "insert",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
+          "signature": "public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction)",
+          "javadoc": ""
+        },
+        {
+          "name": "extract",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
+          "signature": "public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction)",
+          "javadoc": ""
+        },
+        {
+          "name": "getContainer",
+          "visibility": "public",
+          "returnType": "ItemStack",
+          "parameters": "",
+          "signature": "public ItemStack getContainer()",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "PolyFabricFluidWrapper",
+      "qualifiedName": "net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper",
+      "packageName": "net.creeperhost.polylib.fabric.inventory.fluid",
+      "loader": "fabric",
+      "kind": "class",
+      "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/fabric/inventory/fluid/PolyFabricFluidWrapper.java",
+      "summary": "Exposes an `IPolyFluidStorage` as Fabric Transfer fluid storage.\n\nFabric transactions are backed by snapshots of the PolyLib storage contents.",
+      "methodCount": 12,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "PolyFabricFluidWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "IPolyFluidStorage storage",
+          "signature": "public PolyFabricFluidWrapper(IPolyFluidStorage storage)",
+          "javadoc": ""
+        },
+        {
+          "name": "insert",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
+          "signature": "public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction)",
+          "javadoc": ""
+        },
+        {
+          "name": "extract",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "FluidVariant resource, long maxAmount, TransactionContext transaction",
+          "signature": "public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction)",
+          "javadoc": ""
+        },
+        {
+          "name": "supportsInsertion",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "",
+          "signature": "public boolean supportsInsertion()",
+          "javadoc": ""
+        },
+        {
+          "name": "supportsExtraction",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "",
+          "signature": "public boolean supportsExtraction()",
+          "javadoc": ""
+        },
+        {
+          "name": "iterator",
+          "visibility": "public",
+          "returnType": "Iterator<StorageView<FluidVariant>>",
+          "parameters": "",
+          "signature": "public Iterator<StorageView<FluidVariant>> iterator()",
+          "javadoc": ""
+        },
+        {
+          "name": "createSnapshot",
+          "visibility": "protected",
+          "returnType": "PolyFluidStack",
+          "parameters": "",
+          "signature": "protected PolyFluidStack createSnapshot()",
+          "javadoc": ""
+        },
+        {
+          "name": "readSnapshot",
+          "visibility": "protected",
+          "returnType": "void",
+          "parameters": "PolyFluidStack snapshot",
+          "signature": "protected void readSnapshot(PolyFluidStack snapshot)",
+          "javadoc": ""
+        },
+        {
+          "name": "isResourceBlank",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "",
+          "signature": "public boolean isResourceBlank()",
+          "javadoc": ""
+        },
+        {
+          "name": "getResource",
+          "visibility": "public",
+          "returnType": "FluidVariant",
+          "parameters": "",
+          "signature": "public FluidVariant getResource()",
+          "javadoc": ""
+        },
+        {
+          "name": "getAmount",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "",
+          "signature": "public long getAmount()",
+          "javadoc": ""
+        },
+        {
+          "name": "getCapacity",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "",
+          "signature": "public long getCapacity()",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
       "name": "InitialContentsContainerItemContext",
       "qualifiedName": "net.creeperhost.polylib.fabric.inventory.InitialContentsContainerItemContext",
       "packageName": "net.creeperhost.polylib.fabric.inventory",
@@ -19076,7 +19592,7 @@
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/FabricInventoryManager.java",
       "summary": "",
       "methodCount": 1,
-      "fieldCount": 1,
+      "fieldCount": 2,
       "methods": [
         {
           "name": "init",
@@ -19091,6 +19607,11 @@
         {
           "name": "ENERGY_MANAGER",
           "type": "EnergyManager",
+          "javadoc": ""
+        },
+        {
+          "name": "FLUID_MANAGER",
+          "type": "FluidManager",
           "javadoc": ""
         }
       ]
@@ -19621,8 +20142,8 @@
       "kind": "class",
       "sourcePath": "common/src/main/java/net/creeperhost/polylib/init/DataComps.java",
       "summary": "",
-      "methodCount": 5,
-      "fieldCount": 3,
+      "methodCount": 6,
+      "fieldCount": 4,
       "methods": [
         {
           "name": "isDataEnabled",
@@ -19657,6 +20178,14 @@
           "javadoc": ""
         },
         {
+          "name": "getItemFluid",
+          "visibility": "public",
+          "returnType": "DataComponentType<PolyFluidStack>",
+          "parameters": "",
+          "signature": "public DataComponentType<PolyFluidStack> getItemFluid()",
+          "javadoc": ""
+        },
+        {
           "name": "getItemTileData",
           "visibility": "public",
           "returnType": "DataComponentType<CustomData>",
@@ -19674,6 +20203,11 @@
         {
           "name": "ITEM_ENERGY",
           "type": "DataComponentType<Long>",
+          "javadoc": ""
+        },
+        {
+          "name": "ITEM_FLUID",
+          "type": "DataComponentType<PolyFluidStack>",
           "javadoc": ""
         },
         {
@@ -19722,6 +20256,455 @@
           "returnType": "void",
           "parameters": "",
           "signature": "public void init()",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "FluidManager",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.FluidManager",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "interface",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/FluidManager.java",
+      "summary": "Platform fluid access and convenience utilities.\n\nAll PolyLib fluid amounts are expressed in droplets. One bucket is `#BUCKET` droplets and one millibucket is `#MILLIBUCKET` droplets.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "IPolyFluidStorage",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.IPolyFluidStorage",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "interface",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/IPolyFluidStorage.java",
+      "summary": "Common fluid storage contract used by PolyLib across loaders.\n\nAll amounts are expressed in droplets. Platform wrappers convert as needed when bridging to native Fabric or NeoForge transfer APIs.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "IPolyFluidStorageItem",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.IPolyFluidStorageItem",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "interface",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/IPolyFluidStorageItem.java",
+      "summary": "Fluid storage backed by an `ItemStack`.\n\nPlatform item fluid APIs may replace the container stack after mutation, so callers should read `#getContainer()` after fill or drain operations.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "PolyBlockFluidStorage",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyBlockFluidStorage",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyBlockFluidStorage.java",
+      "summary": "Block entity backed fluid storage.\n\nCalls `BlockEntity#setChanged()` whenever the stored fluid changes.",
+      "methodCount": 3,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "PolyBlockFluidStorage",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "BlockEntity blockEntity, long capacity",
+          "signature": "public PolyBlockFluidStorage(BlockEntity blockEntity, long capacity)",
+          "javadoc": ""
+        },
+        {
+          "name": "PolyBlockFluidStorage",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "BlockEntity blockEntity, long capacity, Runnable changeListener",
+          "signature": "public PolyBlockFluidStorage(BlockEntity blockEntity, long capacity, Runnable changeListener)",
+          "javadoc": ""
+        },
+        {
+          "name": "markDirty",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "",
+          "signature": "public void markDirty()",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "PolyFluidBlock",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidBlock",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "interface",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidBlock.java",
+      "summary": "Implement on block entities that expose PolyLib fluid storage.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "PolyFluidItem",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidItem",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "interface",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidItem.java",
+      "summary": "Implement on items that expose PolyLib fluid storage.",
+      "methodCount": 0,
+      "fieldCount": 0,
+      "methods": [],
+      "fields": []
+    },
+    {
+      "name": "PolyFluidStack",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidStack",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidStack.java",
+      "summary": "Loader-neutral fluid stack used by PolyLib's common fluid API.\n\nAmounts are stored as droplets, matching Fabric Transfer's fluid unit. Use `FluidManager#BUCKET` and `FluidManager#MILLIBUCKET` when converting to bucket or millibucket-oriented APIs.",
+      "methodCount": 13,
+      "fieldCount": 3,
+      "methods": [
+        {
+          "name": "decode",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "RegistryFriendlyByteBuf buf",
+          "signature": "public PolyFluidStack decode(RegistryFriendlyByteBuf buf)",
+          "javadoc": ""
+        },
+        {
+          "name": "encode",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "RegistryFriendlyByteBuf buf, PolyFluidStack stack",
+          "signature": "public void encode(RegistryFriendlyByteBuf buf, PolyFluidStack stack)",
+          "javadoc": ""
+        },
+        {
+          "name": "PolyFluidStack",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "Fluid fluid, long amount",
+          "signature": "public PolyFluidStack(Fluid fluid, long amount)",
+          "javadoc": "Creates a fluid stack with no data components."
+        },
+        {
+          "name": "PolyFluidStack",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "Fluid fluid, long amount, DataComponentPatch components",
+          "signature": "public PolyFluidStack(Fluid fluid, long amount, DataComponentPatch components)",
+          "javadoc": "Creates a fluid stack with optional component data."
+        },
+        {
+          "name": "getFluid",
+          "visibility": "public",
+          "returnType": "Fluid",
+          "parameters": "",
+          "signature": "public Fluid getFluid()",
+          "javadoc": ""
+        },
+        {
+          "name": "getAmount",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "",
+          "signature": "public long getAmount()",
+          "javadoc": ""
+        },
+        {
+          "name": "getComponents",
+          "visibility": "public",
+          "returnType": "DataComponentPatch",
+          "parameters": "",
+          "signature": "public DataComponentPatch getComponents()",
+          "javadoc": ""
+        },
+        {
+          "name": "isEmpty",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "",
+          "signature": "public boolean isEmpty()",
+          "javadoc": ""
+        },
+        {
+          "name": "copy",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "",
+          "signature": "public PolyFluidStack copy()",
+          "javadoc": ""
+        },
+        {
+          "name": "copyWithAmount",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "long amount",
+          "signature": "public PolyFluidStack copyWithAmount(long amount)",
+          "javadoc": "Creates a copy with the same fluid and components but a new amount."
+        },
+        {
+          "name": "isSameFluid",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack other",
+          "signature": "public boolean isSameFluid(PolyFluidStack other)",
+          "javadoc": "Compares only fluid identity and component data, ignoring amount."
+        },
+        {
+          "name": "equals",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "Object obj",
+          "signature": "public boolean equals(Object obj)",
+          "javadoc": ""
+        },
+        {
+          "name": "hashCode",
+          "visibility": "public",
+          "returnType": "int",
+          "parameters": "",
+          "signature": "public int hashCode()",
+          "javadoc": ""
+        }
+      ],
+      "fields": [
+        {
+          "name": "EMPTY",
+          "type": "PolyFluidStack",
+          "javadoc": "Shared empty stack instance."
+        },
+        {
+          "name": "CODEC",
+          "type": "Codec<PolyFluidStack>",
+          "javadoc": "Persistent codec for storing fluid, amount, and data component patch."
+        },
+        {
+          "name": "STREAM_CODEC",
+          "type": "StreamCodec<RegistryFriendlyByteBuf, PolyFluidStack>",
+          "javadoc": "Network codec for synchronizing fluid stack contents."
+        }
+      ]
+    },
+    {
+      "name": "PolyFluidStorage",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyFluidStorage",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyFluidStorage.java",
+      "summary": "Simple single-tank implementation of `IPolyFluidStorage`.\n\nThis storage accepts one fluid type at a time and calls an optional change listener whenever its contents are mutated.",
+      "methodCount": 20,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "PolyFluidStorage",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "long capacity",
+          "signature": "public PolyFluidStorage(long capacity)",
+          "javadoc": "Creates a fluid storage with the supplied capacity."
+        },
+        {
+          "name": "PolyFluidStorage",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "long capacity, Runnable changeListener",
+          "signature": "public PolyFluidStorage(long capacity, Runnable changeListener)",
+          "javadoc": "Creates a fluid storage with the supplied capacity and change listener."
+        },
+        {
+          "name": "setIOMode",
+          "visibility": "public",
+          "returnType": "PolyFluidStorage",
+          "parameters": "boolean allowDrain, boolean allowFill",
+          "signature": "public PolyFluidStorage setIOMode(boolean allowDrain, boolean allowFill)",
+          "javadoc": "Sets whether fluid can be drained or filled."
+        },
+        {
+          "name": "setDrainOnly",
+          "visibility": "public",
+          "returnType": "PolyFluidStorage",
+          "parameters": "",
+          "signature": "public PolyFluidStorage setDrainOnly()",
+          "javadoc": ""
+        },
+        {
+          "name": "setFillOnly",
+          "visibility": "public",
+          "returnType": "PolyFluidStorage",
+          "parameters": "",
+          "signature": "public PolyFluidStorage setFillOnly()",
+          "javadoc": ""
+        },
+        {
+          "name": "setCapacity",
+          "visibility": "public",
+          "returnType": "PolyFluidStorage",
+          "parameters": "long capacity",
+          "signature": "public PolyFluidStorage setCapacity(long capacity)",
+          "javadoc": "Updates capacity and clamps current contents if needed."
+        },
+        {
+          "name": "getFluid",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "",
+          "signature": "public PolyFluidStack getFluid()",
+          "javadoc": ""
+        },
+        {
+          "name": "getCapacity",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "",
+          "signature": "public long getCapacity()",
+          "javadoc": ""
+        },
+        {
+          "name": "fill",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "PolyFluidStack resource, boolean simulate",
+          "signature": "public long fill(PolyFluidStack resource, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "drain",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "PolyFluidStack resource, boolean simulate",
+          "signature": "public PolyFluidStack drain(PolyFluidStack resource, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "drain",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "long maxDrain, boolean simulate",
+          "signature": "public PolyFluidStack drain(long maxDrain, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "canFill",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean canFill(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "canDrain",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean canDrain(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "isFluidValid",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean isFluidValid(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "setFluid",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "PolyFluidStack stack",
+          "signature": "public void setFluid(PolyFluidStack stack)",
+          "javadoc": ""
+        },
+        {
+          "name": "markDirty",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "",
+          "signature": "public void markDirty()",
+          "javadoc": "Marks this storage as changed and runs the optional listener."
+        },
+        {
+          "name": "serialize",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "ValueOutput output",
+          "signature": "public void serialize(ValueOutput output)",
+          "javadoc": ""
+        },
+        {
+          "name": "deserialize",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "ValueInput input",
+          "signature": "public void deserialize(ValueInput input)",
+          "javadoc": ""
+        },
+        {
+          "name": "readFromBuf",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "FriendlyByteBuf buf",
+          "signature": "public void readFromBuf(FriendlyByteBuf buf)",
+          "javadoc": "Reads this storage from a network buffer."
+        },
+        {
+          "name": "writeToBuf",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "FriendlyByteBuf buf",
+          "signature": "public void writeToBuf(FriendlyByteBuf buf)",
+          "javadoc": "Writes this storage to a network buffer."
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "PolyItemFluidStorage",
+      "qualifiedName": "net.creeperhost.polylib.inventory.fluid.PolyItemFluidStorage",
+      "packageName": "net.creeperhost.polylib.inventory.fluid",
+      "loader": "common",
+      "kind": "class",
+      "sourcePath": "common/src/main/java/net/creeperhost/polylib/inventory/fluid/PolyItemFluidStorage.java",
+      "summary": "ItemStack backed fluid storage using PolyLib's item fluid data component.",
+      "methodCount": 3,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "PolyItemFluidStorage",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "ItemStack stack, long capacity",
+          "signature": "public PolyItemFluidStorage(ItemStack stack, long capacity)",
+          "javadoc": ""
+        },
+        {
+          "name": "PolyItemFluidStorage",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "ItemStack stack, long capacity, Runnable changeListener",
+          "signature": "public PolyItemFluidStorage(ItemStack stack, long capacity, Runnable changeListener)",
+          "javadoc": ""
+        },
+        {
+          "name": "markDirty",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "",
+          "signature": "public void markDirty()",
           "javadoc": ""
         }
       ],
@@ -23589,6 +24572,276 @@
       "fields": []
     },
     {
+      "name": "NeoFluidManager",
+      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.NeoFluidManager",
+      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
+      "loader": "neoforge",
+      "kind": "class",
+      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/NeoFluidManager.java",
+      "summary": "NeoForge implementation of `FluidManager`.\n\nWraps NeoForge transfer `ResourceHandler` fluid capabilities in PolyLib's common fluid storage interfaces.",
+      "methodCount": 1,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "setItem",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "int slot, @NotNull ItemStack stack, boolean performSideEffects",
+          "signature": "public void setItem(int slot, @NotNull ItemStack stack, boolean performSideEffects)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "NeoPolyFluidItemWrapper",
+      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidItemWrapper",
+      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
+      "loader": "neoforge",
+      "kind": "class",
+      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/NeoPolyFluidItemWrapper.java",
+      "summary": "Item variant of `NeoPolyFluidWrapper`.\n\nKeeps the `ItemAccess` used to query the item capability so the current container stack can be returned after operations.",
+      "methodCount": 1,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "NeoPolyFluidItemWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "ResourceHandler<FluidResource> handler, ItemAccess access",
+          "signature": "public NeoPolyFluidItemWrapper(ResourceHandler<FluidResource> handler, ItemAccess access)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "NeoPolyFluidWrapper",
+      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidWrapper",
+      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
+      "loader": "neoforge",
+      "kind": "class",
+      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/NeoPolyFluidWrapper.java",
+      "summary": "Wraps a NeoForge fluid `ResourceHandler` as an `IPolyFluidStorage`.\n\nNeoForge transfer fluid amounts are converted to PolyLib droplets at the API boundary.",
+      "methodCount": 10,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "NeoPolyFluidWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "ResourceHandler<FluidResource> handler",
+          "signature": "public NeoPolyFluidWrapper(ResourceHandler<FluidResource> handler)",
+          "javadoc": ""
+        },
+        {
+          "name": "getFluid",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "",
+          "signature": "public PolyFluidStack getFluid()",
+          "javadoc": ""
+        },
+        {
+          "name": "getCapacity",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "",
+          "signature": "public long getCapacity()",
+          "javadoc": ""
+        },
+        {
+          "name": "fill",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "PolyFluidStack resource, boolean simulate",
+          "signature": "public long fill(PolyFluidStack resource, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "drain",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "PolyFluidStack resource, boolean simulate",
+          "signature": "public PolyFluidStack drain(PolyFluidStack resource, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "drain",
+          "visibility": "public",
+          "returnType": "PolyFluidStack",
+          "parameters": "long maxDrain, boolean simulate",
+          "signature": "public PolyFluidStack drain(long maxDrain, boolean simulate)",
+          "javadoc": ""
+        },
+        {
+          "name": "canFill",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean canFill(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "canDrain",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean canDrain(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "isFluidValid",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "PolyFluidStack resource",
+          "signature": "public boolean isFluidValid(PolyFluidStack resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "setFluid",
+          "visibility": "public",
+          "returnType": "void",
+          "parameters": "PolyFluidStack stack",
+          "signature": "public void setFluid(PolyFluidStack stack)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "PolyNeoFluidItemWrapper",
+      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidItemWrapper",
+      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
+      "loader": "neoforge",
+      "kind": "class",
+      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/PolyNeoFluidItemWrapper.java",
+      "summary": "Item variant of `PolyNeoFluidWrapper`.\n\nAfter mutating the PolyLib storage, this wrapper updates the NeoForge `ItemAccess` so automation receives the modified container stack.",
+      "methodCount": 3,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "PolyNeoFluidItemWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "IPolyFluidStorageItem storage, ItemAccess access",
+          "signature": "public PolyNeoFluidItemWrapper(IPolyFluidStorageItem storage, ItemAccess access)",
+          "javadoc": ""
+        },
+        {
+          "name": "insert",
+          "visibility": "public",
+          "returnType": "int",
+          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
+          "signature": "public int insert(int index, FluidResource resource, int amount, TransactionContext transaction)",
+          "javadoc": ""
+        },
+        {
+          "name": "extract",
+          "visibility": "public",
+          "returnType": "int",
+          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
+          "signature": "public int extract(int index, FluidResource resource, int amount, TransactionContext transaction)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
+      "name": "PolyNeoFluidWrapper",
+      "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper",
+      "packageName": "net.creeperhost.polylib.neoforge.inventory.fluid",
+      "loader": "neoforge",
+      "kind": "class",
+      "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/neoforge/inventory/fluid/PolyNeoFluidWrapper.java",
+      "summary": "Exposes an `IPolyFluidStorage` as a NeoForge fluid `ResourceHandler`.\n\nNeoForge transactions are backed by snapshots of the PolyLib storage contents.",
+      "methodCount": 10,
+      "fieldCount": 0,
+      "methods": [
+        {
+          "name": "PolyNeoFluidWrapper",
+          "visibility": "public",
+          "returnType": "",
+          "parameters": "IPolyFluidStorage storage",
+          "signature": "public PolyNeoFluidWrapper(IPolyFluidStorage storage)",
+          "javadoc": ""
+        },
+        {
+          "name": "size",
+          "visibility": "public",
+          "returnType": "int",
+          "parameters": "",
+          "signature": "public int size()",
+          "javadoc": ""
+        },
+        {
+          "name": "getResource",
+          "visibility": "public",
+          "returnType": "FluidResource",
+          "parameters": "int index",
+          "signature": "public FluidResource getResource(int index)",
+          "javadoc": ""
+        },
+        {
+          "name": "getAmountAsLong",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "int index",
+          "signature": "public long getAmountAsLong(int index)",
+          "javadoc": ""
+        },
+        {
+          "name": "getCapacityAsLong",
+          "visibility": "public",
+          "returnType": "long",
+          "parameters": "int index, FluidResource resource",
+          "signature": "public long getCapacityAsLong(int index, FluidResource resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "isValid",
+          "visibility": "public",
+          "returnType": "boolean",
+          "parameters": "int index, FluidResource resource",
+          "signature": "public boolean isValid(int index, FluidResource resource)",
+          "javadoc": ""
+        },
+        {
+          "name": "insert",
+          "visibility": "public",
+          "returnType": "int",
+          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
+          "signature": "public int insert(int index, FluidResource resource, int amount, TransactionContext transaction)",
+          "javadoc": ""
+        },
+        {
+          "name": "extract",
+          "visibility": "public",
+          "returnType": "int",
+          "parameters": "int index, FluidResource resource, int amount, TransactionContext transaction",
+          "signature": "public int extract(int index, FluidResource resource, int amount, TransactionContext transaction)",
+          "javadoc": ""
+        },
+        {
+          "name": "createSnapshot",
+          "visibility": "protected",
+          "returnType": "PolyFluidStack",
+          "parameters": "",
+          "signature": "protected PolyFluidStack createSnapshot()",
+          "javadoc": ""
+        },
+        {
+          "name": "revertToSnapshot",
+          "visibility": "protected",
+          "returnType": "void",
+          "parameters": "PolyFluidStack snapshot",
+          "signature": "protected void revertToSnapshot(PolyFluidStack snapshot)",
+          "javadoc": ""
+        }
+      ],
+      "fields": []
+    },
+    {
       "name": "NeoEnergyManager",
       "qualifiedName": "net.creeperhost.polylib.neoforge.inventory.power.NeoEnergyManager",
       "packageName": "net.creeperhost.polylib.neoforge.inventory.power",
@@ -26146,7 +27399,7 @@
       "kind": "class",
       "sourcePath": "fabric/src/main/java/net/creeperhost/polylib/platform/FabricPlatformHelper.java",
       "summary": "",
-      "methodCount": 6,
+      "methodCount": 7,
       "fieldCount": 0,
       "methods": [
         {
@@ -26195,6 +27448,14 @@
           "returnType": "EnergyManager",
           "parameters": "",
           "signature": "public EnergyManager getEnergyManager()",
+          "javadoc": ""
+        },
+        {
+          "name": "getFluidManager",
+          "visibility": "public",
+          "returnType": "FluidManager",
+          "parameters": "",
+          "signature": "public FluidManager getFluidManager()",
           "javadoc": ""
         }
       ],
@@ -26496,7 +27757,7 @@
       "kind": "class",
       "sourcePath": "neoforge/src/main/java/net/creeperhost/polylib/platform/NeoForgePlatformHelper.java",
       "summary": "",
-      "methodCount": 6,
+      "methodCount": 7,
       "fieldCount": 0,
       "methods": [
         {
@@ -26545,6 +27806,14 @@
           "returnType": "EnergyManager",
           "parameters": "",
           "signature": "public EnergyManager getEnergyManager()",
+          "javadoc": ""
+        },
+        {
+          "name": "getFluidManager",
+          "visibility": "public",
+          "returnType": "FluidManager",
+          "parameters": "",
+          "signature": "public FluidManager getFluidManager()",
           "javadoc": ""
         }
       ],

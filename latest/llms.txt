@@ -2,9 +2,9 @@
 
 > PolyLib is a Minecraft library mod by CreeperHost. These docs include human guides, generated Java API reference, and release-specific metadata.
 
-Generated for 26.3-2.0.15 on 2026-09-17T11:10:58.222Z.
+Generated for 26.3-2.0.16 on 2026-09-23T10:12:16.743Z.
 
-Version: 26.3-2.0.15
+Version: 26.3-2.0.16
 Minecraft: 26.3
 Java: 25
 Loaders: common, Fabric, NeoForge
@@ -37,7 +37,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.client.gif: 3 public types (common)
 - net.creeperhost.polylib.client.model: 1 public types (common)
 - net.creeperhost.polylib.client.modulargui: 4 public types (common)
-- net.creeperhost.polylib.client.modulargui.elements: 27 public types (common)
+- net.creeperhost.polylib.client.modulargui.elements: 28 public types (common)
 - net.creeperhost.polylib.client.modulargui.lib: 15 public types (common)
 - net.creeperhost.polylib.client.modulargui.lib.container: 4 public types (common)
 - net.creeperhost.polylib.client.modulargui.lib.geometry: 13 public types (common)
@@ -53,7 +53,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.containers.slots: 4 public types (common)
 - net.creeperhost.polylib.data: 2 public types (common)
 - net.creeperhost.polylib.data.lang: 1 public types (common)
-- net.creeperhost.polylib.data.serializable: 12 public types (common)
+- net.creeperhost.polylib.data.serializable: 13 public types (common)
 - net.creeperhost.polylib.datagen: 2 public types (fabric, neoforge)
 - net.creeperhost.polylib.debug: 4 public types (common)
 - net.creeperhost.polylib.debug.neoforge: 1 public types (neoforge)
@@ -63,10 +63,12 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.event.events.server: 23 public types (common)
 - net.creeperhost.polylib.fabric.inventory: 2 public types (fabric)
 - net.creeperhost.polylib.fabric.inventory.energy: 6 public types (fabric)
+- net.creeperhost.polylib.fabric.inventory.fluid: 5 public types (fabric)
 - net.creeperhost.polylib.fabric.registry: 2 public types (fabric)
 - net.creeperhost.polylib.helpers: 12 public types (common)
 - net.creeperhost.polylib.init: 3 public types (common)
 - net.creeperhost.polylib.inventory: 1 public types (common)
+- net.creeperhost.polylib.inventory.fluid: 9 public types (common)
 - net.creeperhost.polylib.inventory.items: 4 public types (common)
 - net.creeperhost.polylib.inventory.power: 8 public types (common)
 - net.creeperhost.polylib.items: 1 public types (common)
@@ -76,6 +78,7 @@ Loaders: common, Fabric, NeoForge
 - net.creeperhost.polylib.mulitblock: 6 public types (common)
 - net.creeperhost.polylib.mulitblock.rectangular: 3 public types (common)
 - net.creeperhost.polylib.neoforge: 1 public types (neoforge)
+- net.creeperhost.polylib.neoforge.inventory.fluid: 5 public types (neoforge)
 - net.creeperhost.polylib.neoforge.inventory.power: 5 public types (neoforge)
 - net.creeperhost.polylib.neoforge.registry: 3 public types (neoforge)
 - net.creeperhost.polylib.network: 1 public types (common)
@@ -471,6 +474,9 @@ Create or reuse a `KeyMapping.Category` via `KeyMapping.Category.register(Identi
 - net.creeperhost.polylib.client.modulargui.elements.GuiElement (class, common): No summary.
 - net.creeperhost.polylib.client.modulargui.elements.GuiEnergyBar (class, common): No summary.
 - net.creeperhost.polylib.client.modulargui.elements.GuiEntityRenderer (class, common): No summary.
+- net.creeperhost.polylib.client.modulargui.elements.GuiFluidTank (class, common): Modular GUI element that renders a single PolyLib fluid tank.
+
+The tank accepts `PolyFluidStack` suppliers so container screens can bind it directly to synced fluid data.
 - net.creeperhost.polylib.client.modulargui.elements.GuiFuzzyFinder (class, common): A search-based context menu overlay (Fuzzy Finder) for visual scripting. Allows users to type to filter a list of available nodes or options.
 - net.creeperhost.polylib.client.modulargui.elements.GuiFuzzySearch (class, common): No summary.
 - net.creeperhost.polylib.client.modulargui.elements.GuiInfoPanel (class, common): No summary.
@@ -651,6 +657,9 @@ Thread-safe. First registration wins — later contributions for an existing key
 - net.creeperhost.polylib.data.serializable.DoubleData (class, common): No summary.
 - net.creeperhost.polylib.data.serializable.EnumData (class, common): No summary.
 - net.creeperhost.polylib.data.serializable.FloatData (class, common): No summary.
+- net.creeperhost.polylib.data.serializable.FluidData (class, common): `AbstractDataStore` implementation for a `PolyFluidStack`.
+
+Stored fluid stacks are copied on assignment, and equality is checked using `PolyFluidStack#equals(Object)` so fluid, amount, and component data all participate in dirty-state detection.
 - net.creeperhost.polylib.data.serializable.IntData (class, common): No summary.
 - net.creeperhost.polylib.data.serializable.LongData (class, common): No summary.
 - net.creeperhost.polylib.data.serializable.ShortData (class, common): No summary.
@@ -784,6 +793,19 @@ Fabric: mixin into `VillageSiege#tick`
 - net.creeperhost.polylib.fabric.inventory.energy.NullEnergyManager (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.energy.PolyFabricEnergyItemWrapper (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.energy.PolyFabricEnergyWrapper (class, fabric): No summary.
+- net.creeperhost.polylib.fabric.inventory.fluid.FabricFluidManager (class, fabric): Fabric implementation of `FluidManager`.
+
+Wraps Fabric Transfer `Storage` instances in PolyLib's common fluid storage interfaces.
+- net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidItemWrapper (class, fabric): Item variant of `FabricPolyFluidWrapper`.
+
+Exposes Fabric item fluid storage through PolyLib's item storage contract and returns the current container stack from the Fabric item context.
+- net.creeperhost.polylib.fabric.inventory.fluid.FabricPolyFluidWrapper (class, fabric): Wraps a Fabric Transfer fluid storage as an `IPolyFluidStorage`.
+- net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidItemWrapper (class, fabric): Item variant of `PolyFabricFluidWrapper`.
+
+After mutating the PolyLib storage, this wrapper updates the Fabric item context so callers receive the modified container stack.
+- net.creeperhost.polylib.fabric.inventory.fluid.PolyFabricFluidWrapper (class, fabric): Exposes an `IPolyFluidStorage` as Fabric Transfer fluid storage.
+
+Fabric transactions are backed by snapshots of the PolyLib storage contents.
 - net.creeperhost.polylib.fabric.inventory.InitialContentsContainerItemContext (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.inventory.ItemStackStorage (class, fabric): No summary.
 - net.creeperhost.polylib.fabric.registry.FabricPolyRegistry (class, fabric): No summary.
@@ -807,6 +829,27 @@ Fabric: mixin into `VillageSiege#tick`
 - net.creeperhost.polylib.init.DataComps (class, common): No summary.
 - net.creeperhost.polylib.init.InternalEventListener (class, common): No summary.
 - net.creeperhost.polylib.init.InternalEventListenerClient (class, common): No summary.
+- net.creeperhost.polylib.inventory.fluid.FluidManager (interface, common): Platform fluid access and convenience utilities.
+
+All PolyLib fluid amounts are expressed in droplets. One bucket is `#BUCKET` droplets and one millibucket is `#MILLIBUCKET` droplets.
+- net.creeperhost.polylib.inventory.fluid.IPolyFluidStorage (interface, common): Common fluid storage contract used by PolyLib across loaders.
+
+All amounts are expressed in droplets. Platform wrappers convert as needed when bridging to native Fabric or NeoForge transfer APIs.
+- net.creeperhost.polylib.inventory.fluid.IPolyFluidStorageItem (interface, common): Fluid storage backed by an `ItemStack`.
+
+Platform item fluid APIs may replace the container stack after mutation, so callers should read `#getContainer()` after fill or drain operations.
+- net.creeperhost.polylib.inventory.fluid.PolyBlockFluidStorage (class, common): Block entity backed fluid storage.
+
+Calls `BlockEntity#setChanged()` whenever the stored fluid changes.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidBlock (interface, common): Implement on block entities that expose PolyLib fluid storage.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidItem (interface, common): Implement on items that expose PolyLib fluid storage.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidStack (class, common): Loader-neutral fluid stack used by PolyLib's common fluid API.
+
+Amounts are stored as droplets, matching Fabric Transfer's fluid unit. Use `FluidManager#BUCKET` and `FluidManager#MILLIBUCKET` when converting to bucket or millibucket-oriented APIs.
+- net.creeperhost.polylib.inventory.fluid.PolyFluidStorage (class, common): Simple single-tank implementation of `IPolyFluidStorage`.
+
+This storage accepts one fluid type at a time and calls an optional change listener whenever its contents are mutated.
+- net.creeperhost.polylib.inventory.fluid.PolyItemFluidStorage (class, common): ItemStack backed fluid storage using PolyLib's item fluid data component.
 - net.creeperhost.polylib.inventory.items.BlockInventory (class, common): No summary.
 - net.creeperhost.polylib.inventory.items.ContainerAccessControl (class, common): Used to provide control over what slots allow insert / extract / under what conditions etc. Designed for use with `PolyInventoryBlock` but will work with anything that accepts a `WorldlyContainer`
 
@@ -992,6 +1035,21 @@ Reads from `ConfigPanelRegistry` — any mod that registered its config panel vi
 - net.creeperhost.polylib.mulitblock.rectangular.PartPosition (enum, common): No summary.
 - net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockControllerBase (class, common): No summary.
 - net.creeperhost.polylib.mulitblock.rectangular.RectangularMultiblockTileEntityBase (class, common): No summary.
+- net.creeperhost.polylib.neoforge.inventory.fluid.NeoFluidManager (class, neoforge): NeoForge implementation of `FluidManager`.
+
+Wraps NeoForge transfer `ResourceHandler` fluid capabilities in PolyLib's common fluid storage interfaces.
+- net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidItemWrapper (class, neoforge): Item variant of `NeoPolyFluidWrapper`.
+
+Keeps the `ItemAccess` used to query the item capability so the current container stack can be returned after operations.
+- net.creeperhost.polylib.neoforge.inventory.fluid.NeoPolyFluidWrapper (class, neoforge): Wraps a NeoForge fluid `ResourceHandler` as an `IPolyFluidStorage`.
+
+NeoForge transfer fluid amounts are converted to PolyLib droplets at the API boundary.
+- net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidItemWrapper (class, neoforge): Item variant of `PolyNeoFluidWrapper`.
+
+After mutating the PolyLib storage, this wrapper updates the NeoForge `ItemAccess` so automation receives the modified container stack.
+- net.creeperhost.polylib.neoforge.inventory.fluid.PolyNeoFluidWrapper (class, neoforge): Exposes an `IPolyFluidStorage` as a NeoForge fluid `ResourceHandler`.
+
+NeoForge transactions are backed by snapshots of the PolyLib storage contents.
 - net.creeperhost.polylib.neoforge.inventory.power.NeoEnergyManager (class, neoforge): No summary.
 - net.creeperhost.polylib.neoforge.inventory.power.NeoPolyEnergyItemWrapper (class, neoforge): No summary.
 - net.creeperhost.polylib.neoforge.inventory.power.NeoPolyEnergyWrapper (class, neoforge): No summary.
