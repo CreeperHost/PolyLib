@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class FabricEnchantTableLevelMixin
 {
     @Final @Shadow private Container enchantSlots;
-    @Shadow public final int[] costs = null;
+    @Final @Shadow public int[] costs;
 
     @Inject(method = "slotsChanged", at = @At("TAIL"))
     private void polylib$onSlotsChanged(Container container, CallbackInfo ci)
@@ -31,6 +31,8 @@ public abstract class FabricEnchantTableLevelMixin
         ItemStack stack = this.enchantSlots.getItem(0);
         for (int i = 0; i < 3; i++)
         {
+            if (this.costs == null) continue;
+
             if (this.costs[i] > 0)
             {
                 int[] level = { this.costs[i] };
